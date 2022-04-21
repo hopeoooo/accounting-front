@@ -10,7 +10,7 @@ export function listTable(query) {
   })
 }
 
-// 新增/编辑桌台
+// 新增桌台
 export function addUpTable(data) {
   return request({
     url: '/system/table',
@@ -18,7 +18,14 @@ export function addUpTable(data) {
     data: data
   })
 }
-
+// 编辑桌台
+export function addUpTable(data) {
+  return request({
+    url: '/system/table',
+    method: 'post',
+    data: data
+  })
+}
 // 删除桌台
 export function delTable(tableId) {
   return request({
