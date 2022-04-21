@@ -260,7 +260,6 @@ import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/d
 
 export default {
   name: "role",
-  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层

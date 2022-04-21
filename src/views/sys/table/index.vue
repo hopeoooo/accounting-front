@@ -58,7 +58,7 @@
 
     <!-- 添加或修改角色配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
         <el-form-item label="桌台编号" prop="gameId">
           <el-input v-model="form.gameId" placeholder="请输入桌台编号" />
         </el-form-item>
@@ -147,7 +147,7 @@ export default {
           { required: true, message: "桌台编号不能为空", trigger: "blur" }
         ],
         gameName: [
-          { required: true, message: "权限字符不能为空", trigger: "change" }
+          { required: true, message: "请选择游戏类型", trigger: "change" }
         ],
         chipPointBase: [
           { required: true, message: "筹码点码基数不能为空", trigger: "blur" }
@@ -237,53 +237,45 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      addUpTable(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.$nextTick(() => {
-          roleMenu.then(res => {
-            let checkedKeys = res.checkedKeys
-            checkedKeys.forEach((v) => {
-                this.$nextTick(()=>{
-                    this.$refs.menu.setChecked(v, true ,false);
-                })
-            })
-          });
-        });
-        this.title = "编辑桌台";
-      });
+      this.form =row
+      this.open = true;
+      this.title = "编辑桌台";
+      // addUpTable({id:id}).then(response => {
+      //   // this.form = response.data;
+        
+       
+       
+      // });
     },
    
 
     /** 提交按钮 */
     submitForm: function() {
       console.log(this.form)
-      // this.$refs["form"].validate(valid => {
-      //   if (valid) {
-      //     if (this.form.gameId != undefined) {
-      //       this.form.menuIds = this.getMenuAllCheckedKeys();
-      //       addUpTable(this.form).then(response => {
-      //         this.$modal.msgSuccess("修改成功");
-      //         this.open = false;
-      //         this.getList();
-      //       });
-      //     } else {
-      //       this.form.gameId = this.getMenuAllCheckedKeys();
-      //       addUpTable(this.form).then(response => {
-      //         this.$modal.msgSuccess("新增成功");
-      //         this.open = false;
-      //         this.getList();
-      //       });
-      //     }
-      //   }
-      // });
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != undefined) {
+            addUpTable(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
+          } else {
+            addUpTable(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
+          }
+        }
+      });
     },
    
     /** 删除按钮操作 */
     handleDelete(row) {
-      const roleIds = row.roleId || this.ids;
+      const id = row.id || this.ids;
       this.$modal.confirm('是否确认删除该桌台？').then(function() {
-        return delTable(roleIds);
+        return delTable(id);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
