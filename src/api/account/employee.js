@@ -14,7 +14,7 @@ export function getEmployeeList(query) {
 export function addEmployee(data) {
   return request({
     url: '/account/user/add',
-    method: 'get',
+    method: 'post',
     data: data
   })
 }
