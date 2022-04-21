@@ -145,7 +145,7 @@ export default {
           }).catch(() => {
             this.loading = false;
             if (this.captchaOnOff) {
-              this.getCode();
+              // this.getCode();
             }
           });
         }
