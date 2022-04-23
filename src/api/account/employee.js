@@ -11,25 +11,26 @@ export function getEmployeeList(query) {
 }
 
 // 新增员工
-export function addEmployee(data) {
+export function addEmployee(query) {
   return request({
     url: '/account/user/add',
-    method: 'post',
-    data: data
+    method: 'get',
+    params: query
   })
 }
 // 编辑角色
-export function updateEmployee(data) {
+export function updateEmployee(query) {
   return request({
     url: '/account/user/edit',
-    method: 'post',
-    data: data
+    method: 'get',
+    params: query
   })
 }
 // 删除角色
-export function delEmployee(id) {
+export function delEmployee(query) {
   return request({
-    url: '/account/user/delete' + id,
-    method: 'delete'
+    url: '/account/user/delete',
+    method: 'get',
+    params: query
   })
 }

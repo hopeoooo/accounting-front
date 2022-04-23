@@ -45,14 +45,14 @@
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="employeeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="employeeList">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="工号" prop="userName" />
       <el-table-column label="姓名" prop="nickName" />
       <el-table-column label="职位" prop="roleId" />
       <el-table-column label="性别" prop="sex" >
          <template slot-scope="scope">
-           {{scope.row.sex ==1?'男':'女'}}
+           {{scope.row.sex ==0?'男':(scope.row.sex ==2?'未知':'女')}}
         </template>
       </el-table-column>  
       <el-table-column label="年龄" prop="brithday" >
@@ -74,14 +74,12 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:role:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:role:remove']"
           >删除</el-button>
           
         </template>
@@ -118,7 +116,6 @@
                   <el-option label="男" :value="0"></el-option>
                   <el-option label="女" :value="1"></el-option>
                   <el-option label="未知" :value="2"></el-option>
-                  
                 </el-select>
             </el-form-item>
           </el-col>
@@ -135,8 +132,8 @@
             </el-form-item>
           </el-col>
            <el-col :span="12">
-              <el-form-item label="确认密码" prop="checkpass">
-                <el-input v-model="form.checkpass" placeholder="请输入确认密码" />
+              <el-form-item label="确认密码" prop="rawPassword">
+                <el-input v-model="form.rawPassword" placeholder="请输入确认密码" />
               </el-form-item>
           </el-col>
         </el-row>
@@ -170,7 +167,8 @@
                 <el-date-picker
                   style="width:180px"
                   v-model="form.joinTime"
-                  type="date"
+                  type="datetime"
+                   value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="选择日期">
                 </el-date-picker>
               </el-form-item>
@@ -182,6 +180,7 @@
               <el-date-picker
                 v-model="form.brithday"
                 type="year"
+                 value-format="yyyy"
                 style="width:180px"
                 placeholder="选择年">
               </el-date-picker>
@@ -299,7 +298,7 @@ export default {
           { required: true, message: "新密码不能为空", trigger: "blur" },
           { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
         ],
-         checkpass: [
+        rawPassword: [
           { required: true, message: "确认密码不能为空", trigger: "blur" },
           { required: true, validator: equalToPassword, trigger: "blur" }
         ],
@@ -314,9 +313,7 @@ export default {
   },
   created() {
     this.getList();
-    this.getRole(
-      getRoleList()
-    );
+    this.getRole();
   },
   methods: {
     // 查询角色列表
@@ -378,7 +375,7 @@ export default {
        sex:0,
        phonenumber:'',
        password:'',
-       checkpass:'',
+       rawPassword:'',
        address:'',
        post:'',
        roleId:undefined,
@@ -409,7 +406,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      this.form =row
+      this.form = Object.assign({},row)
       this.open = true;
       this.title = "编辑卡号";
       
@@ -419,21 +416,16 @@ export default {
     /** 提交按钮 */
     submitForm: function() {
       this.$refs["form"].validate(valid => {
+      
         if (valid) {
           if ( this.title == "编辑卡号") {
-              let parm ={}
-            parm =this.$delete(this.form,'checkpass')
-            updateEmployee(parm).then(response => {
+            updateEmployee(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            // this.$delete(this.form,'checkpass')
-            let parm ={}
-            parm =this.$delete(this.form,'checkpass')
-            console.log(1)
-            addEmployee(parm).then(response => {
+            addEmployee(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -445,9 +437,10 @@ export default {
    
     /** 删除按钮操作 */
     handleDelete(row) {
-      const userName = row.userName || this.ids;
+      const userName = row.userName 
+       const userId = row.userId || this.ids;
       this.$modal.confirm('是否确认删除工号为"' + userName + '"的数据项？').then(function() {
-        return delEmployee(userName);
+        return delEmployee({'userId':userId});
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");

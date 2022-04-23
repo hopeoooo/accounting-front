@@ -16,11 +16,12 @@
 
     <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="桌台编号" prop="gameId" width="120" />
+      <el-table-column label="桌台编号" prop="tableId" width="120" />
       <el-table-column label="游戏类型" prop="gameName" :show-overflow-tooltip="true"  />
       <el-table-column label="筹码点码基数" prop="chipPointBase" :show-overflow-tooltip="true"  />
       <el-table-column label="现金点码基数" prop="cashPointBase" />
       <el-table-column label="保险筹码点码基数" prop="insurancePointBase" />
+      <el-table-column label="IP" prop="ip" />
      
       <el-table-column label="创建时间" align="center" prop="createTime" width="150px">
         <template slot-scope="scope">
@@ -59,8 +60,8 @@
     <!-- 添加或修改角色配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">
-        <el-form-item label="桌台编号" prop="gameId">
-          <el-input v-model="form.gameId" placeholder="请输入桌台编号" />
+        <el-form-item label="桌台编号" prop="tableId">
+          <el-input v-model="form.tableId" placeholder="请输入桌台编号" />
         </el-form-item>
        
         <el-form-item label="游戏类型" prop="gameName">
@@ -71,6 +72,9 @@
           <el-option label="三公" value="三公"></el-option>
           <el-option label="推筒子" value="推筒子"></el-option>
         </el-select>
+        </el-form-item>
+         <el-form-item label="IP" prop="ip">
+          <el-input v-model="form.ip"  placeholder="请输入..."></el-input>
         </el-form-item>
         <el-form-item label="筹码点码基数" prop="chipPointBase">
           <el-input v-model="form.chipPointBase"  placeholder="请输入..."></el-input>
@@ -143,11 +147,14 @@ export default {
       },
       // 表单校验
       rules: {
-        gameId: [
+        tableId: [
           { required: true, message: "桌台编号不能为空", trigger: "blur" }
         ],
         gameName: [
           { required: true, message: "请选择游戏类型", trigger: "change" }
+        ],
+        ip: [
+          { required: true, message: "IP不能为空", trigger: "blur" }
         ],
         chipPointBase: [
           { required: true, message: "筹码点码基数不能为空", trigger: "blur" }
@@ -201,8 +208,11 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        gameId: '',
+        tableId: '',
+        id:'',
+        gameId:'',
         gameName:'',
+        ip:'',
         chipPointBase:'',
         cashPointBase:'',
         insurancePointBase:''
@@ -237,7 +247,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      this.form =row
+      this.form =Object.assign({},row)
       this.open = true;
       this.title = "编辑桌台";
       // addUpTable({id:id}).then(response => {
@@ -251,6 +261,17 @@ export default {
 
     /** 提交按钮 */
     submitForm: function() {
+        if(this.form.gameName =="百家乐"){
+              this.form.gameId =1
+            }else  if(this.form.gameName =="龙虎"){
+              this.form.gameId =2
+            }else  if(this.form.gameName =="牛牛"){
+              this.form.gameId =3
+            }else  if(this.form.gameName =="三公"){
+              this.form.gameId =4
+            }else  if(this.form.gameName =="推筒子"){
+              this.form.gameId =5
+            }
       console.log(this.form)
       this.$refs["form"].validate(valid => {
         if (valid) {

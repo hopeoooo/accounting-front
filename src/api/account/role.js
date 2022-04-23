@@ -17,6 +17,14 @@ export function getRoleList(data) {
     data: data
   })
 }
+// 获取角色菜单列表树
+export function getRoleMenuTree(id) {
+  return request({
+    url: '/account/role/roleMenuTreeselect/'+id,
+    method: 'get',
+    // params: query
+  })
+}
 // 新增角色
 export function addRole(data) {
   return request({
@@ -34,9 +42,11 @@ export function updateRole(data) {
   })
 }
 // 删除角色
-export function delRole(roleId) {
+
+export function delRole(query) {
   return request({
-    url: '/account/role/delete' + roleId,
-    method: 'delete'
+    url: '/account/role/delete',
+    method: 'get',
+    params: query
   })
 }

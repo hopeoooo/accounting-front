@@ -13,7 +13,7 @@ export function listTable(query) {
 // 新增桌台
 export function addUpTable(data) {
   return request({
-    url: '/system/addOrUpdate',
+    url: '/system/table/addOrUpdate',
     method: 'post',
     data: data
   })
