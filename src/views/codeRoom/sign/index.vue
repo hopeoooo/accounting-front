@@ -256,7 +256,7 @@ export default {
 
       let params = {pageNum:1,pageSize:30}
   
-      params['isChild']=this.queryParams.isAdmin ==false?0:1
+      params['isAdmin']=this.queryParams.isAdmin ==false?0:1
       params['card']=this.queryParams.card
       this.loading = true;
       listSign(params).then(response => {
@@ -348,26 +348,8 @@ export default {
     reset() {
       this.form = {
         card: '',
-        name:'',
-        sex:0,
-        phone:'',
-        password:'',
-        rawPassword:'',
-        deposit:'',
-        repair:'',
-        shareRatio:'',
-        rebateRatio:'',
-        baccaratRollingRatioChip:'',
-        baccaratRollingRatioCash:'',
-        dragonTigerRatioChip:'',
-        dragonTigerRatioCash:'',
-        isCash:1,
-        isSettlement:1,
-        isOut:1,
-        isPump:1,
-        status:1,
-        cardType:0,
-        // isBill:'',
+        userName:'',
+        signedAmount:'',
         remark:''
 
       };
