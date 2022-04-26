@@ -64,7 +64,8 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <!-- v-if  每次打开弹窗重新加载dom -->
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body v-if="open">
        <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="0">
           <el-col :span="24">
@@ -88,7 +89,7 @@
          
         </el-row>
         
-         <el-row :gutter="0" >
+         <el-row :gutter="0"  >
           <el-col :span="24">
              <el-form-item label="菜单权限">
                 <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event)">展开/折叠</el-checkbox>
@@ -282,20 +283,22 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-     
-      // this.form = Object.assign({},row)
-      getRoleMenuTree(row.roleId).then(response => {
-          row['menuIds']=  response.checkedKeys;
-          this.form = Object.assign({},row)
-           this.form['menuCheckStrictly']=true
-          this.form.menuIds.forEach((v) => {
-                this.$nextTick(()=>{
-                    this.$refs.menu.setChecked(v, true ,false);
-                })
-            })
-          this.loading = false;
-        }
-      );
+       this.form = Object.assign({},row)
+      this.form['menuCheckStrictly']=true
+       this.$nextTick(()=>{
+        getRoleMenuTree(row.roleId).then(response => {
+            this.form['menuIds']=  response.checkedKeys;
+            console.log(this.$refs.menu)
+            this.form['menuIds'].forEach((v) => {
+                  this.$nextTick(()=>{
+                      this.$refs.menu.setChecked(v, true ,false);
+                      
+                  })
+              })
+            this.loading = false;
+          }
+        );
+       })
       console.log(this.form)
       this.open = true;
       this.title = "角色修改";
