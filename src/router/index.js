@@ -101,6 +101,20 @@ export const constantRoutes = [
         meta: { title: '员工管理', icon: '' }
       }
     ]
+  },
+  {
+    path: '/coderoom',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'washCode',
+        component: () => import('@/views/coderoom/washCode/index'),
+        name: 'washCode',
+        meta: { title: '洗码费结算', icon: '' }
+      }
+    ]
   }
 ]
 

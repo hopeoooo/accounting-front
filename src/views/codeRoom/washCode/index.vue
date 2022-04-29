@@ -91,7 +91,6 @@
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row.card)"
-              
               >明细</el-button>
            
             </template>
