@@ -52,9 +52,9 @@ export function listSignedDetailed(query) {
   })
 }
 // 查询客户筹码变动明细列表
-export function listSignedDetailed(query) {
+export function listChipRecord(query) {
   return request({
-    url: '查询签单明细列表',
+    url: '/system/chipRecord/list',
     method: 'get',
     params: query
   })

@@ -74,12 +74,15 @@
           <el-table-column label="电话号码" align="center" key="phone" prop="phone" :show-overflow-tooltip="true" />
            <el-table-column label="状态" align="center" key="status" >
             <template slot-scope="scope">
-              <el-switch
+              
+              <!-- <el-switch
                 v-model="scope.row.status"
                 active-value="0"
                 inactive-value="1"
                 @change="handleStatusChange(scope.row)"
-              ></el-switch>
+              ></el-switch> -->
+              <span v-if="scope.row.status==0">正常</span>
+              <span v-else style="color:red">停用</span>
             </template>
           </el-table-column>
           <el-table-column label="卡类型" align="center" key="cardType" prop="cardType"  >
