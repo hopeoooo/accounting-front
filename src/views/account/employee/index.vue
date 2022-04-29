@@ -127,12 +127,12 @@
         </el-row>
         <el-row :gutter="0" >
           <el-col :span="12">
-            <el-form-item label="密码" prop="password">
+            <el-form-item label="密码" prop="password" v-if="isshow">
               <el-input v-model="form.password" placeholder="请输入密码" />
             </el-form-item>
           </el-col>
            <el-col :span="12">
-              <el-form-item label="确认密码" prop="rawPassword">
+              <el-form-item label="确认密码" prop="rawPassword" v-if="isshow">
                 <el-input v-model="form.rawPassword" placeholder="请输入确认密码" />
               </el-form-item>
           </el-col>
@@ -308,7 +308,8 @@ export default {
          joinTime: [
           { required: true, message: "请选择入职日期", trigger: "change" }
         ],
-      }
+      },
+      isshow:true,
     };
   },
   created() {
@@ -401,6 +402,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
+      this.isshow =true;
       this.title = "新增卡号";
     },
     /** 修改按钮操作 */
@@ -408,6 +410,7 @@ export default {
       this.reset();
       this.form = Object.assign({},row)
       this.open = true;
+      this.isshow =false
       this.title = "编辑卡号";
       
     },
