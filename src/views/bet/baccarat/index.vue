@@ -14,12 +14,12 @@
       <el-col :span="6" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>台号：{{1}}</li>
-              <li>靴号：{{1}}</li>
-              <li>局号：{{1}}</li>
-              <li>累计：{{1}}</li>
-              <li>筹码：{{1}}</li>
-              <li>现金：{{1}}</li>
+              <li>台号：{{tableInfo.tableId}}</li>
+              <li>靴号：{{tableInfo.bootNum}}</li>
+              <li>局号：{{tableInfo.gameNum}}</li>
+              <li>累计：{{tableInfo.total}}</li>
+              <li>筹码：{{tableInfo.chip}}</li>
+              <li>现金：{{tableInfo.cash}}</li>
              </ul>
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
@@ -45,13 +45,27 @@
        <!--路单展示-->
       <el-col :span="10" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-            <div class="ludan">
-              <div v-for="(e,key) in szdata" class="list" :key="key">
-                <div class="list_p" v-for="(c,key) in e" :key="key" @click="changeChip(c)">
-                  <i>{{c}}</i>
+            <div class="ludanbox">
+              <div class="ludanbg">
+                <div v-for="(e,key) in szdata" class="list" :key="key">
+                  <div class="list_p" :title="c" v-for="(c,key) in e" :key="key">
+                    <i>{{c}}</i>
+                  </div>
+                </div>
+              </div>
+              <div class="ludan">
+                <div v-for="(e,key) in result" class="list2" :key="key">
+                  <!-- <div class="list_p" :title="c" v-for="(c,key) in e" :key="key" @click="changeChip(c)">
+                    <i>{{c}}</i>
+                  </div> -->
+                  <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum" 
+                    effect="light" :content="'局号'+c.gameNum" placement="top">
+                    <el-button @click="changeChip(c.id)"><i :class="getclass(c.gameResult)"></i></el-button>
+                  </el-tooltip>
                 </div>
               </div>
             </div>
+           
           </el-card>
       </el-col>
     </el-row>
@@ -81,7 +95,35 @@
        </el-col>
     </el-row>
   
-
+    <!-- 路单结果修改 -->
+    <el-dialog :title="title" :visible.sync="openLUdan" width="600px" append-to-body>
+       <el-form ref="form" :model="formLudan" :rules="rules" label-width="0">
+          <el-form-item label="" prop="">
+              <el-radio-group v-model="formLudan.radio1">
+                <el-radio-button :label="4">庄</el-radio-button>
+                <el-radio-button :label="1">闲</el-radio-button>
+                <el-radio-button :label="7">和</el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          <el-form-item label="" prop="" >
+              <el-checkbox-group v-model="formLudan.checkboxGroup1" class="checked">
+                <el-checkbox-button  :label="8" >庄对</el-checkbox-button>
+                <el-checkbox-button  :label="5" >闲对</el-checkbox-button>
+              </el-checkbox-group>
+          </el-form-item>  
+          <el-form-item label="" prop=""  >
+              <el-radio-group v-model="formLudan.radio2">
+                <el-radio-button :label="9">大</el-radio-button>
+                <el-radio-button :label="6">小</el-radio-button>
+              </el-radio-group>
+          </el-form-item>   
+          
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
        <el-form ref="form" :model="form" :rules="rules" label-width="100px">
@@ -154,6 +196,7 @@ export default {
       deptOptions: undefined,
       // 是否显示弹出层
       open: false,
+      openLUdan:false,
       detailOpen:false,
       // 部门名称
       deptName: undefined,
@@ -167,6 +210,7 @@ export default {
       roleOptions: [],
       // 表单参数
       form: {},
+      formLudan:{},
       defaultProps: {
         children: "children",
         label: "label"
@@ -195,31 +239,34 @@ export default {
       },
       checkboxGroup1:[],
       reData:[
-        {id:1,name:'庄',color:'red'},
-        {id:2,name:'闲',color:'blue'},
-        {id:3,name:'和',color:'green'},
+        // {id:1,name:'庄',color:'red'},
+        // {id:2,name:'闲',color:'blue'},
+        // {id:3,name:'和',color:'green'},
         {id:4,name:'庄对',color:'red'},
         {id:5,name:'闲对',color:'blue'},
-        {id:6,name:'大',color:'red'},
-        {id:7,name:'小',color:'blue'},
+        // {id:6,name:'大',color:'red'},
+        // {id:7,name:'小',color:'blue'},
       ],
-      userName:'',
+      // userName:'',
       tableInfo:'', //桌台信息
+      result:'',//赛果
     };
   },
   watch: {
     // 根据名称筛选部门树
   
   },
+
   created() {
     this. getszdata();
-    this.getUsername();
+    // this.getUsername();
     this. getTableInfo()
+    this.getResult()
   },
   computed:{
-    // userName(){
-    //   this.getUsername()
-    // }
+    userName(){
+      return this.$store.state.user.name
+    }
   },
   methods: {
     screencast(){},
@@ -228,10 +275,42 @@ export default {
     //桌台信息
     getTableInfo(){
        baccaratInfo().then(res => {
-          this.tableInfo = res.rows;
+          this.tableInfo = res.data;
           this.loading = false;
         }
       );
+    },
+    //赛果列表
+    getResult(){
+       baccaratList().then(res => {
+          this.result = this.spArr(res.data,6);
+          this.loading = false;
+        }
+      );
+    },
+    //处理路单class
+    getclass(c){
+      console.log(c.indexOf('1'))
+      if(c.indexOf('1')!=-1 && c.indexOf('5')==-1 && c.indexOf('8')==-1  ){
+        return 'type1'
+      }else if(c.indexOf('1')!=-1 && c.indexOf('5')!=-1 && c.indexOf('8')==-1  ){
+        return 'type2'
+      }else if(c.indexOf('1')!=-1 && c.indexOf('5')==-1 && c.indexOf('8')!=-1  ){
+        return 'type3'
+      }else if(c.indexOf('1')!=-1 && c.indexOf('5')!=-1 && c.indexOf('8')!=-1  ){
+        return 'type4'
+      }else if(c.indexOf('4')!=-1 && c.indexOf('5')==-1 && c.indexOf('8')==-1  ){
+        return 'type5'
+      }else if(c.indexOf('4')!=-1 && c.indexOf('5')!=-1 && c.indexOf('8')==-1  ){
+        return 'type6'
+      }else if(c.indexOf('4')!=-1 && c.indexOf('5')==-1 && c.indexOf('8')!=-1  ){
+        return 'type7'
+      }else if(c.indexOf('4')!=-1 && c.indexOf('5')!=-1 && c.indexOf('8')!=-1  ){
+        return 'type8'
+      }else if(c.indexOf('7')!=-1 ){
+        return 'type9'
+      }
+
     },
     // 退出登录
     async logout() {
@@ -310,6 +389,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openLUdan =false
       this.reset();
     },
     // 表单重置
@@ -392,14 +472,16 @@ export default {
       return newArr
     },
     //
-    changeChip(c){},
-    getUsername(){
-      let obj = {}
-      let obj1 ={}
-      obj = JSON.parse(sessionStorage.getItem("sessionObj"))
-      obj1 = JSON.parse(obj.data)
-      this.userName =obj1.username
-    }
+    changeChip(id){
+      this.openLUdan =true
+    },
+    // getUsername(){
+    //   let obj = {}
+    //   let obj1 ={}
+    //   obj = JSON.parse(sessionStorage.getItem("sessionObj"))
+    //   obj1 = JSON.parse(obj.data)
+    //   this.userName =obj1.username
+    // }
   }
 };
 </script>
@@ -448,50 +530,134 @@ export default {
       }
     }
   }
-  .ludan{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #919191;
-    font-size: 0;
-    .list{
-      flex-basis: 1/12*100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      border-right: #919191 1px solid;
-      font-size: 0;
-      &:last-child{
-        border: 0;
-        // border-left: #919191 1px solid;
-      }
-      .list_p{
-        flex-basis: 1/6*100%;
+  .ludanbox{
+    position: relative;
+      .ludanbg{
         width: 100%;
-        height: 0;
-        padding-bottom: 100%;
-        // box-sizing: border-box;
-        border-bottom: #919191 1px solid;
-        &:last-child{
-          border: 0;
-          // border-top: #919191 1px solid;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #919191;
+        font-size: 0;
+        box-sizing: border-box;
         position: relative;
-        i{
-         position: absolute;
-         font-size: 16px;
-         color: #919191;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);   
-         font-style: normal;
+        .list{
+          flex-basis: 1/12*100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          border-right: #919191 1px solid;
+          font-size: 0;
+          box-sizing: border-box;
+          &:last-child{
+            border: 0;
+            // border-left: #919191 1px solid;
+          }
+          .list_p{
+            flex-basis: 1/6*100%;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            box-sizing: border-box;
+            border-bottom: #919191 1px solid;
+            &:last-child{
+              border: 0;
+              // border-top: #919191 1px solid;
+            }
+            position: relative;
+            i{
+            position: absolute;
+            font-size: 16px;
+            color: #919191;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);   
+            font-style: normal;
+            }
+          }
         }
       }
-    }
-
+      .ludan{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+         display: flex;
+        justify-content: flex-start;
+        align-items: center;
+         .list2{
+          flex-basis: 1/12*100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          // justify-content: center;
+          align-items: center;
+          font-size: 0;
+          box-sizing: border-box;
+          .list_p{
+            flex-basis: 1/6*100%;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: none;
+            i{
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            font-size: 16px;
+            color: #919191;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);   
+            font-style: normal;
+            }
+            .type1{
+              background: url("../../../assets/images/ludan/x1.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type2{
+              background: url("../../../assets/images/ludan/x2.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type3{
+              background: url("../../../assets/images/ludan/x3.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type4{
+              background: url("../../../assets/images/ludan/x4.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type5{
+              background: url("../../../assets/images/ludan/z1.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type6{
+              background: url("../../../assets/images/ludan/z2.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type7{
+              background: url("../../../assets/images/ludan/z3.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type8{
+              background: url("../../../assets/images/ludan/z4.webp") center no-repeat;
+              background-size: 100%;
+            }
+            .type9{
+              background: url("../../../assets/images/ludan/h.webp") center no-repeat;
+              background-size: 100%;
+            }
+          }
+         }
+      }
   }
+
 
 }
 .box-card-box-list{

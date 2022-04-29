@@ -53,7 +53,7 @@
          
         </el-row>
 
-        <el-table v-loading="loading" :data="userList"  @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="userList"  @selection-change="handleSelectionChange" :row-class-name="status_change">
           <el-table-column fixed type="selection" key="userId" prop="userId" width="50" align="center" />
           <el-table-column label="会员卡号" align="center" key="card" prop="card" />
           <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
@@ -263,6 +263,11 @@ export default {
       this.single = selection.length!=1
       this.multiple = !selection.length
     },
+     status_change: function (row) {
+            if (row.row.signedAmount > 0) {
+              return 'table-info-red'
+            }
+    },
     //合计规则
     getSummaries(param) {
         const { columns, data } = param;
@@ -431,5 +436,8 @@ export default {
 }
 .el-table.table2 {
   .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
+}
+.table-info-red td{
+  background: rgb(199, 135, 135);
 }
 </style>
