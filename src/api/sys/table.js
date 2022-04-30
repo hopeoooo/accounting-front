@@ -9,7 +9,14 @@ export function listTable(query) {
     params: query
   })
 }
-
+// 查询桌台总计
+export function listTableTotal(query) {
+  return request({
+    url: '/system/table/total',
+    method: 'get',
+    params: query
+  })
+}
 // 新增桌台
 export function addUpTable(data) {
   return request({

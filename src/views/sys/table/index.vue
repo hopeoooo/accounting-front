@@ -14,7 +14,7 @@
   
     </el-row>
 
-    <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="tableList" show-summary sum-text="总计" :summary-method="getSummaries" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="桌台编号" prop="tableId" width="120" />
       <el-table-column label="游戏类型" prop="gameName" :show-overflow-tooltip="true"  />
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { listTable,addUpTable,delTable } from "@/api/sys/table";
+import { listTable,listTableTotal,addUpTable,delTable } from "@/api/sys/table";
 
 export default {
   name: "Table",
@@ -130,7 +130,7 @@ export default {
       // 菜单列表
       menuOptions: [],
       // 部门列表
-    
+      tableTotal:'',
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -179,6 +179,11 @@ export default {
           this.loading = false;
         }
       );
+      listTableTotal().then(response => {
+        this.tableTotal = response.data;
+        
+        this.loading = false;
+      })
     },
   
     
@@ -300,6 +305,30 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
+      //合计规则
+    getSummaries(param) {
+        const { columns, data } = param;
+        const sums = [];
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '合计';
+            return;
+          }
+           if (index === 2) {
+            sums[index] = this.tableTotal.chipPointBase;
+            return;
+          }
+            if (index === 3) {
+            sums[index] = this.tableTotal.cashPointBase;
+            return;
+          }
+            if (index === 4) {
+            sums[index] = this.tableTotal.insurancePointBase;
+            return;
+          }
+        });
+         return sums;
+      },
  
   }
 };

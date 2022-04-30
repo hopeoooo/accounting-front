@@ -60,7 +60,7 @@
                   </div> -->
                   <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum" 
                     effect="light" :content="'局号'+c.gameNum" placement="top">
-                    <el-button @click="changeChip(c.id)"><i :class="getclass(c.gameResult)"></i></el-button>
+                    <el-button @click="changeChip(c)"><i :class="getclass(c.gameResult)"></i></el-button>
                   </el-tooltip>
                 </div>
               </div>
@@ -86,6 +86,9 @@
             <el-checkbox-group v-model="checkboxGroup1" class="checked">
               <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
             </el-checkbox-group>
+             <el-checkbox-group v-model="checkboxGroup2" class="checked">
+              <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
+            </el-checkbox-group>
             <el-button type="primary">开牌</el-button>
             <el-button type="primary">录入</el-button>
             <el-button type="primary">点码</el-button>
@@ -96,8 +99,8 @@
     </el-row>
   
     <!-- 路单结果修改 -->
-    <el-dialog :title="title" :visible.sync="openLUdan" width="600px" append-to-body>
-       <el-form ref="form" :model="formLudan" :rules="rules" label-width="0">
+    <el-dialog title="路单修改" :visible.sync="openLUdan" width="600px" append-to-body>
+       <el-form ref="form" :model="formLudan" :rules="rulesLudan" label-width="0">
           <el-form-item label="" prop="">
               <el-radio-group v-model="formLudan.radio1">
                 <el-radio-button :label="4">庄</el-radio-button>
@@ -105,11 +108,10 @@
                 <el-radio-button :label="7">和</el-radio-button>
               </el-radio-group>
             </el-form-item>
-          <el-form-item label="" prop="" >
-              <el-checkbox-group v-model="formLudan.checkboxGroup1" class="checked">
-                <el-checkbox-button  :label="8" >庄对</el-checkbox-button>
-                <el-checkbox-button  :label="5" >闲对</el-checkbox-button>
-              </el-checkbox-group>
+          <el-form-item>
+            <el-checkbox-group v-model="formLudan.checkboxGroup1" class="checked">
+              <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
+            </el-checkbox-group>
           </el-form-item>  
           <el-form-item label="" prop=""  >
               <el-radio-group v-model="formLudan.radio2">
@@ -120,7 +122,7 @@
           
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitLudan">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -210,7 +212,12 @@ export default {
       roleOptions: [],
       // 表单参数
       form: {},
-      formLudan:{},
+      formLudan:{
+        id:'',
+        radio1:'',
+        checkboxGroup1:[],
+        radio2:'',
+      },
       defaultProps: {
         children: "children",
         label: "label"
@@ -237,12 +244,14 @@ export default {
         //   }
         // ]
       },
+      rulesLudan:{},
       checkboxGroup1:[],
+      checkboxGroup2:[],
       reData:[
         // {id:1,name:'庄',color:'red'},
         // {id:2,name:'闲',color:'blue'},
         // {id:3,name:'和',color:'green'},
-        {id:4,name:'庄对',color:'red'},
+        {id:8,name:'庄对',color:'red'},
         {id:5,name:'闲对',color:'blue'},
         // {id:6,name:'大',color:'red'},
         // {id:7,name:'小',color:'blue'},
@@ -401,7 +410,14 @@ export default {
         remark:''
 
       };
+      this.formLudan={
+        id:'',
+        radio1:'',
+        checkboxGroup1:[],
+        radio2:'',
+      },
       this.resetForm("form");
+      this.resetForm("formLudan");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -433,7 +449,12 @@ export default {
       this.title = "还单";
     },
 
-
+    submitLudan(){
+      console.log(this.formLudan)
+      let str =''
+      str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.radio2.toString()
+      console.log(str)
+    },
     /** 提交按钮 */
     submitForm: function() {
       console.log(this.title)
@@ -472,8 +493,30 @@ export default {
       return newArr
     },
     //
-    changeChip(id){
+    changeChip(c){
+      this.reset();
       this.openLUdan =true
+      this.formLudan.id = c.id
+      let v = c.gameResult
+      let arr =v.split('')
+      arr.forEach(e=>{
+        if(e==1){
+          this.formLudan.radio1 = 1
+        }else if(e==4){
+         this.formLudan.radio1 = 4
+        }else if(e==7){
+         this.formLudan.radio1 = 7
+        }else if(e==5){
+         this.formLudan.checkboxGroup1.push['5']
+        }else if(e==8){
+          this.formLudan.checkboxGroup1.push['8']
+        }else if(e==9){
+         this.formLudan.radio1 = 9
+        }else if(e==6){
+          this.formLudan.radio1 = 6
+        }
+      })
+      console.log(this.formLudan)
     },
     // getUsername(){
     //   let obj = {}
