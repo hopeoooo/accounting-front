@@ -139,7 +139,7 @@
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="180px">
                <template slot-scope="scope">
-                  <el-radio-group v-model="scope.row.type">
+                  <el-radio-group v-model.number="scope.row.type">
                 <el-radio :label="0">现金</el-radio>
                 <el-radio :label="1">筹码</el-radio>
               </el-radio-group>
@@ -147,52 +147,52 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="和" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄对" align="center" key="card4" prop="card4"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲对" align="center" key="card5" prop="card5"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄保险" align="center" key="card6" prop="card6"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲保险" align="center" key="card7" prop="card7"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
             <el-table-column label="小" align="center" key="card9" prop="card9"  >
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
           <el-table-column label="现有筹码" align="center" key="card10" prop="card10"  fixed="right" />
@@ -456,10 +456,11 @@ export default {
       param['gameResult']=str
       let arr=[]
       let arr1=[]
+      
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
-              // "id":o.id,
+              "card":o.card,
               "4":o.card1,
               "1":o.card2,
               "7":o.card3,
@@ -481,9 +482,43 @@ export default {
       })
       arr1 = arr.filter(v => Object.keys(v).length!==0)
       param['bet']= arr1
-      console.log(param,arr,arr1)
-    },
+      const  newData = this.sumArr(arr1)
+     
+      this.sumZ = newData['4']
+      this.sumX = newData['1']
+      this.sumH = newData['7']
+      this.sumZd = newData['8']
+      this.sumXd = newData['5']
+      this.sumZbx = newData['3']
+      this.sumXbx = newData['0']
+      this.sumD = newData['9']
+      this.sumX = newData['6']
+     
+      const arrCash =arr1.filter(e =>e.type==0)
+      const newCash =this.sumArr(arrCash)
+      const arrChip =arr1.filter(e =>e.type==1)
+      const newChip =this.sumArr(arrChip)
+      this.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
+      this.sumCash = newCash['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
 
+      // param=JSON.stringify(param)
+      let queryParams={}
+      queryParams.json=JSON.stringify(param)
+      console.log(JSON.stringify(queryParams))
+      baccaratOpen(JSON.stringify(queryParams)).then(res => {
+        console.log(res.data)
+          this.loading = false;
+        })
+    },
+    //数组对象求和
+    sumArr(arr){
+      return  arr.reduce((p,c) => {
+          Object.keys(p).forEach(k=>p[k]+=c[k]?c[k]:0)
+
+          return p
+        }, {'1': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0})
+    },
+    //判断空对象
     isEmpty(obj) {
       if (typeof obj === 'undefined' || obj === null || obj === '') {
         return true;
