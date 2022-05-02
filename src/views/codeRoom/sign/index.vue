@@ -52,7 +52,7 @@
          
         </el-row>
 
-        <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange" :row-class-name="status_change">>
+        <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange" :row-class-name="status_change">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="会员卡号" align="center" key="card" prop="card" />
           <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
@@ -115,7 +115,13 @@
                 @click="handleBack(scope.row)"
               
               >还单</el-button>
-          
+                <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row.card)"
+              
+              >明细</el-button>
            
             </template>
           </el-table-column>

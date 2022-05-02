@@ -75,13 +75,13 @@
           <el-input v-model="form.ip"  placeholder="请输入..."></el-input>
         </el-form-item>
         <el-form-item label="筹码点码基数" prop="chipPointBase">
-          <el-input v-model="form.chipPointBase"  placeholder="请输入..."></el-input>
+          <el-input v-model.number="form.chipPointBase"  placeholder="请输入..."></el-input>
         </el-form-item>
          <el-form-item label="现金点码基数" prop="cashPointBase">
-          <el-input v-model="form.cashPointBase"  placeholder="请输入..."></el-input>
+          <el-input v-model.number="form.cashPointBase"  placeholder="请输入..."></el-input>
         </el-form-item>
          <el-form-item label="保险筹码点码基数" prop="insurancePointBase">
-          <el-input v-model="form.insurancePointBase"  placeholder="请输入..."></el-input>
+          <el-input v-model.number="form.insurancePointBase"  placeholder="请输入..."></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -98,6 +98,18 @@ import { listTable,listTableTotal,addUpTable,delTable } from "@/api/sys/table";
 export default {
   name: "Table",
   data() {
+  const  validateIP = (rule, value, callback)=> {
+      if (value === '' || typeof value === 'undefined' || value == null) {
+        callback(new Error('请输入正确的IP地址'))
+      } else {
+        const reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+        if ((!reg.test(value)) && value !== '') {
+          callback(new Error('请输入正确的IP地址'))
+        } else {
+          callback()
+        }
+      }
+    }
     return {
       // 遮罩层
       loading: true,
@@ -152,16 +164,22 @@ export default {
           { required: true, message: "请选择游戏类型", trigger: "change" }
         ],
         ip: [
-          { required: true, message: "IP不能为空", trigger: "blur" }
+          { required: true,  message: '请输入正确的IP地址', validator: validateIP, trigger: "blur" }
         ],
         chipPointBase: [
-          { required: true, message: "筹码点码基数不能为空", trigger: "blur" }
+          { required: true, message: "筹码点码基数不能为空", trigger: "blur" },
+          {type: 'number', message: "请输入数字", trigger: "blur" },
+          { pattern: /^[0-9]+(\.\d+)?$/, message: '请输入大于0的数字',trigger: 'blur'}
         ],
          cashPointBase: [
-          { required: true, message: "现金点码基数不能为空", trigger: "blur" }
+          { required: true, message: "现金点码基数不能为空", trigger: "blur" },
+          {type: 'number', message: "请输入数字", trigger: "blur" },
+          { pattern: /^[0-9]+(\.\d+)?$/, message: '请输入大于0的数字',trigger: 'blur'}
         ],
          insurancePointBase: [
-          { required: true, message: "保险筹码点码基数不能为空", trigger: "blur" }
+          { required: true, message: "保险筹码点码基数不能为空", trigger: "blur" },
+           {type: 'number', message: "请输入数字", trigger: "blur" },
+          { pattern: /^[0-9]+(\.\d+)?$/, message: '请输入大于0的数字',trigger: 'blur'}
         ]
       }
     };
