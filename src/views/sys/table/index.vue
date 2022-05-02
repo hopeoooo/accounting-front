@@ -59,7 +59,7 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">
         <el-form-item label="桌台编号" prop="tableId">
-          <el-input v-model="form.tableId" placeholder="请输入桌台编号" />
+          <el-input v-model.number="form.tableId" placeholder="请输入桌台编号" />
         </el-form-item>
        
         <el-form-item label="游戏类型" prop="gameName">
@@ -158,7 +158,9 @@ export default {
       // 表单校验
       rules: {
         tableId: [
-          { required: true, message: "桌台编号不能为空", trigger: "blur" }
+          { required: true, message: "桌台编号不能为空", trigger: "blur" },
+           {type: 'number', message: "请输入数字", trigger: "blur" },
+          { pattern: /^[0-9]+(\.\d+)?$/, message: '请输入大于0的数字',trigger: 'blur'}
         ],
         gameName: [
           { required: true, message: "请选择游戏类型", trigger: "change" }
