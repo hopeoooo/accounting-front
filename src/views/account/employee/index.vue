@@ -66,7 +66,12 @@
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="工号" prop="userName" />
       <el-table-column label="姓名" prop="nickName" />
-      <el-table-column label="职位" prop="post" />
+      <el-table-column label="职位" prop="post">
+        <template slot-scope="scope">
+          <span v-if="scope.row.post">{{ scope.row.post }}</span>
+          <span v-else>--</span>
+        </template>
+      </el-table-column>
       <el-table-column label="性别" prop="sex">
         <template slot-scope="scope">
           {{ scope.row.sex == 0 ? "男" : scope.row.sex == 2 ? "未知" : "女" }}
@@ -77,8 +82,18 @@
           {{ getYear - scope.row.brithday }}
         </template>
       </el-table-column>
-      <el-table-column label="籍贯" prop="address" />
-      <el-table-column label="联系方式" prop="phonenumber" />
+      <el-table-column label="籍贯" prop="address">
+        <template slot-scope="scope">
+          <span v-if="scope.row.address">{{ scope.row.address }}</span>
+          <span v-else>--</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="联系方式" prop="phonenumber">
+        <template slot-scope="scope">
+          <span v-if="scope.row.phonenumber">{{ scope.row.phonenumber }}</span>
+          <span v-else>--</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="入职时间"
         align="center"
@@ -86,7 +101,10 @@
         width="180"
       >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.joinTime) }}</span>
+          <span v-if="scope.row.joinTime">{{
+            parseTime(scope.row.joinTime)
+          }}</span>
+          <span>--</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -379,7 +397,11 @@ export default {
   },
   methods: {
     equalToPassword(rule, value, callback) {
-      if (this.form.password && this.form.password != "" && this.form.password !== value) {
+      if (
+        this.form.password &&
+        this.form.password != "" &&
+        this.form.password !== value
+      ) {
         callback(new Error("两次输入的密码不一致"));
       } else {
         callback();
@@ -473,7 +495,6 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-
       this.reset();
       this.open = true;
       this.openType = "edit";

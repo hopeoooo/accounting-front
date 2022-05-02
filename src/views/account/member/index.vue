@@ -116,7 +116,12 @@
             key="phone"
             prop="phone"
             :show-overflow-tooltip="true"
-          />
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.phone">{{ scope.row.phone }}</span>
+              <span v-else>--</span>
+            </template>
+          </el-table-column>
           <el-table-column label="状态" align="center" key="status">
             <template slot-scope="scope">
               <!-- <el-switch
@@ -177,24 +182,14 @@
             key="remark"
             prop="remark"
             width="220"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="top" width="200">
-                <p>{{ scope.row.remark }}</p>
-                <div
-                  slot="reference"
-                  class="name-wrapper"
-                  v-if="scope.row.remark"
-                >
-                  <el-tag size="medium">{{
-                    scope.row.remark.length > 20
-                      ? scope.row.remark.slice(0, 17) + "..."
-                      : scope.row.remark
-                  }}</el-tag>
-                </div>
-              </el-popover>
+              <span v-if="scope.row.remark">{{ scope.row.remark }}</span>
+              <span v-else>--</span>
             </template>
           </el-table-column>
+
           <el-table-column
             fixed="right"
             label="操作"
@@ -248,7 +243,7 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px"  append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="0" v-if="isMain == false">
           <el-col :span="12">
@@ -825,7 +820,7 @@ export default {
       listMambers(params).then(response => {
         this.userList = response.list.rows;
         this.total = response.list.total;
-        this.count = response.count ?response.count :this.count;
+        this.count = response.count ? response.count : this.count;
         this.loading = false;
       });
     },
@@ -874,9 +869,9 @@ export default {
         cardType: 0,
         // isBill:'',
         remark: ""
-      }
+      };
       // 将form部分重置为newForm
-      this.form = {...this.form, ...newForm} ;
+      this.form = { ...this.form, ...newForm };
       if (this.openType != "edit") {
         // 不是修改卡号时，点击重置按钮需要清除卡号
         this.form.card = "";
@@ -911,7 +906,7 @@ export default {
       this.title = "新增卡号";
       this.reset();
       this.getOddsList();
-            // 移除表单校验结果
+      // 移除表单校验结果
       this.$refs.form.clearValidate();
     },
     /** 新增子卡按钮操作 */
@@ -924,7 +919,7 @@ export default {
       this.reset();
       this.form["parentCard"] = parentCard;
       this.getOddsList();
-            // 移除表单校验结果
+      // 移除表单校验结果
       this.$refs.form.clearValidate();
     },
     /** 修改按钮操作 */
@@ -938,7 +933,7 @@ export default {
       this.form = Object.assign({}, row);
       // 将用户更多信息加进form里
       this.getMemberInfo(row.id);
-            // 移除表单校验结果
+      // 移除表单校验结果
       this.$refs.form.clearValidate();
     },
     // 更多信息

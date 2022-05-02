@@ -29,7 +29,12 @@
             align="center"
             key="remark"
             prop="remark"
-          />
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.remark">{{ scope.row.remark }}</span>
+              <span v-else>--</span>
+            </template>
+          </el-table-column>
 
           <el-table-column label="创建时间" align="center" prop="createTime">
             <template slot-scope="scope">
