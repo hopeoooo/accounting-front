@@ -1,21 +1,29 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-       <el-form-item label="" prop="gameName" >
-         <el-select v-model="queryParams.type" placeholder="" style="width: 100px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+    >
+      <el-form-item label="" prop="gameName">
+        <el-select
+          v-model="queryParams.type"
+          placeholder=""
+          style="width: 120px;margin-right:20px;"
+        >
           <el-option label="工号查询" value="userName"></el-option>
           <el-option label="姓名查询" value="nickName"></el-option>
-         
         </el-select>
-         <el-input
+        <el-input
           v-model="queryParams.value"
           placeholder=""
           clearable
           style="width: 240px"
         />
       </el-form-item>
-      
-      
+
       <el-form-item label="入职时间">
         <el-date-picker
           v-model="dateRange"
@@ -28,8 +36,16 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >查询</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -41,7 +57,8 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-        >新增</el-button>
+          >新增</el-button
+        >
       </el-col>
     </el-row>
 
@@ -49,45 +66,55 @@
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="工号" prop="userName" />
       <el-table-column label="姓名" prop="nickName" />
-      <el-table-column label="职位" prop="roleId" />
-      <el-table-column label="性别" prop="sex" >
-         <template slot-scope="scope">
-           {{scope.row.sex ==0?'男':(scope.row.sex ==2?'未知':'女')}}
+      <el-table-column label="职位" prop="post" />
+      <el-table-column label="性别" prop="sex">
+        <template slot-scope="scope">
+          {{ scope.row.sex == 0 ? "男" : scope.row.sex == 2 ? "未知" : "女" }}
         </template>
-      </el-table-column>  
-      <el-table-column label="年龄" prop="brithday" >
-         <template slot-scope="scope">
-           {{getYear-scope.row.brithday}}
+      </el-table-column>
+      <el-table-column label="年龄" prop="brithday">
+        <template slot-scope="scope">
+          {{ getYear - scope.row.brithday }}
         </template>
-      </el-table-column>  
+      </el-table-column>
       <el-table-column label="籍贯" prop="address" />
       <el-table-column label="联系方式" prop="phonenumber" />
-      <el-table-column label="入职时间" align="center" prop="joinTime" width="180">
+      <el-table-column
+        label="入职时间"
+        align="center"
+        prop="joinTime"
+        width="180"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.joinTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-          >修改</el-button>
+            >修改</el-button
+          >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-          >删除</el-button>
-          
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -97,128 +124,148 @@
     <!-- 添加或修改角色配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-row :gutter="0" >
+        <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="工号" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入工号" />
+              <el-input
+                v-model="form.userName"
+                placeholder="请输入工号"
+                :disabled="openType == 'edit'"
+              />
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-              <el-form-item label="姓名" prop="nickName">
-                <el-input v-model="form.nickName" placeholder="请输入姓名" />
-              </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="姓名" prop="nickName">
+              <el-input v-model="form.nickName" placeholder="请输入姓名" />
+            </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="0" >
+        <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="性别" prop="sex">
-                <el-select v-model="form.sex" placeholder="">
-                  <el-option label="男" :value="0"></el-option>
-                  <el-option label="女" :value="1"></el-option>
-                  <el-option label="未知" :value="2"></el-option>
-                </el-select>
+              <el-select v-model="form.sex" placeholder="">
+                <el-option label="男" :value="0"></el-option>
+                <el-option label="女" :value="1"></el-option>
+                <el-option label="未知" :value="2"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-              <el-form-item label="联系方式" prop="phonenumber">
-                <el-input v-model="form.phonenumber" placeholder="请输入联系方式" />
-              </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="联系方式" prop="phonenumber">
+              <el-input
+                v-model="form.phonenumber"
+                placeholder="请输入联系方式"
+              />
+            </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="0" >
+        <!-- 密码和确认密码，如果是修改员工，只有超级管理员可现 -->
+        <el-row
+          :gutter="0"
+          v-if="(openType == 'edit' && user.userId == 1) || openType == 'add'"
+        >
           <el-col :span="12">
-            <el-form-item label="密码" prop="password" v-if="isshow">
+            <el-form-item label="密码" prop="password">
               <el-input v-model="form.password" placeholder="请输入密码" />
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-              <el-form-item label="确认密码" prop="rawPassword" v-if="isshow">
-                <el-input v-model="form.rawPassword" placeholder="请输入确认密码" />
-              </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="确认密码" prop="rawPassword">
+              <el-input
+                v-model="form.rawPassword"
+                placeholder="请输入确认密码"
+              />
+            </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="0" >
+        <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="籍贯" prop="address">
               <el-input v-model="form.address" placeholder="请输入籍贯" />
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-              <el-form-item label="职位" prop="post">
-                <el-input v-model="form.post" placeholder="请输入职位" />
-              </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="职位" prop="post">
+              <el-input v-model="form.post" placeholder="请输入职位" />
+            </el-form-item>
           </el-col>
         </el-row>
-         <el-row :gutter="0" >
+        <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="权限角色" prop="roleId">
               <el-select v-model="form.roleId" placeholder="请选择">
-                 <el-option
+                <el-option
                   v-for="item in roleList"
                   :key="item.roleId"
                   :label="item.roleName"
-                  :value="item.roleId">
+                  :value="item.roleId"
+                >
                 </el-option>
-                </el-select>
+              </el-select>
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-              <el-form-item label="入职日期" prop="joinTime">
-                <el-date-picker
-                  style="width:180px"
-                  v-model="form.joinTime"
-                  type="datetime"
-                   value-format="yyyy-MM-dd HH:mm:ss"
-                  placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="入职日期" prop="joinTime">
+              <el-date-picker
+                style="width:180px"
+                v-model="form.joinTime"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </el-form-item>
           </el-col>
         </el-row>
-          <el-row :gutter="0" >
+        <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="出生年份" prop="brithday">
               <el-date-picker
                 v-model="form.brithday"
                 type="year"
-                 value-format="yyyy"
+                value-format="yyyy"
                 style="width:180px"
-                placeholder="选择年">
+                placeholder="选择年"
+              >
               </el-date-picker>
             </el-form-item>
           </el-col>
-          
         </el-row>
-        
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确定</el-button>
+        <el-button @click="resetBtn">重置</el-button>
       </div>
     </el-dialog>
-
-
   </div>
 </template>
 
 <script>
-import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus } from "@/api/system/role";
-import { getEmployeeList, addEmployee, updateEmployee, delEmployee} from "@/api/account/employee";
-import { getRoleList} from "@/api/account/role";
+import { mapGetters, mapState } from "vuex";
+import {
+  listRole,
+  getRole,
+  delRole,
+  addRole,
+  updateRole,
+  dataScope,
+  changeRoleStatus
+} from "@/api/system/role";
+import {
+  getEmployeeList,
+  addEmployee,
+  updateEmployee,
+  delEmployee
+} from "@/api/account/employee";
+import { getRoleList } from "@/api/account/role";
 
 export default {
   name: "employee",
 
   data() {
-     const equalToPassword = (rule, value, callback) => {
-      if (this.form.password !== value) {
-        callback(new Error("两次输入的密码不一致"));
-      } else {
-        callback();
-      }
-    };
     return {
       //当前年份
-      getYear:(new Date()).getFullYear(),
+      getYear: new Date().getFullYear(),
       // 遮罩层
       loading: true,
       // 选中数组
@@ -233,11 +280,13 @@ export default {
       total: 0,
       // 角色表格数据
       roleList: [],
-      employeeList:[],
+      employeeList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      // 弹窗类型: add 新增; edit 修改
+      openType: "",
       // 是否显示弹出层（数据权限）
       openDataScope: false,
       menuExpand: false,
@@ -277,17 +326,26 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 30,
-        type: 'userName',
-        value: '',
+        type: "userName",
+        value: ""
       },
       // 表单参数
       form: {},
       defaultProps: {
         children: "children",
         label: "label"
-      },
-      // 表单校验
-      rules: {
+      }
+    };
+  },
+  created() {
+    this.getList();
+    this.getRole();
+  },
+  computed: {
+    ...mapState("user", ["user"]),
+    rules() {
+      // 表单校验规则
+      return {
         userName: [
           { required: true, message: "工号不能为空", trigger: "blur" }
         ],
@@ -295,71 +353,78 @@ export default {
           { required: true, message: "姓名不能为空", trigger: "blur" }
         ],
         password: [
-          { required: true, message: "新密码不能为空", trigger: "blur" },
-          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+          {
+            required: this.openType == "add" ? true : false,
+            message: "密码不能为空",
+            trigger: "blur"
+          }
+          // { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
         ],
         rawPassword: [
-          { required: true, message: "确认密码不能为空", trigger: "blur" },
-          { required: true, validator: equalToPassword, trigger: "blur" }
+          {
+            required: this.openType == "add" ? true : false,
+            message: "确认密码不能为空",
+            trigger: "blur"
+          },
+          { validator: this.equalToPassword, trigger: "blur" }
         ],
-         roleId: [
-          { required: true, message: "请选择权限角色", trigger: "change" }
+        roleId: [
+          { required: true, message: "请选择权限角色", trigger: "blur" }
         ],
-         joinTime: [
-          { required: true, message: "请选择入职日期", trigger: "change" }
-        ],
-      },
-      isshow:true,
-    };
-  },
-  created() {
-    this.getList();
-    this.getRole();
+        joinTime: [
+          { required: true, message: "请选择入职日期", trigger: "blur" }
+        ]
+      };
+    }
   },
   methods: {
+    equalToPassword(rule, value, callback) {
+      if (this.form.password && this.form.password != "" && this.form.password !== value) {
+        callback(new Error("两次输入的密码不一致"));
+      } else {
+        callback();
+      }
+    },
     // 查询角色列表
-    getRole(){
-      let params = {pageNum:1,pageSize:30}
+    getRole() {
+      let params = { pageNum: 1, pageSize: 30 };
       getRoleList(params).then(response => {
-          this.roleList = response.rows;
-          console.log(response.rows)
-        }
-      );
+        this.roleList = response.rows;
+        console.log(response.rows);
+      });
     },
     /** 查询员工列表 */
     getList() {
-      let type =this.queryParams.type
-      let value = this.queryParams.value
-      let createTime =''
-      let endTime=''
-      if(this.dateRange){
-        createTime =this.addDateRange(this.dateRange)[0]
-        endTime=this.addDateRange(this.dateRange)[1]
+      let type = this.queryParams.type;
+      let value = this.queryParams.value;
+      let createTime = "";
+      let endTime = "";
+      if (this.dateRange) {
+        createTime = this.addDateRange(this.dateRange)[0];
+        endTime = this.addDateRange(this.dateRange)[1];
       }
-      
-      let params = {pageNum:1,pageSize:30}
-      if(value){
-        params[type] = value
-      }else{
-        params =params
+
+      let params = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize
+      };
+      if (value) {
+        params[type] = value;
+      } else {
+        params = params;
       }
-      params['createTime'] = createTime
-      params['endTime'] = endTime
+      params["createTime"] = createTime;
+      params["endTime"] = endTime;
       this.loading = true;
       getEmployeeList(params).then(response => {
-          this.employeeList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
+        this.employeeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
 
-
-
-
-    // 取消按钮
-    cancel() {
-      this.open = false;
+    // 弹窗里的重置按钮
+    resetBtn() {
       this.reset();
     },
     // 取消按钮（数据权限）
@@ -369,21 +434,20 @@ export default {
     },
     // 表单重置
     reset() {
-  
       this.form = {
-       userName:'',
-       nickName:'',
-       sex:0,
-       phonenumber:'',
-       password:'',
-       rawPassword:'',
-       address:'',
-       post:'',
-       roleId:undefined,
-       joinTime:'',
-       brithday:'',
+        userName: this.openType == "edit" ? this.form.userName : "",
+        nickName: "",
+        sex: 0,
+        phonenumber: "",
+        password: "",
+        rawPassword: "",
+        address: "",
+        post: "",
+        roleId: null,
+        joinTime: "",
+        brithday: ""
       };
-      this.resetForm("form");
+      // this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -393,35 +457,38 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
-      this.resetForm("queryForm");
+      this.queryParams.value = "";
+      // this.resetForm("queryForm");
       this.handleQuery();
     },
 
-   
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
-      this.isshow =true;
-      this.title = "新增卡号";
+      this.openType = "add";
+      this.title = "新增员工";
+      // 移除表单校验结果
+      this.$refs.form.clearValidate();
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+
       this.reset();
-      this.form = Object.assign({},row)
       this.open = true;
-      this.isshow =false
-      this.title = "编辑卡号";
-      
+      this.openType = "edit";
+      this.title = "编辑员工";
+      // this.form = Object.assign({}, row);
+      this.form = { ...this.form, ...row };
+      // 移除表单校验结果
+      this.$refs.form.clearValidate();
     },
-    
-   
+
     /** 提交按钮 */
     submitForm: function() {
       this.$refs["form"].validate(valid => {
-      
         if (valid) {
-          if ( this.title == "编辑卡号") {
+          if (this.openType == "edit") {
             updateEmployee(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
@@ -437,19 +504,22 @@ export default {
         }
       });
     },
-   
+
     /** 删除按钮操作 */
     handleDelete(row) {
-      const userName = row.userName 
-       const userId = row.userId || this.ids;
-      this.$modal.confirm('是否确认删除工号为"' + userName + '"的数据项？').then(function() {
-        return delEmployee({'userId':userId});
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    },
-    
+      const userName = row.userName;
+      const userId = row.userId || this.ids;
+      this.$modal
+        .confirm('是否确认删除工号为"' + userName + '"的员工？')
+        .then(function() {
+          return delEmployee({ userId: userId });
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
+    }
   }
 };
 </script>

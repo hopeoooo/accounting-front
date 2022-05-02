@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      
+
       <!--切换账号-->
       <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
@@ -58,14 +58,14 @@
                   <!-- <div class="list_p" :title="c" v-for="(c,key) in e" :key="key" @click="changeChip(c)">
                     <i>{{c}}</i>
                   </div> -->
-                  <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum" 
+                  <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum"
                     effect="light" :content="'局号'+c.gameNum" placement="top">
                     <el-button @click="changeChip(c.id)"><i :class="getclass(c.gameResult)"></i></el-button>
                   </el-tooltip>
                 </div>
               </div>
             </div>
-           
+
           </el-card>
       </el-col>
     </el-row>
@@ -94,7 +94,7 @@
           </el-card>
        </el-col>
     </el-row>
-  
+
     <!-- 路单结果修改 -->
     <el-dialog :title="title" :visible.sync="openLUdan" width="600px" append-to-body>
        <el-form ref="form" :model="formLudan" :rules="rules" label-width="0">
@@ -110,14 +110,14 @@
                 <el-checkbox-button  :label="8" >庄对</el-checkbox-button>
                 <el-checkbox-button  :label="5" >闲对</el-checkbox-button>
               </el-checkbox-group>
-          </el-form-item>  
+          </el-form-item>
           <el-form-item label="" prop=""  >
               <el-radio-group v-model="formLudan.radio2">
                 <el-radio-button :label="9">大</el-radio-button>
                 <el-radio-button :label="6">小</el-radio-button>
               </el-radio-group>
-          </el-form-item>   
-          
+          </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -132,13 +132,13 @@
             </el-form-item>
           <el-form-item label="现有签单金额" prop="signedAmount" v-if="isMain">
               <el-input v-model="form.signedAmount" placeholder="" :disabled="true" />
-            </el-form-item>  
+            </el-form-item>
           <el-form-item label="签单金额" prop="amount"  v-if="!isMain">
               <el-input v-model="form.amount" placeholder="" />
-            </el-form-item>   
+            </el-form-item>
            <el-form-item label="还单金额" prop="amount"  v-if="isMain">
               <el-input v-model="form.amount" placeholder="" />
-          </el-form-item>  
+          </el-form-item>
 
             <el-form-item label="备注" prop="remark">
                <el-input
@@ -148,9 +148,9 @@
                   v-model="form.remark">
                 </el-input>
             </el-form-item>
-          
-     
-        
+
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -168,7 +168,7 @@ import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,bac
 export default {
   name: "Baccarat",
   data() {
-  
+
     return {
       // 添加卡号
       isMain:false,
@@ -215,7 +215,7 @@ export default {
         children: "children",
         label: "label"
       },
-   
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -228,7 +228,7 @@ export default {
       },
       // 表单校验
       rules: {
-        
+
         // phonenumber: [
         //   {
         //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
@@ -254,7 +254,7 @@ export default {
   },
   watch: {
     // 根据名称筛选部门树
-  
+
   },
 
   created() {
@@ -319,12 +319,12 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.dispatch('LogOut').then(() => {
+        this.$store.dispatch('usre/LogOut').then(() => {
           location.href = '/index';
         })
       }).catch(() => {});
     },
- 
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
@@ -363,7 +363,7 @@ export default {
             sums[index] = '';
             return;
           }
-           
+
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -371,7 +371,7 @@ export default {
               if (!isNaN(value)) {
                 const pel = prev + curr // 主要代码
                 return pel
-                
+
               } else {
                 // return prev;
                   const pel = prev // 主要代码
@@ -384,8 +384,8 @@ export default {
           }
         });
          return sums;
-      },  
-  
+      },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -414,7 +414,7 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-   
+
     /** 签单 */
     handleSign(row) {
       this.reset();
@@ -423,7 +423,7 @@ export default {
        this.isMain =false
       this.title = "签单";
     },
-   
+
     /** 还单 */
     handleBack(row) {
       this.reset();
@@ -572,7 +572,7 @@ export default {
             color: #919191;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);   
+            transform: translate(-50%, -50%);
             font-style: normal;
             }
           }
@@ -614,7 +614,7 @@ export default {
             color: #919191;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);   
+            transform: translate(-50%, -50%);
             font-style: normal;
             }
             .type1{
@@ -679,7 +679,7 @@ export default {
       color: #fff;
       cursor: pointer;
     }
-    
+
     .checked{
       .el-checkbox-button__inner{
         padding: 10px 30px;
@@ -708,6 +708,6 @@ export default {
       }
     }
   }
-  
+
 }
 </style>
