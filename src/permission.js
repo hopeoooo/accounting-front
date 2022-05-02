@@ -1,3 +1,10 @@
+/*
+ * @Author:
+ * @Date: 2022-04-30 10:22:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-02 18:16:13
+ * @Description: file content
+ */
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -22,7 +29,7 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) {
         isRelogin.show = true
         // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetInfo').then(() => {
+        store.dispatch('user/GetInfo').then(() => {
           isRelogin.show = false
           store.dispatch('GenerateRoutes').then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
@@ -30,7 +37,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })
         }).catch(err => {
-            store.dispatch('LogOut').then(() => {
+            store.dispatch('user/LogOut').then(() => {
               Message.error(err)
               next({ path: '/' })
             })

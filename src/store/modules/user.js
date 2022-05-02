@@ -1,13 +1,22 @@
+/*
+ * @Author:
+ * @Date: 2022-04-30 10:22:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-02 18:21:48
+ * @Description: file content
+ */
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
+  namespaced: true,
   state: {
     token: getToken(),
     name: '',
     avatar: '',
     roles: [],
-    permissions: []
+    permissions: [],
+    user:{}
   },
 
   mutations: {
@@ -22,6 +31,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_USER: (state, user) => {
+      state.user = user
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
@@ -60,6 +72,7 @@ const user = {
           }
           commit('SET_NAME', user.userName)
           commit('SET_AVATAR', avatar)
+          commit('SET_USER',user)
           resolve(res)
         }).catch(error => {
           reject(error)

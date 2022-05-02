@@ -1,3 +1,10 @@
+/*
+ * @Author:
+ * @Date: 2022-04-30 10:22:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-01 22:14:35
+ * @Description: file content
+ */
 import Cookies from 'js-cookie'
 
 const state = {

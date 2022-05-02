@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      
+
       <!--切换账号-->
       <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
@@ -58,14 +58,14 @@
                   <!-- <div class="list_p" :title="c" v-for="(c,key) in e" :key="key" @click="changeChip(c)">
                     <i>{{c}}</i>
                   </div> -->
-                  <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum" 
+                  <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum"
                     effect="light" :content="'局号'+c.gameNum" placement="top">
                     <el-button @click="changeChip(c)"><i :class="getclass(c.gameResult)"></i></el-button>
                   </el-tooltip>
                 </div>
               </div>
             </div>
-           
+
           </el-card>
       </el-col>
     </el-row>
@@ -85,17 +85,17 @@
                       <el-radio-button :label="1" class="blue">闲</el-radio-button>
                       <el-radio-button :label="7" class="green">和</el-radio-button>
                     </el-radio-group>
-              
+
                   <el-checkbox-group v-model="checkboxGroup1" class="checked">
                     <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
-              
+
                   <el-radio-group v-model="radio2" class="checked">
                     <el-radio-button :label="9" class="red">大</el-radio-button>
                     <el-radio-button :label="6" class="blue">小</el-radio-button>
                   </el-radio-group>
                </el-col>
-               <el-col :span="6" :xs="12" class="control">  
+               <el-col :span="6" :xs="12" class="control">
                   <el-button type="primary" @click="startBet">开牌</el-button>
                   <el-button type="primary" @click="startBet">录入</el-button>
                   <el-button type="primary" @click="startBet">点码</el-button>
@@ -105,7 +105,7 @@
           </el-card>
        </el-col>
     </el-row>
-  
+
     <!-- 路单结果修改 -->
     <el-dialog title="路单修改" :visible.sync="openLUdan" width="600px" append-to-body>
        <el-form ref="form" :model="formLudan" :rules="rulesLudan" label-width="0">
@@ -120,14 +120,14 @@
             <el-checkbox-group v-model="formLudan.checkboxGroup1" class="checked">
               <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
             </el-checkbox-group>
-          </el-form-item>  
+          </el-form-item>
           <el-form-item label="" prop=""  >
               <el-radio-group v-model="formLudan.radio2">
                 <el-radio-button :label="9">大</el-radio-button>
                 <el-radio-button :label="6">小</el-radio-button>
               </el-radio-group>
-          </el-form-item>   
-          
+          </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitLudan">确 定</el-button>
@@ -197,8 +197,8 @@
           </el-table-column>
           <el-table-column label="现有筹码" align="center" key="card10" prop="card10"  fixed="right" />
           <el-table-column label="赔码数" align="center"   prop="signedAmount"  fixed="right"/>
-             
-         
+
+
         </el-table>
 
     <!-- 添加或修改用户配置对话框 -->
@@ -209,13 +209,13 @@
             </el-form-item>
           <el-form-item label="现有签单金额" prop="signedAmount" v-if="isMain">
               <el-input v-model="form.signedAmount" placeholder="" :disabled="true" />
-            </el-form-item>  
+            </el-form-item>
           <el-form-item label="签单金额" prop="amount"  v-if="!isMain">
               <el-input v-model="form.amount" placeholder="" />
-            </el-form-item>   
+            </el-form-item>
            <el-form-item label="还单金额" prop="amount"  v-if="isMain">
               <el-input v-model="form.amount" placeholder="" />
-          </el-form-item>  
+          </el-form-item>
 
             <el-form-item label="备注" prop="remark">
                <el-input
@@ -225,9 +225,9 @@
                   v-model="form.remark">
                 </el-input>
             </el-form-item>
-          
-     
-        
+
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -245,7 +245,7 @@ import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,bac
 export default {
   name: "Baccarat",
   data() {
-  
+
     return {
       // 添加卡号
       isMain:false,
@@ -297,7 +297,7 @@ export default {
         children: "children",
         label: "label"
       },
-   
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -322,7 +322,7 @@ export default {
       ],
       // 表单校验
       rules: {
-        
+
         // phonenumber: [
         //   {
         //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
@@ -363,7 +363,7 @@ export default {
   },
   watch: {
     // 根据名称筛选部门树
-  
+
   },
 
   created() {
@@ -431,18 +431,18 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.dispatch('LogOut').then(() => {
+        this.$store.dispatch('usre/LogOut').then(() => {
           location.href = '/index';
         })
       }).catch(() => {});
     },
- 
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
       this.single = selection.length!=1
       this.multiple = !selection.length
-      
+
     },
     //开牌
     startBet(){
@@ -456,7 +456,7 @@ export default {
       param['gameResult']=str
       let arr=[]
       let arr1=[]
-      
+
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
@@ -476,7 +476,7 @@ export default {
         Object.keys(e).forEach(i=>{
           if(this.isEmpty(e[i])) {
               delete e[i];
-              
+
             }
         })
         return e
@@ -484,7 +484,7 @@ export default {
       arr1 = arr.filter(v => Object.keys(v).length!==0)
       param['bet']= arr1
       const  newData = this.sumArr(arr1)
-     
+
       this.sumZ = newData['4']
       this.sumX = newData['1']
       this.sumH = newData['7']
@@ -494,7 +494,7 @@ export default {
       this.sumXbx = newData['0']
       this.sumD = newData['9']
       this.sumX = newData['6']
-     
+
       const arrCash =arr1.filter(e =>e.type==0)
       const newCash =this.sumArr(arrCash)
       const arrChip =arr1.filter(e =>e.type==1)
@@ -527,7 +527,7 @@ export default {
         return false;
       }
     },
-  
+
     //合计规则
     getSummaries(param) {
         const { columns, data } = param;
@@ -560,7 +560,7 @@ export default {
             sums[index] = '';
             return;
           }
-           
+
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -568,7 +568,7 @@ export default {
               if (!isNaN(value)) {
                 const pel = prev + curr // 主要代码
                 return pel
-                
+
               } else {
                 // return prev;
                   const pel = prev // 主要代码
@@ -581,8 +581,8 @@ export default {
           }
         });
          return sums;
-      },  
-  
+      },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -618,7 +618,7 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-   
+
     /** 签单 */
     handleSign(row) {
       this.reset();
@@ -627,7 +627,7 @@ export default {
        this.isMain =false
       this.title = "签单";
     },
-   
+
     /** 还单 */
     handleBack(row) {
       this.reset();
@@ -637,7 +637,7 @@ export default {
       this.title = "还单";
     },
 
-  
+
     /** 提交按钮 */
     submitForm: function() {
       console.log(this.title)
@@ -715,7 +715,7 @@ export default {
           setTimeout(function () {
             that.getResult();
           },1000)
-         
+
       })
     },
     // getUsername(){
@@ -814,7 +814,7 @@ export default {
             color: #919191;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);   
+            transform: translate(-50%, -50%);
             font-style: normal;
             }
           }
@@ -856,7 +856,7 @@ export default {
             color: #919191;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);   
+            transform: translate(-50%, -50%);
             font-style: normal;
             }
             .type1{
@@ -934,7 +934,7 @@ export default {
       color: #fff;
       cursor: pointer;
     }
-    
+
     .checked{
       display: flex;
       .el-checkbox-button__inner,.el-radio-button__inner{
@@ -980,7 +980,7 @@ export default {
       }
     }
   }
-  
+
 }
 .betBox {
   .el-table__header-wrapper{
