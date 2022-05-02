@@ -83,7 +83,13 @@
                 @click="handleBack(scope.row)"
               
               >取码</el-button>
-          
+                <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row.card)"
+              
+              >明细</el-button>
            
             </template>
           </el-table-column>
@@ -119,6 +125,7 @@
                 @click="handleBack(scope.row)"
               
               >取码</el-button>
+              
           
            
             </template>
@@ -261,10 +268,6 @@ export default {
             { required: true, validator: lessOne, trigger: "blur" }
         ],
        
-        rawPassword: [
-          { required: true, message: "确认密码不能为空", trigger: "blur" },
-          { required: true, validator: equalToPassword, trigger: "blur" }
-        ],
       }
     };
   },
