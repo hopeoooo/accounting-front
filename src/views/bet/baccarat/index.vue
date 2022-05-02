@@ -24,13 +24,13 @@
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>庄：{{1}}</li>
-              <li>庄对：{{1}}</li>
-              <li>庄保险：{{1}}</li>
-              <li>和：{{1}}</li>
-              <li>闲：{{1}}</li>
-              <li>闲对：{{1}}</li>
-              <li>闲保险：{{1}}</li>
+              <li>庄：{{sumZ}}</li>
+              <li>庄对：{{sumZd}}</li>
+              <li>庄保险：{{sumZbx}}</li>
+              <li>和：{{sumH}}</li>
+              <li>闲：{{sumX}}</li>
+              <li>闲对：{{sumXd}}</li>
+              <li>闲保险：{{sumXbx}}</li>
              </ul>
           </el-card>
       </el-col>
@@ -75,8 +75,8 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="4" :xs="12">
                   <div class="f1">
-                    <span>筹码:{{1}}</span>
-                    <span>现金:{{2}}</span>
+                    <span>筹码:{{sumChip}}</span>
+                    <span>现金:{{sumCash}}</span>
                   </div>
                </el-col>
               <el-col :span="14" :xs="24">
@@ -347,6 +347,18 @@ export default {
       // userName:'',
       tableInfo:'', //桌台信息
       result:'',//赛果
+      //庄闲和筹码现金合计
+      sumZ:'',
+      sumX:'',
+      sumH:'',
+      sumZd:'',
+      sumXd:'',
+      sumZbx:'',
+      sumXbx:'',
+      sumD:'',
+      sumX:'',
+      sumChip:'',
+      sumCash:'',
     };
   },
   watch: {
@@ -444,8 +456,6 @@ export default {
       param['gameResult']=str
       let arr=[]
       let arr1=[]
-       let arr2=[]
-
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
@@ -470,10 +480,8 @@ export default {
         })
         return e
       })
-      arr.forEach(c=>{
-       return c != "{}"
-      })
-     param['bet']=arr
+      arr1 = arr.filter(v => Object.keys(v).length!==0)
+      param['bet']= arr1
       console.log(param,arr,arr1)
     },
 
