@@ -13,7 +13,7 @@
               <el-input
                 v-model="oddsList.baccaratPump"
                 style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
+                oninput="if(value>100){value=100}else{value=value.replace(/[^\d]/g,'')}if(value.indexOf(0)==0){value=0}"
               />%
             </div>
           <div class="list">
@@ -21,7 +21,7 @@
             <el-input
                 v-model="oddsList.baccaratBankerWin"
                 style="width: 80px"
-                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}if(value.indexOf(0)==0){value=0}"
               />
           </div>
           <div class="list">
@@ -114,7 +114,7 @@
               <el-input
                 v-model="oddsList.baccaratRollingRatioChip"
                 style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
+                oninput="if(value>100){value=100}else{value=value.replace(/[^\d]/g,'')}if(value.indexOf(0)==0){value=0}"
               />%
             </div>
       </el-col>
@@ -124,7 +124,7 @@
               <el-input
                 v-model="oddsList.baccaratRollingRatioCash"
                 style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
+                oninput="if(value>100){value=100}else{value=value.replace(/[^\d]/g,'')}if(value.indexOf(0)==0){value=0}"
               />%
             </div>
       </el-col>
@@ -134,7 +134,7 @@
               <el-input
                 v-model="oddsList.dragonTigerRatioChip"
                 style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
+                oninput="if(value>100){value=100}else{value=value.replace(/[^\d]/g,'')}if(value.indexOf(0)==0){value=0}"
               />%
             </div>
       </el-col>
@@ -144,7 +144,7 @@
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
                 style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
+                oninput="if(value>100){value=100}else{value=value.replace(/[^\d]/g,'')}if(value.indexOf(0)==0){value=0}"
               />%
             </div>
       </el-col>
