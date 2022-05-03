@@ -241,7 +241,7 @@
 <script>
 import { listSign,listSignTotal,addSigned,addReturnOrder} from "@/api/coderoom/sign";
 import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratReckon,baccaratEdit} from "@/api/bet/baccarat";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Baccarat",
   data() {
@@ -377,9 +377,11 @@ export default {
       if(localStorage.getItem('baccaratList')){
         return  this.betList =localStorage.getItem('baccaratList')
       }
-    }
+    },
+     ...mapState("game", [ "baccaratList",'baccaratSum']),
   },
   methods: {
+    ...mapMutations('game',["setBaccaratList","setBaccaratSum"]),
     screencast(){},
     roadChange(){},
     betRecord(){},

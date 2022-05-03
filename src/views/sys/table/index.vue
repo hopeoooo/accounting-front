@@ -146,7 +146,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 30,
       
       },
       // 表单参数
@@ -193,13 +193,13 @@ export default {
     /** 查询角色列表 */
     getList() {
       this.loading = true;
-      listTable().then(response => {
+      listTable(this.queryParams).then(response => {
           this.tableList = response.rows;
           this.total = response.total;
           this.loading = false;
         }
       );
-      listTableTotal().then(response => {
+      listTableTotal(this.queryParams).then(response => {
         this.tableTotal = response.data;
         
         this.loading = false;
