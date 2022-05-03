@@ -27,13 +27,14 @@
               clearable
               style="width: 240px"
             />
-            <el-checkbox v-model="queryParams.isChild" style="margin-left:20px;"
+            <el-checkbox v-model="queryParams.isChild" style="margin-left:20px;" :disabled="!queryParams.value"
               >包含子卡</el-checkbox
             >
           </el-form-item>
 
           <el-form-item label="卡号状态" prop="status">
             <el-select v-model="queryParams.status" placeholder="全部">
+              <el-option label="全部" :value="null"></el-option>
               <el-option label="正常" :value="0"></el-option>
               <el-option label="停用" :value="1"></el-option>
             </el-select>
@@ -244,7 +245,7 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-if="open">
         <el-row :gutter="0" v-if="isMain == false">
           <el-col :span="12">
             <el-form-item label="卡号" prop="card">
@@ -303,14 +304,14 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="密码" prop="password" v-if="isshow">
-              <el-input v-model="form.password" placeholder="请输入密码" />
+              <el-input v-model="form.password" :placeholder="openType=='edit'?'******':'请输入密码'" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="确认密码" prop="rawPassword" v-if="isshow">
               <el-input
                 v-model="form.rawPassword"
-                placeholder="请输入确认密码"
+                :placeholder="openType=='edit'?'******':'请确认密码'"
               />
             </el-form-item>
           </el-col>
@@ -484,7 +485,7 @@
             <el-form-item label="备注" prop="remark">
               <el-input
                 type="textarea"
-                :rows="2"
+                :rows="4"
                 placeholder="请输入内容"
                 v-model="form.remark"
                 maxlength="100"
@@ -676,8 +677,15 @@ export default {
         status: ""
       },
 
-      // 表单校验
-      rules: {
+      isshow: true,
+      oddsList: [],
+      count: { childCount: 0, depositCount: 0, parentCount: 0, repairCount: 0 },
+      openType: "" //add 新增卡号;addChild 新增子卡;edit 卡号修改
+    };
+  },
+  computed: {
+    rules(){
+      return {
         card: [
           { required: true, message: "用户名称不能为空", trigger: "blur" }
           // {
@@ -691,12 +699,12 @@ export default {
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
         ],
         password: [
-          { required: true, message: "新密码不能为空", trigger: "blur" }
+          { required: this.openType=="edit"?false:true, message: "新密码不能为空", trigger: "blur" }
           // { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
         ],
         rawPassword: [
-          { required: true, message: "确认密码不能为空", trigger: "blur" },
-          { required: true, validator: equalToPassword, trigger: "blur" }
+          { required: this.openType=="edit"?false:true, message: "确认密码不能为空", trigger: "blur" },
+          {  validator: this.equalToPassword, trigger: "blur" }
         ],
         deposit: [
           {
@@ -766,19 +774,9 @@ export default {
             message: "请输入大于0的数字"
           }
         ]
-        // phonenumber: [
-        //   {
-        //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-        //     message: "请输入正确的手机号码",
-        //     trigger: "blur"
-        //   }
-        // ]
-      },
-      isshow: true,
-      oddsList: [],
-      count: { childCount: 0, depositCount: 0, parentCount: 0, repairCount: 0 },
-      openType: "" //add 新增卡号;addChild 新增子卡;edit 卡号修改
-    };
+
+      }
+    }
   },
   watch: {
     // 根据名称筛选部门树
@@ -790,6 +788,13 @@ export default {
     this.getList();
   },
   methods: {
+    equalToPassword (rule, value, callback) {
+      if (this.form.password !== value) {
+        callback(new Error("两次输入的密码不一致"));
+      } else {
+        callback();
+      }
+    },
     /** 查询用户列表 */
     getList() {
       console.log(this.queryParams);
@@ -877,12 +882,7 @@ export default {
         this.form.card = "";
       }
 
-      // if (this.openType == "addChild") {
-      //   // 新增子卡时,点击重置按钮需要保留父卡号
-      //   this.form["parentCard"] = parentCard;
-      // }
-
-      // this.resetForm("form");
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -893,7 +893,7 @@ export default {
     resetQuery() {
       this.queryParams.value = "";
       this.dateRange = [];
-      // this.resetForm("queryForm");
+      this.resetForm("queryForm");
       this.handleQuery();
     },
 
@@ -907,7 +907,7 @@ export default {
       this.reset();
       this.getOddsList();
       // 移除表单校验结果
-      this.$refs.form.clearValidate();
+       this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 新增子卡按钮操作 */
     handleAddChild(parentCard) {
@@ -920,7 +920,7 @@ export default {
       this.form["parentCard"] = parentCard;
       this.getOddsList();
       // 移除表单校验结果
-      this.$refs.form.clearValidate();
+       this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -934,7 +934,7 @@ export default {
       // 将用户更多信息加进form里
       this.getMemberInfo(row.id);
       // 移除表单校验结果
-      this.$refs.form.clearValidate();
+       this.$refs.form && this.$refs.form.clearValidate();
     },
     // 更多信息
     handleMore(id) {
@@ -951,13 +951,15 @@ export default {
       console.log(this.title);
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.title == "卡号修改") {
+          if (this.openType == "edit") {
+            // 修改卡号
             updateMambers(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
-          } else if (this.title == "新增子卡卡号") {
+          } else if (this.openType == "addChild") {
+            // 新增子卡卡号
             this.form["cardType"] = 1;
             addMambers(this.form).then(response => {
               this.$modal.msgSuccess("新增子卡卡号成功");
@@ -965,6 +967,7 @@ export default {
               this.getList();
             });
           } else {
+            // 新增卡号
             addMambers(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

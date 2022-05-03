@@ -102,9 +102,9 @@
       >
         <template slot-scope="scope">
           <span v-if="scope.row.joinTime">{{
-            parseTime(scope.row.joinTime)
+            scope.row.joinTime.split("T")[0]
           }}</span>
-          <span>--</span>
+          <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -141,7 +141,7 @@
 
     <!-- 添加或修改角色配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-if="open">
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="工号" prop="userName">
@@ -227,8 +227,8 @@
               <el-date-picker
                 style="width:180px"
                 v-model="form.joinTime"
-                type="datetime"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               >
               </el-date-picker>
@@ -357,7 +357,6 @@ export default {
   },
   created() {
     this.getList();
-    this.getRole();
   },
   computed: {
     ...mapState("user", ["user"]),
@@ -387,10 +386,10 @@ export default {
           { validator: this.equalToPassword, trigger: "blur" }
         ],
         roleId: [
-          { required: true, message: "请选择权限角色", trigger: "blur" }
+          { required: true, message: "请选择权限角色", trigger: "change" }
         ],
         joinTime: [
-          { required: true, message: "请选择入职日期", trigger: "blur" }
+          { required: true, message: "请选择入职日期", trigger: "change" }
         ]
       };
     }
@@ -419,10 +418,10 @@ export default {
     getList() {
       let type = this.queryParams.type;
       let value = this.queryParams.value;
-      let createTime = "";
+      let beginTime = "";
       let endTime = "";
       if (this.dateRange) {
-        createTime = this.addDateRange(this.dateRange)[0];
+        beginTime = this.addDateRange(this.dateRange)[0];
         endTime = this.addDateRange(this.dateRange)[1];
       }
 
@@ -435,7 +434,7 @@ export default {
       } else {
         params = params;
       }
-      params["createTime"] = createTime;
+      params["beginTime"] = beginTime;
       params["endTime"] = endTime;
       this.loading = true;
       getEmployeeList(params).then(response => {
@@ -467,9 +466,10 @@ export default {
         post: "",
         roleId: null,
         joinTime: "",
-        brithday: ""
+        brithday: "",
+        userId: this.user.userId
       };
-      // this.resetForm("form");
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -480,7 +480,7 @@ export default {
     resetQuery() {
       this.dateRange = [];
       this.queryParams.value = "";
-      // this.resetForm("queryForm");
+      this.resetForm("queryForm");
       this.handleQuery();
     },
 
@@ -490,8 +490,12 @@ export default {
       this.open = true;
       this.openType = "add";
       this.title = "新增员工";
-      // 移除表单校验结果
-      this.$refs.form.clearValidate();
+
+      this.getRole();
+      setTimeout(() => {
+        // 移除表单校验结果
+        this.$refs.form && this.$refs.form.clearValidate();
+      }, 100);
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -501,8 +505,11 @@ export default {
       this.title = "编辑员工";
       // this.form = Object.assign({}, row);
       this.form = { ...this.form, ...row };
-      // 移除表单校验结果
-      this.$refs.form.clearValidate();
+      this.getRole();
+      setTimeout(() => {
+        // 移除表单校验结果
+        this.$refs.form && this.$refs.form.clearValidate();
+      }, 100);
     },
 
     /** 提交按钮 */
