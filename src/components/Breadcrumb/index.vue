@@ -1,3 +1,10 @@
+<!--
+ * @Author:
+ * @Date: 2022-04-30 10:22:00
+ * @LastEditors:
+ * @LastEditTime: 2022-05-02 21:27:17
+ * @Description: file content
+-->
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
@@ -34,9 +41,9 @@ export default {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
       const first = matched[0]
 
-      if (!this.isDashboard(first)) {
-        matched = [{ path: '/index', meta: { title: '首页' }}].concat(matched)
-      }
+      // if (!this.isDashboard(first)) {
+      //   matched = [{ path: '/index', meta: { title: '首页' }}].concat(matched)
+      // }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },

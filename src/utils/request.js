@@ -85,7 +85,7 @@ service.interceptors.response.use(res => {
         }
       ).then(() => {
         isRelogin.show = false;
-        store.dispatch('LogOut').then(() => {
+        store.dispatch('user/LogOut').then(() => {
           location.href = '/index';
         })
       }).catch(() => {
