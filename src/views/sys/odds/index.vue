@@ -471,9 +471,16 @@ export default {
 
     /** 修改按钮操作 */
     submit() {
+
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.loading = true;
+          // 转成数字类型
+          this.oddsList.baccaratPump = parseInt(this.oddsList.baccaratPump)
+          this.oddsList.baccaratRollingRatioChip = parseInt(this.oddsList.baccaratRollingRatioChip)
+          this.oddsList.baccaratRollingRatioCash = parseInt(this.oddsList.baccaratRollingRatioCash)
+          this.oddsList.dragonTigerRatioChip = parseInt(this.oddsList.dragonTigerRatioChip)
+          this.oddsList.dragonTigerRatioCash = parseInt(this.oddsList.dragonTigerRatioCash)
           UpOdds(this.oddsList)
             .then(response => {
               this.$modal.msgSuccess("保存成功");
