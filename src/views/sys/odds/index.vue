@@ -19,7 +19,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="庄赢1赔" prop="baccaratBankerWin">
+                <el-form-item label="庄赢:  1赔" prop="baccaratBankerWin">
                   <el-input
                     v-model="oddsList.baccaratBankerWin"
                     style="width: 80px"
@@ -28,7 +28,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="闲赢1赔" prop="baccaratPlayerWin">
+                <el-form-item label="闲赢:  1赔" prop="baccaratPlayerWin">
                   <el-input
                     v-model="oddsList.baccaratPlayerWin"
                     style="width: 80px"
@@ -37,7 +37,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="和赢1赔" prop="baccaratTieWin">
+                <el-form-item label="和赢:  1赔" prop="baccaratTieWin">
                   <el-input
                     v-model="oddsList.baccaratTieWin"
                     style="width: 80px"
@@ -46,7 +46,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="庄对1赔" prop="baccaratBankerPair">
+                <el-form-item label="庄对:  1赔" prop="baccaratBankerPair">
                   <el-input
                     v-model="oddsList.baccaratBankerPair"
                     style="width: 80px"
@@ -55,7 +55,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="闲对1赔" prop="baccaratPlayerPair">
+                <el-form-item label="闲对:  1赔" prop="baccaratPlayerPair">
                   <el-input
                     v-model="oddsList.baccaratPlayerPair"
                     style="width: 80px"
@@ -64,7 +64,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="大1赔" prop="baccaratLarge">
+                <el-form-item label="大:  1赔" prop="baccaratLarge">
                   <el-input
                     v-model="oddsList.baccaratLarge"
                     style="width: 80px"
@@ -73,7 +73,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="小1赔" prop="baccaratSmall">
+                <el-form-item label="小:  1赔" prop="baccaratSmall">
                   <el-input
                     v-model="oddsList.baccaratSmall"
                     style="width: 80px"
@@ -91,7 +91,7 @@
             </div>
             <div class="gamebox">
               <div class="list">
-                <el-form-item label="龙赢1赔" prop="dragonWin">
+                <el-form-item label="龙赢:  1赔" prop="dragonWin">
                   <el-input
                     v-model="oddsList.dragonWin"
                     style="width: 80px"
@@ -100,7 +100,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="虎赢1赔" prop="tigerWin">
+                <el-form-item label="虎赢:  1赔" prop="tigerWin">
                   <el-input
                     v-model="oddsList.tigerWin"
                     style="width: 80px"
@@ -109,7 +109,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="和赢1赔" prop="tieWin">
+                <el-form-item label="和赢:  1赔" prop="tieWin">
                   <el-input
                     v-model="oddsList.tieWin"
                     style="width: 80px"
@@ -223,7 +223,7 @@
       </el-row>
     </el-form>
 
-    <div class="commitOdds" @click="submit">保存设置</div>
+    <div class="commitOdds" @click="submit" v-prclick>保存设置</div>
   </div>
 </template>
 
@@ -520,7 +520,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    height: 350px;
+    height: 250px;
     .list {
       // flex-basis: 13%;
       height: 60px;

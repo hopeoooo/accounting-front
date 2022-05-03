@@ -1,11 +1,18 @@
+<!--
+ * @Author:
+ * @Date: 2022-05-02 22:14:15
+ * @LastEditors:
+ * @LastEditTime: 2022-05-03 20:39:11
+ * @Description: file content
+-->
 <template>
-  
+
   <el-form style="max-width: 500px;margin:20% auto" ref="form" :model="user" :rules="rules" label-width="80px">
     <el-form-item label="旧密码" prop="oldPassword">
        <el-input :type="flag == false ? 'password' : 'text'" v-model="user.oldPassword" placeholder="输入旧密码" autocomplete="off">
            <i slot="suffix" :class="flag == false ? 'el-input__icon el-icon-circle-close el-input__clear' : 'el-input__icon el-icon-view el-input__clear'" @click="flag=!flag"></i>
        </el-input>
-     
+
     </el-form-item>
     <el-form-item label="新密码" prop="newPassword">
       <!-- <el-input v-model="user.newPassword" placeholder="请输入新密码" type="password" show-password/> -->

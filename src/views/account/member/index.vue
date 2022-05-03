@@ -27,7 +27,10 @@
               clearable
               style="width: 240px"
             />
-            <el-checkbox v-model="queryParams.isChild" style="margin-left:20px;" :disabled="!queryParams.value"
+            <el-checkbox
+              v-model="queryParams.isChild"
+              style="margin-left:20px;"
+              :disabled="!queryParams.value"
               >包含子卡</el-checkbox
             >
           </el-form-item>
@@ -244,8 +247,20 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-if="open">
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="800px"
+      @close="onDialogClose"
+      append-to-body
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="100px"
+        v-if="open"
+      >
         <el-row :gutter="0" v-if="isMain == false">
           <el-col :span="12">
             <el-form-item label="卡号" prop="card">
@@ -304,14 +319,17 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="密码" prop="password" v-if="isshow">
-              <el-input v-model="form.password" :placeholder="openType=='edit'?'******':'请输入密码'" />
+              <el-input
+                v-model="form.password"
+                :placeholder="openType == 'edit' ? '******' : '请输入密码'"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="确认密码" prop="rawPassword" v-if="isshow">
               <el-input
                 v-model="form.rawPassword"
-                :placeholder="openType=='edit'?'******':'请确认密码'"
+                :placeholder="openType == 'edit' ? '******' : '请确认密码'"
               />
             </el-form-item>
           </el-col>
@@ -684,7 +702,7 @@ export default {
     };
   },
   computed: {
-    rules(){
+    rules() {
       return {
         card: [
           { required: true, message: "用户名称不能为空", trigger: "blur" }
@@ -699,12 +717,20 @@ export default {
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
         ],
         password: [
-          { required: this.openType=="edit"?false:true, message: "新密码不能为空", trigger: "blur" }
+          {
+            required: this.openType == "edit" ? false : true,
+            message: "新密码不能为空",
+            trigger: "blur"
+          }
           // { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
         ],
         rawPassword: [
-          { required: this.openType=="edit"?false:true, message: "确认密码不能为空", trigger: "blur" },
-          {  validator: this.equalToPassword, trigger: "blur" }
+          {
+            required: this.openType == "edit" ? false : true,
+            message: "确认密码不能为空",
+            trigger: "blur"
+          },
+          { validator: this.equalToPassword, trigger: "blur" }
         ],
         deposit: [
           {
@@ -774,8 +800,7 @@ export default {
             message: "请输入大于0的数字"
           }
         ]
-
-      }
+      };
     }
   },
   watch: {
@@ -788,7 +813,7 @@ export default {
     this.getList();
   },
   methods: {
-    equalToPassword (rule, value, callback) {
+    equalToPassword(rule, value, callback) {
       if (this.form.password !== value) {
         callback(new Error("两次输入的密码不一致"));
       } else {
@@ -850,6 +875,10 @@ export default {
       // this.open = false;
       this.reset();
     },
+    // 弹窗关闭时
+    onDialogClose() {
+      this.openType = "";
+    },
     // 表单重置
     reset() {
       const newForm = {
@@ -907,7 +936,7 @@ export default {
       this.reset();
       this.getOddsList();
       // 移除表单校验结果
-       this.$refs.form && this.$refs.form.clearValidate();
+      this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 新增子卡按钮操作 */
     handleAddChild(parentCard) {
@@ -920,7 +949,7 @@ export default {
       this.form["parentCard"] = parentCard;
       this.getOddsList();
       // 移除表单校验结果
-       this.$refs.form && this.$refs.form.clearValidate();
+      this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -934,7 +963,7 @@ export default {
       // 将用户更多信息加进form里
       this.getMemberInfo(row.id);
       // 移除表单校验结果
-       this.$refs.form && this.$refs.form.clearValidate();
+      this.$refs.form && this.$refs.form.clearValidate();
     },
     // 更多信息
     handleMore(id) {
