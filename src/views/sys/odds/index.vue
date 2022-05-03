@@ -1,163 +1,228 @@
 <template>
   <div class="app-container" v-loading="loading">
-    <div class="title">赔率设置</div>
-    <el-row :gutter="20">
-      <el-col :span="12" :xs="24">
-      
-        <div class="gamebox">
-            <div class="list">
-            <span>百家乐</span>
-           </div>
-          <div class="list">
-            <span>庄赢抽水</span>
-              <el-input
-                v-model="oddsList.baccaratPump"
-                style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
-              />%
+    <el-form ref="form" :model="oddsList" :rules="rules" label-width="80px">
+      <div class="title">赔率设置</div>
+      <el-row :gutter="20">
+        <el-col :span="12" :xs="24">
+          <div class="odds-container">
+            <div style="height:60px;">
+              <span>百家乐</span>
             </div>
-          <div class="list">
-            <span>庄赢</span>1赔 
-            <el-input
-                v-model="oddsList.baccaratBankerWin"
-                style="width: 80px"
-                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
+            <div class="gamebox">
+              <div class="list">
+                <el-form-item label="庄赢抽水" prop="baccaratPump">
+                  <el-input
+                    v-model="oddsList.baccaratPump"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />%
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="庄赢1赔" prop="baccaratBankerWin">
+                  <el-input
+                    v-model="oddsList.baccaratBankerWin"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="闲赢1赔" prop="baccaratPlayerWin">
+                  <el-input
+                    v-model="oddsList.baccaratPlayerWin"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="和赢1赔" prop="baccaratTieWin">
+                  <el-input
+                    v-model="oddsList.baccaratTieWin"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="庄对1赔" prop="baccaratBankerPair">
+                  <el-input
+                    v-model="oddsList.baccaratBankerPair"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="闲对1赔" prop="baccaratPlayerPair">
+                  <el-input
+                    v-model="oddsList.baccaratPlayerPair"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="大1赔" prop="baccaratLarge">
+                  <el-input
+                    v-model="oddsList.baccaratLarge"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="小1赔" prop="baccaratSmall">
+                  <el-input
+                    v-model="oddsList.baccaratSmall"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+            </div>
           </div>
-          <div class="list">
-            <span>闲赢</span>1赔 
-            <el-input
-                v-model="oddsList.baccaratPlayerWin"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
+        </el-col>
+        <el-col :span="12" :xs="24">
+          <div class="odds-container">
+            <div style="height:60px;">
+              <span>龙虎</span>
+            </div>
+            <div class="gamebox">
+              <div class="list">
+                <el-form-item label="龙赢1赔" prop="dragonWin">
+                  <el-input
+                    v-model="oddsList.dragonWin"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="虎赢1赔" prop="tigerWin">
+                  <el-input
+                    v-model="oddsList.tigerWin"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item label="和赢1赔" prop="tieWin">
+                  <el-input
+                    v-model="oddsList.tieWin"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+            </div>
           </div>
-          <div class="list">
-            <span>和赢</span>1赔
-            <el-input
-                v-model="oddsList.baccaratTieWin"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-          <div class="list">
-            <span>庄对</span>1赔
-            <el-input
-                v-model="oddsList.baccaratBankerPair"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-          <div class="list">
-            <span>闲对</span>1赔
-            <el-input
-                v-model="oddsList.baccaratPlayerPair"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-          <div class="list">
-            <span>大</span>1赔
-            <el-input
-                v-model="oddsList.baccaratLarge"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-          <div class="list">
-            <span>小</span>1赔
-            <el-input
-                v-model="oddsList.baccaratSmall"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="12" :xs="24">
-        <div class="gamebox">
-          <div class="list">
-            <span>龙虎</span>
-          </div>
-          <div class="list">
-            <span>龙赢</span>1赔 
-            <el-input
-                v-model="oddsList.dragonWin"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-          <div class="list">
-            <span>虎赢</span>1赔
-            <el-input
-                v-model="oddsList.tigerWin"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-          <div class="list">
-            <span>和赢</span>1赔
-            <el-input
-                v-model="oddsList.tieWin"
-                style="width: 80px"
-                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
-          </div>
-        </div>
-      </el-col>
-    </el-row>
-    <div class="title">洗码比例</div>
-    <el-row :gutter="20">
-      <el-col :span="6" :xs="12">
-         <div class="listb">
-            <span>百家乐洗码比例（筹码）</span>
+        </el-col>
+      </el-row>
+      <div class="title">洗码比例</div>
+      <el-row :gutter="20">
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="百家乐洗码比例（筹码）"
+              prop="baccaratRollingRatioChip"
+              label-width="200px"
+            >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChip"
-                style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
-              />%
-            </div>
-      </el-col>
-      <el-col :span="6" :xs="12">
-         <div class="listb">
-            <span>百家乐洗码比例（现金）</span>
+                style="witdh:130px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="百家乐洗码比例（现金）"
+              prop="baccaratRollingRatioCash"
+              label-width="200px"
+            >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCash"
-                style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
-              />%
-            </div>
-      </el-col>
-      <el-col :span="6" :xs="12">
-        <div class="listb">
-            <span>龙虎洗码比例（筹码）</span>
+                 style="witdh:130px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="龙虎洗码比例（筹码）"
+              prop="dragonTigerRatioChip"
+              label-width="200px"
+            >
               <el-input
                 v-model="oddsList.dragonTigerRatioChip"
-                style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
-              />%
-            </div>
-      </el-col>
-      <el-col :span="6" :xs="12">
-           <div class="listb">
-            <span>龙虎洗码比例（现金）</span>
+                 style="witdh:130px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="龙虎洗码比例（现金）"
+              prop="dragonTigerRatioCash"
+              label-width="200px"
+            >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
-                style="width: 80px"
-                oninput="value=value.replace(/[^\d]/g,'')"
-              />%
-            </div>
-      </el-col>
-    </el-row>
-     <div class="title">其它配置</div>
-    <el-row :gutter="20">
-      <el-col :span="6" :xs="12">
-        <el-checkbox v-model="checked">洗码佣金取整</el-checkbox>
-      </el-col>
-      <el-col :span="6" :xs="12">
-        <el-checkbox v-model="checked1">庄赢抽水取整</el-checkbox>
-      </el-col>
-    </el-row>
+                 style="witdh:130px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template></el-input
+              >
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <div class="title">其它配置</div>
+      <el-row :gutter="20">
+        <el-col :span="6" :xs="12">
+          <el-checkbox :v-model="checked" @change="onCheckChange1"
+            >洗码佣金取整</el-checkbox
+          >
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <el-checkbox :v-model="checked1" @change="onCheckChange2"
+            >庄赢抽水取整</el-checkbox
+          >
+        </el-col>
+      </el-row>
+    </el-form>
+
     <div class="commitOdds" @click="submit">保存设置</div>
   </div>
 </template>
@@ -165,34 +230,200 @@
 <script>
 import { listOdds, UpOdds } from "@/api/sys/odds";
 
-
 export default {
   name: "odds",
   data() {
     return {
-      loading:false,
-      checked:false,
-      checked1:false,
-      oddsList:{
-        baccaratPump:'',
-        baccaratBankerWin:'',
-        baccaratPlayerWin:'',
-        baccaratTieWin:'',
-        baccaratBankerPair:'',
-        baccaratPlayerPair:'',
-        baccaratLarge:'',
-        baccaratSmall:'',
-        dragonWin:'',
-        tigerWin:'',
-        tieWin:'',
-        baccaratRollingRatioChip:'',
-        baccaratRollingRatioCash:'',
-        dragonTigerRatioChip:'',
-        dragonTigerRatioCash:'',
-        rollingCommissionRounding:'',
-        bankerWinPumpRounding:'',
+      loading: false,
+      checked: false,
+      checked1: false,
+      oddsList: {
+        baccaratPump: "",
+        baccaratBankerWin: "",
+        baccaratPlayerWin: "",
+        baccaratTieWin: "",
+        baccaratBankerPair: "",
+        baccaratPlayerPair: "",
+        baccaratLarge: "",
+        baccaratSmall: "",
+        dragonWin: "",
+        tigerWin: "",
+        tieWin: "",
+        baccaratRollingRatioChip: "",
+        baccaratRollingRatioCash: "",
+        dragonTigerRatioChip: "",
+        dragonTigerRatioCash: "",
+        rollingCommissionRounding: 0,
+        bankerWinPumpRounding: 0
+      },
+      // 表单校验
+      rules: {
+        baccaratPump: [
+          {
+            required: true,
+            message: "庄赢抽水比例不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratBankerWin: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratPlayerWin: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratTieWin: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratBankerPair: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratPlayerPair: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratLarge: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratSmall: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        dragonWin: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        tigerWin: [
+          {
+            required: true,
+            message: "百家乐洗码比例（筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        tieWin: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratRollingRatioChip: [
+          {
+            required: true,
+            message: "百家乐洗码比例（筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratRollingRatioCash: [
+          {
+            required: true,
+            message: "百家乐洗码比例（现金）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        dragonTigerRatioChip: [
+          {
+            required: true,
+            message: "龙虎洗码比例（筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        dragonTigerRatioCash: [
+          {
+            required: true,
+            message: "龙虎洗码比例（现金）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ]
       }
-    
     };
   },
   created() {
@@ -203,74 +434,85 @@ export default {
     getList() {
       this.loading = true;
       listOdds().then(response => {
-          this.oddsList = response.data;
-         if( this.oddsList.rollingCommissionRounding==0){
-           this.checked =false
-         }else{
-           this.checked =true
-         }
-         if( this.oddsList.bankerWinPumpRounding==0){
-           this.checked1 =false
-         }else{
-           this.checked1 =true
-         }
-          this.loading = false;
+        this.oddsList = response.data;
+        if (this.oddsList.rollingCommissionRounding == 0) {
+          this.checked = false;
+        } else {
+          this.checked = true;
         }
-      );
+        if (this.oddsList.bankerWinPumpRounding == 0) {
+          this.checked1 = false;
+        } else {
+          this.checked1 = true;
+        }
+        this.loading = false;
+      });
     },
-    
+
     /** 修改按钮操作 */
     submit() {
       this.loading = true;
-      if(this.checked==false){
-       this.oddsList.rollingCommissionRounding=0
-      }else{
-        this.oddsList.rollingCommissionRounding=1
-      }
-      if(this.checked1==false){
-       this.oddsList.bankerWinPumpRounding=0
-      }else{
-        this.oddsList.bankerWinPumpRounding=1
-      }
-      UpOdds(this.oddsList).then(response => {
-        this.$modal.msgSuccess("保存成功");
-        this.loading = false;
-      }).catch(() => {});;
+
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          UpOdds(this.oddsList)
+            .then(response => {
+              this.$modal.msgSuccess("保存成功");
+              this.loading = false;
+            })
+            .catch(() => {});
+        }
+      });
     },
-   
+    onCheckChange1(newValue) {
+      if (newValue == false) {
+        this.oddsList.rollingCommissionRounding = 0;
+      } else {
+        this.oddsList.rollingCommissionRounding = 1;
+      }
+    },
+    onCheckChange2(newValue) {
+      if (newValue == false) {
+        this.oddsList.bankerWinPumpRounding = 0;
+      } else {
+        this.oddsList.bankerWinPumpRounding = 1;
+      }
+    }
   }
 };
 </script>
-<style lang="scss" >
-.title{
+<style lang="scss">
+.title {
   font-size: 18px;
   font-weight: 500;
   line-height: 80px;
 }
-.gamebox{
+.odds-container {
   border: 1px solid #bcbcbc;
   padding: 20px;
-  display: flex;
-   flex-wrap: wrap;
-  flex-direction: column;
-  height: 350px;
-  .list{
-    // flex-basis: 13%;
-    height: 50px;
-    span{
-      display: inline-block;
-      // width: 70px;
-    }
-    &:nth-child(7){
-      margin-top: 50px;
+  .gamebox {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 350px;
+    .list {
+      // flex-basis: 13%;
+      height: 60px;
+      span {
+        display: inline-block;
+        // width: 70px;
+      }
+      // &:nth-child(7) {
+      //   margin-top: 50px;
+      // }
     }
   }
 }
 
- .el-checkbox .el-checkbox__label{
-    font-size: 16px !important;
-  }
-.commitOdds{
+.el-checkbox .el-checkbox__label {
+  font-size: 16px !important;
+}
+.commitOdds {
   border-radius: 4px;
   background: #1890ff;
   padding: 5px 20px;
@@ -279,8 +521,8 @@ export default {
   color: #fff;
   margin-top: 80px;
   cursor: pointer;
-  transform: .6s;
-  &:hover{
+  transform: 0.6s;
+  &:hover {
     background: #bcbcbc;
     color: #000;
   }

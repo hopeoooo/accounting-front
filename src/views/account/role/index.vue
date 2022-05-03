@@ -103,6 +103,8 @@
                 :rows="2"
                 placeholder="请输入内容"
                 v-model="form.remark"
+                maxlength="100"
+                show-word-limit
               >
               </el-input>
             </el-form-item>
@@ -226,7 +228,15 @@ export default {
         pageSize: 30
       },
       // 表单校验
-      rules: {},
+      rules: {
+        roleName: [
+          {
+            required: true,
+            message: "角色不能为空",
+            trigger: "blur"
+          }
+        ]
+      },
       selectChangeAll: false,
       menuExpand: false,
       menuNodeAll: false
