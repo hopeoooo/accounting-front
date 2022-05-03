@@ -451,10 +451,11 @@ export default {
 
     /** 修改按钮操作 */
     submit() {
-      this.loading = true;
+
 
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.loading = true;
           UpOdds(this.oddsList)
             .then(response => {
               this.$modal.msgSuccess("保存成功");

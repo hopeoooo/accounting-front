@@ -140,7 +140,7 @@
     />
 
     <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="600px" @close="onDialogClose" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-if="open">
         <el-row :gutter="0">
           <el-col :span="12">
@@ -453,6 +453,10 @@ export default {
       this.openDataScope = false;
       this.reset();
     },
+    // 弹窗关闭时
+    onDialogClose(){
+      this.openType=""
+    },
     // 表单重置
     reset() {
       this.form = {
@@ -487,8 +491,8 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
       this.openType = "add";
+      this.open = true;
       this.title = "新增员工";
 
       this.getRole();
@@ -500,8 +504,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      this.open = true;
       this.openType = "edit";
+      this.open = true;
       this.title = "编辑员工";
       // this.form = Object.assign({}, row);
       this.form = { ...this.form, ...row };
