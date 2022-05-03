@@ -418,10 +418,10 @@ export default {
     getList() {
       let type = this.queryParams.type;
       let value = this.queryParams.value;
-      let createTime = "";
+      let beginTime = "";
       let endTime = "";
       if (this.dateRange) {
-        createTime = this.addDateRange(this.dateRange)[0];
+        beginTime = this.addDateRange(this.dateRange)[0];
         endTime = this.addDateRange(this.dateRange)[1];
       }
 
@@ -434,7 +434,7 @@ export default {
       } else {
         params = params;
       }
-      params["createTime"] = createTime;
+      params["beginTime"] = beginTime;
       params["endTime"] = endTime;
       this.loading = true;
       getEmployeeList(params).then(response => {
