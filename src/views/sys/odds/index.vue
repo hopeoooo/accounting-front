@@ -132,7 +132,7 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChip"
-                style="witdh:130px"
+                 style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -153,7 +153,7 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCash"
-                style="witdh:130px"
+                style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -174,7 +174,7 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioChip"
-                style="witdh:130px"
+                style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -195,7 +195,7 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
-                style="witdh:130px"
+                 style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
