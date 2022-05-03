@@ -75,6 +75,20 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/coderoom',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'washCode',
+        component: () => import('@/views/coderoom/washCode/index'),
+        name: 'WashCode',
+        meta: { title: '员工管理', icon: '' }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,
@@ -102,6 +116,7 @@ export const constantRoutes = [
       }
     ]
   },
+ 
   // {
   //   path: '/coderoom',
   //   component: Layout,
@@ -111,7 +126,7 @@ export const constantRoutes = [
   //     {
   //       path: 'washCode',
   //       component: () => import('@/views/coderoom/washCode/index'),
-  //       name: 'washCode',
+  //       name: 'WashCode',
   //       meta: { title: '洗码费结算', icon: '' }
   //     }
   //   ]

@@ -20,7 +20,7 @@ export function baccaratReckon(query) {
 export function baccaratInput(query) {
   return request({
     url: '/bet/baccarat/input',
-    method: 'get',
+    method: 'post',
     params: query
   })
 }
@@ -33,11 +33,11 @@ export function baccaratUpdate(data) {
   })
 }
 // 开牌
-export function baccaratOpen(data) {
+export function baccaratOpen(query) {
   return request({
     url: '/bet/baccarat/open',
     method: 'post',
-    data: data
+    params: query
   })
 }
 // 赛果列表

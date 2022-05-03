@@ -14,23 +14,23 @@
       <el-col :span="6" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>台号：{{tableInfo.tableId}}</li>
-              <li>靴号：{{tableInfo.bootNum}}</li>
-              <li>局号：{{tableInfo.gameNum}}</li>
-              <li>累计：{{tableInfo.total}}</li>
-              <li>筹码：{{tableInfo.chip}}</li>
-              <li>现金：{{tableInfo.cash}}</li>
+              <li>台号：{{tableInfo.tableId || 0}}</li>
+              <li>靴号：{{tableInfo.bootNum || 0}}</li>
+              <li>局号：{{tableInfo.gameNum || 0}}</li>
+              <li>累计：{{tableInfo.total || 0}}</li>
+              <li>筹码：{{tableInfo.chip || 0}}</li>
+              <li>现金：{{tableInfo.cash || 0}}</li>
              </ul>
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>庄：{{sumZ}}</li>
-              <li>庄对：{{sumZd}}</li>
-              <li>庄保险：{{sumZbx}}</li>
-              <li>和：{{sumH}}</li>
-              <li>闲：{{sumX}}</li>
-              <li>闲对：{{sumXd}}</li>
-              <li>闲保险：{{sumXbx}}</li>
+              <li>庄：{{sumdata.sumZ || 0}}</li>
+              <li>庄对：{{sumdata.sumZd || 0}}</li>
+              <li>庄保险：{{sumdata.sumZbx || 0}}</li>
+              <li>和：{{sumdata.sumH || 0}}</li>
+              <li>闲：{{sumdata.sumX || 0}}</li>
+              <li>闲对：{{sumdata.sumXd || 0}}</li>
+              <li>闲保险：{{sumdata.sumXbx || 0}}</li>
              </ul>
           </el-card>
       </el-col>
@@ -58,7 +58,7 @@
                   <!-- <div class="list_p" :title="c" v-for="(c,key) in e" :key="key" @click="changeChip(c)">
                     <i>{{c}}</i>
                   </div> -->
-                  <el-tooltip class="item list_p" v-for="c in e" :key="c.gameNum" 
+                  <el-tooltip class="item list_p" v-for="(c,key) in e" :key="key" 
                     effect="light" :content="'局号'+c.gameNum" placement="top">
                     <el-button @click="changeChip(c)"><i :class="getclass(c.gameResult)"></i></el-button>
                   </el-tooltip>
@@ -75,8 +75,8 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="4" :xs="12">
                   <div class="f1">
-                    <span>筹码:{{sumChip}}</span>
-                    <span>现金:{{sumCash}}</span>
+                    <span>筹码:{{sumdata.sumChip || 0}}</span>
+                    <span>现金:{{sumdata.sumCash || 0}}</span>
                   </div>
                </el-col>
               <el-col :span="14" :xs="24">
@@ -87,7 +87,7 @@
                     </el-radio-group>
               
                   <el-checkbox-group v-model="checkboxGroup1" class="checked">
-                    <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
+                    <el-checkbox-button v-for="(e,key) in reData" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
               
                   <el-radio-group v-model="radio2" class="checked">
@@ -95,9 +95,9 @@
                     <el-radio-button :label="6" class="blue">小</el-radio-button>
                   </el-radio-group>
                </el-col>
-               <el-col :span="6" :xs="12" class="control">  
+               <el-col :span="6" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
-                  <el-button type="primary" @click="startBet">录入</el-button>
+                  <el-button type="primary" @click="updataBet">录入</el-button>
                   <el-button type="primary" @click="startBet">点码</el-button>
                   <el-button type="primary" @click="startBet">收码</el-button>
                </el-col>
@@ -118,7 +118,7 @@
             </el-form-item>
           <el-form-item>
             <el-checkbox-group v-model="formLudan.checkboxGroup1" class="checked">
-              <el-checkbox-button v-for="e in reData" :label="e.id" :class="e.color" :key="e.id">{{e.name}}</el-checkbox-button>
+              <el-checkbox-button v-for="(e,key) in reData" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
             </el-checkbox-group>
           </el-form-item>  
           <el-form-item label="" prop=""  >
@@ -135,9 +135,9 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" :data="betList" stripe border show-summary sum-text="合计"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox" height="500px" :data="betList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="180px">
+          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
                <template slot-scope="scope">
                   <el-radio-group v-model.number="scope.row.type">
                 <el-radio :label="0">现金</el-radio>
@@ -145,7 +145,7 @@
               </el-radio-group>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  >
+          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
                   <el-input v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
@@ -195,8 +195,8 @@
                   <el-input v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-          <el-table-column label="现有筹码" align="center" key="card10" prop="card10"  fixed="right" />
-          <el-table-column label="赔码数" align="center"   prop="signedAmount"  fixed="right"/>
+          <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
+          <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
              
          
         </el-table>
@@ -309,17 +309,11 @@ export default {
 
       },
       betList:[
-        {id:1},
-        {id:2},
-        {id:3},
-        {id:4},
-        {id:5},
-        {id:6},
-        {id:7},
-        {id:8},
-        {id:9},
-        {id:10},
+        {id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},
+        {id:11},{id:12},{id:13},{id:14},{id:15},{id:16},{id:17},{id:18},{id:19},{id:20},
+        {id:21},{id:22},{id:23},{id:24},{id:25},{id:26},{id:27},{id:28},{id:29},{id:30},
       ],
+      subData:[],
       // 表单校验
       rules: {
         
@@ -336,29 +330,27 @@ export default {
       radio1:'',
       radio2:'',
       reData:[
-        // {id:1,name:'庄',color:'red'},
-        // {id:2,name:'闲',color:'blue'},
-        // {id:3,name:'和',color:'green'},
         {id:8,name:'庄对',color:'red'},
         {id:5,name:'闲对',color:'blue'},
-        // {id:6,name:'大',color:'red'},
-        // {id:7,name:'小',color:'blue'},
       ],
       // userName:'',
       tableInfo:'', //桌台信息
       result:'',//赛果
       //庄闲和筹码现金合计
-      sumZ:'',
-      sumX:'',
-      sumH:'',
-      sumZd:'',
-      sumXd:'',
-      sumZbx:'',
-      sumXbx:'',
-      sumD:'',
-      sumX:'',
-      sumChip:'',
-      sumCash:'',
+      sumdata:{
+         sumZ:'',
+          sumX:'',
+          sumH:'',
+          sumZd:'',
+          sumXd:'',
+          sumZbx:'',
+          sumXbx:'',
+          sumD:'',
+          sumX:'',
+          sumChip:'',
+          sumCash:'',
+      }
+     
     };
   },
   watch: {
@@ -368,7 +360,7 @@ export default {
 
   created() {
     this. getszdata();
-    // this.getUsername();
+    this. getbetList();
     this. getTableInfo()
     this.getResult()
   },
@@ -376,9 +368,16 @@ export default {
     userName(){
       return this.$store.state.user.name
     },
-    // betList(){
-    //   console.log(this.betList)
-    // }
+    sumdataList(){
+      if(localStorage.getItem('sumdataList')){
+        return  this.sumdata =localStorage.getItem('sumdataList')
+      }
+    },
+     baccaratList(){
+      if(localStorage.getItem('baccaratList')){
+        return  this.betList =localStorage.getItem('baccaratList')
+      }
+    }
   },
   methods: {
     screencast(){},
@@ -402,7 +401,6 @@ export default {
     },
     //处理路单class
     getclass(c){
-      console.log(c.indexOf('1'))
       if(c.indexOf('1')!=-1 && c.indexOf('5')==-1 && c.indexOf('8')==-1  ){
         return 'type1'
       }else if(c.indexOf('1')!=-1 && c.indexOf('5')!=-1 && c.indexOf('8')==-1  ){
@@ -444,8 +442,26 @@ export default {
       this.multiple = !selection.length
       
     },
+      status_change: function (row) {
+          localStorage.setItem('baccaratList',this.betList)
+          console.log(localStorage.getItem('baccaratList'))
+          if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9){
+             if (!row.row.type && row.row.type !=0) {
+                return 'table-info-red'
+              }
+              if (!row.row.card) {
+                return 'table-info-red1'
+              }
+            }
+    },
+    getbetList(){
+      // if(localStorage.getItem('baccaratList')){
+      //   // this.betList =localStorage.getItem('baccaratList')
+      // }
+    },
     //开牌
     startBet(){
+    
       if(this.radio1 ==''){
         this.$modal.msgError("请选择开奖结果");
         return
@@ -472,6 +488,23 @@ export default {
               "6":o.card9,
             }
       })
+      
+      let isDialog = false
+      this.betList.forEach(e=>{
+        if(e.card1|| e.card2 || e.card3|| e.card4 || e.card5|| e.card6|| e.card7 || e.card8|| e.card9){
+          
+          if(!e.type && e.type!=0 && !isDialog){
+            
+             isDialog =true
+             this.$modal.msgError("请检查币种是否漏勾选");
+          };
+          if(!e.card && !isDialog){
+            isDialog =true
+            this.$modal.msgError("请检查考号是否漏填");
+          }
+        }
+      })
+      //  console.log(this.betList,2)
       arr.forEach(e=>{
         Object.keys(e).forEach(i=>{
           if(this.isEmpty(e[i])) {
@@ -484,39 +517,65 @@ export default {
       param['bet']= arr1
       const  newData = this.sumArr(arr1)
      
-      this.sumZ = newData['4']
-      this.sumX = newData['1']
-      this.sumH = newData['7']
-      this.sumZd = newData['8']
-      this.sumXd = newData['5']
-      this.sumZbx = newData['3']
-      this.sumXbx = newData['0']
-      this.sumD = newData['9']
-      this.sumX = newData['6']
+      this.sumdata.sumZ = newData['4']
+      this.sumdata.sumX = newData['1']
+      this.sumdata.sumH = newData['7']
+      this.sumdata.sumZd = newData['8']
+      this.sumdata.sumXd = newData['5']
+      this.sumdata.sumZbx = newData['3']
+      this.sumdata.sumXbx = newData['0']
+      this.sumdata.sumD = newData['9']
+      this.sumdata.sumX = newData['6']
      
       const arrCash =arr1.filter(e =>e.type==0)
       const newCash =this.sumArr(arrCash)
       const arrChip =arr1.filter(e =>e.type==1)
       const newChip =this.sumArr(arrChip)
-      this.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
-      this.sumCash = newCash['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
-
-      // param=JSON.stringify(param)
-      let queryParams={}
-      queryParams.json=JSON.stringify(param)
-      console.log(JSON.stringify(queryParams))
-      baccaratOpen(JSON.stringify(queryParams)).then(res => {
-        console.log(res.data)
+      this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
+      this.sumdata.sumCash = newCash['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
+      localStorage.setItem('sumdataList',this.sumdata)
+      console.log(localStorage.getItem('sumdataList'))
+      baccaratOpen({'json':param}).then(res => {
+          this.subData= res.data
+          let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
+          
+            this.subData.bet.forEach((e,i)=>{
+            arr2[i]={...e,...arr2[i]}
+             
+          })
+          this.betList = arr2
+          localStorage.setItem('baccaratList',arr2)
           this.loading = false;
         })
     },
+    //录入
+    updataBet(){
+      baccaratInput({'json':this.subData}).then(res=>{
+        this.loading = false;
+        this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
+        this.sumZ = ''
+        this.sumX = ''
+        this.sumH = ''
+        this.sumZd = ''
+        this.sumXd = ''
+        this.sumZbx = ''
+        this.sumXbx = ''
+        this.sumD = ''
+        this.sumX = ''
+        this.sumChip = ''
+        this.sumCash =''
+      })   
+    },
     //数组对象求和
     sumArr(arr){
-      return  arr.reduce((p,c) => {
+      if(arr){
+        return  arr.reduce((p,c) => {
           Object.keys(p).forEach(k=>p[k]+=c[k]?c[k]:0)
 
           return p
         }, {'1': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0})
+      }
+      
     },
     //判断空对象
     isEmpty(obj) {
@@ -639,7 +698,6 @@ export default {
   
     /** 提交按钮 */
     submitForm: function() {
-      console.log(this.title)
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.title == "还单") {
@@ -697,13 +755,12 @@ export default {
           this.formLudan.radio2 = 6
         }
       })
-      console.log(c,this.formLudan)
+      
     },
       submitLudan(){
-      console.log(this.formLudan)
       let str =''
       str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.radio2.toString()
-      console.log(str)
+      
       let param ={}
       param['id']= this.formLudan.id
       param['gameResult'] = str
@@ -914,7 +971,7 @@ export default {
         justify-content: flex-start;
         flex-wrap:wrap;
         &.control {
-          justify-content: center;
+          justify-content:  flex-start;
         }
       }
     }
@@ -982,6 +1039,10 @@ export default {
   
 }
 .betBox {
+  .el-input--medium .el-input__inner{
+    line-height: 25px;
+    height: 25px;
+  }
   .el-table__header-wrapper{
     thead{
       th{
@@ -1000,5 +1061,32 @@ export default {
       }
     }
   }
+}
+.table-info-red td:nth-child(1){
+  position: relative;
+  &::after{
+    content: '请选择币种';
+     position: absolute;
+    bottom: -5px;
+    left: 10px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
+  }
+}
+.table-info-red1 td:nth-child(2){
+  position: relative;
+  &::after{
+    content: '请填写卡号';
+    position: absolute;
+    bottom: -5px;
+    left: 10px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
+  }
+}
+.table-info-red td,.table-info-red1 td{
+  // background: rgb(199, 135, 135);
 }
 </style>
