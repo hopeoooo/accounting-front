@@ -485,7 +485,7 @@
             <el-form-item label="备注" prop="remark">
               <el-input
                 type="textarea"
-                :rows="4"
+                :rows="7"
                 placeholder="请输入内容"
                 v-model="form.remark"
                 maxlength="100"

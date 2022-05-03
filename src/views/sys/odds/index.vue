@@ -153,7 +153,7 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCash"
-                 style="witdh:130px"
+                style="witdh:130px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -174,7 +174,7 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioChip"
-                 style="witdh:130px"
+                style="witdh:130px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -195,7 +195,7 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
-                 style="witdh:130px"
+                style="witdh:130px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -265,9 +265,14 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+            validator: this.perValidator,
+            message: "只能输入0-100",
+
+          },
+          // {
+          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+          //   message: "请输入大于0的数字"
+          // }
         ],
         baccaratBankerWin: [
           {
@@ -275,10 +280,10 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+          // {
+          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+          //   message: "请输入大于0的数字"
+          // }
         ],
         baccaratPlayerWin: [
           {
@@ -286,10 +291,10 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+          // {
+          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+          //   message: "请输入大于0的数字"
+          // }
         ],
         baccaratTieWin: [
           {
@@ -297,10 +302,10 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+          // {
+          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+          //   message: "请输入大于0的数字"
+          // }
         ],
         baccaratBankerPair: [
           {
@@ -308,10 +313,7 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         baccaratPlayerPair: [
           {
@@ -319,10 +321,7 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         baccaratLarge: [
           {
@@ -330,10 +329,7 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         baccaratSmall: [
           {
@@ -341,10 +337,7 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         dragonWin: [
           {
@@ -352,10 +345,7 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         tigerWin: [
           {
@@ -363,10 +353,7 @@ export default {
             message: "百家乐洗码比例（筹码）不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         tieWin: [
           {
@@ -374,10 +361,7 @@ export default {
             message: "不能为空",
             trigger: "blur"
           },
-          {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+
         ],
         baccaratRollingRatioChip: [
           {
@@ -386,9 +370,11 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
         ],
         baccaratRollingRatioCash: [
           {
@@ -397,9 +383,11 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
         ],
         dragonTigerRatioChip: [
           {
@@ -408,9 +396,11 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
         ],
         dragonTigerRatioCash: [
           {
@@ -419,9 +409,11 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          }
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
         ]
       }
     };
@@ -430,6 +422,34 @@ export default {
     this.getList();
   },
   methods: {
+    perValidator(rule, value, callback) {
+      // 百分比校验
+      // 只能输入0-100
+
+      if (value > 100 || value < 0) {
+        callback(new Error("只能输入0-100"));
+      } else {
+        callback();
+      }
+    },
+    numberValitor(rule, value, callback) {
+      // 大于0的数字数字校验
+      // 请输入大于0的数字
+      if (value < 0) {
+        callback(new Error("请输入大于0的数字"));
+      } else {
+        callback();
+      }
+    },
+    onInputChange(value) {
+      if (isNaN(value)) {
+        value = null;
+      }
+      if (value.indexOf(".") > 0) {
+        value = value.slice(0, value.indexOf(".") + 3);
+      }
+      return value;
+    },
     /** 查询角色列表 */
     getList() {
       this.loading = true;
@@ -451,8 +471,6 @@ export default {
 
     /** 修改按钮操作 */
     submit() {
-
-
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.loading = true;
