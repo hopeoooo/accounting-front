@@ -1,8 +1,8 @@
 <!--
  * @Author:
  * @Date: 2022-05-02 22:14:15
- * @LastEditors:
- * @LastEditTime: 2022-05-03 20:39:11
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-04 00:31:02
  * @Description: file content
 -->
 <template>
@@ -10,20 +10,20 @@
   <el-form style="max-width: 500px;margin:20% auto" ref="form" :model="user" :rules="rules" label-width="80px">
     <el-form-item label="旧密码" prop="oldPassword">
        <el-input :type="flag == false ? 'password' : 'text'" v-model="user.oldPassword" placeholder="输入旧密码" autocomplete="off">
-           <i slot="suffix" :class="flag == false ? 'el-input__icon el-icon-circle-close el-input__clear' : 'el-input__icon el-icon-view el-input__clear'" @click="flag=!flag"></i>
+           <i slot="suffix" :class="flag == false ? 'el-input__icon icofont-eye-blocked icofont-2x' : 'el-input__icon icofont-eye icofont-2x '" @click="flag=!flag"></i>
        </el-input>
 
     </el-form-item>
     <el-form-item label="新密码" prop="newPassword">
       <!-- <el-input v-model="user.newPassword" placeholder="请输入新密码" type="password" show-password/> -->
        <el-input :type="flag1 == false ? 'password' : 'text'" v-model="user.newPassword" placeholder="输入新密码" autocomplete="off">
-           <i slot="suffix" :class="flag1 == false ? 'el-input__icon el-icon-circle-close el-input__clear' : 'el-input__icon el-icon-view el-input__clear'" @click="flag1=!flag1"></i>
+           <i slot="suffix" :class="flag1 == false ? 'el-input__icon icofont-eye-blocked icofont-2x' : 'el-input__icon icofont-eye icofont-2x '" @click="flag1=!flag1"></i>
        </el-input>
     </el-form-item>
     <el-form-item label="确认密码" prop="confirmPassword">
       <!-- <el-input v-model="user.confirmPassword" placeholder="请确认密码" type="password" show-password/> -->
        <el-input :type="flag2 == false ? 'password' : 'text'" v-model="user.confirmPassword" placeholder="再次输入新密码" autocomplete="off">
-           <i slot="suffix" :class="flag2 == false ? 'el-input__icon el-icon-circle-close el-input__clear' : 'el-input__icon el-icon-view el-input__clear'" @click="flag2=!flag2"></i>
+           <i slot="suffix" :class="flag2 == false ? 'el-input__icon icofont-eye-blocked icofont-2x' : 'el-input__icon icofont-eye icofont-2x '" @click="flag2=!flag2"></i>
        </el-input>
     </el-form-item>
     <el-form-item>
