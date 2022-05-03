@@ -24,13 +24,13 @@
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>庄：{{sumdata.sumZ || 0}}</li>
-              <li>庄对：{{sumdata.sumZd || 0}}</li>
-              <li>庄保险：{{sumdata.sumZbx || 0}}</li>
-              <li>和：{{sumdata.sumH || 0}}</li>
-              <li>闲：{{sumdata.sumX || 0}}</li>
-              <li>闲对：{{sumdata.sumXd || 0}}</li>
-              <li>闲保险：{{sumdata.sumXbx || 0}}</li>
+              <li>庄：{{baccaratSum.sumZ || 0}}</li>
+              <li>庄对：{{baccaratSum.sumZd || 0}}</li>
+              <li>庄保险：{{baccaratSum.sumZbx || 0}}</li>
+              <li>和：{{baccaratSum.sumH || 0}}</li>
+              <li>闲：{{baccaratSum.sumX || 0}}</li>
+              <li>闲对：{{baccaratSum.sumXd || 0}}</li>
+              <li>闲保险：{{baccaratSum.sumXbx || 0}}</li>
              </ul>
           </el-card>
       </el-col>
@@ -75,8 +75,8 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="4" :xs="12">
                   <div class="f1">
-                    <span>筹码:{{sumdata.sumChip || 0}}</span>
-                    <span>现金:{{sumdata.sumCash || 0}}</span>
+                    <span>筹码:{{baccaratSum.sumChip || 0}}</span>
+                    <span>现金:{{baccaratSum.sumCash || 0}}</span>
                   </div>
                </el-col>
               <el-col :span="14" :xs="24">
@@ -98,8 +98,8 @@
                <el-col :span="6" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
                   <el-button type="primary" @click="updataBet">录入</el-button>
-                  <el-button type="primary" @click="startBet">点码</el-button>
-                  <el-button type="primary" @click="startBet">收码</el-button>
+                  <el-button type="primary" @click="ponintCode">点码</el-button>
+                  <el-button type="primary" @click="getCode">收码</el-button>
                </el-col>
             </el-row>
           </el-card>
@@ -135,7 +135,7 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" height="500px" :data="betList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
                <template slot-scope="scope">
@@ -202,39 +202,8 @@
         </el-table>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-          <el-form-item label="卡号" prop="card">
-              <el-input v-model="form.card" placeholder="" :disabled="true"/>
-            </el-form-item>
-          <el-form-item label="现有签单金额" prop="signedAmount" v-if="isMain">
-              <el-input v-model="form.signedAmount" placeholder="" :disabled="true" />
-            </el-form-item>
-          <el-form-item label="签单金额" prop="amount"  v-if="!isMain">
-              <el-input v-model="form.amount" placeholder="" />
-            </el-form-item>
-           <el-form-item label="还单金额" prop="amount"  v-if="isMain">
-              <el-input v-model="form.amount" placeholder="" />
-          </el-form-item>
-
-            <el-form-item label="备注" prop="remark">
-               <el-input
-                  type="textarea"
-                  :rows="4"
-                  placeholder="请输入内容"
-                  v-model="form.remark">
-                </el-input>
-            </el-form-item>
-
-
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
-
+    <Dialog :title='title' :open='open' @getOpen='openData'/>
+   
   </div>
 </template>
 
@@ -242,13 +211,13 @@
 import { listSign,listSignTotal,addSigned,addReturnOrder} from "@/api/coderoom/sign";
 import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratReckon,baccaratEdit} from "@/api/bet/baccarat";
 import { mapState, mapMutations } from "vuex";
+import Dialog from "./dialog.vue"
 export default {
   name: "Baccarat",
   data() {
 
     return {
-      // 添加卡号
-      isMain:false,
+     
       // 遮罩层
       loading: true,
       // 选中数组
@@ -314,17 +283,6 @@ export default {
         {id:21},{id:22},{id:23},{id:24},{id:25},{id:26},{id:27},{id:28},{id:29},{id:30},
       ],
       subData:[],
-      // 表单校验
-      rules: {
-
-        // phonenumber: [
-        //   {
-        //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-        //     message: "请输入正确的手机号码",
-        //     trigger: "blur"
-        //   }
-        // ]
-      },
       rulesLudan:{},
       checkboxGroup1:[],
       radio1:'',
@@ -353,6 +311,7 @@ export default {
      
     };
   },
+  components:{Dialog},
   watch: {
     // 根据名称筛选部门树
 
@@ -360,23 +319,12 @@ export default {
 
   created() {
     this. getszdata();
-    this. getbetList();
     this. getTableInfo()
     this.getResult()
   },
   computed:{
     userName(){
       return this.$store.state.user.name
-    },
-    sumdataList(){
-      if(localStorage.getItem('sumdataList')){
-        return  this.sumdata =localStorage.getItem('sumdataList')
-      }
-    },
-     baccaratList(){
-      if(localStorage.getItem('baccaratList')){
-        return  this.betList =localStorage.getItem('baccaratList')
-      }
     },
      ...mapState("game", [ "baccaratList",'baccaratSum']),
   },
@@ -385,12 +333,17 @@ export default {
     screencast(){},
     roadChange(){},
     betRecord(){},
+    openData(data){
+      this.open = data
+    },
     //桌台信息
     getTableInfo(){
        baccaratInfo().then(res => {
           this.tableInfo = res.data;
           this.loading = false;
-        }
+        },
+        this.setBaccaratList(this.betList),
+        this.setBaccaratSum(this.sumdata),
       );
     },
     //赛果列表
@@ -445,8 +398,6 @@ export default {
 
     },
       status_change: function (row) {
-          localStorage.setItem('baccaratList',this.betList)
-          console.log(localStorage.getItem('baccaratList'))
           if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9){
              if (!row.row.type && row.row.type !=0) {
                 return 'table-info-red'
@@ -456,11 +407,7 @@ export default {
               }
             }
     },
-    getbetList(){
-      // if(localStorage.getItem('baccaratList')){
-      //   // this.betList =localStorage.getItem('baccaratList')
-      // }
-    },
+
     //开牌
     startBet(){
     
@@ -536,8 +483,7 @@ export default {
       const newChip =this.sumArr(arrChip)
       this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
       this.sumdata.sumCash = newCash['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
-      localStorage.setItem('sumdataList',this.sumdata)
-      console.log(localStorage.getItem('sumdataList'))
+     this.setBaccaratSum(this.sumdata)
       baccaratOpen({'json':param}).then(res => {
           this.subData= res.data
           let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
@@ -547,7 +493,7 @@ export default {
              
           })
           this.betList = arr2
-          localStorage.setItem('baccaratList',arr2)
+          this.setBaccaratList(arr2)
           this.loading = false;
         })
     },
@@ -556,17 +502,21 @@ export default {
       baccaratInput({'json':this.subData}).then(res=>{
         this.loading = false;
         this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
-        this.sumZ = ''
-        this.sumX = ''
-        this.sumH = ''
-        this.sumZd = ''
-        this.sumXd = ''
-        this.sumZbx = ''
-        this.sumXbx = ''
-        this.sumD = ''
-        this.sumX = ''
-        this.sumChip = ''
-        this.sumCash =''
+        this.sumdata={
+         sumZ:'',
+          sumX:'',
+          sumH:'',
+          sumZd:'',
+          sumXd:'',
+          sumZbx:'',
+          sumXbx:'',
+          sumD:'',
+          sumX:'',
+          sumChip:'',
+          sumCash:'',
+        }
+        this.setBaccaratList(this.betList)
+        this.setBaccaratSum(this.sumdata)
       })   
     },
     //数组对象求和
@@ -680,46 +630,21 @@ export default {
       this.handleQuery();
     },
 
-    /** 签单 */
-    handleSign(row) {
-      this.reset();
-      this.form = Object.assign({},row)
+    /** 点码 */
+    ponintCode() {
+      console.log(1)
        this.open = true;
-       this.isMain =false
-      this.title = "签单";
+      this.title = "点码";
     },
 
-    /** 还单 */
-    handleBack(row) {
-      this.reset();
-      this.form = Object.assign({},row)
+    /** 收码 */
+    getCode() {
       this.open = true;
-      this.isMain =true
-      this.title = "还单";
+      this.title = "收码";
     },
 
 
-    /** 提交按钮 */
-    submitForm: function() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.title == "还单") {
-            addReturnOrder(this.form).then(response => {
-              this.$modal.msgSuccess("还单编辑成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            this.form['cardType']=1
-            addSigned(this.form).then(response => {
-              this.$modal.msgSuccess("签单编辑成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
+  
     //获取数组
     getszdata(){
       this.szdata =[...Array(73).keys()]
