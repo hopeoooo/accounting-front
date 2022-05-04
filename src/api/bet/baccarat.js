@@ -1,19 +1,19 @@
 import request from '@/utils/request'
 
 // 点码||收码 确认修改
-export function baccaratEdit(query) {
+export function baccaratEdit(data) {
   return request({
     url: '/bet/baccarat/edit',
-    method: 'get',
-    params: query
+    method: 'post',
+    params: data
   })
 }
 // 点码||收码 计算差距
-export function baccaratReckon(query) {
+export function baccaratReckon(data) {
   return request({
     url: '/bet/baccarat/reckon',
-    method: 'get',
-    params: query
+    method: 'post',
+    params: data
   })
 }
 // 录入
@@ -29,7 +29,7 @@ export function baccaratUpdate(data) {
   return request({
     url: '/bet/baccarat/update',
     method: 'post',
-    data: data
+    params: data
   })
 }
 // 开牌

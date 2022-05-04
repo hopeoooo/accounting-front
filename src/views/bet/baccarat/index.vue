@@ -38,7 +38,7 @@
       <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
               <el-button type="primary" plain @click="screencast">未投屏</el-button>
-              <el-button type="primary" plain @click="roadChange">路珠修改</el-button>
+              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
               <el-button type="primary" plain @click="betRecord">下注记录</el-button>
           </el-card>
       </el-col>
@@ -107,13 +107,20 @@
     </el-row>
 
     <!-- 路单结果修改 -->
-    <el-dialog title="路单修改" :visible.sync="openLUdan" width="600px" append-to-body>
+    <el-dialog title="路单修改" :visible.sync="openLUdan" width="600px" class="ludanBox_dialog" append-to-body>
        <el-form ref="form" :model="formLudan" :rules="rulesLudan" label-width="0">
           <el-form-item label="" prop="">
-              <el-radio-group v-model="formLudan.radio1">
-                <el-radio-button :label="4">庄</el-radio-button>
-                <el-radio-button :label="1">闲</el-radio-button>
-                <el-radio-button :label="7">和</el-radio-button>
+             <div class="head" style="display:flex;width:100%;justify-content: space-around;">
+               <div>台号：{{formLudan.tableId}}</div>
+               <div>靴号：{{formLudan.bootNum}}</div>
+               <div>局号：{{formLudan.gameNum}}</div> 
+             </div>
+          </el-form-item>
+          <el-form-item label="" prop="">
+              <el-radio-group v-model="formLudan.radio1" >
+                 <el-radio-button :label="4" class="red">庄</el-radio-button>
+                  <el-radio-button :label="1" class="blue">闲</el-radio-button>
+                  <el-radio-button :label="7" class="green">和</el-radio-button>
               </el-radio-group>
             </el-form-item>
           <el-form-item>
@@ -123,8 +130,8 @@
           </el-form-item>
           <el-form-item label="" prop=""  >
               <el-radio-group v-model="formLudan.radio2">
-                <el-radio-button :label="9">大</el-radio-button>
-                <el-radio-button :label="6">小</el-radio-button>
+                <el-radio-button :label="9" class="red">大</el-radio-button>
+                <el-radio-button :label="6" class="blue">小</el-radio-button>
               </el-radio-group>
           </el-form-item>
 
@@ -203,13 +210,82 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <Dialog :title='title' :open='open' @getOpen='openData'/>
+      <!-- 投屏 -->
+    <el-dialog   v-dialogDrags :close-on-click-modal="false"  title="" :visible.sync="isVisibles" align='left' @close="closeDialogs" class="transfer" v-if="isVisibles" append-to-body>
+        <el-table v-loading="loading" class="betBox" width="1200px" height="800px" :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
+          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
+               <template slot-scope="scope">
+                  <el-radio-group v-model.number="scope.row.type">
+                <el-radio :label="0">现金</el-radio>
+                <el-radio :label="1">筹码</el-radio>
+              </el-radio-group>
+              </template>
+          </el-table-column>
+          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="庄" align="center" key="card1" prop="card1"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="闲" align="center" key="card2" prop="card2"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="和" align="center" key="card3" prop="card3"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="庄对" align="center" key="card4" prop="card4"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="闲对" align="center" key="card5" prop="card5"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="大" align="center" key="card8" prop="card8"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+            <el-table-column label="小" align="center" key="card9" prop="card9"  >
+               <template slot-scope="scope">
+                  <el-input v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+          <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
+          <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
+             
+         
+        </el-table>
+
+   </el-dialog>    
+
    
   </div>
 </template>
 
 <script>
-import { listSign,listSignTotal,addSigned,addReturnOrder} from "@/api/coderoom/sign";
-import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratReckon,baccaratEdit} from "@/api/bet/baccarat";
+import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput} from "@/api/bet/baccarat";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
 export default {
@@ -220,6 +296,7 @@ export default {
      
       // 遮罩层
       loading: true,
+      isVisibles:false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -318,8 +395,8 @@ export default {
   },
 
   created() {
-    this. getszdata();
-    this. getTableInfo()
+    this.getszdata();
+    this.getTableInfo()
     this.getResult()
   },
   computed:{
@@ -330,7 +407,12 @@ export default {
   },
   methods: {
     ...mapMutations('game',["setBaccaratList","setBaccaratSum"]),
-    screencast(){},
+    screencast(){
+      this.isVisibles =true
+    },
+    closeDialogs(){
+       this.isVisibles =false
+    },
     roadChange(){},
     betRecord(){},
     openData(data){
@@ -517,6 +599,12 @@ export default {
         }
         this.setBaccaratList(this.betList)
         this.setBaccaratSum(this.sumdata)
+        let that=this
+        setTimeout(function(){  
+          that.getTableInfo() 
+          that.getResult()
+        },1000)
+       
       })   
     },
     //数组对象求和
@@ -661,9 +749,14 @@ export default {
     },
     //
     changeChip(c){
+      console.log(c)
       this.reset();
       this.openLUdan =true
       this.formLudan.id = c.id
+      this.formLudan.bootNum = c.bootNum
+      this.formLudan.gameNum = c.gameNum
+      this.formLudan.tableId = c.tableId
+
       let v = c.gameResult
       let arr =v.split('')
       arr.forEach(e=>{
@@ -883,7 +976,7 @@ export default {
          }
       }
   }
-
+  
 
 }
 .box-card-box-list{
@@ -937,21 +1030,21 @@ export default {
       .red{
         .el-checkbox-button__inner,.el-radio-button__inner{
            background: red;
-           opacity: .7;
+           opacity: .6;
         }
       }
       .blue{
         // background: blue;
         .el-checkbox-button__inner,.el-radio-button__inner{
            background: blue;
-           opacity: .7;
+           opacity: .6;
         }
       }
       .green{
         // background: green;
         .el-checkbox-button__inner,.el-radio-button__inner{
            background: green;
-           opacity: .7;
+           opacity: .6;
         }
       }
       .is-active,.is-checked{
@@ -1017,4 +1110,54 @@ export default {
 .table-info-red td,.table-info-red1 td{
   // background: rgb(199, 135, 135);
 }
+.ludanBox_dialog{
+    .el-form-item{
+      .el-radio-group,.el-checkbox-group{
+        display:  flex;
+        justify-content: center;
+        width: 100%;
+        .el-checkbox-button__inner,.el-radio-button__inner{
+        min-width: 80px;
+        height: 40px;
+        line-height: 40px;
+        background: #919191;
+        border-radius: 6px;
+        color: #fff;
+        margin: 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .red{
+        .el-checkbox-button__inner,.el-radio-button__inner{
+           background: red;
+           opacity: .6;
+        }
+      }
+      .blue{
+        // background: blue;
+        .el-checkbox-button__inner,.el-radio-button__inner{
+           background: blue;
+           opacity: .6;
+        }
+      }
+      .green{
+        // background: green;
+        .el-checkbox-button__inner,.el-radio-button__inner{
+           background: green;
+           opacity: .6;
+        }
+      }
+      .is-active,.is-checked{
+         .el-checkbox-button__inner,.el-radio-button__inner{
+           opacity: 1;
+           font-size: 20px;
+           border: 0;
+           font-weight: bold;
+        }
+      }
+      }
+    }
+  }
 </style>
