@@ -56,3 +56,19 @@ export function baccaratInfo(data) {
     data: data
   })
 }
+// 注单保存
+export function baccaratSave(data) {
+  return request({
+    url: '/bet/push/save',
+    method: 'post',
+    data: data
+  })
+}
+// 注单查询
+export function baccaratGet(data) {
+  return request({
+    url: '/bet/push/get',
+    method: 'post',
+    data: data
+  })
+}

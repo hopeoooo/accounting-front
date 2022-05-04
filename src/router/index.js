@@ -116,7 +116,20 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/bet',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'baccarat',
+        component: () => import('@/views/bet/baccarat/show'),
+        name: 'baccarat',
+        meta: { title: '员工管理', icon: '' }
+      }
+    ]
+  },
   // {
   //   path: '/coderoom',
   //   component: Layout,

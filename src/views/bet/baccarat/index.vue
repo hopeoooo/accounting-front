@@ -37,7 +37,7 @@
        <!--按钮-->
       <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-              <el-button type="primary" plain @click="screencast">未投屏</el-button>
+              <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
               <el-button type="primary" plain @click="betRecord">下注记录</el-button>
           </el-card>
@@ -89,15 +89,17 @@
                   <el-checkbox-group v-model="checkboxGroup1" class="checked">
                     <el-checkbox-button v-for="(e,key) in reData" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
-
-                  <el-radio-group v-model="radio2" class="checked">
+                  <el-checkbox-group v-model="checkboxGroup2" class="checked" :max="1">
+                    <el-checkbox-button v-for="(e,key) in reData1" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
+                  </el-checkbox-group>
+                  <!-- <el-radio-group v-model="radio2" class="checked">
                     <el-radio-button :label="9" class="red">大</el-radio-button>
                     <el-radio-button :label="6" class="blue">小</el-radio-button>
-                  </el-radio-group>
+                  </el-radio-group> -->
                </el-col>
                <el-col :span="6" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
-                  <el-button type="primary" @click="updataBet">录入</el-button>
+                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
                   <el-button type="primary" @click="ponintCode">点码</el-button>
                   <el-button type="primary" @click="getCode">收码</el-button>
                </el-col>
@@ -129,10 +131,13 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="" prop=""  >
-              <el-radio-group v-model="formLudan.radio2">
+              <!-- <el-radio-group v-model="formLudan.radio2">
                 <el-radio-button :label="9" class="red">大</el-radio-button>
                 <el-radio-button :label="6" class="blue">小</el-radio-button>
-              </el-radio-group>
+              </el-radio-group> -->
+              <el-checkbox-group v-model="checkboxGroup2" class="checked" :max="1">
+                <el-checkbox-button v-for="(e,key) in reData1" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
+              </el-checkbox-group>
           </el-form-item>
 
       </el-form>
@@ -142,7 +147,7 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
                <template slot-scope="scope">
@@ -210,82 +215,14 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <Dialog :title='title' :open='open' @getOpen='openData'/>
-      <!-- 投屏 -->
-    <el-dialog   v-dialogDrags :close-on-click-modal="false"  title="" :visible.sync="isVisibles" align='left' @close="closeDialogs" class="transfer" v-if="isVisibles" append-to-body>
-        <el-table v-loading="loading" class="betBox" width="1200px" height="800px" :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
-          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
-               <template slot-scope="scope">
-                  <el-radio-group v-model.number="scope.row.type">
-                <el-radio :label="0">现金</el-radio>
-                <el-radio :label="1">筹码</el-radio>
-              </el-radio-group>
-              </template>
-          </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="庄" align="center" key="card1" prop="card1"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="闲" align="center" key="card2" prop="card2"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="和" align="center" key="card3" prop="card3"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="庄对" align="center" key="card4" prop="card4"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="闲对" align="center" key="card5" prop="card5"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="大" align="center" key="card8" prop="card8"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-            <el-table-column label="小" align="center" key="card9" prop="card9"  >
-               <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-          <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
-          <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
-             
-         
-        </el-table>
-
-   </el-dialog>    
+    
 
    
   </div>
 </template>
 
 <script>
-import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput} from "@/api/bet/baccarat";
+import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratSave} from "@/api/bet/baccarat";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
 export default {
@@ -293,7 +230,7 @@ export default {
   data() {
 
     return {
-     
+      isSend:false,
       // 遮罩层
       loading: true,
       isVisibles:false,
@@ -337,7 +274,8 @@ export default {
         id:'',
         radio1:'',
         checkboxGroup1:[],
-        radio2:'',
+         checkboxGroup2:[],
+        // radio2:'',
       },
       defaultProps: {
         children: "children",
@@ -362,14 +300,20 @@ export default {
       subData:[],
       rulesLudan:{},
       checkboxGroup1:[],
+        checkboxGroup2:[],
       radio1:'',
-      radio2:'',
+      // radio2:'',
       reData:[
         {id:8,name:'庄对',color:'red'},
         {id:5,name:'闲对',color:'blue'},
       ],
+       reData1:[
+        {id:9,name:'大',color:'red'},
+        {id:6,name:'小',color:'blue'},
+      ],
       // userName:'',
       tableInfo:'', //桌台信息
+      iskaipai:true,
       result:'',//赛果
       //庄闲和筹码现金合计
       sumdata:{
@@ -408,11 +352,10 @@ export default {
   methods: {
     ...mapMutations('game',["setBaccaratList","setBaccaratSum"]),
     screencast(){
-      this.isVisibles =true
+      this.isSend = !this.isSend
+      this. getSend()
     },
-    closeDialogs(){
-       this.isVisibles =false
-    },
+  
     roadChange(){},
     betRecord(){},
     openData(data){
@@ -479,27 +422,44 @@ export default {
       this.multiple = !selection.length
 
     },
-      status_change: function (row) {
-          if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9){
-             if (!row.row.type && row.row.type !=0) {
-                return 'table-info-red'
-              }
-              if (!row.row.card) {
-                return 'table-info-red1'
-              }
-            }
+    status_change: function (row) {  
+      if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9){
+          if (!row.row.type && row.row.type !=0) {
+            return 'table-info-red'
+          }
+          if (!row.row.card) {
+            return 'table-info-red1'
+          }
+        }
     },
-
+    getSend(){
+      const tableId = this.tableInfo.tableId || 1
+      if(this.isSend == true){
+        baccaratSave({'tableId':tableId,'json':this.betList}).then(res => {
+          this.loading = false;
+        })
+      }else{
+         let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
+         baccaratSave({'tableId':tableId,'json':arr2}).then(res => {
+          this.loading = false;
+        })
+      }
+    },
+    DataChange(){
+      this. getSend()
+    },
     //开牌
     startBet(){
-    
+      console.log(this.iskaipai)
       if(this.radio1 ==''){
         this.$modal.msgError("请选择开奖结果");
         return
       }
+      
       let param ={}
       let str =''
-      str= this.radio1.toString()+this.checkboxGroup1.join('')+this.radio2.toString()
+      str= this.radio1.toString()+this.checkboxGroup1.join('')+this.checkboxGroup2.join('')
+      //  str= this.radio1.toString()+this.checkboxGroup1.join('')+this.radio2.toString()
       param['gameResult']=str
       let arr=[]
       let arr1=[]
@@ -576,36 +536,40 @@ export default {
           })
           this.betList = arr2
           this.setBaccaratList(arr2)
+          // this. getSend()
+          this.iskaipai = false
           this.loading = false;
         })
     },
     //录入
     updataBet(){
-      baccaratInput({'json':this.subData}).then(res=>{
-        this.loading = false;
-        this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
-        this.sumdata={
-         sumZ:'',
-          sumX:'',
-          sumH:'',
-          sumZd:'',
-          sumXd:'',
-          sumZbx:'',
-          sumXbx:'',
-          sumD:'',
-          sumX:'',
-          sumChip:'',
-          sumCash:'',
-        }
-        this.setBaccaratList(this.betList)
-        this.setBaccaratSum(this.sumdata)
-        let that=this
-        setTimeout(function(){  
-          that.getTableInfo() 
-          that.getResult()
-        },1000)
-       
-      })   
+        baccaratInput({'json':this.subData}).then(res=>{
+          this.loading = false;
+          this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
+          this.sumdata={
+          sumZ:'',
+            sumX:'',
+            sumH:'',
+            sumZd:'',
+            sumXd:'',
+            sumZbx:'',
+            sumXbx:'',
+            sumD:'',
+            sumX:'',
+            sumChip:'',
+            sumCash:'',
+          }
+          this.setBaccaratList(this.betList)
+          this.setBaccaratSum(this.sumdata)
+          let that=this
+          setTimeout(function(){  
+            that.getTableInfo() 
+            that.getResult()
+          },1000)
+          this. getSend()  
+          this.iskaipai = true
+        }) 
+        
     },
     //数组对象求和
     sumArr(arr){
@@ -701,7 +665,8 @@ export default {
         id:'',
         radio1:'',
         checkboxGroup1:[],
-        radio2:'',
+        checkboxGroup2:[],
+        // radio2:'',
       },
       this.resetForm("form");
       this.resetForm("formLudan");
@@ -771,16 +736,19 @@ export default {
         }else if(e==8){
           this.formLudan.checkboxGroup1.push(8)
         }else if(e==9){
-         this.formLudan.radio2 = 9
+        //  this.formLudan.radio2 = 9
+        this.formLudan.checkboxGroup2.push(9)
         }else if(e==6){
-          this.formLudan.radio2 = 6
+          // this.formLudan.radio2 = 6
+          this.formLudan.checkboxGroup2.push(6)
         }
       })
       
     },
       submitLudan(){
       let str =''
-      str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.radio2.toString()
+      // str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.radio2.toString()
+      str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.checkboxGroup2.join('')
       
       let param ={}
       param['id']= this.formLudan.id
