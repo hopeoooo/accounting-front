@@ -56,12 +56,10 @@
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="会员卡号" align="center" key="card" prop="card" />
           <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
-           <el-table-column label="筹码余额" align="center" sortable key="chipAmount" prop="chipAmount" />
-          <el-table-column label="是否可换现" align="center" key="isCash" prop="isCash" >
-            <template slot-scope="scope">
-              <span >{{scope.row.isCash==0?'否':'是'}}</span>
-          </template>
-          </el-table-column>
+          <el-table-column label="已存筹码余额" align="center" sortable key="chipBalance" prop="chipBalance" />
+          <el-table-column label="已存现金余额" align="center" sortable key="cashBalance" prop="cashBalance" />
+          <el-table-column label="总余额" align="center" sortable key="totalBalance" prop="totalBalance" />
+          
           <el-table-column label="备注" align="center" key="remark" prop="remark" />      
           <el-table-column
             fixed="right"
@@ -75,16 +73,16 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row.card)"
+                @click="handleSign(scope.row)"
               
-              >买码</el-button>
+              >存码</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+                @click="handleBack(scope.row)"
               
-              >换现</el-button>
+              >取码</el-button>
                 <el-button
                 size="mini"
                 type="text"
@@ -98,15 +96,13 @@
         </el-table>
         <el-table v-loading="loading" :data="userList" show-summary sum-text="合计" class="table2" :summary-method="getSummaries"  @selection-change="handleSelectionChange">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-         <el-table-column label="会员卡号" align="center" key="card" prop="card" />
+          <el-table-column label="会员卡号" align="center" key="card" prop="card" />
           <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
-          <el-table-column label="筹码余额" align="center" sortable key="chipAmount" prop="chipAmount" />
-          <el-table-column label="是否可换现" align="center" key="isCash" prop="isCash" >
-            <template slot-scope="scope">
-              <span >{{scope.row.isCash==0?'否':'是'}}</span>
-          </template>
-          </el-table-column>
-          <el-table-column label="备注" align="center" key="remark" prop="remark" />    
+          <el-table-column label="已存筹码余额" align="center" sortable key="chipBalance" prop="chipBalance" />
+          <el-table-column label="已存现金余额" align="center" sortable key="cashBalance" prop="cashBalance" />
+          <el-table-column label="总余额" align="center" sortable key="totalBalance" prop="totalBalance" />
+          
+          <el-table-column label="备注" align="center" key="remark" prop="remark" />      
           <el-table-column
             fixed="right"
             label="操作"
@@ -119,23 +115,17 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row.card)"
+                @click="handleSign(scope.row)"
               
-              >买码</el-button>
+              >存码</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+                @click="handleBack(scope.row)"
               
-              >换现</el-button>
-               <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+              >取码</el-button>
               
-              >明细</el-button>
           
            
             </template>
@@ -157,14 +147,25 @@
           <el-form-item label="卡号" prop="card">
               <el-input v-model="form.card" placeholder="" :disabled="true"/>
             </el-form-item>
-          <el-form-item label="买入筹码金额" prop="chipAmount"  v-if="!isMain">
-              <el-input v-model="form.chipAmount" placeholder="" />
+           <el-form-item label="现有筹码" prop="cashBalance"  v-if="isMain">
+              <el-input v-model="form.cashBalance" placeholder="" :disabled="true"/>
+            </el-form-item>
+           <el-form-item label="现有现金" prop="chipBalance"  v-if="isMain">
+              <el-input v-model="form.chipBalance" placeholder="" :disabled="true"/>
+            </el-form-item>    
+         
+          <el-form-item label="存储筹码" prop="chipAmount"  v-if="!isMain">
+              <el-input v-model.number="form.chipAmount" placeholder="" />
             </el-form-item>   
-           
-           <el-form-item label="换现金额" prop="chipAmount"  v-if="isMain">
-              <el-input v-model="form.chipAmount" placeholder="" />
+           <el-form-item label="存储现金" prop="cashAmount"  v-if="!isMain">
+              <el-input v-model.number="form.cashAmount" placeholder="" />
+          </el-form-item>  
+           <el-form-item label="取出筹码" prop="chipAmount"  v-if="isMain">
+              <el-input v-model.number="form.chipAmount" placeholder="" />
             </el-form-item>   
-          
+           <el-form-item label="取出现金" prop="cashAmount"  v-if="isMain">
+              <el-input v-model.number="form.cashAmount" placeholder="" />
+          </el-form-item>  
 
             <el-form-item label="备注" prop="remark">
                <el-input
@@ -188,12 +189,18 @@
 </template>
 
 <script>
-import { listCashChip,listCashChipTotal,addBuyCode,addCashExchange} from "@/api/coderoom/cashToCode";
+import { listAccessCode,listAccessCodeTotal,saveCode,updateCodeFetching} from "@/api/coderoom/accessCode";
 
 export default {
-  name: "CashToCode",
+  name: "AccessCode",
   data() {
-  
+     const lessOne = (rule, value, callback) => {
+      if (value == '') {
+        callback(new Error("请输入额度"));
+      } else {
+        callback();
+      }
+    };
     return {
       // 添加卡号
       isMain:false,
@@ -251,7 +258,15 @@ export default {
       
       // 表单校验
       rules: {
-        
+        chipAmount:[
+          // { required: true, message: "请输入排序", trigger: 'blur' },
+            { type: 'number', pattern: '^[0-9]*$', message: '请输入数字', trigger: 'blur' },
+            { required: true, validator: lessOne, trigger: "blur" }
+          ],
+        cashAmount:[
+            { type: 'number', pattern: '^[0-9]*$', message: '请输入数字', trigger: 'blur' },
+            { required: true, validator: lessOne, trigger: "blur" }
+        ],
        
       }
     };
@@ -273,13 +288,13 @@ export default {
       params['isAdmin']=this.queryParams.isAdmin ==false?0:1
       params['card']=this.queryParams.card
       this.loading = true;
-      listCashChip(params).then(response => {
+      listAccessCode(params).then(response => {
           this.userList = response.rows;
           this.total = response.total;
           this.loading = false;
         }
       );
-       listCashChipTotal(params).then(response => {
+       listAccessCodeTotal(params).then(response => {
           this.userTotal = response.data;
          
           this.loading = false;
@@ -287,7 +302,7 @@ export default {
       );
       this.$delete(params,'pageNum')
       this.$delete(params,'pageSize')
-       listCashChip(params).then(response => {
+       listAccessCode(params).then(response => {
           this.userData = response.rows;
           console.log(this.userData)
         }
@@ -309,10 +324,17 @@ export default {
             return;
           }
           if (index === 2) {
-            sums[index] = this.userTotal.chipAmount;
+            sums[index] = this.userTotal.chipBalance;
             return;
           }
-        
+          if (index === 3) {
+            sums[index] = this.userTotal.cashBalance;
+            return;
+          }
+          if (index === 4) {
+            sums[index] = this.userTotal.totalBalance;
+            return;
+          }
         });
          return sums;
       },
@@ -328,7 +350,7 @@ export default {
             sums[index] = '';
             return;
           }
-           if (index === 3) {
+           if (index === 5) {
             sums[index] = '';
             return;
           }
@@ -364,8 +386,10 @@ export default {
       this.form = {
         card: '',
         userName:'',
-        chipAmount:'',
-        isCash:'',
+      
+        chipBalance:'',
+        cashBalance:'',
+        totalBalance:'',
         remark:''
 
       };
@@ -386,34 +410,32 @@ export default {
     /** 存码 */
     handleSign(row) {
       this.reset();
-      // this.form = Object.assign({},row)
-      this.form['card']=row
+      this.form = Object.assign({},row)
        this.open = true;
        this.isMain =false
-      this.title = "买码";
+      this.title = "存码";
     },
    
     /** 取码 */
     handleBack(row) {
       this.reset();
-      // this.form = Object.assign({},row)
-      this.form['card']=row
+      this.form = Object.assign({},row)
       this.open = true;
       this.isMain =true
-      this.title = "换现";
+      this.title = "取码";
     },
         /** 导出按钮操作 */
     handleExport() {
        // 表头对应关系
         require.ensure([], () => {
-          const { export_json_to_excel  } = require('../../../excel/Export2Excel');
-          const tHeader = ['会员卡号', '姓名', '筹码余额','是否可换现','备注'];
+          const { export_json_to_excel  } = require('@/excel/Export2Excel');
+          const tHeader = ['会员卡号', '姓名', '已存筹码余额','已存现金余额','总余额','备注'];
           // 上面设置Excel的表格第一行的标题
-          const filterVal = ['card', 'userName', 'chipAmount','isCash','remark'];
+          const filterVal = ['card', 'userName', 'chipBalance','cashBalance','totalBalance','remark'];
           // 上面的index、nickName、name是tableData里对象的属性
           const list = this.userData;  //把data里的tableData存到list
           const data = this.formatJson(filterVal,list);
-          export_json_to_excel (tHeader, data, '买码换现列表');
+          export_json_to_excel (tHeader, data, '存取码列表');
         })
     },
      // 该方法负责将数组转化成二维数组
@@ -429,16 +451,16 @@ export default {
       console.log(this.title)
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.title == "换现") {
-            addCashExchange(this.form).then(response => {
-              this.$modal.msgSuccess("换现成功");
+          if (this.title == "取码") {
+            updateCodeFetching(this.form).then(response => {
+              this.$modal.msgSuccess("取码成功");
               this.open = false;
               this.getList();
             });
           } else {
             this.form['cardType']=1
-            addBuyCode(this.form).then(response => {
-              this.$modal.msgSuccess("买码成功");
+            saveCode(this.form).then(response => {
+              this.$modal.msgSuccess("取码成功");
               this.open = false;
               this.getList();
             });

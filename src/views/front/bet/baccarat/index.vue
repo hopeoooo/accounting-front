@@ -905,39 +905,39 @@ export default {
             font-style: normal;
             }
             .type1{
-              background: url("../../../assets/images/ludan/x1.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/x1.webp") center no-repeat;
               background-size: 100%;
             }
             .type2{
-              background: url("../../../assets/images/ludan/x2.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/x2.webp") center no-repeat;
               background-size: 100%;
             }
             .type3{
-              background: url("../../../assets/images/ludan/x3.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/x3.webp") center no-repeat;
               background-size: 100%;
             }
             .type4{
-              background: url("../../../assets/images/ludan/x4.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/x4.webp") center no-repeat;
               background-size: 100%;
             }
             .type5{
-              background: url("../../../assets/images/ludan/z1.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/z1.webp") center no-repeat;
               background-size: 100%;
             }
             .type6{
-              background: url("../../../assets/images/ludan/z2.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/z2.webp") center no-repeat;
               background-size: 100%;
             }
             .type7{
-              background: url("../../../assets/images/ludan/z3.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/z3.webp") center no-repeat;
               background-size: 100%;
             }
             .type8{
-              background: url("../../../assets/images/ludan/z4.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/z4.webp") center no-repeat;
               background-size: 100%;
             }
             .type9{
-              background: url("../../../assets/images/ludan/h.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/h.webp") center no-repeat;
               background-size: 100%;
             }
           }

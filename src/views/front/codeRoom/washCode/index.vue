@@ -559,7 +559,7 @@ export default {
     handleExport() {
       // 表头对应关系
       require.ensure([], () => {
-        const { export_json_to_excel } = require("../../../excel/Export2Excel");
+        const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = ["会员卡号", "姓名", "筹码余额", "是否可汇出", "备注"];
         // 上面设置Excel的表格第一行的标题
         const filterVal = [

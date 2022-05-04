@@ -68,7 +68,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/account/member/index'),
+        component: () => import('@/views/front/account/member/index'),
         name: 'Index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
@@ -110,7 +110,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'employee',
-        component: () => import('@/views/account/employee/index'),
+        component: () => import('@/views/front/account/employee/index'),
         name: 'employee',
         meta: { title: '员工管理', icon: '' }
       }
@@ -124,7 +124,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'baccarat',
-        component: () => import('@/views/bet/baccarat/show'),
+        component: () => import('@/views/front/bet/baccarat/show'),
         name: 'baccarat',
         meta: { title: '员工管理', icon: '' }
       }

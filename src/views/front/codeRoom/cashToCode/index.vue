@@ -12,7 +12,7 @@
               clearable
               style="width: 240px"
             />
-           <el-checkbox v-model="queryParams.isAdmin">包含子卡</el-checkbox>
+           <el-checkbox v-model="queryParams.isAdmin">过滤内部卡号</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -55,31 +55,14 @@
         <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="会员卡号" align="center" key="card" prop="card" />
-          <el-table-column label="台号" align="center" key="tableId" prop="tableId" />
-          <el-table-column label="靴号" align="center" key="bootNum" prop="bootNum" />
-          <el-table-column label="局号" align="center" key="gameNum" prop="gameNum" />
-          <el-table-column label="下注玩法" align="center" key="option" prop="option" width="180px">
+          <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
+           <el-table-column label="筹码余额" align="center" sortable key="chipAmount" prop="chipAmount" />
+          <el-table-column label="是否可换现" align="center" key="isCash" prop="isCash" >
             <template slot-scope="scope">
-             <span v-for="(e,key) in scope.row.option" :key="key" class="wanfa">
-               {{getText(e.betOption)}}:{{e.betMoney}} 
-             </span>
-            </template>
-          </el-table-column>  
-          <el-table-column label="币种" align="center" key="type" prop="type" >
-             <template slot-scope="scope" class="wanfabox">
-               <span >{{scope.row.type==0?'筹码 ':'现金'}}</span>
-            </template>
-          </el-table-column>  
-          <el-table-column label="下注金额" align="center" key="betMoney" prop="betMoney" />
-          <el-table-column label="开牌结果" align="center" key="gameResult" prop="gameResult"> 
-             <template slot-scope="scope">
-               <span >{{gameResult(scope.row.gameResult)}}</span>
-            </template>
-          </el-table-column>  
-          <el-table-column label="输赢" align="center" key="winLose" prop="winLose" />
-          <el-table-column label="下注时间" align="center" key="startTime" prop="startTime" />
-          <el-table-column label="操作员" align="center" key="createBy" prop="createBy" />
-            
+              <span >{{scope.row.isCash==0?'否':'是'}}</span>
+          </template>
+          </el-table-column>
+          <el-table-column label="备注" align="center" key="remark" prop="remark" />      
           <el-table-column
             fixed="right"
             label="操作"
@@ -92,36 +75,38 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row)"
+                @click="handleSign(scope.row.card)"
               
-              >编辑</el-button>
+              >买码</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row.card)"
               
+              >换现</el-button>
+                <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row.card)"
+              
+              >明细</el-button>
            
             </template>
           </el-table-column>
         </el-table>
         <el-table v-loading="loading" :data="userList" show-summary sum-text="合计" class="table2" :summary-method="getSummaries"  @selection-change="handleSelectionChange">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-              <el-table-column label="会员卡号" align="center" key="card" prop="card" />
-           <el-table-column label="台号" align="center" key="tableId" prop="tableId" />
-            <el-table-column label="靴号" align="center" key="bootNum" prop="bootNum" />
-             <el-table-column label="局号" align="center" key="gameNum" prop="gameNum" />
-          <el-table-column label="下注玩法" align="center" key="option" prop="option">
-             <template slot-scope="scope">
-             
-            </template>
-          </el-table-column>  
-          <el-table-column label="币种" align="center" key="type" prop="type" >
-             <template slot-scope="scope">
-               <span >{{scope.row.type==0?'筹码 ':'现金'}}</span>
-            </template>
-          </el-table-column>  
-          <el-table-column label="下注金额" align="center" key="betMoney" prop="betMoney" />
-          <el-table-column label="开牌结果" align="center" key="gameResult" prop="gameResult" />
-          <el-table-column label="输赢" align="center" key="winLose" prop="winLose" />
-          <el-table-column label="下注时间" align="center" key="startTime" prop="startTime" />
-          <el-table-column label="操作员" align="center" key="createBy" prop="createBy" />
-            
+         <el-table-column label="会员卡号" align="center" key="card" prop="card" />
+          <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
+          <el-table-column label="筹码余额" align="center" sortable key="chipAmount" prop="chipAmount" />
+          <el-table-column label="是否可换现" align="center" key="isCash" prop="isCash" >
+            <template slot-scope="scope">
+              <span >{{scope.row.isCash==0?'否':'是'}}</span>
+          </template>
+          </el-table-column>
+          <el-table-column label="备注" align="center" key="remark" prop="remark" />    
           <el-table-column
             fixed="right"
             label="操作"
@@ -134,10 +119,24 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row)"
+                @click="handleSign(scope.row.card)"
               
-              >编辑</el-button>
+              >买码</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row.card)"
               
+              >换现</el-button>
+               <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row.card)"
+              
+              >明细</el-button>
+          
            
             </template>
           </el-table-column>
@@ -158,15 +157,14 @@
           <el-form-item label="卡号" prop="card">
               <el-input v-model="form.card" placeholder="" :disabled="true"/>
             </el-form-item>
-          <el-form-item label="现有签单金额" prop="signedAmount" v-if="isMain">
-              <el-input v-model="form.signedAmount" placeholder="" :disabled="true" />
-            </el-form-item>  
-          <el-form-item label="签单金额" prop="amount"  v-if="!isMain">
-              <el-input v-model="form.amount" placeholder="" />
+          <el-form-item label="买入筹码金额" prop="chipAmount"  v-if="!isMain">
+              <el-input v-model="form.chipAmount" placeholder="" />
             </el-form-item>   
-           <el-form-item label="还单金额" prop="amount"  v-if="isMain">
-              <el-input v-model="form.amount" placeholder="" />
-          </el-form-item>  
+           
+           <el-form-item label="换现金额" prop="chipAmount"  v-if="isMain">
+              <el-input v-model="form.chipAmount" placeholder="" />
+            </el-form-item>   
+          
 
             <el-form-item label="备注" prop="remark">
                <el-input
@@ -190,11 +188,10 @@
 </template>
 
 <script>
-import { listSign,listSignTotal,addSigned,addReturnOrder} from "@/api/coderoom/sign";
-import { listBetRecord,listBetRecordTotal} from "@/api/report/report";
+import { listCashChip,listCashChipTotal,addBuyCode,addCashExchange} from "@/api/coderoom/cashToCode";
 
 export default {
-  name: "Bet",
+  name: "CashToCode",
   data() {
   
     return {
@@ -255,13 +252,7 @@ export default {
       // 表单校验
       rules: {
         
-        // phonenumber: [
-        //   {
-        //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-        //     message: "请输入正确的手机号码",
-        //     trigger: "blur"
-        //   }
-        // ]
+       
       }
     };
   },
@@ -273,7 +264,6 @@ export default {
     this.getList();
   
   },
-
   methods: {
     /** 查询用户列表 */
     getList() {
@@ -283,13 +273,13 @@ export default {
       params['isAdmin']=this.queryParams.isAdmin ==false?0:1
       params['card']=this.queryParams.card
       this.loading = true;
-      listBetRecord(params).then(response => {
+      listCashChip(params).then(response => {
           this.userList = response.rows;
           this.total = response.total;
           this.loading = false;
         }
       );
-       listBetRecordTotal(params).then(response => {
+       listCashChipTotal(params).then(response => {
           this.userTotal = response.data;
          
           this.loading = false;
@@ -297,7 +287,7 @@ export default {
       );
       this.$delete(params,'pageNum')
       this.$delete(params,'pageSize')
-       listBetRecord(params).then(response => {
+       listCashChip(params).then(response => {
           this.userData = response.rows;
           console.log(this.userData)
         }
@@ -318,14 +308,11 @@ export default {
             sums[index] = '合计';
             return;
           }
-           if (index === 6) {
-            sums[index] = this.userTotal.betMoney;
+          if (index === 2) {
+            sums[index] = this.userTotal.chipAmount;
             return;
           }
-           if (index === 8) {
-            sums[index] = this.userTotal.winLose;
-            return;
-          }
+        
         });
          return sums;
       },
@@ -337,11 +324,14 @@ export default {
             sums[index] = '小计';
             return;
           }
-           if (index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 7) {
+           if (index === 1) {
             sums[index] = '';
             return;
           }
-           
+           if (index === 3) {
+            sums[index] = '';
+            return;
+          }
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -374,7 +364,8 @@ export default {
       this.form = {
         card: '',
         userName:'',
-        signedAmount:'',
+        chipAmount:'',
+        isCash:'',
         remark:''
 
       };
@@ -392,35 +383,37 @@ export default {
       this.handleQuery();
     },
    
-    /** 签单 */
+    /** 存码 */
     handleSign(row) {
       this.reset();
-      this.form = Object.assign({},row)
+      // this.form = Object.assign({},row)
+      this.form['card']=row
        this.open = true;
        this.isMain =false
-      this.title = "签单";
+      this.title = "买码";
     },
    
-    /** 还单 */
+    /** 取码 */
     handleBack(row) {
       this.reset();
-      this.form = Object.assign({},row)
+      // this.form = Object.assign({},row)
+      this.form['card']=row
       this.open = true;
       this.isMain =true
-      this.title = "还单";
+      this.title = "换现";
     },
         /** 导出按钮操作 */
     handleExport() {
        // 表头对应关系
         require.ensure([], () => {
-          const { export_json_to_excel  } = require('../../../excel/Export2Excel');
-          const tHeader = ['会员卡号', '姓名', '现有签单金额','备注'];
+          const { export_json_to_excel  } = require('@/excel/Export2Excel');
+          const tHeader = ['会员卡号', '姓名', '筹码余额','是否可换现','备注'];
           // 上面设置Excel的表格第一行的标题
-          const filterVal = ['card', 'userName', 'signedAmount','remark'];
+          const filterVal = ['card', 'userName', 'chipAmount','isCash','remark'];
           // 上面的index、nickName、name是tableData里对象的属性
           const list = this.userData;  //把data里的tableData存到list
           const data = this.formatJson(filterVal,list);
-          export_json_to_excel (tHeader, data, '签单列表');
+          export_json_to_excel (tHeader, data, '买码换现列表');
         })
     },
      // 该方法负责将数组转化成二维数组
@@ -431,82 +424,21 @@ export default {
     handlePrint(){},
     // 明细
     handleDetail(){},
-    // 下注玩法
-    getText(a){
-      switch(a) {
-        case '1':
-         return '闲'
-        case '3':
-         return '庄保险'
-         case '0':
-          return '闲保险'
-          
-        case '4':
-        return  '庄'
-         
-        case '7':
-        return  '和'
-         
-        case '5':
-        return  '闲对'
-         
-        case '8':
-        return  '庄对'
-         
-        case '9':
-        return  '大'
-         
-        case '6':
-        return  '小'
-                  
-        default:
-          // code block
-      }
-    },
-    // 开牌结果
-    gameResult(c){
-      let arr1 =[]
-      let arr = c.split('')
-      console.log(arr)
-      arr.forEach(e=>{
-        if(e==1){
-          arr1.push('闲')
-        }else if(e==0){
-          arr1.push('闲保险')
-        }else if(e==3){
-          arr1.push('庄保险')
-        }else if(e==4){
-          arr1.push('庄')
-        }else if(e==7){
-          arr1.push('和')
-        }else if(e==5){
-          arr1.push('闲对')
-        }else if(e==8){
-          arr1.push('庄对')
-        }else if(e==9){
-          arr1.push('大')
-        }else if(e==6){
-          arr1.push('小')
-        }
-      })
-      return arr1.toString()
-
-    },
     /** 提交按钮 */
     submitForm: function() {
       console.log(this.title)
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.title == "还单") {
-            addReturnOrder(this.form).then(response => {
-              this.$modal.msgSuccess("还单编辑成功");
+          if (this.title == "换现") {
+            addCashExchange(this.form).then(response => {
+              this.$modal.msgSuccess("换现成功");
               this.open = false;
               this.getList();
             });
           } else {
             this.form['cardType']=1
-            addSigned(this.form).then(response => {
-              this.$modal.msgSuccess("签单编辑成功");
+            addBuyCode(this.form).then(response => {
+              this.$modal.msgSuccess("买码成功");
               this.open = false;
               this.getList();
             });
@@ -536,9 +468,5 @@ export default {
 }
 .el-table.table2 {
   .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
-}
-.wanfa{
-  display: inline-block;
-  width: 50%;
 }
 </style>

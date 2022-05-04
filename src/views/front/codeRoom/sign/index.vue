@@ -12,7 +12,7 @@
               clearable
               style="width: 240px"
             />
-           <el-checkbox v-model="queryParams.isAdmin">过滤内部卡号</el-checkbox>
+           <el-checkbox v-model="queryParams.isAdmin">包含子卡</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -30,7 +30,7 @@
               @click="handlePrint"
             >打印</el-button>
           </el-col> -->
-          <!-- <el-col :span="1.5">
+          <el-col :span="1.5">
             <el-button
               type="danger"
               plain
@@ -48,20 +48,16 @@
               size="mini"
               @click="handleExport"
             >导出</el-button>
-          </el-col> -->
+          </el-col>
          
         </el-row>
 
-        <el-table v-loading="loading" :data="userList"  @selection-change="handleSelectionChange" :row-class-name="status_change">
-          <el-table-column fixed type="selection" key="userId" prop="userId" width="50" align="center" />
+        <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange" :row-class-name="status_change">
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="会员卡号" align="center" key="card" prop="card" />
           <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
-           <!-- <el-table-column label="筹码余额" align="center" sortable key="chipAmount" prop="chipAmount" /> -->
-          <el-table-column label="是否可汇出" align="center" key="isOut" prop="isOut" >
-            <template slot-scope="scope">
-              <span >{{scope.row.isOut==0?'否':'是'}}</span>
-          </template>
-          </el-table-column>
+          <el-table-column label="现有签单额" align="center" sortable key="signedAmount" prop="signedAmount" />
+          
           <el-table-column label="备注" align="center" key="remark" prop="remark" />      
           <el-table-column
             fixed="right"
@@ -75,16 +71,50 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row.card)"
+                @click="handleSign(scope.row)"
               
-              >汇入</el-button>
+              >签单</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+                @click="handleBack(scope.row)"
               
-              >汇出</el-button>
+              >还单</el-button>
+          
+           
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table v-loading="loading" :data="userList" show-summary sum-text="合计" class="table2" :summary-method="getSummaries"  @selection-change="handleSelectionChange">
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
+          <el-table-column label="会员卡号" align="center" key="card" prop="card" />
+          <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
+          <el-table-column label="现有签单额" align="center" sortable key="signedAmount" prop="signedAmount" />
+          
+          <el-table-column label="备注" align="center" key="remark" prop="remark" />      
+          <el-table-column
+            fixed="right"
+            label="操作"
+            align="center"
+            width="260"
+            class-name="small-padding fixed-width"
+          >
+            <template slot-scope="scope" v-if="scope.row.userId !== 1">
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-tickets"
+                @click="handleSign(scope.row)"
+              
+              >签单</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleBack(scope.row)"
+              
+              >还单</el-button>
                 <el-button
                 size="mini"
                 type="text"
@@ -96,7 +126,6 @@
             </template>
           </el-table-column>
         </el-table>
-   
         <pagination
           v-show="total>0"
           :total="total"
@@ -113,21 +142,15 @@
           <el-form-item label="卡号" prop="card">
               <el-input v-model="form.card" placeholder="" :disabled="true"/>
             </el-form-item>
-          <el-form-item label="汇入金额" prop="amount"  v-if="!isMain">
+          <el-form-item label="现有签单金额" prop="signedAmount" v-if="isMain">
+              <el-input v-model="form.signedAmount" placeholder="" :disabled="true" />
+            </el-form-item>  
+          <el-form-item label="签单金额" prop="amount"  v-if="!isMain">
               <el-input v-model="form.amount" placeholder="" />
             </el-form-item>   
-           
-           <el-form-item label="汇出金额" prop="amount"  v-if="isMain">
+           <el-form-item label="还单金额" prop="amount"  v-if="isMain">
               <el-input v-model="form.amount" placeholder="" />
-            </el-form-item>   
-            <el-form-item label="获取货币" prop="operationType"  v-if="!isMain">
-              <el-radio v-model="form.operationType" :label="1">筹码</el-radio>
-              <el-radio v-model="form.operationType" :label="2">现金</el-radio>
-            </el-form-item> 
-             <el-form-item label="使用货币" prop="operationType"  v-if="isMain">
-             <el-radio v-model="form.operationType" :label="1">筹码</el-radio>
-              <el-radio v-model="form.operationType" :label="2">现金</el-radio>
-            </el-form-item>
+          </el-form-item>  
 
             <el-form-item label="备注" prop="remark">
                <el-input
@@ -151,10 +174,10 @@
 </template>
 
 <script>
-import { listRemittance,listRemittanceTotal,addImport,addRemit} from "@/api/coderoom/transfer";
+import { listSign,listSignTotal,addSigned,addReturnOrder} from "@/api/coderoom/sign";
 
 export default {
-  name: "Transfer",
+  name: "Sign",
   data() {
   
     return {
@@ -215,7 +238,13 @@ export default {
       // 表单校验
       rules: {
         
-       
+        // phonenumber: [
+        //   {
+        //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+        //     message: "请输入正确的手机号码",
+        //     trigger: "blur"
+        //   }
+        // ]
       }
     };
   },
@@ -236,21 +265,21 @@ export default {
       params['isAdmin']=this.queryParams.isAdmin ==false?0:1
       params['card']=this.queryParams.card
       this.loading = true;
-      listRemittance(params).then(response => {
+      listSign(params).then(response => {
           this.userList = response.rows;
           this.total = response.total;
           this.loading = false;
         }
       );
-      //  listRemittanceTotal(params).then(response => {
-      //     this.userTotal = response.data;
+       listSignTotal(params).then(response => {
+          this.userTotal = response.data.signed_amount;
          
-      //     this.loading = false;
-      //   }
-      // );
+          this.loading = false;
+        }
+      );
       this.$delete(params,'pageNum')
       this.$delete(params,'pageSize')
-       listRemittance(params).then(response => {
+       listSign(params).then(response => {
           this.userData = response.rows;
           console.log(this.userData)
         }
@@ -262,7 +291,8 @@ export default {
       this.single = selection.length!=1
       this.multiple = !selection.length
     },
-     status_change: function (row) {
+    
+    status_change: function (row) {
             if (row.row.signedAmount > 0) {
               return 'table-info-red'
             }
@@ -276,11 +306,10 @@ export default {
             sums[index] = '合计';
             return;
           }
-          if (index === 2) {
-            sums[index] = this.userTotal.chipAmount;
+           if (index === 2) {
+            sums[index] = this.userTotal;
             return;
           }
-        
         });
          return sums;
       },
@@ -331,8 +360,8 @@ export default {
     reset() {
       this.form = {
         card: '',
-        amount:'',
-        operationType:'',
+        userName:'',
+        signedAmount:'',
         remark:''
 
       };
@@ -350,37 +379,35 @@ export default {
       this.handleQuery();
     },
    
-    /** 汇入 */
+    /** 签单 */
     handleSign(row) {
       this.reset();
-      // this.form = Object.assign({},row)
-      this.form['card']=row
+      this.form = Object.assign({},row)
        this.open = true;
        this.isMain =false
-      this.title = "汇入";
+      this.title = "签单";
     },
    
-    /** 汇出 */
+    /** 还单 */
     handleBack(row) {
       this.reset();
-      // this.form = Object.assign({},row)
-      this.form['card']=row
+      this.form = Object.assign({},row)
       this.open = true;
       this.isMain =true
-      this.title = "汇出";
+      this.title = "还单";
     },
         /** 导出按钮操作 */
     handleExport() {
        // 表头对应关系
         require.ensure([], () => {
-          const { export_json_to_excel  } = require('../../../excel/Export2Excel');
-          const tHeader = ['会员卡号', '姓名', '筹码余额','是否可汇出','备注'];
+          const { export_json_to_excel  } = require('@/excel/Export2Excel');
+          const tHeader = ['会员卡号', '姓名', '现有签单金额','备注'];
           // 上面设置Excel的表格第一行的标题
-          const filterVal = ['card', 'userName', 'chipAmount','isCash','remark'];
+          const filterVal = ['card', 'userName', 'signedAmount','remark'];
           // 上面的index、nickName、name是tableData里对象的属性
           const list = this.userData;  //把data里的tableData存到list
           const data = this.formatJson(filterVal,list);
-          export_json_to_excel (tHeader, data, '买码换现列表');
+          export_json_to_excel (tHeader, data, '签单列表');
         })
     },
      // 该方法负责将数组转化成二维数组
@@ -396,16 +423,16 @@ export default {
       console.log(this.title)
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.title == "汇出") {
-            addRemit(this.form).then(response => {
-              this.$modal.msgSuccess("汇出成功");
+          if (this.title == "还单") {
+            addReturnOrder(this.form).then(response => {
+              this.$modal.msgSuccess("还单编辑成功");
               this.open = false;
               this.getList();
             });
           } else {
             this.form['cardType']=1
-            addImport(this.form).then(response => {
-              this.$modal.msgSuccess("汇入成功");
+            addSigned(this.form).then(response => {
+              this.$modal.msgSuccess("签单编辑成功");
               this.open = false;
               this.getList();
             });
@@ -437,6 +464,6 @@ export default {
   .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
 }
 .table-info-red td{
-  background: rgb(199, 135, 135);
+  // background: rgb(199, 135, 135);
 }
 </style>
