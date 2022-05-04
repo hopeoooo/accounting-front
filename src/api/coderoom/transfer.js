@@ -1,3 +1,4 @@
+
 import request from '@/utils/request'
 
 
@@ -27,7 +28,7 @@ export function addImport(data) {
   })
 }
 
-// 会出
+// 汇出
 export function addRemit(data) {
   return request({
     url: '/system/remittance/addRemit',

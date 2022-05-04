@@ -185,7 +185,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="220"
+            width="220px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
