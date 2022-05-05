@@ -4,15 +4,15 @@
       
       <!--用户数据-->
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="fromSearch" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
            <el-form-item label="会员卡号" prop="card" >
             <el-input
-              v-model="queryParams.card"
+              v-model="fromSearch.card"
               placeholder=""
               clearable
-              style="width: 240px"
+               style="width: 240px;margin-right:20px"
             />
-           <el-checkbox v-model="queryParams.isAdmin">过滤内部卡号</el-checkbox>
+           <el-checkbox v-model="fromSearch.isAdmin">过滤内部卡号</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -21,25 +21,8 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handlePrint"
-            >打印</el-button>
-          </el-col> -->
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-c-scale-to-original"
-              size="mini"
-              
-              @click="handleDetail"
-            >明细</el-button>
-          </el-col>
+      
+          <!-- 
           <el-col :span="1.5">
             <el-button
               type="warning"
@@ -113,20 +96,15 @@
           <el-form-item label="卡号" prop="card">
               <el-input v-model="form.card" placeholder="" :disabled="true"/>
             </el-form-item>
-          <el-form-item label="汇入金额" prop="amount"  v-if="!isMain">
+     
+           
+           <el-form-item :label="isMain?'汇出金额':'汇入金额'" prop="amount" >
               <el-input v-model="form.amount" placeholder="" />
             </el-form-item>   
            
-           <el-form-item label="汇出金额" prop="amount"  v-if="isMain">
-              <el-input v-model="form.amount" placeholder="" />
-            </el-form-item>   
-            <el-form-item label="获取货币" prop="operationType"  v-if="!isMain">
-              <el-radio v-model="form.operationType" :label="1">筹码</el-radio>
-              <el-radio v-model="form.operationType" :label="2">现金</el-radio>
-            </el-form-item> 
-             <el-form-item label="使用货币" prop="operationType"  v-if="isMain">
-             <el-radio v-model="form.operationType" :label="1">筹码</el-radio>
-              <el-radio v-model="form.operationType" :label="2">现金</el-radio>
+             <el-form-item :label="isMain?'使用货币':'获取货币'" prop="operationType"  >
+             <el-radio v-model="form.operationType" :label="0">筹码</el-radio>
+              <el-radio v-model="form.operationType" :label="1">现金</el-radio>
             </el-form-item>
 
             <el-form-item label="备注" prop="remark">
@@ -204,17 +182,29 @@ export default {
         label: "label"
       },
    
-      // 查询参数
+         // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 30,
+      },
+       fromSearch:{
         card:'',
         isAdmin:false,
       },
       
       // 表单校验
       rules: {
-        
+         amount: [
+          {
+            required: true,
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字",
+            trigger: "blur"
+          }
+         ],
+          operationType: [
+            { required: true, message: '请选择币种', trigger: 'change' }
+          ],
        
       }
     };
@@ -231,10 +221,8 @@ export default {
     /** 查询用户列表 */
     getList() {
 
-      let params = {pageNum:1,pageSize:30}
-  
-      params['isAdmin']=this.queryParams.isAdmin ==false?0:1
-      params['card']=this.queryParams.card
+       let params = Object.assign({}, this.fromSearch,this.queryParams);
+      params['isAdmin']=this.fromSearch.isAdmin ==false?0:1
       this.loading = true;
       listRemittance(params).then(response => {
           this.userList = response.rows;

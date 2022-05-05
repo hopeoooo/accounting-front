@@ -12,7 +12,7 @@
               clearable
               style="width: 240px;margin-right:20px"
             />
-           <el-checkbox v-model="fromSearch.isAdmin"  :disabled="!fromSearch.card">包含子卡</el-checkbox>
+           <el-checkbox v-model="fromSearch.isAdmin" >过滤内部卡号</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -33,7 +33,7 @@
          
         </el-row>
 
-        <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange" :row-class-name="status_change">
+        <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="会员卡号" align="center" key="card" prop="card" />
           <el-table-column label="姓名" align="center" key="userName" prop="userName"  />
@@ -284,11 +284,11 @@ export default {
       this.multiple = !selection.length
     },
     
-    status_change: function (row) {
-            if (row.row.signedAmount > 0) {
-              return 'table-info-red'
-            }
-    },
+    // status_change: function (row) {
+    //         if (row.row.signedAmount > 0) {
+    //           return 'table-info-red'
+    //         }
+    // },
     //合计规则
     getSummaries(param) {
         const { columns, data } = param;

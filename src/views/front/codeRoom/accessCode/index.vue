@@ -4,15 +4,15 @@
       
       <!--用户数据-->
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="fromSearch" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
            <el-form-item label="会员卡号" prop="card" >
             <el-input
-              v-model="queryParams.card"
+              v-model="fromSearch.card"
               placeholder=""
               clearable
-              style="width: 240px"
+              style="width: 240px;margin-right:20px"
             />
-           <el-checkbox v-model="queryParams.isAdmin">过滤内部卡号</el-checkbox>
+           <el-checkbox v-model="fromSearch.isAdmin">过滤内部卡号</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -21,25 +21,7 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handlePrint"
-            >打印</el-button>
-          </el-col> -->
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-c-scale-to-original"
-              size="mini"
-              
-              @click="handleDetail"
-            >明细</el-button>
-          </el-col>
+        
           <el-col :span="1.5">
             <el-button
               type="warning"
@@ -167,14 +149,17 @@
               <el-input v-model.number="form.cashAmount" placeholder="" />
           </el-form-item>  
 
-            <el-form-item label="备注" prop="remark">
-               <el-input
-                  type="textarea"
-                  :rows="4"
-                  placeholder="请输入内容"
-                  v-model="form.remark">
-                </el-input>
-            </el-form-item>
+           <el-form-item label="备注" prop="remark">
+              <el-input
+                type="textarea"
+                :rows="7"
+                placeholder="请输入内容"
+                v-model="form.remark"
+                maxlength="100"
+                show-word-limit
+              >
+              </el-input>
+          </el-form-item>
           
      
         
@@ -194,13 +179,13 @@ import { listAccessCode,listAccessCodeTotal,saveCode,updateCodeFetching} from "@
 export default {
   name: "AccessCode",
   data() {
-     const lessOne = (rule, value, callback) => {
-      if (value == '') {
-        callback(new Error("请输入额度"));
-      } else {
-        callback();
-      }
-    };
+    //  const lessOne = (rule, value, callback) => {
+    //   if (value == '') {
+    //     callback(new Error("请输入额度"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
       // 添加卡号
       isMain:false,
@@ -248,10 +233,12 @@ export default {
         label: "label"
       },
    
-      // 查询参数
+       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 30,
+      },
+       fromSearch:{
         card:'',
         isAdmin:false,
       },
@@ -259,13 +246,18 @@ export default {
       // 表单校验
       rules: {
         chipAmount:[
-          // { required: true, message: "请输入排序", trigger: 'blur' },
-            { type: 'number', pattern: '^[0-9]*$', message: '请输入数字', trigger: 'blur' },
-            { required: true, validator: lessOne, trigger: "blur" }
+          {
+              pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+              message: "请输入大于0的数字",
+              trigger: "blur"
+            }
           ],
         cashAmount:[
-            { type: 'number', pattern: '^[0-9]*$', message: '请输入数字', trigger: 'blur' },
-            { required: true, validator: lessOne, trigger: "blur" }
+          {
+              pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+              message: "请输入大于0的数字",
+              trigger: "blur"
+            }
         ],
        
       }
@@ -282,11 +274,8 @@ export default {
   methods: {
     /** 查询用户列表 */
     getList() {
-
-      let params = {pageNum:1,pageSize:30}
-  
-      params['isAdmin']=this.queryParams.isAdmin ==false?0:1
-      params['card']=this.queryParams.card
+      let params = Object.assign({}, this.fromSearch,this.queryParams);
+      params['isAdmin']=this.fromSearch.isAdmin ==false?0:1
       this.loading = true;
       listAccessCode(params).then(response => {
           this.userList = response.rows;
@@ -448,7 +437,9 @@ export default {
     handleDetail(){},
     /** 提交按钮 */
     submitForm: function() {
-      console.log(this.title)
+      if(this.form.chipAmount == undefined && this.form.cashAmount == undefined){
+        return this.$modal.msgError('现金和筹码至少填一个')
+      }
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.title == "取码") {

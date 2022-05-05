@@ -21,25 +21,7 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handlePrint"
-            >打印</el-button>
-          </el-col> -->
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-c-scale-to-original"
-              size="mini"
-              
-              @click="handleDetail"
-            >明细</el-button>
-          </el-col>
+         
           <el-col :span="1.5">
             <el-button
               type="warning"
@@ -247,7 +229,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 30,
       },
        fromSearch:{
         card:'',
