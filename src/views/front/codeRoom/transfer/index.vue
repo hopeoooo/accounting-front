@@ -139,7 +139,7 @@ export default {
       // 添加卡号
       isMain:false,
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -214,7 +214,7 @@ export default {
   
   },
   created() {
-    this.getList();
+    // this.getList();
   
   },
   methods: {
