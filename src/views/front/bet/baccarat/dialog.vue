@@ -1,10 +1,10 @@
 <template>
    <!-- 点收码 -->
-    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="800px" :before-close="handleClose" append-to-body v-if="isOpen"> 
-      
+    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="800px" :before-close="handleClose" append-to-body v-if="isOpen">
+
         <el-row :gutter="20">
            <el-col :span="12" :xs="24">
-             <el-table v-loading="loading" class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries" @cell-mouse-leave="handleSelectionChange">          
+             <el-table v-loading="loading" class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries" @cell-mouse-leave="handleSelectionChange">
                  <el-table-column label="面值" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
@@ -17,7 +17,7 @@
                        <span v-else>{{(scope.row.num||0)*(scope.row.value>5000?scope.row.value/10000:scope.row.value)}}{{scope.row.value>5000?'万':''}}</span>
                     </template>
                 </el-table-column>
-              
+
               </el-table>
            </el-col>
            <el-col :span="12" :xs="24">
@@ -29,35 +29,35 @@
                   </div>
                   <div class="list">
                     <div>筹码增</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.chipAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>筹码减</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.chipSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>现金增</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.cashAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>现金减</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.cashSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                   <div class="list">
                     <div>筹码差距</div>
-                    <div> 
+                    <div>
                      {{form.chipGap || '-'}}
                     </div>
                     <div>
@@ -67,7 +67,7 @@
                   </div>
                   <div class="list">
                     <div>现金差距</div>
-                    <div> 
+                    <div>
                       <!-- {{form.cashGap || '-'}} -->
                     </div>
                     <div>
@@ -77,7 +77,7 @@
                   </div>
                   <div class="list">
                     <div>总差距</div>
-                    <div> 
+                    <div>
                       {{(form.chipGap||'-')+(form.cashGap||'')}}
                     </div>
                      <div>
@@ -87,28 +87,28 @@
                   </div>
                   <div class="list">
                     <div>保险筹码</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.insurance" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>保险筹码增</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.insuranceAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>保险筹码减</div>
-                    <div> 
+                    <div>
                       <el-input v-model.number="form.insuranceSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>保险筹码差距</div>
-                    <div> 
+                    <div>
                       {{form.insuranceGap||'-'}}
                     </div>
                      <div>
@@ -119,19 +119,19 @@
                   </div>
                   <div class="list" v-if="title=='收码'">
                     <div>筹码收码</div>
-                    <div> 
+                    <div>
                       {{form.chipReceipt||"-"}}
                     </div>
                      <div>-</div>
                   </div>
                   <div class="list"  v-if="title=='收码'">
                     <div>现金收码</div>
-                    <div> 
+                    <div>
                       {{form.cashReceipt||"-"}}
                     </div>
                      <div>-</div>
                   </div>
-              </el-form>  
+              </el-form>
            </el-col>
            <el-col :span="24" :xs="24">
              <div class="remark">
@@ -142,8 +142,8 @@
                   v-model="form.remark">
                 </el-input>
              </div>
-               
-            
+
+
            </el-col>
         </el-row>
       <div slot="footer" class="dialog-footer">
@@ -252,7 +252,7 @@ export default {
       this.reset();
       this.isOpen= !this.isOpen
       this.$emit('getOpen',this.isOpen)
-      
+
     },
     getSummaries(param) {
       const { columns, data } = param;
@@ -281,7 +281,7 @@ export default {
     },
     count(){
       console.log(this.form)
-     
+
           if (this.title == "收码") {
             this.form['type']=1
             console.log(typeof(this.form.type))
@@ -303,10 +303,10 @@ export default {
               this.form['cashGap']=arr.cashGap
               this.form['chipGap']=arr.chipGap
               this.form['insuranceGap']=arr.insuranceGap
-              this.$forceUpdate()             
+              this.$forceUpdate()
             });
           }
-     
+
     },
   },
 };
@@ -334,7 +334,7 @@ export default {
     }
   }
   .bbetbox{
-   
+
     .el-table__body-wrapper{
       tbody{
         tr{
@@ -356,6 +356,7 @@ export default {
   .dialog-footer{
     display: flex;
     justify-content: center;
+    text-align: center;
     .el-button{
       margin: 0 50px;
     }
