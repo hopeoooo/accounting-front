@@ -4,15 +4,15 @@
       
       <!--用户数据-->
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="fromSearch" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
            <el-form-item label="会员卡号" prop="card" >
             <el-input
-              v-model="queryParams.card"
+              v-model="fromSearch.card"
               placeholder=""
               clearable
-              style="width: 240px"
+               style="width: 240px;margin-right:20px"
             />
-           <el-checkbox v-model="queryParams.isAdmin">过滤内部卡号</el-checkbox>
+           <el-checkbox v-model="fromSearch.isAdmin" >过滤内部卡号</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -153,7 +153,7 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
           <el-form-item label="卡号" prop="card">
               <el-input v-model="form.card" placeholder="" :disabled="true"/>
             </el-form-item>
@@ -166,14 +166,17 @@
             </el-form-item>   
           
 
-            <el-form-item label="备注" prop="remark">
-               <el-input
-                  type="textarea"
-                  :rows="4"
-                  placeholder="请输入内容"
-                  v-model="form.remark">
-                </el-input>
-            </el-form-item>
+           <el-form-item label="备注" prop="remark">
+              <el-input
+                type="textarea"
+                :rows="7"
+                placeholder="请输入内容"
+                v-model="form.remark"
+                maxlength="100"
+                show-word-limit
+              >
+              </el-input>
+          </el-form-item>
           
      
         
@@ -244,15 +247,22 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 30,
+        pageSize: 10,
+      },
+       fromSearch:{
         card:'',
         isAdmin:false,
       },
-      
       // 表单校验
       rules: {
-        
-       
+         chipAmount: [
+          {
+            required: true,
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字",
+            trigger: "blur"
+          }
+         ]
       }
     };
   },
@@ -267,11 +277,8 @@ export default {
   methods: {
     /** 查询用户列表 */
     getList() {
-
-      let params = {pageNum:1,pageSize:30}
-  
-      params['isAdmin']=this.queryParams.isAdmin ==false?0:1
-      params['card']=this.queryParams.card
+      let params = Object.assign({}, this.fromSearch,this.queryParams);
+      params['isAdmin']=this.fromSearch.isAdmin ==false?0:1
       this.loading = true;
       listCashChip(params).then(response => {
           this.userList = response.rows;

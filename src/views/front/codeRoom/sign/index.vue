@@ -4,15 +4,15 @@
       
       <!--用户数据-->
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="fromSearch" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
            <el-form-item label="会员卡号" prop="card" >
             <el-input
-              v-model="queryParams.card"
+              v-model="fromSearch.card"
               placeholder=""
               clearable
-              style="width: 240px"
+              style="width: 240px;margin-right:20px"
             />
-           <el-checkbox v-model="queryParams.isAdmin">包含子卡</el-checkbox>
+           <el-checkbox v-model="fromSearch.isAdmin"  :disabled="!fromSearch.card">包含子卡</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -21,25 +21,6 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handlePrint"
-            >打印</el-button>
-          </el-col> -->
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-c-scale-to-original"
-              size="mini"
-              
-              @click="handleDetail"
-            >明细</el-button>
-          </el-col>
           <el-col :span="1.5">
             <el-button
               type="warning"
@@ -81,8 +62,12 @@
                 @click="handleBack(scope.row)"
               
               >还单</el-button>
-          
-           
+                 <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-document-remove"
+                @click="handleDetail(scope.row.card)"
+                >明细</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -115,13 +100,12 @@
                 @click="handleBack(scope.row)"
               
               >还单</el-button>
-                <el-button
+                  <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
-              
-              >明细</el-button>
+                @click="handleDetail(scope.row.card)"
+                >明细</el-button>
            
             </template>
           </el-table-column>
@@ -137,7 +121,7 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body v-if="open">
        <el-form ref="form" :model="form" :rules="rules" label-width="100px">
           <el-form-item label="卡号" prop="card">
               <el-input v-model="form.card" placeholder="" :disabled="true"/>
@@ -151,15 +135,17 @@
            <el-form-item label="还单金额" prop="amount"  v-if="isMain">
               <el-input v-model="form.amount" placeholder="" />
           </el-form-item>  
-
-            <el-form-item label="备注" prop="remark">
-               <el-input
-                  type="textarea"
-                  :rows="4"
-                  placeholder="请输入内容"
-                  v-model="form.remark">
-                </el-input>
-            </el-form-item>
+          <el-form-item label="备注" prop="remark">
+              <el-input
+                type="textarea"
+                :rows="7"
+                placeholder="请输入内容"
+                v-model="form.remark"
+                maxlength="100"
+                show-word-limit
+              >
+              </el-input>
+          </el-form-item>
           
      
         
@@ -226,18 +212,27 @@ export default {
         children: "children",
         label: "label"
       },
-   
+      fromSearch:{
+        card:'',
+        isAdmin:false,
+      },
+       
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 30,
-        card:'',
-        isAdmin:false,
       },
       
       // 表单校验
       rules: {
-        
+         amount: [
+          {
+            required: true,
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字",
+            trigger: "blur"
+          }
+        ],
         // phonenumber: [
         //   {
         //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
@@ -259,11 +254,8 @@ export default {
   methods: {
     /** 查询用户列表 */
     getList() {
-
-      let params = {pageNum:1,pageSize:30}
-  
-      params['isAdmin']=this.queryParams.isAdmin ==false?0:1
-      params['card']=this.queryParams.card
+      let params = Object.assign({}, this.fromSearch,this.queryParams);
+      params['isAdmin']=this.fromSearch.isAdmin ==false?0:1
       this.loading = true;
       listSign(params).then(response => {
           this.userList = response.rows;
@@ -394,10 +386,17 @@ export default {
     /** 还单 */
     handleBack(row) {
       this.reset();
-      this.form = Object.assign({},row)
+      const { amount, card, remark } = row
+      this.form = {
+        amount,card,remark
+      }
       this.open = true;
       this.isMain =true
       this.title = "还单";
+    },
+     // 明细
+    handleDetail() {
+      //TODO: 前往明细表
     },
         /** 导出按钮操作 */
     handleExport() {
@@ -433,7 +432,6 @@ export default {
               this.getList();
             });
           } else {
-            this.form['cardType']=1
             addSigned(this.form).then(response => {
               this.$modal.msgSuccess("签单编辑成功");
               this.open = false;
