@@ -117,16 +117,16 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/bet',
+    path: '/screencast',
     component: Layout,
     hidden: true,
     redirect: 'noredirect',
     children: [
       {
         path: 'baccarat',
-        component: () => import('@/views/front/bet/baccarat/show'),
+        component: () => import('@/views/front/screencast/baccarat/show'),
         name: 'baccarat',
-        meta: { title: '员工管理', icon: '' }
+        meta: { title: '百家乐投屏', icon: '' }
       }
     ]
   },

@@ -101,8 +101,8 @@
             <el-option label="百家乐" value="百家乐"></el-option>
             <el-option label="龙虎" value="龙虎"></el-option>
             <el-option label="牛牛" value="牛牛"></el-option>
-            <!-- <el-option label="三公" value="三公"></el-option> -->
-            <!-- <el-option label="推筒子" value="推筒子"></el-option> -->
+            <el-option label="三公" value="三公"></el-option>
+            <el-option label="推筒子" value="推筒子"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="IP" prop="ip">
@@ -221,7 +221,7 @@ export default {
           {
             required: true,
             message: "请输入正确的IP地址",
-            validator: validateIP,
+            // validator: validateIP,
             trigger: "blur"
           }
         ],

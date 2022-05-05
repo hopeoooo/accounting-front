@@ -222,11 +222,11 @@
 </template>
 
 <script>
-import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratSave} from "@/api/bet/baccarat";
+import { dragantigerInfo,dragantigerList,dragantigerOpen,dragantigerUpdate,dragantigerInput,dragantigerSave} from "@/api/bet/draganTiger";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
 export default {
-  name: "Baccarat",
+  name: "DraganTiger",
   data() {
 
     return {
@@ -363,7 +363,7 @@ export default {
     },
     //桌台信息
     getTableInfo(){
-       baccaratInfo().then(res => {
+       dragantigerInfo().then(res => {
           this.tableInfo = res.data;
           this.loading = false;
         },
@@ -373,7 +373,7 @@ export default {
     },
     //赛果列表
     getResult(){
-       baccaratList().then(res => {
+       dragantigerList().then(res => {
           this.result = this.spArr(res.data,6);
           this.loading = false;
         }
@@ -433,13 +433,14 @@ export default {
         }
     },
     getSend(){
+      const tableId = this.tableInfo.tableId || 1
       if(this.isSend == true){
-        baccaratSave({'json':this.betList}).then(res => {
+        dragantigerSave({'tableId':tableId,'json':this.betList}).then(res => {
           this.loading = false;
         })
       }else{
          let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
-         baccaratSave({'json':arr2}).then(res => {
+         dragantigerSave({'tableId':tableId,'json':arr2}).then(res => {
           this.loading = false;
         })
       }
@@ -525,34 +526,24 @@ export default {
       this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
       this.sumdata.sumCash = newCash['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
      this.setBaccaratSum(this.sumdata)
-      baccaratOpen({'json':param}).then(res => {
+      dragantigerOpen({'json':param}).then(res => {
           this.subData= res.data
-          this.betList.forEach(e=>{
-            Object.keys(e).forEach(i=>{
-              if(this.isEmpty(e[i])) {
-                  delete e[i];
-
-                }
-            })
-            return e
-          })
           let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
           
             this.subData.bet.forEach((e,i)=>{
-            arr2[i]={...e,...arr2[i],...this.betList[i]}
+            arr2[i]={...e,...arr2[i]}
              
           })
           this.betList = arr2
-          console.log(this.betList)  
-          this.setBaccaratList(this.betList)
-          this. getSend()
+          this.setBaccaratList(arr2)
+          // this. getSend()
           this.iskaipai = false
           this.loading = false;
         })
     },
     //录入
     updataBet(){
-        baccaratInput({'json':this.subData}).then(res=>{
+        dragantigerInput({'json':this.subData}).then(res=>{
           this.loading = false;
           this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
           this.sumdata={
@@ -762,7 +753,7 @@ export default {
       let param ={}
       param['id']= this.formLudan.id
       param['gameResult'] = str
-      baccaratUpdate(param).then(res=>{
+      dragantigerUpdate(param).then(res=>{
          this.$modal.msgSuccess("路单图修改成功");
           this.openLUdan = false;
           const that =this

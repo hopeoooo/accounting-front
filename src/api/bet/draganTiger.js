@@ -1,63 +1,63 @@
 import request from '@/utils/request'
 
 // 点码||收码 确认修改
-export function baccaratEdit(data) {
+export function dragantigerEdit(data) {
   return request({
-    url: '/bet/baccarat/edit',
+    url: '/bet/dragontiger/edit',
     method: 'post',
     params: data
   })
 }
 // 点码||收码 计算差距
-export function baccaratReckon(data) {
+export function dragantigerReckon(data) {
   return request({
-    url: '/bet/baccarat/reckon',
+    url: '/bet/dragontiger/reckon',
     method: 'post',
     params: data
   })
 }
 // 录入
-export function baccaratInput(query) {
+export function dragantigerInput(query) {
   return request({
-    url: '/bet/baccarat/input',
+    url: '/bet/dragontiger/input',
     method: 'post',
     params: query
   })
 }
 // 路珠修改
-export function baccaratUpdate(data) {
+export function dragantigerUpdate(data) {
   return request({
-    url: '/bet/baccarat/update',
+    url: '/bet/dragontiger/update',
     method: 'post',
     params: data
   })
 }
 // 开牌
-export function baccaratOpen(query) {
+export function dragantigerOpen(query) {
   return request({
-    url: '/bet/baccarat/open',
+    url: '/bet/dragontiger/open',
     method: 'post',
     params: query
   })
 }
 // 赛果列表
-export function baccaratList(data) {
+export function dragantigerList(data) {
   return request({
-    url: '/bet/baccarat/game',
+    url: '/bet/dragontiger/game',
     method: 'post',
     data: data
   })
 }
 // 桌台信息
-export function baccaratInfo(data) {
+export function dragantigerInfo(data) {
   return request({
-    url: '/bet/baccarat/info',
+    url: '/bet/dragontiger/info',
     method: 'post',
     data: data
   })
 }
 // 注单保存
-export function baccaratSave(data) {
+export function dragantigerSave(data) {
   return request({
     url: '/bet/push/save',
     method: 'post',
@@ -65,10 +65,10 @@ export function baccaratSave(data) {
   })
 }
 // 注单查询
-export function baccaratGet(data) {
+export function dragantigerGet(data) {
   return request({
     url: '/bet/push/get',
     method: 'post',
-    params: data
+    data: data
   })
 }

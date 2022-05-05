@@ -53,6 +53,7 @@ export default {
       loading: true,
       isVisibles:false,
       options:'',
+      timer:'',
       tableId:'',
       // 选中数组
       queryParams: {
@@ -92,9 +93,24 @@ export default {
     },
    
   },
+   mounted(){
+	// 轮循
+	this.timer = window.setInterval(() => {
+		setTimeout(() => {
+		   	this.getTableInfo(this.tableId) //调用接口的方法
+		  	
+		 }, 1)
+	}, 3000);
+  },
+  destroyed(){
+    clearInterval(this.timer)
+  },
   methods: {
-    valChange(){
-      this.getTableInfo()
+    // 轮循
+
+
+    valChange(id){
+      this.getTableInfo(id)
     },
     /** 查询角色列表 */
     getList() {
@@ -105,13 +121,12 @@ export default {
       });
     },
     //桌台信息
-    getTableInfo(){
-       baccaratGet({'tableInfo':this.tableInfo}).then(res => {
-         if(res.data)
-          this.tableInfo = res.data;
-
+    getTableInfo(id){
+       baccaratGet({'tableId':id}).then(res => {
+         if(res.data.json)
+          this.betList = res.data.json;
           this.loading = false;
-        },
+        }
       );
     },
 
