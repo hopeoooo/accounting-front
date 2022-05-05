@@ -386,9 +386,9 @@ export default {
     /** 还单 */
     handleBack(row) {
       this.reset();
-      const { amount, card, remark } = row
+      const { amount, card, remark ,signedAmount} = row
       this.form = {
-        amount,card,remark
+        amount,card,remark,signedAmount
       }
       this.open = true;
       this.isMain =true
