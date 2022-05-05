@@ -113,7 +113,7 @@
                     </div>
                      <div>
                        <span v-if="form.insuranceGap==0">正确</span>
-                       <span style="color:red">错误</span>
+                       <span v-else style="color:red">错误</span>
                        <!-- {{insuranceGap==0?'正确':'错误'}} -->
                        </div>
                   </div>

@@ -28,6 +28,13 @@
                     <div>状态</div>
                   </div>
                   <div class="list">
+                    <div>和钱</div>
+                    <div> 
+                        {{form.insuranceGap||'-'}}
+                    </div>
+                    <div>-</div>
+                  </div>
+                  <div class="list">
                     <div>筹码增</div>
                     <div> 
                       <el-input v-model.number="form.chipAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -68,7 +75,7 @@
                   <div class="list">
                     <div>现金差距</div>
                     <div> 
-                      <!-- {{form.cashGap || '-'}} -->
+                      {{form.cashGap || '-'}}
                     </div>
                     <div>
                         <span v-if="form.cashGap==0">正确</span>
@@ -113,7 +120,7 @@
                     </div>
                      <div>
                        <span v-if="form.insuranceGap==0">正确</span>
-                       <span style="color:red">错误</span>
+                       <span v-else style="color:red">错误</span>
                        <!-- {{insuranceGap==0?'正确':'错误'}} -->
                        </div>
                   </div>
@@ -154,7 +161,7 @@
 </template>
 
 <script>
-import { baccaratReckon,baccaratEdit} from "@/api/bet/baccarat";
+import { dragantigerReckon,dragantigerEdit} from "@/api/bet/draganTiger";
 
 export default {
   name: "Dialog",
@@ -230,14 +237,14 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.title == "收码") {
-            baccaratEdit(this.form).then(response => {
+            dragantigerEdit(this.form).then(response => {
               this.$modal.msgSuccess("收码修改成功");
               this.isOpen= !this.isOpen
               this.$emit('getOpen',this.isOpen)
               this.reset()
             });
           } else {
-            baccaratEdit(this.form).then(response => {
+            dragantigerEdit(this.form).then(response => {
               this.$modal.msgSuccess("点码修改成功");
                this.isOpen= !this.isOpen
               this.$emit('getOpen',this.isOpen)
@@ -285,7 +292,7 @@ export default {
           if (this.title == "收码") {
             this.form['type']=1
             console.log(typeof(this.form.type))
-            baccaratReckon(this.form).then(res => {
+            dragantigerReckon(this.form).then(res => {
               this.$modal.msgSuccess("收码计算差距成功");
               let arr =res.data
               this.form['cashGap']=arr.cashGap
@@ -297,7 +304,7 @@ export default {
             });
           } else {
             this.form['type']=0
-            baccaratReckon(this.form).then(res => {
+            dragantigerReckon(this.form).then(res => {
               this.$modal.msgSuccess("点码计算差距成功");
                let arr =res.data
               this.form['cashGap']=arr.cashGap

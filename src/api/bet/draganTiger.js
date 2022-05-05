@@ -69,6 +69,6 @@ export function dragantigerGet(data) {
   return request({
     url: '/bet/push/get',
     method: 'post',
-    data: data
+    params: data
   })
 }

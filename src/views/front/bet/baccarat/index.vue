@@ -425,10 +425,10 @@ export default {
     status_change: function (row) {  
       if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9){
           if (!row.row.type && row.row.type !=0) {
-            return 'table-info-red'
+            return 'table-info-bj-red'
           }
           if (!row.row.card) {
-            return 'table-info-red1'
+            return 'table-info-bj-red1'
           }
         }
     },
@@ -523,7 +523,7 @@ export default {
       const arrChip =arr1.filter(e =>e.type==1)
       const newChip =this.sumArr(arrChip)
       this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
-      this.sumdata.sumCash = newCash['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
+      this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']
      this.setBaccaratSum(this.sumdata)
       baccaratOpen({'json':param}).then(res => {
           this.subData= res.data
@@ -555,6 +555,9 @@ export default {
         baccaratInput({'json':this.subData}).then(res=>{
           this.loading = false;
           this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
+           this.radio1 =''
+          this.checkboxGroup1 =[]
+          this.checkboxGroup2 =[]
           this.sumdata={
           sumZ:'',
             sumX:'',
@@ -1060,7 +1063,7 @@ export default {
     }
   }
 }
-.table-info-red td:nth-child(1){
+.table-info-bj-red td:nth-child(1){
   position: relative;
   &::after{
     content: '请选择币种';
@@ -1072,7 +1075,7 @@ export default {
     z-index: 1;
   }
 }
-.table-info-red1 td:nth-child(2){
+.table-info-bj-red1 td:nth-child(2){
   position: relative;
   &::after{
     content: '请填写卡号';
