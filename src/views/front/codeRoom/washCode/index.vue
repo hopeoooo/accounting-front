@@ -54,6 +54,7 @@
               icon="el-icon-c-scale-to-original"
               size="mini"
               @click="handleBatch"
+              v-prclick
               >批量结算</el-button
             >
           </el-col>
@@ -64,6 +65,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
+              v-prclick
               >导出</el-button
             >
           </el-col>
@@ -96,7 +98,7 @@
           <el-table-column
             label="姓名"
             align="center"
-            key="userName"
+            key="name"
             prop="name"
           />
           <el-table-column
@@ -145,7 +147,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="220px"
+            width="150"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -159,7 +161,7 @@
             fixed="right"
             label="操作"
             align="center"
-            width="260"
+            width="150"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
@@ -621,8 +623,8 @@ export default {
       this.reset();
       // this.form = Object.assign({},row)
       // this.form["card"] = row;
-      if (this.cards.length == 0) {
-        this.$modal.msgError("请选择会员");
+      if (this.cards.length < 2) {
+        this.$modal.msgError("请选择至少2个会员");
         return;
       }
       this.open = true;
@@ -648,7 +650,7 @@ export default {
         // 上面设置Excel的表格第一行的标题
         const filterVal = [
           "card",
-          "userName",
+          "name",
           "status",
           "isSettlement",
           "water",
@@ -658,7 +660,7 @@ export default {
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
-        const time_str = this.getCurrentTime()
+        const time_str = this.getCurrentTime();
         export_json_to_excel(tHeader, data, `洗码费结算${time_str}`);
       });
     },
@@ -702,7 +704,21 @@ export default {
     },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]));
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          let result = "";
+          if (j == "status") {
+            result = v["status"] == 0 ? "正常" : "停用";
+          }else if (j == "isSettlement") {
+            result = v["isSettlement"] == 0 ? "否" : "是";
+          }else if (j == "waterAmount") {
+            result = MoneyFormat(['waterAmount']);
+          }else{
+            result = v[j]
+          }
+          return result;
+        })
+      );
     },
 
     // 明细
@@ -775,7 +791,7 @@ export default {
 .washcode-managemant {
   .table-info-red td {
     background: rgb(199, 135, 135);
-    color: #fff;
+    // color: #fff;
   }
   .summary-table {
     .el-table__header-wrapper,
