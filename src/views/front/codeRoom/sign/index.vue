@@ -382,7 +382,10 @@ export default {
     /** 签单 */
     handleSign(row) {
       this.reset();
-      this.form = Object.assign({},row)
+      const { amount, card, remark } = row
+      this.form = {
+        amount,card,remark
+      }
        this.open = true;
        this.isMain =false
       this.title = "签单";
