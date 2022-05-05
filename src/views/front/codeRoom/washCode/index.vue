@@ -18,8 +18,12 @@
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="queryParams.isAdmin">包含子卡号</el-checkbox>
-            <el-checkbox v-model="queryParams.cardType"
+            <el-checkbox
+              v-model="queryParams.cardType"
+              :disabled="!queryParams.card"
+              >包含子卡号</el-checkbox
+            >
+            <el-checkbox v-model="queryParams.isAdmin"
               >过滤内部卡号</el-checkbox
             >
           </el-form-item>
@@ -43,22 +47,13 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handlePrint"
-            >打印</el-button>
-          </el-col> -->
           <el-col :span="1.5">
             <el-button
               type="danger"
               plain
               icon="el-icon-c-scale-to-original"
               size="mini"
-              @click="handleDetail"
+              @click="handleBatch"
               >批量结算</el-button
             >
           </el-col>
@@ -81,14 +76,16 @@
           :row-class-name="status_change"
           show-summary
           :summary-method="getSummaries1"
+          style="min-height:450px;"
+          empty-text="暂无数据"
+          ref="washCodeList"
         >
           <el-table-column
             fixed
             type="selection"
-            key="userId"
-            prop="userId"
             width="80"
             align="center"
+            :selectable="onSelectable"
           />
           <el-table-column
             label="会员卡号"
@@ -137,7 +134,11 @@
             sortable
             key="waterAmount"
             prop="waterAmount"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
 
           <el-table-column
             label="备注"
@@ -166,7 +167,12 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row.card)"
+                @click="handleSettlement(scope.row)"
+                :disabled="
+                  scope.row.isSettlement == 0 ||
+                    scope.row.status == 1 ||
+                    scope.row.waterAmount == 0
+                "
                 >结算</el-button
               >
 
@@ -174,7 +180,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+                @click="handleDetail(scope.row.card)"
                 >明细</el-button
               >
             </template>
@@ -185,7 +191,6 @@
         <el-table
           v-loading="loading"
           :data="userList"
-          @selection-change="handleSelectionChange"
           :row-class-name="status_change"
           show-summary
           :summary-method="getSummaries"
@@ -275,7 +280,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleSign(scope.row.card)"
+                @click="handleSettlement(scope.row.card)"
                 >结算</el-button
               >
 
@@ -283,7 +288,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+                @click="handleDetail(scope.row.card)"
                 >明细</el-button
               >
             </template>
@@ -300,40 +305,53 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder="" :disabled="true" />
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      v-if="open"
+      width="800px"
+      append-to-body
+    >
+      <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+        <el-form-item label="结算卡号" prop="card" v-if="openType == 'set'">
+          <span>{{ form.card }}</span>
         </el-form-item>
-        <el-form-item label="汇入金额" prop="amount" v-if="!isMain">
-          <el-input v-model="form.amount" placeholder="" />
+        <el-form-item label="合计卡号数" prop="card" v-if="openType == 'batch'">
+          <span>{{ this.cards.length }}</span>
+        </el-form-item>
+        <el-form-item label="应结洗码量" prop="water">
+          <span>{{ form.water }}</span>
+        </el-form-item>
+        <el-form-item label="应结洗码费" prop="waterAmount">
+          <span>{{ form.waterAmount | MoneyFormat }}</span>
         </el-form-item>
 
-        <el-form-item label="汇出金额" prop="amount" v-if="isMain">
-          <el-input v-model="form.amount" placeholder="" />
-        </el-form-item>
-        <el-form-item label="获取货币" prop="operationType" v-if="!isMain">
-          <el-radio v-model="form.operationType" :label="1">筹码</el-radio>
-          <el-radio v-model="form.operationType" :label="2">现金</el-radio>
-        </el-form-item>
-        <el-form-item label="使用货币" prop="operationType" v-if="isMain">
-          <el-radio v-model="form.operationType" :label="1">筹码</el-radio>
-          <el-radio v-model="form.operationType" :label="2">现金</el-radio>
+        <el-form-item label="实际结算洗码费" prop="actualWaterAmount">
+          <span>{{ form.actualWaterAmount | MoneyFormat }}</span>
         </el-form-item>
 
-        <el-form-item label="备注" prop="remark">
+        <el-form-item label="结算币种" prop="operationType">
+          <el-radio-group v-model="form.operationType">
+            <el-radio :label="0">筹码</el-radio>
+            <el-radio :label="1">现金</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="操作备注" prop="remark" v-if="openType == 'set'">
           <el-input
             type="textarea"
-            :rows="4"
+            :rows="7"
+            maxlength="100"
+            show-word-limit
             placeholder="请输入内容"
             v-model="form.remark"
           >
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+      <div slot="footer" class="dialog-footer" style="text-align:center;">
+        <el-button type="primary" @click="submitForm">确认结算</el-button>
+        <el-button @click="cancel">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -346,18 +364,16 @@ import {
   settlementWater,
   batchSettlementWater
 } from "@/api/coderoom/washCode";
-
+import { MoneyFormat } from "@/filter";
 export default {
   // 洗码费结算
   name: "WashCode",
   data() {
     return {
-      // 添加卡号
-      isMain: false,
       // 遮罩层
       loading: true,
       // 选中数组
-      ids: [],
+      cards: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -378,6 +394,8 @@ export default {
       deptOptions: undefined,
       // 是否显示弹出层
       open: false,
+      // 弹窗类型:batch 批量结算; set 结算洗码
+      openType: "",
       detailOpen: false,
       // 部门名称
       deptName: undefined,
@@ -390,7 +408,14 @@ export default {
       // 角色选项
       roleOptions: [],
       // 表单参数
-      form: {},
+      form: {
+        card: "",
+        actualWaterAmount: 0,
+        waterAmount: 0,
+        water: 0,
+        operationType: null,
+        remark: ""
+      },
       defaultProps: {
         children: "children",
         label: "label"
@@ -404,14 +429,18 @@ export default {
         isAdmin: 0,
         cardType: 0
       },
-
-      // 表单校验
-      rules: {}
+      rules: {
+        operationType: [
+          {
+            required: true,
+            message: "请选择结算币种",
+            trigger: "change"
+          }
+        ]
+      }
     };
   },
-  watch: {
-    // 根据名称筛选部门树
-  },
+  computed: {},
   created() {
     this.getList();
   },
@@ -442,9 +471,29 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
+      console.log(selection);
+      this.cards = selection;
+      // this.onSelectedCardsChange(selection);
+      // this.single = selection.length != 1;
+      // this.multiple = !selection.length;
+    },
+    // 遍历选中的行
+    onSelectedCardsChange(cards) {
+      for (let index = 0; index < cards.length; index++) {
+        const card = cards[index];
+        this.form["water"] += card.water;
+        this.form["waterAmount"] += card.waterAmount;
+        this.form["actualWaterAmount"] += card.actualWaterAmount;
+      }
+    },
+    // 决定这一行的 CheckBox 是否可以勾选
+    onSelectable(row, index) {
+      // 如果该会员是不可结算洗码状态/卡号停用/洗码费为0，“结算”按钮置灰，并且不可选中该会员
+      if (row.isSettlement == 0 || row.status == 1 || row.waterAmount == 0) {
+        return false;
+      } else {
+        return true;
+      }
     },
     status_change: function(row) {
       if (row.row.signedAmount > 0) {
@@ -461,7 +510,7 @@ export default {
           sums[index] = "小计";
           // return;
         } else if (index == 5 || index == 6) {
-          // 只有第5列和第6列的 未结算洗码量 和 未结算洗码费 才需要小计
+          // 只有第5列的未结算洗码量和第6列的未结算洗码费 才需要小计
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -476,6 +525,10 @@ export default {
               }
             }, 0);
             sums[index] += "";
+            if (index == 6) {
+              // 未结算洗码费金额需要保留两位小数点
+              sums[6] = MoneyFormat(sums[6]);
+            }
           } else {
             // sums[index] = 'N/A';
           }
@@ -496,11 +549,14 @@ export default {
           // return;
         }
         if (index === 5) {
+          // 未结算洗码量
           sums[index] = this.userTotal.water;
           // return;
         }
         if (index === 6) {
-          sums[index] = this.userTotal.waterAmount;
+          // 未结算洗码费
+          sums[index] = MoneyFormat(this.userTotal.waterAmount);
+
           // return;
         }
       });
@@ -510,19 +566,22 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openType = "";
       this.reset();
     },
     // 表单重置
     reset() {
       this.form = {
         card: "",
-        amount: "",
-        operationType: "",
+        actualWaterAmount: 0,
+        waterAmount: 0,
+        water: 0,
+        operationType: null,
         remark: ""
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    /** 查询按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
@@ -536,72 +595,155 @@ export default {
       this.handleQuery();
     },
 
-    /** 汇入 */
-    handleSign(row) {
+    /** 结算洗码 */
+    handleSettlement(row) {
+      // 如果该会员是不可结算洗码状态/卡号停用/洗码费为0，“结算”按钮置灰，并且不可选中该会员
+      if (row.isSettlement == 0 || row.status == 1 || row.waterAmount == 0) {
+        return false;
+      }
+      this.reset();
+      // this.form ={...this.form,...row};
+      this.form["card"] = row.card;
+      this.form["water"] = row.water;
+      this.form["waterAmount"] = row.waterAmount;
+      this.form["actualWaterAmount"] = row.actualWaterAmount;
+      // this.form["remark"] = row.remark;
+      this.open = true;
+      this.openType = "set";
+      this.title = "结算洗码";
+      if (this.cards.length > 0) {
+        // 清空多选
+        this.$refs.washCodeList.clearSelection();
+      }
+    },
+    /** 批量结算 */
+    handleBatch() {
       this.reset();
       // this.form = Object.assign({},row)
-      this.form["card"] = row;
+      // this.form["card"] = row;
+      if (this.cards.length == 0) {
+        this.$modal.msgError("请选择会员");
+        return;
+      }
       this.open = true;
-      this.isMain = false;
-      this.title = "汇入";
+      this.openType = "batch";
+      this.title = "批量结算";
+      this.onSelectedCardsChange(this.cards);
     },
 
-    /** 汇出 */
-    handleBack(row) {
-      this.reset();
-      // this.form = Object.assign({},row)
-      this.form["card"] = row;
-      this.open = true;
-      this.isMain = true;
-      this.title = "汇出";
-    },
     /** 导出按钮操作 */
     handleExport() {
       // 表头对应关系
       require.ensure([], () => {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
-        const tHeader = ["会员卡号", "姓名", "筹码余额", "是否可汇出", "备注"];
+        const tHeader = [
+          "会员卡号",
+          "姓名",
+          "状态",
+          "是否可结算洗码",
+          "未结算洗码量",
+          "未结算洗码费",
+          "备注"
+        ];
         // 上面设置Excel的表格第一行的标题
         const filterVal = [
           "card",
           "userName",
-          "chipAmount",
-          "isCash",
+          "status",
+          "isSettlement",
+          "water",
+          "waterAmount",
           "remark"
         ];
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
-        export_json_to_excel(tHeader, data, "买码换现列表");
+        const time_str = this.getCurrentTime()
+        export_json_to_excel(tHeader, data, `洗码费结算${time_str}`);
       });
+    },
+    /**
+     * 获取当前时间 格式：yyyy-MM-dd HH:MM:SS
+     */
+    getCurrentTime() {
+      var date = new Date(); //当前时间
+      var month = this.zeroFill(date.getMonth() + 1); //月
+      var day = this.zeroFill(date.getDate()); //日
+      var hour = this.zeroFill(date.getHours()); //时
+      var minute = this.zeroFill(date.getMinutes()); //分
+      var second = this.zeroFill(date.getSeconds()); //秒
+
+      //当前时间
+      var curTime =
+        date.getFullYear() +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second;
+
+      return curTime;
+    },
+
+    /**
+     * 补零
+     */
+    zeroFill(i) {
+      if (i >= 0 && i <= 9) {
+        return "0" + i;
+      } else {
+        return i;
+      }
     },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]));
     },
-    // 打印
-    handlePrint() {},
+
     // 明细
-    handleDetail() {},
+    handleDetail() {
+      //TODO: 前往明细表
+    },
     /** 提交按钮 */
     submitForm: function() {
-      console.log(this.title);
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.title == "汇出") {
-            addRemit(this.form).then(response => {
-              this.$modal.msgSuccess("汇出成功");
-              this.open = false;
-              this.getList();
-            });
+          if (this.openType == "set") {
+            // 结算洗码
+            settlementWater(this.form)
+              .then(response => {
+                this.$modal.msgSuccess("结算洗码成功”");
+                this.open = false;
+                this.getList();
+              })
+              .catch(err => {
+                this.$modal.msgError("结算失败");
+              });
           } else {
-            // this.form["cardType"] = 1;
-            addImport(this.form).then(response => {
-              this.$modal.msgSuccess("汇入成功");
-              this.open = false;
-              this.getList();
-            });
+            // 批量结算
+            const params = {
+              list: this.cards,
+              operationType: this.form.operationType
+            };
+            batchSettlementWater(params)
+              .then(response => {
+                this.$modal.msgSuccess("结算洗码成功”");
+                this.open = false;
+                this.getList();
+              })
+              .catch(err => {
+                console.log(err);
+
+                this.$modal.msgError("结算失败");
+              });
           }
+        } else {
+          this.$modal.msgError("请选择结算币种");
         }
       });
     }

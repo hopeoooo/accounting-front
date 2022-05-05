@@ -1,3 +1,10 @@
+/*
+ * @Author:
+ * @Date: 2022-05-04 22:06:54
+ * @LastEditors:
+ * @LastEditTime: 2022-05-05 10:36:06
+ * @Description: file content
+ */
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
@@ -40,6 +47,7 @@ import DictData from '@/components/DictData'
 
 import './utils/moveDialog'
 
+import * as filters from '@/filter/index.js'
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -79,6 +87,11 @@ Vue.use(Element, {
 })
 
 Vue.config.productionTip = false
+
+// 全局过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key]) // 插入过滤器名和对应方法
+})
 
 new Vue({
   el: '#app',
