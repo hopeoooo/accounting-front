@@ -335,7 +335,9 @@ export default {
     resetQuery() {
       this.dateRange = [];
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.userList = []
+      this.total=0
+      // this.handleQuery();
     },
    
     /** 汇入 */
