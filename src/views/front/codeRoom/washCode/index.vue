@@ -95,12 +95,7 @@
             key="card"
             prop="card"
           />
-          <el-table-column
-            label="姓名"
-            align="center"
-            key="name"
-            prop="name"
-          />
+          <el-table-column label="姓名" align="center" key="name" prop="name" />
           <el-table-column
             label="状态"
             align="center"
@@ -260,7 +255,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="220px"
+            width="150"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -274,7 +269,7 @@
             fixed="right"
             label="操作"
             align="center"
-            width="260"
+            width="150"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
@@ -660,48 +655,11 @@ export default {
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
-        const time_str = this.getCurrentTime();
-        export_json_to_excel(tHeader, data, `洗码费结算${time_str}`);
+        const time_str = this.$getCurrentTime();
+        export_json_to_excel(tHeader, data, `洗码费结算列表-${time_str}`);
       });
     },
-    /**
-     * 获取当前时间 格式：yyyy-MM-dd HH:MM:SS
-     */
-    getCurrentTime() {
-      var date = new Date(); //当前时间
-      var month = this.zeroFill(date.getMonth() + 1); //月
-      var day = this.zeroFill(date.getDate()); //日
-      var hour = this.zeroFill(date.getHours()); //时
-      var minute = this.zeroFill(date.getMinutes()); //分
-      var second = this.zeroFill(date.getSeconds()); //秒
 
-      //当前时间
-      var curTime =
-        date.getFullYear() +
-        "-" +
-        month +
-        "-" +
-        day +
-        " " +
-        hour +
-        ":" +
-        minute +
-        ":" +
-        second;
-
-      return curTime;
-    },
-
-    /**
-     * 补零
-     */
-    zeroFill(i) {
-      if (i >= 0 && i <= 9) {
-        return "0" + i;
-      } else {
-        return i;
-      }
-    },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
@@ -709,12 +667,12 @@ export default {
           let result = "";
           if (j == "status") {
             result = v["status"] == 0 ? "正常" : "停用";
-          }else if (j == "isSettlement") {
+          } else if (j == "isSettlement") {
             result = v["isSettlement"] == 0 ? "否" : "是";
-          }else if (j == "waterAmount") {
-            result = MoneyFormat(['waterAmount']);
-          }else{
-            result = v[j]
+          } else if (j == "waterAmount") {
+            result = MoneyFormat(["waterAmount"]);
+          } else {
+            result = v[j];
           }
           return result;
         })
@@ -788,16 +746,15 @@ export default {
     display: none;
   }
 }
-.washcode-managemant {
-  .table-info-red td {
-    background: rgb(199, 135, 135);
-    // color: #fff;
-  }
-  .summary-table {
-    .el-table__header-wrapper,
-    .el-table__body-wrapper {
-      display: none;
-    }
+
+.table-info-red td {
+  background: rgb(199, 135, 135);
+
+}
+.summary-table {
+  .el-table__header-wrapper,
+  .el-table__body-wrapper {
+    display: none;
   }
 }
 </style>

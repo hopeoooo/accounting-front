@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-10 15:56:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-05 10:39:11
+ * @LastEditTime: 2022-05-06 11:44:39
  * @Description: file content
  */
 // vue定义全局过滤器
@@ -12,7 +12,7 @@
 // （带两位小数，0不用写成0.00)
 const MoneyFormat = value => {
   // debugger
-  if (value === 0) return value;
+  if (value == 0) return 0;
   if (!value) return "0.00";
   /* 原来用的是Number(value).toFixed(0)，这样取整时有问题，例如0.51取整之后为1，感谢Nils指正 */
   var intPart = Math.floor(value); // 获取整数部分
