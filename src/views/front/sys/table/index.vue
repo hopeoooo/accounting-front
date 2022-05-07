@@ -28,13 +28,12 @@
         prop="gameName"
         :show-overflow-tooltip="true"
       />
-      <el-table-column
-        label="筹码点码基数"
-        prop="chipPointBase"
-        :show-overflow-tooltip="true"
-      />
-      <el-table-column label="现金点码基数" prop="cashPointBase" />
-      <el-table-column label="保险筹码点码基数" prop="insurancePointBase" />
+      <el-table-column label="$筹码点码基数" prop="chipPointBase" />
+      <el-table-column label="$现金点码基数" prop="cashPointBase" />
+      <el-table-column label="$保险筹码点码基数" prop="insurancePointBase" />
+      <el-table-column label="฿筹码点码基数" prop="chipPointBaseTh" />
+      <el-table-column label="฿现金点码基数" prop="cashPointBaseTh" />
+      <el-table-column label="฿保险筹码点码基数" prop="insurancePointBaseTh" />
       <el-table-column label="IP" prop="ip" />
 
       <el-table-column
@@ -83,12 +82,12 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="500px"
+      width="800px"
       @close="onDialogClose"
       :close-on-click-modal="false"
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="180px">
         <el-form-item label="桌台编号" prop="tableId">
           <el-input
             v-model.number="form.tableId"
@@ -108,21 +107,39 @@
         <el-form-item label="IP" prop="ip">
           <el-input v-model="form.ip" placeholder="请输入..."></el-input>
         </el-form-item>
-        <el-form-item label="筹码点码基数" prop="chipPointBase">
+        <el-form-item label="$筹码点码基数" prop="chipPointBase">
           <el-input
-            v-model.number="form.chipPointBase"
+            v-model="form.chipPointBase"
             placeholder="请输入..."
           ></el-input>
         </el-form-item>
-        <el-form-item label="现金点码基数" prop="cashPointBase">
+        <el-form-item label="$现金点码基数" prop="cashPointBase">
           <el-input
-            v-model.number="form.cashPointBase"
+            v-model="form.cashPointBase"
             placeholder="请输入..."
           ></el-input>
         </el-form-item>
-        <el-form-item label="保险筹码点码基数" prop="insurancePointBase">
+        <el-form-item label="฿筹码点码基数" prop="chipPointBaseTh">
           <el-input
-            v-model.number="form.insurancePointBase"
+            v-model="form.chipPointBaseTh"
+            placeholder="请输入..."
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="฿现金点码基数" prop="cashPointBaseTh">
+          <el-input
+            v-model="form.cashPointBaseTh"
+            placeholder="请输入..."
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="$保险筹码点码基数" prop="insurancePointBase">
+          <el-input
+            v-model="form.insurancePointBase"
+            placeholder="请输入..."
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="฿保险筹码点码基数" prop="insurancePointBaseTh">
+          <el-input
+            v-model="form.insurancePointBaseTh"
             placeholder="请输入..."
           ></el-input>
         </el-form-item>
@@ -226,8 +243,12 @@ export default {
           }
         ],
         chipPointBase: [
-          { required: true, message: "筹码点码基数不能为空", trigger: "blur" },
-          { type: "number", message: "请输入数字", trigger: "blur" },
+          {
+            required: true,
+            message: "美元筹码点码基数不能为空",
+            trigger: "blur"
+          },
+          // { type: "number", message: "请输入数字", trigger: "blur" },
           {
             validator: this.numberValitor,
             message: "请输入大于0的数字",
@@ -235,8 +256,12 @@ export default {
           }
         ],
         cashPointBase: [
-          { required: true, message: "现金点码基数不能为空", trigger: "blur" },
-          { type: "number", message: "请输入数字", trigger: "blur" },
+          {
+            required: true,
+            message: "美元现金点码基数不能为空",
+            trigger: "blur"
+          },
+          // { type: "number", message: "请输入数字", trigger: "blur" },
           {
             validator: this.numberValitor,
             message: "请输入大于0的数字",
@@ -246,10 +271,48 @@ export default {
         insurancePointBase: [
           {
             required: true,
-            message: "保险筹码点码基数不能为空",
+            message: "美元保险筹码点码基数不能为空",
             trigger: "blur"
           },
-          { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: "请输入数字", trigger: "blur" },
+          {
+            validator: this.numberValitor,
+            message: "请输入大于0的数字"
+          }
+        ],
+        chipPointBaseTh: [
+          {
+            required: true,
+            message: "泰铢筹码点码基数不能为空",
+            trigger: "blur"
+          },
+          // { type: "number", message: "请输入数字", trigger: "blur" },
+          {
+            validator: this.numberValitor,
+            message: "请输入大于0的数字",
+            trigger: "blur"
+          }
+        ],
+        cashPointBaseTh: [
+          {
+            required: true,
+            message: "泰铢现金点码基数不能为空",
+            trigger: "blur"
+          },
+          // { type: "number", message: "请输入数字", trigger: "blur" },
+          {
+            validator: this.numberValitor,
+            message: "请输入大于0的数字",
+            trigger: "blur"
+          }
+        ],
+        insurancePointBaseTh: [
+          {
+            required: true,
+            message: "泰铢保险筹码点码基数不能为空",
+            trigger: "blur"
+          },
+          // { type: "number", message: "请输入数字", trigger: "blur" },
           {
             validator: this.numberValitor,
             message: "请输入大于0的数字"
@@ -382,7 +445,7 @@ export default {
       console.log(this.form);
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.openType=="add") {
+          if (this.openType == "add") {
             addUpTable(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
@@ -413,13 +476,13 @@ export default {
         })
         .catch(() => {});
     },
-    //合计规则
+    //总计规则
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "合计";
+          sums[index] = "总计";
           return;
         }
         if (index === 2) {
@@ -432,6 +495,18 @@ export default {
         }
         if (index === 4) {
           sums[index] = this.tableTotal.insurancePointBase;
+          return;
+        }
+        if (index === 5) {
+          sums[index] = this.tableTotal.chipPointBaseTh;
+          return;
+        }
+        if (index === 6) {
+          sums[index] = this.tableTotal.cashPointBaseTh;
+          return;
+        }
+        if (index === 7) {
+          sums[index] = this.tableTotal.insurancePointBaseTh;
           return;
         }
       });
