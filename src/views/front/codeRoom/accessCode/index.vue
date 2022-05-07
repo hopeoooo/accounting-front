@@ -309,7 +309,6 @@
           label="存储筹码"
           prop="chipAmount"
           v-if="openType == 'deposit'"
-          :show-message="true"
         >
           <el-input
             v-model="form.chipAmount"
@@ -322,7 +321,6 @@
           label="存储现金"
           prop="cashAmount"
           v-if="openType == 'deposit'"
-          :show-message="true"
         >
           <el-input
             v-model="form.cashAmount"
@@ -335,7 +333,6 @@
           label="取出筹码"
           prop="chipAmount"
           v-if="openType == 'withdraw'"
-          :show-message="true"
         >
           <el-input
             v-model="form.chipAmount"
@@ -348,7 +345,6 @@
           label="取出现金"
           prop="cashAmount"
           v-if="openType == 'withdraw'"
-          :show-message="false"
         >
           <el-input
             v-model="form.cashAmount"
@@ -457,13 +453,13 @@ export default {
       rules: {
         chipAmount: [
           {
-            validator: this.chipAmountValitor,
+            validator: this.chipAmountValidator,
             trigger: "blur"
           }
         ],
         cashAmount: [
           {
-            validator: this.cashAmountValitor,
+            validator: this.cashAmountValidator,
             trigger: "blur"
           }
         ]
@@ -477,7 +473,7 @@ export default {
     this.getList();
   },
   methods: {
-    chipAmountValitor(rule, value, callback) {
+    chipAmountValidator(rule, value, callback) {
       // 筹码金额校验
       if (this.openType == "deposit") {
         // 存码的校验规则
@@ -486,8 +482,11 @@ export default {
         } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
           callback(new Error("请输入大于0的数字"));
         } else {
-          // 移除另外一个表单项的校验结果
-          if (this.form.cashAmount && this.form.cashAmount > 0) {
+          // 当筹码金额通过校验时，如果现金金额为空或者现金金额不为空但是大于0，则移除筹码金额的校验结果
+          if (
+            !this.form.cashAmount ||
+            (this.form.cashAmount && this.form.cashAmount > 0)
+          ) {
             this.$refs["form"].clearValidate("cashAmount");
           }
 
@@ -495,23 +494,41 @@ export default {
         }
       } else {
         // 取码的校验规则
-        if (this.form.chipBalance == 0) {
-          // 现有筹码/现有现金为0，对应的取出金额输入任何金额，提示“余额不足’
-          callback(new Error("余额不足"));
-        } else if (!this.form.chipAmount && !this.form.cashAmount) {
+        if (!this.form.chipAmount && !this.form.cashAmount) {
           callback(new Error("请输入至少一个取码金额"));
-        } else if (value <= 0) {
-          this.$refs["form"].clearValidate("cashAmount");
+        } else if (this.form.chipAmount && value <= 0) {
           callback(new Error("请输入大于0的数字"));
-        } else if (this.form.chipAmount > this.form.chipBalance) {
+        } else if (
+          this.form.chipAmount &&
+          this.form.chipAmount > this.form.chipBalance
+        ) {
           // 取出的筹码/现金必须小于等于现有筹码/现金，否则提示“余额不足“
           callback(new Error("余额不足"));
+        } else if (this.form.chipAmount && this.form.chipBalance == 0) {
+          // 现有筹码为0，对应的取出金额输入任何金额，提示“余额不足’
+          callback(new Error("余额不足"));
         } else {
+          // 如果筹码金额符合校验,同时移除现金金额的校验结果
+          console.log("如果筹码金额符合校验,同时移除现金金额的校验结果");
+          if (
+            !this.form.cashAmount ||
+            (this.form.cashAmount &&
+              this.form.cashBalance > 0 &&
+              this.form.cashAmount > 0 &&
+              this.form.cashAmount <= this.chipBalance)
+          ) {
+            this.$refs["form"].clearValidate("cashAmount");
+          }
+          // else {
+          //   console.log("再对现金校验");
+          //   this.$refs["form"].validate("cashAmount");
+          // }
+          //
           callback();
         }
       }
     },
-    cashAmountValitor(rule, value, callback) {
+    cashAmountValidator(rule, value, callback) {
       // 现金金额校验
       if (this.openType == "deposit") {
         // 存码的校验规则
@@ -520,25 +537,48 @@ export default {
         } else if (this.form.cashAmount && this.form.cashAmount <= 0) {
           callback(new Error("请输入大于0的数字"));
         } else {
-          // 移除另外一个表单项的校验结果
-          if (this.form.chipAmount && this.form.chipAmount > 0) {
+          // 当现金金额通过校验时，如果筹码金金额为空或者筹码金额不为空但是大于0，则移除筹码金额的校验结果
+          if (
+            !this.form.chipAmount ||
+            (this.form.chipAmount && this.form.chipAmount > 0)
+          ) {
             this.$refs["form"].clearValidate("chipAmount");
           }
+
           callback();
         }
       } else {
         // 取码的校验规则
-        if (this.form.cashBalance == 0) {
-          // 现有筹码/现有现金为0，对应的取出金额输入任何金额，提示“余额不足’
-          callback(new Error("余额不足"));
-        } else if (!this.form.chipAmount && !this.form.cashAmount) {
+        if (!this.form.chipAmount && !this.form.cashAmount) {
           callback(new Error("请输入至少一个取码金额"));
-        } else if (value <= 0) {
-          this.$refs["form"].clearValidate("chipAmount");
+        } else if (this.form.cashAmount && value <= 0) {
           callback(new Error("请输入大于0的数字"));
-        } else if (this.form.cashAmount > this.form.cashBalance) {
+        } else if (
+          this.form.cashAmount &&
+          this.form.cashAmount > this.form.cashBalance
+        ) {
+          callback(new Error("余额不足"));
+        } else if (this.form.cashAmount && this.form.cashBalance == 0) {
+          // 现有现金为0，对应的取出金额输入任何金额，提示“余额不足’
           callback(new Error("余额不足"));
         } else {
+          // 如果现金金额符合校验,同时移除筹码金额的校验结果
+          console.log("如果现金金额符合校验,同时移除筹码金额的校验结果");
+
+          if (
+            !this.form.chipAmount ||
+            (this.form.chipAmount &&
+              this.form.chipBalance > 0 &&
+              this.form.chipAmount > 0 &&
+              this.form.chipAmount <= this.chipBalance)
+          ) {
+            this.$refs["form"].clearValidate("chipAmount");
+          } 
+          // else {
+          //   console.log("再对筹码校验");
+          //   this.$refs["form"].validate("chipAmount");
+          // }
+
           callback();
         }
       }
@@ -735,10 +775,6 @@ export default {
         if (this.form.status == 1) {
           // 取码时 如果卡号停用，则提示“该卡号已停用”
           this.$modal.msgError("该卡号已停用");
-          return;
-        }
-        if (this.form.chipBalance == 0 && this.form.cashBalance == 0) {
-          this.$modal.msgError("余额不足");
           return;
         }
       }

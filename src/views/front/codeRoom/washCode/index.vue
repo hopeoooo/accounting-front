@@ -310,31 +310,31 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="150px">
-        <el-form-item label="结算卡号" prop="card" v-if="openType == 'set'">
+        <el-form-item label="结算卡号:" prop="card" v-if="openType == 'set'">
           <span>{{ form.card }}</span>
         </el-form-item>
-        <el-form-item label="合计卡号数" prop="card" v-if="openType == 'batch'">
+        <el-form-item label="合计卡号数:" prop="card" v-if="openType == 'batch'">
           <span>{{ this.cards.length }}</span>
         </el-form-item>
-        <el-form-item label="应结洗码量" prop="water">
+        <el-form-item label="应结洗码量:" prop="water">
           <span>{{ form.water }}</span>
         </el-form-item>
-        <el-form-item label="应结洗码费" prop="waterAmount">
-          <span>{{ form.waterAmount | MoneyFormat }}</span>
+        <el-form-item label="应结洗码费:" prop="waterAmount">
+          <span>{{ form.waterAmount | roundingFormat }}</span>
         </el-form-item>
 
-        <el-form-item label="实际结算洗码费" prop="actualWaterAmount">
-          <span>{{ form.actualWaterAmount | MoneyFormat }}</span>
+        <el-form-item label="实际结算洗码费:" prop="actualWaterAmount">
+          <span>{{ form.actualWaterAmount | roundingFormat }}</span>
         </el-form-item>
 
-        <el-form-item label="结算币种" prop="operationType">
+        <el-form-item label="结算币种:" prop="operationType">
           <el-radio-group v-model="form.operationType">
             <el-radio :label="0">筹码</el-radio>
             <el-radio :label="1">现金</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="操作备注" prop="remark" v-if="openType == 'set'">
+        <el-form-item label="操作备注:" prop="remark" v-if="openType == 'set'">
           <el-input
             type="textarea"
             :rows="7"
@@ -361,6 +361,7 @@ import {
   settlementWater,
   batchSettlementWater
 } from "@/api/coderoom/washCode";
+import { listOdds } from "@/api/sys/odds";
 import { MoneyFormat } from "@/filter";
 export default {
   // 洗码费结算
@@ -434,14 +435,27 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      rollingCommissionRounding: false //洗码佣金取整 0 false 1 true
     };
   },
   computed: {},
   created() {
     this.getList();
+    this.getOddsList();
   },
   methods: {
+    /** 查询赔率设置列表 */
+    getOddsList() {
+      listOdds().then(response => {
+        // this.oddsList = response.data;
+        if (response.data.rollingCommissionRounding == 0) {
+          this.rollingCommissionRounding = false;
+        } else {
+          this.rollingCommissionRounding = true;
+        }
+      });
+    },
     /** 查询用户列表 */
     getList() {
       let params = {
@@ -466,6 +480,17 @@ export default {
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
+
+    // 实际结算洗码费取整
+    roundingFormat(value) {
+      if (this.rollingCommissionRounding) {
+        // 取整
+        return parseInt(value);
+      } else {
+        // 保留两位小数点
+        return MoneyFormat(value);
+      }
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       console.log(selection);
@@ -482,6 +507,10 @@ export default {
         this.form["waterAmount"] += card.waterAmount;
         this.form["actualWaterAmount"] += card.actualWaterAmount;
       }
+      // 遍历之后要对得出的实际结算费进行是否取整处理
+      this.form["actualWaterAmount"] = this.roundingFormat(
+        this.form["actualWaterAmount"]
+      );
     },
     // 决定这一行的 CheckBox 是否可以勾选
     onSelectable(row, index) {
@@ -603,7 +632,9 @@ export default {
       this.form["card"] = row.card;
       this.form["water"] = row.water;
       this.form["waterAmount"] = row.waterAmount;
-      this.form["actualWaterAmount"] = row.actualWaterAmount;
+      this.form["actualWaterAmount"] = this.roundingFormat(
+        row.actualWaterAmount
+      );
       // this.form["remark"] = row.remark;
       this.open = true;
       this.openType = "set";
@@ -749,7 +780,6 @@ export default {
 
 .table-info-red td {
   background: rgb(199, 135, 135);
-
 }
 .summary-table {
   .el-table__header-wrapper,
