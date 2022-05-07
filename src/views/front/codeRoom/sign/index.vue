@@ -241,7 +241,13 @@
       append-to-body
       v-if="open"
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :show-message="true"
+        label-width="100px"
+      >
         <el-form-item label="卡号" prop="card">
           <el-input v-model="form.card" placeholder="" :disabled="true" />
         </el-form-item>
@@ -257,10 +263,18 @@
           />
         </el-form-item>
         <el-form-item label="签单金额" prop="amount" v-if="openType == 'sign'">
-          <el-input v-model="form.amount" placeholder="" />
+          <el-input
+            v-model="form.amount"
+            placeholder=""
+            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+          />
         </el-form-item>
         <el-form-item label="还单金额" prop="amount" v-if="openType == 'back'">
-          <el-input v-model="form.amount" placeholder="" />
+          <el-input
+            v-model="form.amount"
+            placeholder=""
+            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+          />
         </el-form-item>
         <el-form-item label="操作备注" prop="remark">
           <el-input
@@ -274,9 +288,9 @@
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+      <div slot="footer" class="dialog-footer" style="text-align:center;">
+        <el-button type="primary" @click="submitForm">确认</el-button>
+        <el-button @click="cancel">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -310,7 +324,7 @@ export default {
       total: 0,
       // 用户表格数据
       userList: [],
-      userData: [],
+
       userTotal: "",
       //会员详情
       memlist: {},
@@ -348,27 +362,27 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 30
-      },
-
+      }
+    };
+  },
+  computed: {
+    rules() {
       // 表单校验
-      rules: {
+      return {
         amount: [
           {
             required: true,
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字",
+            message:
+              this.openType == "sign" ? "请输入签单金额" : "请输入还单金额",
+            trigger: "blur"
+          },
+          {
+            validator: this.amountValitor,
             trigger: "blur"
           }
         ]
-        // phonenumber: [
-        //   {
-        //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-        //     message: "请输入正确的手机号码",
-        //     trigger: "blur"
-        //   }
-        // ]
-      }
-    };
+      };
+    }
   },
   watch: {
     // 根据名称筛选部门树
@@ -377,6 +391,28 @@ export default {
     this.getList();
   },
   methods: {
+    amountValitor(rule, value, callback) {
+      // 签单/还单数字校验
+      if (this.openType == "sign") {
+        // 签单的校验规则
+        if (value <= 0) {
+          callback(new Error("请输入大于0的数字"));
+        } else {
+          callback();
+        }
+      } else {
+        // 还单的校验规则
+        if (this.form.signedAmount == 0) {
+          callback(new Error("当前无需还单金额"));
+        } else if (value <= 0) {
+          callback(new Error("请输入大于0的数字"));
+        } else if (this.form.amount > this.form.signedAmount) {
+          callback(new Error("请输入正确的金额"));
+        } else {
+          callback();
+        }
+      }
+    },
     /** 查询用户列表 */
     getList() {
       let params = Object.assign({}, this.fromSearch, this.queryParams);
@@ -394,10 +430,6 @@ export default {
       });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
-      listSign(params).then(response => {
-        this.userData = response.rows;
-        console.log(this.userData);
-      });
     },
 
     // status_change: function (row) {
@@ -482,6 +514,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
+      this.fromSearch.isAdmin = 0;
+      this.fromSearch.card = "";
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -489,8 +523,8 @@ export default {
     /** 签单 */
     handleSign(row) {
       this.reset();
-      const { card } = row;
-      this.form = { ...this.form, ...{ card } };
+      const { card, status } = row;
+      this.form = { ...this.form, ...{ card, status } };
       this.open = true;
       this.openType = "sign";
       this.title = "签单";
@@ -498,9 +532,9 @@ export default {
 
     /** 还单 */
     handleBack(row) {
-      // this.reset();
-      const { card, signedAmount } = row;
-      this.form = { ...this.form, ...{ card, signedAmount } };
+      this.reset();
+      const { card, signedAmount, status } = row;
+      this.form = { ...this.form, ...{ card, signedAmount, status } };
       this.open = true;
       this.openType = "back";
       this.title = "还单";
@@ -530,7 +564,7 @@ export default {
           "remark"
         ];
         // 上面的index、nickName、name是tableData里对象的属性
-        const list = this.userData; //把data里的tableData存到list
+        const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
         const time_str = this.$getCurrentTime();
         export_json_to_excel(tHeader, data, `签单列表-${time_str}`);
@@ -548,28 +582,51 @@ export default {
         })
       );
     },
-    // 打印
-    handlePrint() {},
-    // 明细
-    handleDetail() {},
+
     /** 提交按钮 */
     submitForm: function() {
-      console.log(this.title);
-      this.$refs["form"].validate(valid => {
+      if (this.openType == "sign") {
+        if (this.form.status == 1) {
+          this.$modal.msgError("该卡号已停用");
+          return;
+        }
+      }
+      if (this.openType == "back") {
+        if (this.form.signedAmount == 0) {
+          this.$modal.msgError("当前无需还单金额");
+          return;
+        }
+      }
+      this.$refs["form"].validate((valid, res) => {
         if (valid) {
-          if (this.title == "还单") {
-            addReturnOrder(this.form).then(response => {
-              this.$modal.msgSuccess("还单编辑成功");
-              this.open = false;
-              this.getList();
-            });
+          if (this.openType == "back") {
+            // 还单
+            addReturnOrder(this.form)
+              .then(response => {
+                this.$modal.msgSuccess("还单成功");
+                this.open = false;
+                this.openType = "";
+                this.getList();
+              })
+              .catch(err => {
+                this.$modal.msgSuccess("还单失败");
+              });
           } else {
-            addSigned(this.form).then(response => {
-              this.$modal.msgSuccess("签单编辑成功");
-              this.open = false;
-              this.getList();
-            });
+            // 签单
+            addSigned(this.form)
+              .then(response => {
+                this.$modal.msgSuccess("签单成功");
+                this.open = false;
+                this.openType = "";
+                this.getList();
+              })
+              .catch(err => {
+                this.$modal.msgSuccess("签单失败");
+              });
           }
+        } else {
+          //提示校验错误
+          // this.$modal.msgError(Object.values(res)[0][0].message);
         }
       });
     }
