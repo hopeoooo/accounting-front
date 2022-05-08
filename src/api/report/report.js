@@ -1,3 +1,10 @@
+/*
+ * @Author:
+ * @Date: 2022-04-30 10:22:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-08 17:59:02
+ * @Description: file content
+ */
 import request from '@/utils/request'
 
 // 获取菜单列表
@@ -55,6 +62,34 @@ export function listSignedDetailed(query) {
 export function listChipRecord(query) {
   return request({
     url: '/system/chipRecord/list',
+    method: 'get',
+    params: query
+  })
+}
+// 查询结算洗码费明细列表
+export function listWaterDetailed(query) {
+  return request({
+    url: '/system/waterDetailed/list',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 查询结算洗码费总计
+export function totalWaterDetailed(query) {
+  return request({
+    url: '/system/waterDetailed/total',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 查询存取码明细列表
+export function listAccessCodeDetailed(query) {
+  return request({
+    url: '/system/accessCodeDetailed/list',
     method: 'get',
     params: query
   })

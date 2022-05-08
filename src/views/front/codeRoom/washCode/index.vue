@@ -313,18 +313,22 @@
         <el-form-item label="结算卡号:" prop="card" v-if="openType == 'set'">
           <span>{{ form.card }}</span>
         </el-form-item>
-        <el-form-item label="合计卡号数:" prop="card" v-if="openType == 'batch'">
+        <el-form-item
+          label="合计卡号数:"
+          prop="card"
+          v-if="openType == 'batch'"
+        >
           <span>{{ this.cards.length }}</span>
         </el-form-item>
         <el-form-item label="应结洗码量:" prop="water">
           <span>{{ form.water }}</span>
         </el-form-item>
         <el-form-item label="应结洗码费:" prop="waterAmount">
-          <span>{{ form.waterAmount | roundingFormat }}</span>
+          <span>{{ form.waterAmount | MoneyFormat }}</span>
         </el-form-item>
 
         <el-form-item label="实际结算洗码费:" prop="actualWaterAmount">
-          <span>{{ form.actualWaterAmount | roundingFormat }}</span>
+          <span>{{ form.actualWaterAmount  }}</span>
         </el-form-item>
 
         <el-form-item label="结算币种:" prop="operationType">
@@ -442,7 +446,6 @@ export default {
   computed: {},
   created() {
     this.getList();
-    this.getOddsList();
   },
   methods: {
     /** 查询赔率设置列表 */
@@ -507,10 +510,7 @@ export default {
         this.form["waterAmount"] += card.waterAmount;
         this.form["actualWaterAmount"] += card.actualWaterAmount;
       }
-      // 遍历之后要对得出的实际结算费进行是否取整处理
-      this.form["actualWaterAmount"] = this.roundingFormat(
-        this.form["actualWaterAmount"]
-      );
+
     },
     // 决定这一行的 CheckBox 是否可以勾选
     onSelectable(row, index) {
@@ -627,15 +627,14 @@ export default {
       if (row.isSettlement == 0 || row.status == 1 || row.waterAmount == 0) {
         return false;
       }
+
       this.reset();
       // this.form ={...this.form,...row};
       this.form["card"] = row.card;
       this.form["water"] = row.water;
       this.form["waterAmount"] = row.waterAmount;
-      this.form["actualWaterAmount"] = this.roundingFormat(
-        row.actualWaterAmount
-      );
-      // this.form["remark"] = row.remark;
+      this.form["actualWaterAmount"] = row.actualWaterAmount;
+
       this.open = true;
       this.openType = "set";
       this.title = "结算洗码";
