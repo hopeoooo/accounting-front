@@ -140,18 +140,35 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" v-if="open" append-to-body>
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="600px"
+      v-if="open"
+      append-to-body
+    >
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="卡号" prop="card">
           <el-input v-model="form.card" placeholder="" :disabled="true" />
         </el-form-item>
 
         <el-form-item
-          :label="openType == 'in' ? '汇入金额' : '汇出金额'"
+          :label="openType == 'in' ? '$汇入金额' : '$汇出金额'"
           prop="amount"
         >
           <el-input
             v-model="form.amount"
+            placeholder=""
+            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+          />
+        </el-form-item>
+
+        <el-form-item
+          :label="openType == 'in' ? '฿汇入金额' : '฿汇出金额'"
+          prop="amountTh"
+        >
+          <el-input
+            v-model="form.amountTh"
             placeholder=""
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
@@ -260,13 +277,13 @@ export default {
       return {
         amount: [
           {
-            required: true,
-            message:
-              this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额",
-            trigger: "blur"
-          },
-          {
             validator: this.amountValitor,
+            trigger: "blur"
+          }
+        ],
+        amountTh: [
+          {
+            validator: this.amountThValitor,
             trigger: "blur"
           }
         ],
@@ -284,11 +301,33 @@ export default {
   },
   methods: {
     amountValitor(rule, value, callback) {
-      // 汇入/汇出  数字校验
-
-      if (value <= 0) {
+      if (!this.form.amount && !this.form.amountTh) {
+        const errMsg =
+          this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额";
+        callback(new Error(errMsg));
+      } else if (this.form.amount && this.form.amount <= 0) {
         callback(new Error("请输入大于0的数字"));
       } else {
+        if (
+          !this.form.amountTh ||
+          (this.form.amountTh && this.form.amountTh > 0)
+        ) {
+          this.$refs["form"].clearValidate("amountTh");
+        }
+        callback();
+      }
+    },
+    amountThValitor(rule, value, callback) {
+      if (!this.form.amount && !this.form.amountTh) {
+        const errMsg =
+          this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额";
+        callback(new Error(errMsg));
+      } else if (this.form.amountTh && this.form.amountTh <= 0) {
+        callback(new Error("请输入大于0的数字"));
+      } else {
+        if (!this.form.amount || (this.form.amount && this.form.amount > 0)) {
+          this.$refs["form"].clearValidate("amount");
+        }
         callback();
       }
     },
@@ -329,6 +368,7 @@ export default {
       this.form = {
         card: "",
         amount: "",
+        amountTh: "",
         operationType: "",
         remark: ""
       };
@@ -363,15 +403,18 @@ export default {
     /** 汇出 */
     handleOut(row) {
       this.reset();
-      const { card, status,isOut } = row;
-      this.form = { ...this.form, ...{ card, status,isOut } };
+      const { card, status, isOut } = row;
+      this.form = { ...this.form, ...{ card, status, isOut } };
       this.open = true;
       this.openType = "out";
       this.title = "汇出";
     },
 
     // 明细
-    handleDetail() {},
+    handleDetail(card) {
+      // this.$router.push("TransferInfo")
+      this.$router.push({name: "TransferInfo",query:{card:card}})
+    },
     /** 提交按钮 */
     submitForm: function() {
       if (this.openType == "out") {
@@ -389,6 +432,8 @@ export default {
       }
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form["amount"] = Number(this.form["amount"]);
+          this.form["amountTh"] = Number(this.form["amountTh"]);
           if (this.openType == "out") {
             addRemit(this.form)
               .then(response => {
@@ -397,7 +442,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("汇入失败");
+                this.$modal.msgError("汇入失败");
               });
           } else {
             addImport(this.form)
@@ -407,7 +452,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("汇入失败");
+                this.$modal.msgError("汇入失败");
               });
           }
         }

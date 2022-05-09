@@ -81,12 +81,27 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="筹码余额"
+            label="$筹码余额"
             align="center"
             sortable
             key="chipAmount"
             prop="chipAmount"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.chipAmount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿筹码余额"
+            align="center"
+            sortable
+            key="chipAmountTh"
+            prop="chipAmountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.chipAmountTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="是否可换现"
             align="center"
@@ -124,21 +139,21 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleBuy(scope.row.card)"
+                @click="handleBuy(scope.row)"
                 >买码</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleExchange(scope.row.card)"
+                @click="handleExchange(scope.row)"
                 >换现</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleExchange(scope.row.card)"
+                @click="handleDetail(scope.row.card)"
                 >明细</el-button
               >
             </template>
@@ -149,7 +164,7 @@
           :data="userList"
           :row-class-name="status_change"
           show-summary
-          sum-text="合计"
+          sum-text="总计"
           class="table2"
           :summary-method="getSummaries"
         >
@@ -179,7 +194,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="筹码余额"
+            label="$筹码余额"
             align="center"
             sortable
             key="chipAmount"
@@ -187,6 +202,17 @@
           >
             <template slot-scope="scope">
               <span>{{ scope.row.chipAmount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿筹码余额"
+            align="center"
+            sortable
+            key="chipAmountTh"
+            prop="chipAmountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.chipAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -226,14 +252,14 @@
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
-                @click="handleBuy(scope.row.card)"
+                @click="handleBuy(scope.row)"
                 >买码</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleExchange(scope.row.card)"
+                @click="handleExchange(scope.row)"
                 >换现</el-button
               >
               <el-button
@@ -275,7 +301,7 @@
           <el-input v-model="form.card" placeholder="" :disabled="true" />
         </el-form-item>
         <el-form-item
-          label="买入筹码金额"
+          label="$买入筹码金额"
           prop="chipAmount"
           v-if="openType == 'buy'"
         >
@@ -285,7 +311,17 @@
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
-
+        <el-form-item
+          label="฿买入筹码金额"
+          prop="chipAmountTh"
+          v-if="openType == 'buy'"
+        >
+          <el-input
+            v-model="form.chipAmountTh"
+            placeholder=""
+            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+          />
+        </el-form-item>
         <el-form-item
           label="换现金额"
           prop="chipAmount"
@@ -293,6 +329,17 @@
         >
           <el-input
             v-model="form.chipAmount"
+            placeholder=""
+            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+          />
+        </el-form-item>
+        <el-form-item
+          label="฿换现金额"
+          prop="chipAmountTh"
+          v-if="openType == 'exchange'"
+        >
+          <el-input
+            v-model="form.chipAmountTh"
             placeholder=""
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
@@ -391,13 +438,13 @@ export default {
       return {
         chipAmount: [
           {
-            required: true,
-            message:
-              this.openType == "buy" ? "请输入购买筹码金额" : "请输入换现金额",
+            validator: this.chipAmountValitor,
             trigger: "blur"
-          },
+          }
+        ],
+        chipAmountTh: [
           {
-            validator: this.amountValitor,
+            validator: this.chipAmountThValitor,
             trigger: "blur"
           }
         ]
@@ -411,11 +458,37 @@ export default {
     this.getList();
   },
   methods: {
-    amountValitor(rule, value, callback) {
-      // 买码/换现  数字校验
-      if (value <= 0) {
+    chipAmountValitor(rule, value, callback) {
+      if (!this.form.chipAmount && !this.form.chipAmountTh) {
+        const errMsg =
+          this.openType == "buy" ? "请输入购买筹码金额" : "请输入换现金额";
+        callback(new Error(errMsg));
+      } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
         callback(new Error("请输入大于0的数字"));
       } else {
+        if (
+          !this.form.chipAmountTh ||
+          (this.form.chipAmountTh && this.form.chipAmountTh > 0)
+        ) {
+          this.$refs["form"].clearValidate("chipAmountTh");
+        }
+        callback();
+      }
+    },
+    chipAmountThValitor(rule, value, callback) {
+      if (!this.form.chipAmount && !this.form.chipAmountTh) {
+        const errMsg =
+          this.openType == "buy" ? "请输入购买筹码金额" : "请输入换现金额";
+        callback(new Error(errMsg));
+      } else if (this.form.chipAmountTh && this.form.chipAmountTh <= 0) {
+        callback(new Error("请输入大于0的数字"));
+      } else {
+        if (
+          !this.form.chipAmount ||
+          (this.form.chipAmount && this.form.chipAmount > 0)
+        ) {
+          this.$refs["form"].clearValidate("chipAmount");
+        }
         callback();
       }
     },
@@ -442,17 +515,21 @@ export default {
         return "table-info-red";
       }
     },
-    //合计规则
+    //总计规则
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "合计";
+          sums[index] = "总计";
           return;
         }
         if (index === 3) {
           sums[index] = MoneyFormat(this.userTotal.chipAmount);
+          return;
+        }
+        if (index === 4) {
+          sums[index] = MoneyFormat(this.userTotal.chipAmountTh);
           return;
         }
       });
@@ -466,7 +543,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (index == 1 || index == 2 || index == 4 || index == 5) {
+        if (index == 1 || index == 2 || index == 5 || index == 6) {
           sums[index] = "";
           return;
         }
@@ -485,7 +562,8 @@ export default {
             }
           }, 0);
           sums[index] += "";
-          if (index == 3) {
+          sums[index] = Number(sums[index]).toFixed(2);
+          if (index == 3 || index == 4) {
             // 金额需要保留两位小数点
             sums[index] = MoneyFormat(sums[index]);
           }
@@ -508,6 +586,7 @@ export default {
         card: "",
         userName: "",
         chipAmount: "",
+        chipAmountTh: "",
         isCash: "",
         remark: ""
       };
@@ -531,7 +610,8 @@ export default {
     handleBuy(row) {
       this.reset();
       // this.form = Object.assign({},row)
-      this.form["card"] = row;
+      this.form["card"] = row.card;
+      this.form["isCash"] = row.isCash;
       this.open = true;
       this.openType = "buy";
 
@@ -542,7 +622,8 @@ export default {
     handleExchange(row) {
       this.reset();
       // this.form = Object.assign({},row)
-      this.form["card"] = row;
+      this.form["card"] = row.card;
+      this.form["isCash"] = row.isCash;
       this.open = true;
       this.openType = "exchange";
 
@@ -557,7 +638,8 @@ export default {
           "会员卡号",
           "姓名",
           "状态",
-          "筹码余额",
+          "$筹码余额",
+          "฿筹码余额",
           "是否可换现",
           "备注"
         ];
@@ -567,13 +649,14 @@ export default {
           "userName",
           "status",
           "chipAmount",
+          "chipAmountTh",
           "isCash",
           "remark"
         ];
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
-            const time_str = this.$getCurrentTime();
+        const time_str = this.$getCurrentTime();
         export_json_to_excel(tHeader, data, `买码换现列表-${time_str}`);
       });
     },
@@ -593,12 +676,20 @@ export default {
     },
 
     // 明细
-    handleDetail() {},
+    handleDetail(card) {
+      this.$router.push({ name: "CashInfo", query: { card: card } });
+    },
     /** 提交按钮 */
     submitForm: function() {
+      this.form["chipAmount"] = Number(this.form["chipAmount"]);
+      this.form["chipAmountTh"] = Number(this.form["chipAmountTh"]);
       if (this.openType == "exchange") {
         if (this.form.status == 1) {
           this.$modal.msgError("该卡号已停用");
+          return;
+        }
+        if (this.form.isCash == 0) {
+          this.$modal.msgError("当前会员不可换现");
           return;
         }
       }
@@ -613,11 +704,10 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("换现失败");
+                this.$modal.msgError("换现失败");
               });
           } else {
             // 买码
-            // this.form["cardType"] = 1;
             addBuyCode(this.form)
               .then(response => {
                 this.$modal.msgSuccess("买码成功");
@@ -625,10 +715,10 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("买码失败");
+                this.$modal.msgError("买码失败");
               });
           }
-        }else {
+        } else {
           //提示校验错误
           // this.$modal.msgError(Object.values(res)[0][0].message);
         }
