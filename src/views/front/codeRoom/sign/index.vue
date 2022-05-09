@@ -80,7 +80,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="现有签单额"
+            label="$签单金额"
             align="center"
             sortable
             key="signedAmount"
@@ -88,6 +88,17 @@
           >
             <template slot-scope="scope">
               <span>{{ scope.row.signedAmount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿签单金额"
+            align="center"
+            sortable
+            key="signedAmountTh"
+            prop="signedAmountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.signedAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -142,7 +153,7 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="合计"
+          sum-text="总计"
           class="table2"
           :summary-method="getSummaries"
         >
@@ -172,7 +183,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="现有签单额"
+            label="$签单金额"
             align="center"
             sortable
             key="signedAmount"
@@ -182,7 +193,17 @@
               <span>{{ scope.row.signedAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
-
+          <el-table-column
+            label="฿签单金额"
+            align="center"
+            sortable
+            key="signedAmountTh"
+            prop="signedAmountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.signedAmountTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="备注"
             align="center"
@@ -251,31 +272,63 @@
         <el-form-item label="卡号" prop="card">
           <el-input v-model="form.card" placeholder="" :disabled="true" />
         </el-form-item>
+        <!-- 签单 -->
+        <el-form-item label="$签单金额" prop="amount" v-if="openType == 'sign'">
+          <el-input
+            v-model="form.amount"
+            placeholder=""
+            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+          />
+        </el-form-item>
         <el-form-item
-          label="现有签单金额"
-          prop="signedAmount"
-          v-if="openType == 'back'"
+          label="฿签单金额"
+          prop="amountTh"
+          v-if="openType == 'sign'"
         >
           <el-input
-            v-model="form.signedAmount"
-            placeholder=""
-            :disabled="true"
-          />
-        </el-form-item>
-        <el-form-item label="签单金额" prop="amount" v-if="openType == 'sign'">
-          <el-input
-            v-model="form.amount"
+            v-model="form.amountTh"
             placeholder=""
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
-        <el-form-item label="还单金额" prop="amount" v-if="openType == 'back'">
-          <el-input
-            v-model="form.amount"
-            placeholder=""
-            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-          />
-        </el-form-item>
+
+        <!-- 还单 -->
+        <div style="display:flex" v-if="openType == 'back'">
+          <el-form-item label="$签单金额" prop="signedAmount">
+            <el-input
+              v-model="form.signedAmount"
+              placeholder=""
+              :disabled="true"
+            />
+          </el-form-item>
+          <el-form-item label="$还单金额" prop="amount">
+            <el-input
+              v-model="form.amount"
+              placeholder=""
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              :disabled="form.signedAmount == 0"
+            />
+          </el-form-item>
+        </div>
+
+        <div style="display:flex" v-if="openType == 'back'">
+          <el-form-item label="฿签单金额" prop="signedAmountTh">
+            <el-input
+              v-model="form.signedAmountTh"
+              placeholder=""
+              :disabled="true"
+            />
+          </el-form-item>
+          <el-form-item label="฿还单金额" prop="amountTh">
+            <el-input
+              v-model="form.amountTh"
+              placeholder=""
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              :disabled="form.signedAmountTh == 0"
+            />
+          </el-form-item>
+        </div>
+
         <el-form-item label="操作备注" prop="remark">
           <el-input
             type="textarea"
@@ -289,7 +342,12 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="submitForm">确认</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm"
+          :disabled="form.signedAmount == 0 && form.signedAmountTh == 0"
+          >确认</el-button
+        >
         <el-button @click="cancel">取消</el-button>
       </div>
     </el-dialog>
@@ -304,6 +362,10 @@ import {
   addReturnOrder
 } from "@/api/coderoom/sign";
 import { MoneyFormat } from "@/filter";
+const fieldMap = {
+  amount: "signedAmount",
+  amountTh: "signedAmountTh"
+};
 export default {
   name: "Sign",
   data() {
@@ -371,11 +433,11 @@ export default {
       return {
         amount: [
           {
-            required: true,
-            message:
-              this.openType == "sign" ? "请输入签单金额" : "请输入还单金额",
+            validator: this.amountValitor,
             trigger: "blur"
-          },
+          }
+        ],
+        amountTh: [
           {
             validator: this.amountValitor,
             trigger: "blur"
@@ -395,18 +457,21 @@ export default {
       // 签单/还单数字校验
       if (this.openType == "sign") {
         // 签单的校验规则
-        if (value <= 0) {
+        if (!this.form.amount && !this.form.amountTh) {
+          callback(new Error("请输入签单金额"));
+        } else if (value && value <= 0) {
           callback(new Error("请输入大于0的数字"));
         } else {
           callback();
         }
       } else {
         // 还单的校验规则
-        if (this.form.signedAmount == 0) {
-          callback(new Error("当前无需还单金额"));
-        } else if (value <= 0) {
+        const field = fieldMap[rule.field];
+        if (!this.form.amount && !this.form.amountTh) {
+          callback(new Error("请输入还单金额"));
+        } else if (value && value <= 0) {
           callback(new Error("请输入大于0的数字"));
-        } else if (this.form.amount > this.form.signedAmount) {
+        } else if (value && value > this.form[field]) {
           callback(new Error("请输入正确的金额"));
         } else {
           callback();
@@ -424,7 +489,7 @@ export default {
         this.loading = false;
       });
       listSignTotal(params).then(response => {
-        this.userTotal = response.data.signed_amount;
+        this.userTotal = response.data;
 
         this.loading = false;
       });
@@ -437,17 +502,21 @@ export default {
     //           return 'table-info-red'
     //         }
     // },
-    //合计规则
+    //总计规则
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "合计";
+          sums[index] = "总计";
           return;
         }
         if (index === 3) {
-          sums[index] = MoneyFormat(this.userTotal);
+          sums[index] = MoneyFormat(this.userTotal.signedAmount);
+          return;
+        }
+        if (index === 4) {
+          sums[index] = MoneyFormat(this.userTotal.signedAmountTh);
           return;
         }
       });
@@ -462,7 +531,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (index === 1 || index === 2 || index === 4) {
+        if (index === 1 || index === 2 || index === 5) {
           sums[index] = "";
           return;
         }
@@ -480,7 +549,8 @@ export default {
             }
           }, 0);
           sums[index] += "";
-          if (index == 3) {
+          sums[index] = Number(sums[index]).toFixed(2);
+          if (index == 3 || index == 4) {
             // 金额需要保留两位小数点
             sums[index] = MoneyFormat(sums[index]);
           }
@@ -502,7 +572,8 @@ export default {
       this.form = {
         card: "",
         remark: "",
-        amount: ""
+        amount: "",
+        amountTh: ""
       };
       this.resetForm("form");
     },
@@ -523,8 +594,11 @@ export default {
     /** 签单 */
     handleSign(row) {
       this.reset();
-      const { card, status } = row;
-      this.form = { ...this.form, ...{ card, status } };
+      const { card, status, signedAmount, signedAmountTh } = row;
+      this.form = {
+        ...this.form,
+        ...{ card, status, signedAmount, signedAmountTh }
+      };
       this.open = true;
       this.openType = "sign";
       this.title = "签单";
@@ -533,8 +607,11 @@ export default {
     /** 还单 */
     handleBack(row) {
       this.reset();
-      const { card, signedAmount, status } = row;
-      this.form = { ...this.form, ...{ card, signedAmount, status } };
+      const { card, status, signedAmount, signedAmountTh } = row;
+      this.form = {
+        ...this.form,
+        ...{ card, status, signedAmount, signedAmountTh }
+      };
       this.open = true;
       this.openType = "back";
       this.title = "还单";
@@ -542,6 +619,7 @@ export default {
     // 明细
     handleDetail() {
       //TODO: 前往明细表
+      this.$router.push({ name: "SignInfo" });
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -552,7 +630,8 @@ export default {
           "会员卡号",
           "姓名",
           "状态",
-          "现有签单金额",
+          "$签单金额",
+          "฿签单金额",
           "操作备注"
         ];
         // 上面设置Excel的表格第一行的标题
@@ -561,6 +640,7 @@ export default {
           "userName",
           "status",
           "signedAmount",
+          "signedAmountTh",
           "remark"
         ];
         // 上面的index、nickName、name是tableData里对象的属性
@@ -591,16 +671,18 @@ export default {
           return;
         }
       }
-      if (this.openType == "back") {
-        if (this.form.signedAmount == 0) {
-          this.$modal.msgError("当前无需还单金额");
-          return;
-        }
-      }
+      // if (this.openType == "back") {
+      //   if (this.form.signedAmount == 0 && this.form.signedAmountTh == 0) {
+      //     this.$modal.msgError("当前无需还单金额");
+      //     return;
+      //   }
+      // }
       this.$refs["form"].validate((valid, res) => {
         if (valid) {
           if (this.openType == "back") {
             // 还单
+            this.form["amount"] = Number(this.form["amount"]);
+            this.form["amountTh"] = Number(this.form["amountTh"]);
             addReturnOrder(this.form)
               .then(response => {
                 this.$modal.msgSuccess("还单成功");
@@ -609,10 +691,12 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("还单失败");
+                this.$modal.msgError("还单失败");
               });
           } else {
             // 签单
+            this.form["amount"] = Number(this.form["amount"]);
+            this.form["amountTh"] = Number(this.form["amountTh"]);
             addSigned(this.form)
               .then(response => {
                 this.$modal.msgSuccess("签单成功");
@@ -621,7 +705,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("签单失败");
+                this.$modal.msgError("签单失败");
               });
           }
         } else {

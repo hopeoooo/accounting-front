@@ -119,14 +119,14 @@
           </el-table-column>
 
           <el-table-column
-            label="未结算洗码量"
+            label="$未结算洗码量"
             align="center"
             sortable
             key="water"
             prop="water"
           />
           <el-table-column
-            label="未结算洗码费"
+            label="$未结算洗码费"
             align="center"
             sortable
             key="waterAmount"
@@ -134,6 +134,24 @@
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿未结算洗码量"
+            align="center"
+            sortable
+            key="waterTh"
+            prop="waterTh"
+          />
+          <el-table-column
+            label="฿未结算洗码费"
+            align="center"
+            sortable
+            key="waterAmountTh"
+            prop="waterAmountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -236,19 +254,41 @@
           </el-table-column>
 
           <el-table-column
-            label="未结算洗码量"
+            label="$未结算洗码量"
             align="center"
             sortable
             key="water"
             prop="water"
           />
           <el-table-column
-            label="未结算洗码费"
+            label="$未结算洗码费"
             align="center"
             sortable
             key="waterAmount"
             prop="waterAmount"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿未结算洗码量"
+            align="center"
+            sortable
+            key="waterTh"
+            prop="waterTh"
           />
+          <el-table-column
+            label="฿未结算洗码费"
+            align="center"
+            sortable
+            key="waterAmountTh"
+            prop="waterAmountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
 
           <el-table-column
             label="备注"
@@ -320,17 +360,24 @@
         >
           <span>{{ this.cards.length }}</span>
         </el-form-item>
-        <el-form-item label="应结洗码量:" prop="water">
+        <el-form-item label="$应结洗码量:" prop="water">
           <span>{{ form.water }}</span>
         </el-form-item>
-        <el-form-item label="应结洗码费:" prop="waterAmount">
+        <el-form-item label="฿应结洗码量:" prop="water">
+          <span>{{ form.waterTh }}</span>
+        </el-form-item>
+        <el-form-item label="$应结洗码费:" prop="waterAmount">
           <span>{{ form.waterAmount | MoneyFormat }}</span>
         </el-form-item>
-
-        <el-form-item label="实际结算洗码费:" prop="actualWaterAmount">
-          <span>{{ form.actualWaterAmount  }}</span>
+        <el-form-item label="฿应结洗码费:" prop="waterAmount">
+          <span>{{ form.waterAmountTh | MoneyFormat }}</span>
         </el-form-item>
-
+        <el-form-item label="$实际结算洗码费:" prop="actualWaterAmount">
+          <span>{{ form.actualWaterAmount }}</span>
+        </el-form-item>
+        <el-form-item label="฿实际结算洗码费:" prop="actualWaterAmount">
+          <span>{{ form.actualWaterAmountTh }}</span>
+        </el-form-item>
         <el-form-item label="结算币种:" prop="operationType">
           <el-radio-group v-model="form.operationType">
             <el-radio :label="0">筹码</el-radio>
@@ -415,6 +462,9 @@ export default {
         actualWaterAmount: 0,
         waterAmount: 0,
         water: 0,
+        actualWaterAmountTh: 0,
+        waterAmountTh: 0,
+        waterTh: 0,
         operationType: null,
         remark: ""
       },
@@ -509,8 +559,10 @@ export default {
         this.form["water"] += card.water;
         this.form["waterAmount"] += card.waterAmount;
         this.form["actualWaterAmount"] += card.actualWaterAmount;
+        this.form["waterTh"] += card.waterTh;
+        this.form["waterAmountTh"] += card.waterAmountTh;
+        this.form["actualWaterAmountTh"] += card.actualWaterAmountTh;
       }
-
     },
     // 决定这一行的 CheckBox 是否可以勾选
     onSelectable(row, index) {
@@ -535,8 +587,8 @@ export default {
         if (index === 0) {
           sums[index] = "小计";
           // return;
-        } else if (index == 5 || index == 6) {
-          // 只有第5列的未结算洗码量和第6列的未结算洗码费 才需要小计
+        } else if (index == 5 || index == 6 || index == 7 || index == 8) {
+          // 只有未结算洗码量和未结算洗码费 才需要小计
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -551,9 +603,10 @@ export default {
               }
             }, 0);
             sums[index] += "";
-            if (index == 6) {
+            sums[index] = Number(sums[index]).toFixed(2);
+            if (index == 6 || index == 8) {
               // 未结算洗码费金额需要保留两位小数点
-              sums[6] = MoneyFormat(sums[6]);
+              sums[index] = MoneyFormat(sums[index]);
             }
           } else {
             // sums[index] = 'N/A';
@@ -582,7 +635,16 @@ export default {
         if (index === 6) {
           // 未结算洗码费
           sums[index] = MoneyFormat(this.userTotal.waterAmount);
-
+          // return;
+        }
+        if (index === 7) {
+          // 未结算洗码量
+          sums[index] = this.userTotal.waterTh;
+          // return;
+        }
+        if (index === 8) {
+          // 未结算洗码费
+          sums[index] = MoneyFormat(this.userTotal.waterAmountTh);
           // return;
         }
       });
@@ -602,6 +664,9 @@ export default {
         actualWaterAmount: 0,
         waterAmount: 0,
         water: 0,
+        actualWaterAmountTh: 0,
+        waterAmountTh: 0,
+        waterTh: 0,
         operationType: null,
         remark: ""
       };
@@ -634,7 +699,9 @@ export default {
       this.form["water"] = row.water;
       this.form["waterAmount"] = row.waterAmount;
       this.form["actualWaterAmount"] = row.actualWaterAmount;
-
+      this.form["waterTh"] = row.waterTh;
+      this.form["waterAmountTh"] = row.waterAmountTh;
+      this.form["actualWaterAmountTh"] = row.actualWaterAmountTh;
       this.open = true;
       this.openType = "set";
       this.title = "结算洗码";
@@ -668,8 +735,10 @@ export default {
           "姓名",
           "状态",
           "是否可结算洗码",
-          "未结算洗码量",
-          "未结算洗码费",
+          "$未结算洗码量",
+          "฿未结算洗码量",
+          "$未结算洗码费",
+          "฿未结算洗码费",
           "备注"
         ];
         // 上面设置Excel的表格第一行的标题
@@ -679,7 +748,9 @@ export default {
           "status",
           "isSettlement",
           "water",
+          "waterTh",
           "waterAmount",
+          "waterAmountTh",
           "remark"
         ];
         // 上面的index、nickName、name是tableData里对象的属性
@@ -700,7 +771,9 @@ export default {
           } else if (j == "isSettlement") {
             result = v["isSettlement"] == 0 ? "否" : "是";
           } else if (j == "waterAmount") {
-            result = MoneyFormat(["waterAmount"]);
+            result = MoneyFormat(v["waterAmount"]);
+          } else if (j == "waterAmountTh") {
+            result = MoneyFormat(v["waterAmountTh"]);
           } else {
             result = v[j];
           }
@@ -712,6 +785,7 @@ export default {
     // 明细
     handleDetail() {
       //TODO: 前往明细表
+      this.$router.push({ name: "WaterInfo" });
     },
     /** 提交按钮 */
     submitForm: function() {
