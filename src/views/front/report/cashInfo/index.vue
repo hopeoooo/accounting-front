@@ -91,8 +91,8 @@
           <el-table-column
             label="姓名"
             align="center"
-            key="NAME"
-            prop="NAME"
+            key="name"
+            prop="name"
           />
           <el-table-column
             label="操作类型"
@@ -126,10 +126,11 @@
           >
             <template slot-scope="scope">
               <span
-                >{{ scope.row.before }}→({{ scope.row.change }})→{{
+                v-if="scope.row.change  !=0">{{ scope.row.before }}→({{ scope.row.change }})→{{
                   scope.row.after
                 }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
 
@@ -140,12 +141,14 @@
             prop="beforeTh"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.beforeTh }}→({{ scope.row.changeTh }})→{{
+                  <span
+                v-if="scope.row.changeTh  !=0">{{ scope.row.beforeTh }}→({{ scope.row.changeTh }})→{{
                   scope.row.afterTh
                 }}</span
               >
+              <span v-else>--</span>
             </template>
+
           </el-table-column>
 
 

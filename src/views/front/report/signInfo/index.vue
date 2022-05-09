@@ -101,11 +101,12 @@
             prop="amount"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.amountBefore }}→{{ scope.row.amount }}→{{
+              <span  v-if="scope.row.amount  !=0"
+                >{{ scope.row.amountBefore }}→({{ scope.row.amount }})→{{
                   scope.row.amountAfter
                 }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -115,11 +116,12 @@
             prop="amountTh"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.amountBeforeTh }}→{{ scope.row.amountTh }}→{{
+              <span  v-if="scope.row.amountTh  !=0"
+                >{{ scope.row.amountBeforeTh }}→({{ scope.row.amountTh }})→{{
                   scope.row.amountAfterTh
                 }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
 
@@ -334,11 +336,11 @@ export default {
             return v[j] == 5 ? "签单" : "还单";
           }
           if (j == "amount") {
-            return `${v["amountBefore"]}→${v["amount"]}→${v["amountAfter"]}
+            return `${v["amountBefore"]}→(${v["amount"]})→${v["amountAfter"]}
                  `;
           }
           if (j == "amountTh") {
-            return `${v["amountBeforeTh"]}→${v["amountTh"]}→${v["amountAfterTh"]}
+            return `${v["amountBeforeTh"]}→(${v["amountTh"]})→${v["amountAfterTh"]}
                  `;
           }
           if (j == "amountType") {

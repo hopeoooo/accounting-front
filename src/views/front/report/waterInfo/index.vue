@@ -138,13 +138,13 @@
           <el-table-column
             label="฿结算洗码量"
             align="center"
-            key="water"
+            key="waterTh"
             prop="waterTh"
           />
           <el-table-column
             label="฿应结算洗码费"
             align="center"
-            key="waterAmount"
+            key="waterAmountTh"
             prop="waterAmountTh"
           >
             <template slot-scope="scope">
@@ -154,7 +154,7 @@
           <el-table-column
             label="฿实际结算洗码费"
             align="center"
-            key="actualWaterAmount"
+            key="actualWaterAmountTh"
             prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
@@ -488,7 +488,7 @@ export default {
           return;
         }
         if (index === 6) {
-          sums[index] = this.userTotal.sumWaterTh;
+          sums[index] = this.userTotal.actualWaterAmount;
           return;
         }
         if (index === 7) {
@@ -496,7 +496,7 @@ export default {
           return;
         }
         if (index === 8) {
-          sums[index] = (this.userTotal.sumWaterAmount);
+          sums[index] = (this.userTotal.actualWaterAmountTh);
           return;
         }
       });

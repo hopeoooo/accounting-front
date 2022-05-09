@@ -119,11 +119,12 @@
             prop="chipAmount"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.chipAmountBefore }}→{{ scope.row.chipAmount }}→{{
+              <span v-if="scope.row.chipAmount != 0"
+                >{{ scope.row.chipAmountBefore }}→({{ scope.row.chipAmount }})→{{
                   scope.row.chipAmountAfter
                 }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -133,11 +134,12 @@
             prop="cashAmount"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.cashAmountBefore }}→{{ scope.row.cashAmount }}→{{
+              <span v-if="scope.row.cashAmount != 0"
+                >{{ scope.row.cashAmountBefore }}→({{ scope.row.cashAmount }})→{{
                   scope.row.cashAmountAfter
                 }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -147,11 +149,12 @@
             prop="chipAmountTh"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.chipAmountBeforeTh }}→{{
+              <span v-if="scope.row.chipAmountTh != 0"
+                >{{ scope.row.chipAmountBeforeTh }}→({{
                   scope.row.chipAmountTh
-                }}→{{ scope.row.chipAmountAfterTh }}</span
+                }})→{{ scope.row.chipAmountAfterTh }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -161,11 +164,12 @@
             prop="cashAmountTh"
           >
             <template slot-scope="scope">
-              <span
-                >{{ scope.row.cashAmountBeforeTh }}→{{
+              <span v-if="scope.row.cashAmountTh != 0"
+                >{{ scope.row.cashAmountBeforeTh }}→({{
                   scope.row.cashAmountTh
-                }}→{{ scope.row.cashAmountAfterTh }}</span
+                }})→{{ scope.row.cashAmountAfterTh }}</span
               >
+              <span v-else>--</span>
             </template>
           </el-table-column>
 
@@ -371,19 +375,19 @@ export default {
             return v[j] == 1 ? "存码" : "取码";
           }
           if (j == "chipAmount") {
-            return `${v["chipAmountBefore"]}→${v["chipAmount"]}→${v["chipAmountAfter"]}
+            return `${v["chipAmountBefore"]}→(${v["chipAmount"]})→${v["chipAmountAfter"]}
                  `;
           }
           if (j == "cashAmount") {
-            return `${v["cashAmountBefore"]}→${v["cashAmount"]}→${v["cashAmountAfter"]}
+            return `${v["cashAmountBefore"]}→(${v["cashAmount"]})→${v["cashAmountAfter"]}
                  `;
           }
           if (j == "chipAmountTh") {
-            return `${v["chipAmountBeforeTh"]}→${v["chipAmountTh"]}→${v["chipAmountAfterTh"]}
+            return `${v["chipAmountBeforeTh"]}→(${v["chipAmountTh"]})→${v["chipAmountAfterTh"]}
                  `;
           }
           if (j == "cashAmountTh") {
-            return `${v["cashAmountBeforeTh"]}→${v["cashAmountTh"]}→${v["cashAmountAfterTh"]}
+            return `${v["cashAmountBeforeTh"]}→(${v["cashAmountTh"]})→${v["cashAmountAfterTh"]}
                  `;
           }
           return v[j];
