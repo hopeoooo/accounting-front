@@ -295,12 +295,12 @@
       <div class="title">其它配置</div>
       <el-row :gutter="20">
         <el-col :span="6" :xs="12">
-          <el-checkbox :v-model="checked" @change="onCheckChange1"
+          <el-checkbox v-model="checked" @change="onCheckChange1"
             >洗码佣金取整</el-checkbox
           >
         </el-col>
         <el-col :span="6" :xs="12">
-          <el-checkbox :v-model="checked1" @change="onCheckChange2"
+          <el-checkbox v-model="checked1" @change="onCheckChange2"
             >庄赢抽水取整</el-checkbox
           >
         </el-col>
@@ -590,7 +590,7 @@ export default {
       }
       return value;
     },
-    /** 查询角色列表 */
+    /** 查询赔率设置列表 */
     getList() {
       this.loading = true;
       listOdds().then(response => {

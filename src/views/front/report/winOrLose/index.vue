@@ -259,6 +259,7 @@ import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/m
 import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
 
 export default {
+  // 输赢报表
   name: "winOrLose",
   dicts: ['sys_normal_disable'],
   data() {

@@ -95,12 +95,7 @@
             key="card"
             prop="card"
           />
-          <el-table-column
-            label="姓名"
-            align="center"
-            key="name"
-            prop="name"
-          />
+          <el-table-column label="姓名" align="center" key="name" prop="name" />
           <el-table-column
             label="状态"
             align="center"
@@ -260,7 +255,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="220px"
+            width="150"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -274,7 +269,7 @@
             fixed="right"
             label="操作"
             align="center"
-            width="260"
+            width="150"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
@@ -315,31 +310,35 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="150px">
-        <el-form-item label="结算卡号" prop="card" v-if="openType == 'set'">
+        <el-form-item label="结算卡号:" prop="card" v-if="openType == 'set'">
           <span>{{ form.card }}</span>
         </el-form-item>
-        <el-form-item label="合计卡号数" prop="card" v-if="openType == 'batch'">
+        <el-form-item
+          label="合计卡号数:"
+          prop="card"
+          v-if="openType == 'batch'"
+        >
           <span>{{ this.cards.length }}</span>
         </el-form-item>
-        <el-form-item label="应结洗码量" prop="water">
+        <el-form-item label="应结洗码量:" prop="water">
           <span>{{ form.water }}</span>
         </el-form-item>
-        <el-form-item label="应结洗码费" prop="waterAmount">
+        <el-form-item label="应结洗码费:" prop="waterAmount">
           <span>{{ form.waterAmount | MoneyFormat }}</span>
         </el-form-item>
 
-        <el-form-item label="实际结算洗码费" prop="actualWaterAmount">
-          <span>{{ form.actualWaterAmount | MoneyFormat }}</span>
+        <el-form-item label="实际结算洗码费:" prop="actualWaterAmount">
+          <span>{{ form.actualWaterAmount  }}</span>
         </el-form-item>
 
-        <el-form-item label="结算币种" prop="operationType">
+        <el-form-item label="结算币种:" prop="operationType">
           <el-radio-group v-model="form.operationType">
             <el-radio :label="0">筹码</el-radio>
             <el-radio :label="1">现金</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="操作备注" prop="remark" v-if="openType == 'set'">
+        <el-form-item label="操作备注:" prop="remark" v-if="openType == 'set'">
           <el-input
             type="textarea"
             :rows="7"
@@ -366,6 +365,7 @@ import {
   settlementWater,
   batchSettlementWater
 } from "@/api/coderoom/washCode";
+import { listOdds } from "@/api/sys/odds";
 import { MoneyFormat } from "@/filter";
 export default {
   // 洗码费结算
@@ -439,7 +439,8 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      rollingCommissionRounding: false //洗码佣金取整 0 false 1 true
     };
   },
   computed: {},
@@ -447,6 +448,17 @@ export default {
     this.getList();
   },
   methods: {
+    /** 查询赔率设置列表 */
+    getOddsList() {
+      listOdds().then(response => {
+        // this.oddsList = response.data;
+        if (response.data.rollingCommissionRounding == 0) {
+          this.rollingCommissionRounding = false;
+        } else {
+          this.rollingCommissionRounding = true;
+        }
+      });
+    },
     /** 查询用户列表 */
     getList() {
       let params = {
@@ -471,6 +483,17 @@ export default {
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
+
+    // 实际结算洗码费取整
+    roundingFormat(value) {
+      if (this.rollingCommissionRounding) {
+        // 取整
+        return parseInt(value);
+      } else {
+        // 保留两位小数点
+        return MoneyFormat(value);
+      }
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       console.log(selection);
@@ -487,6 +510,7 @@ export default {
         this.form["waterAmount"] += card.waterAmount;
         this.form["actualWaterAmount"] += card.actualWaterAmount;
       }
+
     },
     // 决定这一行的 CheckBox 是否可以勾选
     onSelectable(row, index) {
@@ -603,13 +627,14 @@ export default {
       if (row.isSettlement == 0 || row.status == 1 || row.waterAmount == 0) {
         return false;
       }
+
       this.reset();
       // this.form ={...this.form,...row};
       this.form["card"] = row.card;
       this.form["water"] = row.water;
       this.form["waterAmount"] = row.waterAmount;
       this.form["actualWaterAmount"] = row.actualWaterAmount;
-      // this.form["remark"] = row.remark;
+
       this.open = true;
       this.openType = "set";
       this.title = "结算洗码";
@@ -660,48 +685,11 @@ export default {
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
-        const time_str = this.getCurrentTime();
-        export_json_to_excel(tHeader, data, `洗码费结算${time_str}`);
+        const time_str = this.$getCurrentTime();
+        export_json_to_excel(tHeader, data, `洗码费结算列表-${time_str}`);
       });
     },
-    /**
-     * 获取当前时间 格式：yyyy-MM-dd HH:MM:SS
-     */
-    getCurrentTime() {
-      var date = new Date(); //当前时间
-      var month = this.zeroFill(date.getMonth() + 1); //月
-      var day = this.zeroFill(date.getDate()); //日
-      var hour = this.zeroFill(date.getHours()); //时
-      var minute = this.zeroFill(date.getMinutes()); //分
-      var second = this.zeroFill(date.getSeconds()); //秒
 
-      //当前时间
-      var curTime =
-        date.getFullYear() +
-        "-" +
-        month +
-        "-" +
-        day +
-        " " +
-        hour +
-        ":" +
-        minute +
-        ":" +
-        second;
-
-      return curTime;
-    },
-
-    /**
-     * 补零
-     */
-    zeroFill(i) {
-      if (i >= 0 && i <= 9) {
-        return "0" + i;
-      } else {
-        return i;
-      }
-    },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
@@ -709,12 +697,12 @@ export default {
           let result = "";
           if (j == "status") {
             result = v["status"] == 0 ? "正常" : "停用";
-          }else if (j == "isSettlement") {
+          } else if (j == "isSettlement") {
             result = v["isSettlement"] == 0 ? "否" : "是";
-          }else if (j == "waterAmount") {
-            result = MoneyFormat(['waterAmount']);
-          }else{
-            result = v[j]
+          } else if (j == "waterAmount") {
+            result = MoneyFormat(["waterAmount"]);
+          } else {
+            result = v[j];
           }
           return result;
         })
@@ -788,16 +776,14 @@ export default {
     display: none;
   }
 }
-.washcode-managemant {
-  .table-info-red td {
-    background: rgb(199, 135, 135);
-    // color: #fff;
-  }
-  .summary-table {
-    .el-table__header-wrapper,
-    .el-table__body-wrapper {
-      display: none;
-    }
+
+.table-info-red td {
+  background: rgb(199, 135, 135);
+}
+.summary-table {
+  .el-table__header-wrapper,
+  .el-table__body-wrapper {
+    display: none;
   }
 }
 </style>

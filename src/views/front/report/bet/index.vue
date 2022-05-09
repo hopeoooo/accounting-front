@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      
+
       <!--用户数据-->
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
@@ -36,7 +36,7 @@
               plain
               icon="el-icon-c-scale-to-original"
               size="mini"
-              
+
               @click="handleDetail"
             >明细</el-button>
           </el-col>
@@ -49,7 +49,7 @@
               @click="handleExport"
             >导出</el-button>
           </el-col>
-         
+
         </el-row>
 
         <el-table v-loading="loading" :data="userList" show-summary sum-text="小计" :summary-method="getSummaries1"  @selection-change="handleSelectionChange">
@@ -61,25 +61,25 @@
           <el-table-column label="下注玩法" align="center" key="option" prop="option" width="180px">
             <template slot-scope="scope">
              <span v-for="(e,key) in scope.row.option" :key="key" class="wanfa">
-               {{getText(e.betOption)}}:{{e.betMoney}} 
+               {{getText(e.betOption)}}:{{e.betMoney}}
              </span>
             </template>
-          </el-table-column>  
+          </el-table-column>
           <el-table-column label="币种" align="center" key="type" prop="type" >
              <template slot-scope="scope" class="wanfabox">
                <span >{{scope.row.type==0?'筹码 ':'现金'}}</span>
             </template>
-          </el-table-column>  
+          </el-table-column>
           <el-table-column label="下注金额" align="center" key="betMoney" prop="betMoney" />
-          <el-table-column label="开牌结果" align="center" key="gameResult" prop="gameResult"> 
+          <el-table-column label="开牌结果" align="center" key="gameResult" prop="gameResult">
              <template slot-scope="scope">
                <span >{{gameResult(scope.row.gameResult)}}</span>
             </template>
-          </el-table-column>  
+          </el-table-column>
           <el-table-column label="输赢" align="center" key="winLose" prop="winLose" />
           <el-table-column label="下注时间" align="center" key="startTime" prop="startTime" />
           <el-table-column label="操作员" align="center" key="createBy" prop="createBy" />
-            
+
           <el-table-column
             fixed="right"
             label="操作"
@@ -93,10 +93,10 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-              
+
               >编辑</el-button>
-              
-           
+
+
             </template>
           </el-table-column>
         </el-table>
@@ -108,20 +108,20 @@
              <el-table-column label="局号" align="center" key="gameNum" prop="gameNum" />
           <el-table-column label="下注玩法" align="center" key="option" prop="option">
              <template slot-scope="scope">
-             
+
             </template>
-          </el-table-column>  
+          </el-table-column>
           <el-table-column label="币种" align="center" key="type" prop="type" >
              <template slot-scope="scope">
                <span >{{scope.row.type==0?'筹码 ':'现金'}}</span>
             </template>
-          </el-table-column>  
+          </el-table-column>
           <el-table-column label="下注金额" align="center" key="betMoney" prop="betMoney" />
           <el-table-column label="开牌结果" align="center" key="gameResult" prop="gameResult" />
           <el-table-column label="输赢" align="center" key="winLose" prop="winLose" />
           <el-table-column label="下注时间" align="center" key="startTime" prop="startTime" />
           <el-table-column label="操作员" align="center" key="createBy" prop="createBy" />
-            
+
           <el-table-column
             fixed="right"
             label="操作"
@@ -135,10 +135,10 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-              
+
               >编辑</el-button>
-              
-           
+
+
             </template>
           </el-table-column>
         </el-table>
@@ -160,13 +160,13 @@
             </el-form-item>
           <el-form-item label="现有签单金额" prop="signedAmount" v-if="isMain">
               <el-input v-model="form.signedAmount" placeholder="" :disabled="true" />
-            </el-form-item>  
+            </el-form-item>
           <el-form-item label="签单金额" prop="amount"  v-if="!isMain">
               <el-input v-model="form.amount" placeholder="" />
-            </el-form-item>   
+            </el-form-item>
            <el-form-item label="还单金额" prop="amount"  v-if="isMain">
               <el-input v-model="form.amount" placeholder="" />
-          </el-form-item>  
+          </el-form-item>
 
             <el-form-item label="备注" prop="remark">
                <el-input
@@ -176,9 +176,9 @@
                   v-model="form.remark">
                 </el-input>
             </el-form-item>
-          
-     
-        
+
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -194,9 +194,10 @@ import { listSign,listSignTotal,addSigned,addReturnOrder} from "@/api/coderoom/s
 import { listBetRecord,listBetRecordTotal} from "@/api/report/report";
 
 export default {
+  // 注单记录
   name: "Bet",
   data() {
-  
+
     return {
       // 添加卡号
       isMain:false,
@@ -218,7 +219,7 @@ export default {
       userTotal:'',
       //会员详情
       memlist:{
-       
+
       },
       // 弹出层标题
       title: "",
@@ -243,7 +244,7 @@ export default {
         children: "children",
         label: "label"
       },
-   
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -251,10 +252,10 @@ export default {
         card:'',
         isAdmin:false,
       },
-      
+
       // 表单校验
       rules: {
-        
+
         // phonenumber: [
         //   {
         //     pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
@@ -267,11 +268,11 @@ export default {
   },
   watch: {
     // 根据名称筛选部门树
-  
+
   },
   created() {
     this.getList();
-  
+
   },
 
   methods: {
@@ -279,7 +280,7 @@ export default {
     getList() {
 
       let params = {pageNum:1,pageSize:30}
-  
+
       params['isAdmin']=this.queryParams.isAdmin ==false?0:1
       params['card']=this.queryParams.card
       this.loading = true;
@@ -291,7 +292,7 @@ export default {
       );
        listBetRecordTotal(params).then(response => {
           this.userTotal = response.data;
-         
+
           this.loading = false;
         }
       );
@@ -341,7 +342,7 @@ export default {
             sums[index] = '';
             return;
           }
-           
+
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -349,7 +350,7 @@ export default {
               if (!isNaN(value)) {
                 const pel = prev + curr // 主要代码
                 return pel
-                
+
               } else {
                 // return prev;
                   const pel = prev // 主要代码
@@ -362,8 +363,8 @@ export default {
           }
         });
          return sums;
-      },  
-  
+      },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -391,7 +392,7 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-   
+
     /** 签单 */
     handleSign(row) {
       this.reset();
@@ -400,7 +401,7 @@ export default {
        this.isMain =false
       this.title = "签单";
     },
-   
+
     /** 还单 */
     handleBack(row) {
       this.reset();
@@ -440,25 +441,25 @@ export default {
          return '庄保险'
          case '0':
           return '闲保险'
-          
+
         case '4':
         return  '庄'
-         
+
         case '7':
         return  '和'
-         
+
         case '5':
         return  '闲对'
-         
+
         case '8':
         return  '庄对'
-         
+
         case '9':
         return  '大'
-         
+
         case '6':
         return  '小'
-                  
+
         default:
           // code block
       }
@@ -514,7 +515,7 @@ export default {
         }
       });
     },
-   
+
   }
 };
 </script>

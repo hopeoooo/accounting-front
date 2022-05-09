@@ -1,8 +1,8 @@
 /*
  * @Author:
  * @Date: 2022-05-04 22:06:54
- * @LastEditors:
- * @LastEditTime: 2022-05-05 10:36:06
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-05 22:18:29
  * @Description: file content
  */
 import Vue from 'vue'
@@ -25,7 +25,7 @@ import './assets/icons' // icon
 import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
-import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/ruoyi";
+import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree ,getCurrentTime} from "@/utils/ruoyi";
 // 分页组件
 import Pagination from "@/components/Pagination";
 // 自定义表格工具组件
@@ -58,6 +58,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.$getCurrentTime = getCurrentTime
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
