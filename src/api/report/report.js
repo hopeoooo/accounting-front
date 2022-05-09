@@ -1,8 +1,8 @@
 /*
  * @Author:
  * @Date: 2022-04-30 10:22:00
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-09 11:24:07
+ * @LastEditors: Alan
+ * @LastEditTime: 2022-05-10 00:36:23
  * @Description: file content
  */
 import request from '@/utils/request'
@@ -138,14 +138,6 @@ export function listUpdatePorint(query) {
   })
 }
 
-// 查询输赢报表列表
-export function listWinLose(query) {
-  return request({
-    url: 'sys/winLose/list',
-    method: 'get',
-    params: query
-  })
-}
 // 查询收码报表
 export function listReceipt(query) {
   return request({
@@ -155,8 +147,15 @@ export function listReceipt(query) {
   })
 }
 
+// 查询输赢报表
+export function listWinLose(query) {
+  return request({
+    url: '/sys/winLose/list',
+    method: 'get',
+    params: query
+  })
+}
 
-//
 // 查询 客户日报表
 export function listReport(query) {
   return request({
@@ -203,3 +202,5 @@ export function listInputError(query) {
     params: query
   })
 }
+
+
