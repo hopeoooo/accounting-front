@@ -81,7 +81,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="已存筹码余额"
+            label="$已存筹码余额"
             align="center"
             sortable
             key="chipBalance"
@@ -92,7 +92,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="已存现金余额"
+            label="$已存现金余额"
             align="center"
             sortable
             key="cashBalance"
@@ -103,6 +103,28 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="฿已存筹码余额"
+            align="center"
+            sortable
+            key="chipBalanceTh"
+            prop="chipBalanceTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.chipBalanceTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿已存现金余额"
+            align="center"
+            sortable
+            key="cashBalanceTh"
+            prop="cashBalanceTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.cashBalanceTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column
             label="总余额"
             align="center"
             sortable
@@ -112,7 +134,7 @@
             <template slot-scope="scope">
               <span>{{ scope.row.totalBalance | MoneyFormat }}</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
           <el-table-column
             label="备注"
@@ -155,20 +177,20 @@
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleBack(scope.row.card)"
+                @click="handleDetail(scope.row.card)"
                 >明细</el-button
               >
             </template>
           </el-table-column>
         </el-table>
 
-        <!-- 用于渲染合计 -->
+        <!-- 用于渲染总计 -->
         <el-table
           v-loading="loading"
           :data="userList"
           :row-class-name="status_change"
           show-summary
-          sum-text="合计"
+          sum-text="总计"
           class="table2"
           :summary-method="getSummaries"
         >
@@ -198,26 +220,57 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="已存筹码余额"
+            label="$已存筹码余额"
             align="center"
             sortable
             key="chipBalance"
             prop="chipBalance"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.chipBalance | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
-            label="已存现金余额"
+            label="$已存现金余额"
             align="center"
             sortable
             key="cashBalance"
             prop="cashBalance"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.cashBalance | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
+            label="฿已存筹码余额"
+            align="center"
+            sortable
+            key="chipBalanceTh"
+            prop="chipBalanceTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.chipBalanceTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿已存现金余额"
+            align="center"
+            sortable
+            key="cashBalanceTh"
+            prop="cashBalanceTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.cashBalanceTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+
+          <!-- <el-table-column
             label="总余额"
             align="center"
             sortable
             key="totalBalance"
             prop="totalBalance"
-          />
+          /> -->
 
           <el-table-column
             label="备注"
@@ -265,7 +318,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="600px"
+      width="800px"
       v-if="open"
       append-to-body
     >
@@ -273,86 +326,150 @@
         ref="form"
         :model="form"
         :rules="rules"
-        :show-message="true"
+        :show-message="false"
         label-width="100px"
         class="access-code-form"
       >
         <el-form-item label="卡号" prop="card">
           <el-input v-model="form.card" placeholder="" :disabled="true" />
         </el-form-item>
-        <div style="display:flex">
+
+        <!-- 存码 开始-->
+        <div v-if="openType == 'deposit'">
           <el-form-item
-            label="现有筹码"
-            prop="chipBalance"
-            v-if="openType == 'withdraw'"
+            label="$存储筹码"
+            prop="chipAmount"
+            v-if="openType == 'deposit'"
           >
             <el-input
-              v-model="form.chipBalance"
+              v-model="form.chipAmount"
               placeholder=""
-              :disabled="true"
+              class="access-input"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
           <el-form-item
-            label="现有现金"
-            prop="cashBalance"
-            v-if="openType == 'withdraw'"
+            label="$存储现金"
+            prop="cashAmount"
+            v-if="openType == 'deposit'"
           >
             <el-input
-              v-model="form.cashBalance"
+              v-model="form.cashAmount"
               placeholder=""
-              :disabled="true"
+              class="access-input"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+            />
+          </el-form-item>
+          <el-form-item
+            label="฿存储筹码"
+            prop="chipAmountTh"
+            v-if="openType == 'deposit'"
+          >
+            <el-input
+              v-model="form.chipAmountTh"
+              placeholder=""
+              class="access-input"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+            />
+          </el-form-item>
+          <el-form-item
+            label="฿存储现金"
+            prop="cashAmountTh"
+            v-if="openType == 'deposit'"
+          >
+            <el-input
+              v-model="form.cashAmountTh"
+              placeholder=""
+              class="access-input"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
         </div>
 
-        <el-form-item
-          label="存储筹码"
-          prop="chipAmount"
-          v-if="openType == 'deposit'"
-        >
-          <el-input
-            v-model="form.chipAmount"
-            placeholder=""
-            class="access-input"
-            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-          />
-        </el-form-item>
-        <el-form-item
-          label="存储现金"
-          prop="cashAmount"
-          v-if="openType == 'deposit'"
-        >
-          <el-input
-            v-model="form.cashAmount"
-            placeholder=""
-            class="access-input"
-            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-          />
-        </el-form-item>
-        <el-form-item
-          label="取出筹码"
-          prop="chipAmount"
-          v-if="openType == 'withdraw'"
-        >
-          <el-input
-            v-model="form.chipAmount"
-            placeholder=""
-            class="access-input"
-            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-          />
-        </el-form-item>
-        <el-form-item
-          label="取出现金"
-          prop="cashAmount"
-          v-if="openType == 'withdraw'"
-        >
-          <el-input
-            v-model="form.cashAmount"
-            placeholder=""
-            class="access-input"
-            oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-          />
-        </el-form-item>
+        <!-- 存码 结束-->
+
+        <!-- 取码 开始-->
+        <div style="border:'1px solid #000'" v-if="openType == 'withdraw'">
+          <div style="display:flex">
+            <el-form-item label="$现有筹码" prop="chipBalance">
+              <el-input
+                v-model="form.chipBalance"
+                placeholder=""
+                :disabled="true"
+              />
+            </el-form-item>
+            <el-form-item label="$现有现金" prop="cashBalance">
+              <el-input
+                v-model="form.cashBalance"
+                placeholder=""
+                :disabled="true"
+              />
+            </el-form-item>
+          </div>
+
+          <el-form-item label="$取出筹码" prop="chipAmount">
+            <el-input
+              v-model="form.chipAmount"
+              placeholder=""
+              class="access-input"
+              :disabled="form.chipBalance == 0"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+            />
+          </el-form-item>
+          <el-form-item label="$取出现金" prop="cashAmount">
+            <el-input
+              v-model="form.cashAmount"
+              placeholder=""
+              class="access-input"
+              :disabled="form.cashBalance == 0"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+            />
+          </el-form-item>
+        </div>
+
+        <div style="border:'1px solid #000'" v-if="openType == 'withdraw'">
+          <div style="display:flex">
+            <el-form-item label="฿现有筹码" prop="chipBalanceTh">
+              <el-input
+                v-model="form.chipBalanceTh"
+                placeholder=""
+                :disabled="true"
+              />
+            </el-form-item>
+            <el-form-item label="฿现有现金" prop="cashBalanceTh">
+              <el-input
+                v-model="form.cashBalanceTh"
+                placeholder=""
+                :disabled="true"
+              />
+            </el-form-item>
+          </div>
+
+          <el-form-item
+            label="฿取出筹码"
+            prop="chipAmountTh"
+            :show-message="false"
+          >
+            <el-input
+              v-model="form.chipAmountTh"
+              placeholder=""
+              class="access-input"
+              :disabled="form.chipBalanceTh == 0"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+            />
+          </el-form-item>
+          <el-form-item label="฿取出现金" prop="cashAmountTh">
+            <el-input
+              v-model="form.cashAmountTh"
+              placeholder=""
+              class="access-input"
+              :disabled="form.cashBalanceTh == 0"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+            />
+          </el-form-item>
+        </div>
+
+        <!-- 取码结束 -->
 
         <el-form-item label="操作备注" prop="remark">
           <el-input
@@ -367,7 +484,17 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm"
+          :disabled="
+            form.chipBalance == 0 &&
+              form.cashBalanceTh == 0 &&
+              form.chipBalanceTh == 0 &&
+              form.cashBalanceTh == 0
+          "
+          >确认</el-button
+        >
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -382,7 +509,15 @@ import {
   updateCodeFetching
 } from "@/api/coderoom/accessCode";
 import { MoneyFormat } from "@/filter";
+
+const fieldMap = {
+  chipAmount: "chipBalance",
+  cashAmount: "cashBalance",
+  chipAmountTh: "chipBalanceTh",
+  cashAmountTh: "cashBalanceTh"
+};
 export default {
+  // 存取码管理
   name: "AccessCode",
   data() {
     //  const lessOne = (rule, value, callback) => {
@@ -453,13 +588,25 @@ export default {
       rules: {
         chipAmount: [
           {
-            validator: this.chipAmountValidator,
+            validator: this.amountValidator,
             trigger: "blur"
           }
         ],
         cashAmount: [
           {
-            validator: this.cashAmountValidator,
+            validator: this.amountValidator,
+            trigger: "blur"
+          }
+        ],
+        chipAmountTh: [
+          {
+            validator: this.amountValidator,
+            trigger: "blur"
+          }
+        ],
+        cashAmountTh: [
+          {
+            validator: this.amountValidator,
             trigger: "blur"
           }
         ]
@@ -473,112 +620,158 @@ export default {
     this.getList();
   },
   methods: {
-    chipAmountValidator(rule, value, callback) {
-      // 筹码金额校验
+    // chipAmountValidator(rule, value, callback) {
+    //   // 筹码金额校验
+    //   if (this.openType == "deposit") {
+    //     // 存码的校验规则
+    //     if (
+    //       !this.form.chipAmount &&
+    //       !this.form.cashAmount &&
+    //       !this.form.chipAmountTh &&
+    //       !this.form.cashAmountTh
+    //     ) {
+    //       callback(new Error("请输入至少一个存码金额"));
+    //     } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
+    //       callback(new Error("请输入大于0的数字"));
+    //     } else {
+    //       // 当筹码金额通过校验时，如果现金金额通过校验，则移除现金的校验结果果
+    //       if (
+    //         !this.form.cashAmount ||
+    //         (this.form.cashAmount && this.form.cashAmount > 0)
+    //       ) {
+    //         this.$refs["form"].clearValidate("cashAmount");
+    //       }
+    //       callback();
+    //     }
+    //   } else {
+    //     // 取码的校验规则
+    //     if (
+    //       !this.form.chipAmount &&
+    //       !this.form.cashAmount &&
+    //       !this.form.chipAmountTh &&
+    //       !this.form.cashAmountTh
+    //     ) {
+    //       callback(new Error("请输入至少一个取码金额"));
+    //     } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
+    //       callback(new Error("请输入大于0的数字"));
+    //     } else if (
+    //       this.form.chipAmount &&
+    //       this.form.chipAmount > this.form.chipBalance
+    //     ) {
+    //       // 取出的筹码/现金必须小于等于现有筹码/现金，否则提示“余额不足“
+    //       callback(new Error("余额不足"));
+    //     } else if (this.form.chipAmount && this.form.chipBalance == 0) {
+    //       // 现有筹码为0，对应的取出金额输入任何金额，提示“余额不足’
+    //       callback(new Error("余额不足"));
+    //     } else {
+    //       // 当筹码金额通过校验时，如果现金金额通过校验，则移除该输入项的校验结果
+    //       if (
+    //         !this.form.cashAmount ||
+    //         (this.form.cashAmount &&
+    //           this.form.cashBalance > 0 &&
+    //           this.form.cashAmount > 0 &&
+    //           this.form.cashAmount <= this.cashBalance)
+    //       ) {
+    //         this.$refs["form"].clearValidate("cashAmount");
+    //       }
+
+    //       callback();
+    //     }
+    //   }
+    // },
+    // cashAmountValidator(rule, value, callback) {
+    //   // 现金金额校验
+    //   if (this.openType == "deposit") {
+    //     // 存码的校验规则
+    //     if (!this.form.chipAmount && !this.form.cashAmount) {
+    //       callback(new Error("请输入至少一个存码金额"));
+    //     } else if (this.form.cashAmount && this.form.cashAmount <= 0) {
+    //       callback(new Error("请输入大于0的数字"));
+    //     } else {
+    //       // 当现金金额通过校验时，如果筹码金金额为空或者筹码金额不为空但是大于0，则移除筹码金额的校验结果
+    //       if (
+    //         !this.form.chipAmount ||
+    //         (this.form.chipAmount && this.form.chipAmount > 0)
+    //       ) {
+    //         this.$refs["form"].clearValidate("chipAmount");
+    //       }
+
+    //       callback();
+    //     }
+    //   } else {
+    //     // 取码的校验规则
+    //     if (!this.form.chipAmount && !this.form.cashAmount) {
+    //       callback(new Error("请输入至少一个取码金额"));
+    //     } else if (this.form.cashAmount && this.form.cashAmount <= 0) {
+    //       callback(new Error("请输入大于0的数字"));
+    //     } else if (
+    //       this.form.cashAmount &&
+    //       this.form.cashAmount > this.form.cashBalance
+    //     ) {
+    //       callback(new Error("余额不足"));
+    //     } else if (this.form.cashAmount && this.form.cashBalance == 0) {
+    //       // 现有现金为0，对应的取出金额输入任何金额，提示“余额不足’
+    //       callback(new Error("余额不足"));
+    //     } else {
+    //       // 如果现金金额符合校验,同时移除筹码金额的校验结果
+    //       console.log("如果现金金额符合校验,同时移除筹码金额的校验结果");
+
+    //       if (
+    //         !this.form.chipAmount ||
+    //         (this.form.chipAmount &&
+    //           this.form.chipBalance > 0 &&
+    //           this.form.chipAmount > 0 &&
+    //           this.form.chipAmount <= this.chipBalance)
+    //       ) {
+    //         this.$refs["form"].clearValidate("chipAmount");
+    //       }
+    //       // else {
+    //       //   console.log("再对筹码校验");
+    //       //   this.$refs["form"].validate("chipAmount");
+    //       // }
+
+    //       callback();
+    //     }
+    //   }
+    // },
+    // 通用的金额校验
+    amountValidator(rule, value, callback) {
+      // console.log(rule,value);
       if (this.openType == "deposit") {
         // 存码的校验规则
-        if (!this.form.chipAmount && !this.form.cashAmount) {
+        if (
+          !this.form.chipAmount &&
+          !this.form.cashAmount &&
+          !this.form.chipAmountTh &&
+          !this.form.cashAmountTh
+        ) {
           callback(new Error("请输入至少一个存码金额"));
-        } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
+        } else if (value && value <= 0) {
           callback(new Error("请输入大于0的数字"));
         } else {
-          // 当筹码金额通过校验时，如果现金金额为空或者现金金额不为空但是大于0，则移除筹码金额的校验结果
-          if (
-            !this.form.cashAmount ||
-            (this.form.cashAmount && this.form.cashAmount > 0)
-          ) {
-            this.$refs["form"].clearValidate("cashAmount");
-          }
-
           callback();
         }
       } else {
         // 取码的校验规则
-        if (!this.form.chipAmount && !this.form.cashAmount) {
-          callback(new Error("请输入至少一个取码金额"));
-        } else if (this.form.chipAmount && value <= 0) {
-          callback(new Error("请输入大于0的数字"));
-        } else if (
-          this.form.chipAmount &&
-          this.form.chipAmount > this.form.chipBalance
+
+        // chipAmount->chipBalance
+        const balanceField = fieldMap[rule.field];
+        if (
+          !this.form.chipAmount &&
+          !this.form.cashAmount &&
+          !this.form.chipAmountTh &&
+          !this.form.cashAmountTh
         ) {
+          callback(new Error("请输入至少一个取码金额"));
+        } else if (value && value <= 0) {
+          callback(new Error("请输入大于0的数字"));
+        } else if (value && value > this.form[balanceField]) {
           // 取出的筹码/现金必须小于等于现有筹码/现金，否则提示“余额不足“
           callback(new Error("余额不足"));
-        } else if (this.form.chipAmount && this.form.chipBalance == 0) {
+        } else if (value && this.form[balanceField] == 0) {
           // 现有筹码为0，对应的取出金额输入任何金额，提示“余额不足’
           callback(new Error("余额不足"));
         } else {
-          // 如果筹码金额符合校验,同时移除现金金额的校验结果
-          console.log("如果筹码金额符合校验,同时移除现金金额的校验结果");
-          if (
-            !this.form.cashAmount ||
-            (this.form.cashAmount &&
-              this.form.cashBalance > 0 &&
-              this.form.cashAmount > 0 &&
-              this.form.cashAmount <= this.chipBalance)
-          ) {
-            this.$refs["form"].clearValidate("cashAmount");
-          }
-          // else {
-          //   console.log("再对现金校验");
-          //   this.$refs["form"].validate("cashAmount");
-          // }
-          //
-          callback();
-        }
-      }
-    },
-    cashAmountValidator(rule, value, callback) {
-      // 现金金额校验
-      if (this.openType == "deposit") {
-        // 存码的校验规则
-        if (!this.form.chipAmount && !this.form.cashAmount) {
-          callback(new Error("请输入至少一个存码金额"));
-        } else if (this.form.cashAmount && this.form.cashAmount <= 0) {
-          callback(new Error("请输入大于0的数字"));
-        } else {
-          // 当现金金额通过校验时，如果筹码金金额为空或者筹码金额不为空但是大于0，则移除筹码金额的校验结果
-          if (
-            !this.form.chipAmount ||
-            (this.form.chipAmount && this.form.chipAmount > 0)
-          ) {
-            this.$refs["form"].clearValidate("chipAmount");
-          }
-
-          callback();
-        }
-      } else {
-        // 取码的校验规则
-        if (!this.form.chipAmount && !this.form.cashAmount) {
-          callback(new Error("请输入至少一个取码金额"));
-        } else if (this.form.cashAmount && value <= 0) {
-          callback(new Error("请输入大于0的数字"));
-        } else if (
-          this.form.cashAmount &&
-          this.form.cashAmount > this.form.cashBalance
-        ) {
-          callback(new Error("余额不足"));
-        } else if (this.form.cashAmount && this.form.cashBalance == 0) {
-          // 现有现金为0，对应的取出金额输入任何金额，提示“余额不足’
-          callback(new Error("余额不足"));
-        } else {
-          // 如果现金金额符合校验,同时移除筹码金额的校验结果
-          console.log("如果现金金额符合校验,同时移除筹码金额的校验结果");
-
-          if (
-            !this.form.chipAmount ||
-            (this.form.chipAmount &&
-              this.form.chipBalance > 0 &&
-              this.form.chipAmount > 0 &&
-              this.form.chipAmount <= this.chipBalance)
-          ) {
-            this.$refs["form"].clearValidate("chipAmount");
-          } 
-          // else {
-          //   console.log("再对筹码校验");
-          //   this.$refs["form"].validate("chipAmount");
-          // }
-
           callback();
         }
       }
@@ -607,30 +800,6 @@ export default {
         return "table-info-red";
       }
     },
-    //合计规则
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "合计";
-          return;
-        }
-        if (index === 3) {
-          sums[index] = MoneyFormat(this.userTotal.chipBalance);
-          return;
-        }
-        if (index === 4) {
-          sums[index] = MoneyFormat(this.userTotal.cashBalance);
-          return;
-        }
-        if (index === 5) {
-          sums[index] = MoneyFormat(this.userTotal.totalBalance);
-          return;
-        }
-      });
-      return sums;
-    },
     // 小计规则
     getSummaries1(param) {
       const { columns, data } = param;
@@ -640,7 +809,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (index === 1 || index === 2 || index === 6) {
+        if (index === 1 || index === 2 || index === 7) {
           sums[index] = "";
           return;
         }
@@ -659,13 +828,46 @@ export default {
             }
           }, 0);
           sums[index] += "";
-          if (index == 3 || index == 4 || index == 5) {
+          sums[index] = Number(sums[index]).toFixed(2);
+          if (index == 3 || index == 4 || index == 5 || index == 6) {
             // 金额需要保留两位小数点
             sums[index] = MoneyFormat(sums[index]);
           }
         } else {
           // sums[index] = 'N/A';
         }
+      });
+      return sums;
+    },
+    //总计规则
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "总计";
+          return;
+        }
+        if (index === 3) {
+          sums[index] = MoneyFormat(this.userTotal.chipBalance);
+          return;
+        }
+        if (index === 4) {
+          sums[index] = MoneyFormat(this.userTotal.cashBalance);
+          return;
+        }
+        if (index === 5) {
+          sums[index] = MoneyFormat(this.userTotal.chipBalanceTh);
+          return;
+        }
+        if (index === 6) {
+          sums[index] = MoneyFormat(this.userTotal.cashBalanceTh);
+          return;
+        }
+        // if (index === 5) {
+        //   sums[index] = MoneyFormat(this.userTotal.totalBalance);
+        //   return;
+        // }
       });
       return sums;
     },
@@ -683,6 +885,8 @@ export default {
         userName: "",
         chipAmount: "",
         cashAmount: "",
+        chipAmountTh: "",
+        cashAmountTh: "",
         totalBalance: "",
         remark: ""
       };
@@ -731,9 +935,10 @@ export default {
           "会员卡号",
           "姓名",
           "状态",
-          "已存筹码余额",
-          "已存现金余额",
-          "总余额",
+          "$已存筹码余额",
+          "$已存现金余额",
+          "฿已存筹码余额",
+          "฿已存现金余额",
           "备注"
         ];
         // 上面设置Excel的表格第一行的标题
@@ -743,14 +948,15 @@ export default {
           "status",
           "chipBalance",
           "cashBalance",
-          "totalBalance",
+          "chipBalanceTh",
+          "cashBalanceTh",
           "remark"
         ];
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
         const time_str = this.$getCurrentTime();
-        export_json_to_excel(tHeader, data, `存取码列表-${time_str}`);
+        export_json_to_excel(tHeader, data, `存取码管理列表-${time_str}`);
       });
     },
     // 该方法负责将数组转化成二维数组
@@ -765,10 +971,11 @@ export default {
         })
       );
     },
-    // 打印
-    handlePrint() {},
+
     // 明细
-    handleDetail() {},
+    handleDetail() {
+      this.$router.push({ name: "DepositInfo" });
+    },
     /** 提交按钮 */
     submitForm: function() {
       if (this.openType == "withdraw") {
@@ -781,15 +988,21 @@ export default {
 
       this.$refs["form"].validate((valid, res) => {
         if (valid) {
+          this.form["chipAmount"] = Number(this.form["chipAmount"]);
+          this.form["chipAmountTh"] = Number(this.form["chipAmountTh"]);
+          this.form["cashAmount"] = Number(this.form["cashAmount"]);
+          this.form["cashAmountTh"] = Number(this.form["cashAmountTh"]);
+
           if (this.openType == "withdraw") {
             updateCodeFetching(this.form)
               .then(response => {
                 this.$modal.msgSuccess("取码成功");
+
                 this.open = false;
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("取码失败");
+                this.$modal.msgError("取码失败");
               });
           } else {
             // this.form["cardType"] = 1;
@@ -800,12 +1013,12 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgSuccess("存码失败");
+                this.$modal.msgError("存码失败");
               });
           }
         } else {
           //提示校验错误
-          // this.$modal.msgError(Object.values(res)[0][0].message);
+          this.$modal.msgError(Object.values(res)[0][0].message);
         }
       });
     }
