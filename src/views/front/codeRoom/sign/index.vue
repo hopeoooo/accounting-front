@@ -345,7 +345,7 @@
         <el-button
           type="primary"
           @click="submitForm"
-          :disabled="form.signedAmount == 0 && form.signedAmountTh == 0"
+          :disabled="openType=='back' && form.signedAmount == 0 && form.signedAmountTh == 0"
           >确认</el-button
         >
         <el-button @click="cancel">取消</el-button>
@@ -617,9 +617,9 @@ export default {
       this.title = "还单";
     },
     // 明细
-    handleDetail() {
+    handleDetail(card) {
       //TODO: 前往明细表
-      this.$router.push({ name: "SignInfo" });
+      this.$router.push({ name: "SignInfo" ,query:{card:card}});
     },
     /** 导出按钮操作 */
     handleExport() {

@@ -122,7 +122,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
-                @click="handleDetail"
+                @click="handleDetail(scope.row.card)"
                 >明细</el-button
               >
             </template>
@@ -411,9 +411,9 @@ export default {
     },
 
     // 明细
-    handleDetail() {
+    handleDetail(card) {
       // this.$router.push("TransferInfo")
-      this.$router.push({name: "TransferInfo"})
+      this.$router.push({name: "TransferInfo",query:{card:card}})
     },
     /** 提交按钮 */
     submitForm: function() {

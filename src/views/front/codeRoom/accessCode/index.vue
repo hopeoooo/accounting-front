@@ -488,6 +488,7 @@
           type="primary"
           @click="submitForm"
           :disabled="
+          openType=='withdraw' &&
             form.chipBalance == 0 &&
               form.cashBalanceTh == 0 &&
               form.chipBalanceTh == 0 &&
@@ -973,8 +974,8 @@ export default {
     },
 
     // 明细
-    handleDetail() {
-      this.$router.push({ name: "DepositInfo" });
+    handleDetail(card) {
+      this.$router.push({ name: "DepositInfo" ,query:{card:card}});
     },
     /** 提交按钮 */
     submitForm: function() {

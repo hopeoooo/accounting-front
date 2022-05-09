@@ -783,9 +783,9 @@ export default {
     },
 
     // 明细
-    handleDetail() {
+    handleDetail(card) {
       //TODO: 前往明细表
-      this.$router.push({ name: "WaterInfo" });
+      this.$router.push({ name: "WaterInfo" ,query:{card:card}});
     },
     /** 提交按钮 */
     submitForm: function() {
