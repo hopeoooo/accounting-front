@@ -126,7 +126,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="百家乐洗码比例（筹码）"
+              label="百家乐洗码比例（$筹码）"
               prop="baccaratRollingRatioChip"
               label-width="200px"
             >
@@ -147,7 +147,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="百家乐洗码比例（现金）"
+              label="百家乐洗码比例（$现金）"
               prop="baccaratRollingRatioCash"
               label-width="200px"
             >
@@ -168,7 +168,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="龙虎洗码比例（筹码）"
+              label="龙虎洗码比例（$筹码）"
               prop="dragonTigerRatioChip"
               label-width="200px"
             >
@@ -189,12 +189,96 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="龙虎洗码比例（现金）"
+              label="龙虎洗码比例（$现金）"
               prop="dragonTigerRatioCash"
               label-width="200px"
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
+                 style="witdh:200px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template></el-input
+              >
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="百家乐洗码比例（฿筹码）"
+              prop="baccaratRollingRatioChipTh"
+              label-width="200px"
+            >
+              <el-input
+                v-model="oddsList.baccaratRollingRatioChipTh"
+                 style="witdh:200px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="百家乐洗码比例（฿现金）"
+              prop="baccaratRollingRatioCashTh"
+              label-width="200px"
+            >
+              <el-input
+                v-model="oddsList.baccaratRollingRatioCashTh"
+                style="witdh:200px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="龙虎洗码比例（฿筹码）"
+              prop="dragonTigerRatioChipTh"
+              label-width="200px"
+            >
+              <el-input
+                v-model="oddsList.dragonTigerRatioChipTh"
+                style="witdh:200px"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              >
+                <template slot="suffix">
+                  <span style="color:#000">
+                    %
+                  </span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="6" :xs="12">
+          <div class="listb">
+            <el-form-item
+              label="龙虎洗码比例（฿现金）"
+              prop="dragonTigerRatioCashTh"
+              label-width="200px"
+            >
+              <el-input
+                v-model="oddsList.dragonTigerRatioCashTh"
                  style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
@@ -253,6 +337,10 @@ export default {
         baccaratRollingRatioCash: "",
         dragonTigerRatioChip: "",
         dragonTigerRatioCash: "",
+        baccaratRollingRatioChipTh: "",
+        baccaratRollingRatioCashTh: "",
+        dragonTigerRatioChipTh: "",
+        dragonTigerRatioCashTh: "",
         rollingCommissionRounding: 0,
         bankerWinPumpRounding: 0
       },
@@ -366,7 +454,7 @@ export default {
         baccaratRollingRatioChip: [
           {
             required: true,
-            message: "百家乐洗码比例（筹码）不能为空",
+            message: "百家乐洗码比例（$筹码）不能为空",
             trigger: "blur"
           },
           {
@@ -379,7 +467,7 @@ export default {
         baccaratRollingRatioCash: [
           {
             required: true,
-            message: "百家乐洗码比例（现金）不能为空",
+            message: "百家乐洗码比例（$现金）不能为空",
             trigger: "blur"
           },
           {
@@ -392,7 +480,7 @@ export default {
         dragonTigerRatioChip: [
           {
             required: true,
-            message: "龙虎洗码比例（筹码）不能为空",
+            message: "龙虎洗码比例（$筹码）不能为空",
             trigger: "blur"
           },
           {
@@ -405,7 +493,59 @@ export default {
         dragonTigerRatioCash: [
           {
             required: true,
-            message: "龙虎洗码比例（现金）不能为空",
+            message: "龙虎洗码比例（$现金）不能为空",
+            trigger: "blur"
+          },
+          {
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
+        ],
+        baccaratRollingRatioChipTh: [
+          {
+            required: true,
+            message: "百家乐洗码比例（฿筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
+        ],
+        baccaratRollingRatioCashTh: [
+          {
+            required: true,
+            message: "百家乐洗码比例（฿现金）不能为空",
+            trigger: "blur"
+          },
+          {
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
+        ],
+        dragonTigerRatioChipTh: [
+          {
+            required: true,
+            message: "龙虎洗码比例（฿筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
+          },
+
+        ],
+        dragonTigerRatioCashTh: [
+          {
+            required: true,
+            message: "龙虎洗码比例（฿现金）不能为空",
             trigger: "blur"
           },
           {

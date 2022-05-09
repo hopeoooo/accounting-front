@@ -8,40 +8,52 @@
             <h1>当前操作员</h1>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
+             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
+              <el-button class="loginout" type="primary" plain @click="betRecord">下注记录</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="6" :xs="24">
+      <el-col :span="10" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
-              <li>累计：{{tableInfo.total || 0}}</li>
-              <li>筹码：{{tableInfo.chip || 0}}</li>
-              <li>现金：{{tableInfo.cash || 0}}</li>
+             </ul>
+             <ul>
+              <li>$累计：{{tableInfo.total || 0}}</li>
+              <li>$筹码：{{tableInfo.chip || 0}}</li>
+              <li>$现金：{{tableInfo.cash || 0}}</li>
+             </ul>
+              <ul>
+              <li>฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
+              <li>฿现金：{{tableInfo.cashTh || 0}}</li>
              </ul>
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>庄：{{baccaratSum.sumZ || 0}}</li>
-              <li>庄对：{{baccaratSum.sumZd || 0}}</li>
-              <li>庄保险：{{baccaratSum.sumZbx || 0}}</li>
-              <li>和：{{baccaratSum.sumH || 0}}</li>
-              <li>闲：{{baccaratSum.sumX || 0}}</li>
-              <li>闲对：{{baccaratSum.sumXd || 0}}</li>
-              <li>闲保险：{{baccaratSum.sumXbx || 0}}</li>
+              <li>$庄：{{baccaratSum.sumZ || 0}}</li>
+              <li>$庄对：{{baccaratSum.sumZd || 0}}</li>
+              <li>$庄保险：{{baccaratSum.sumZbx || 0}}</li>
+              <li>$和：{{baccaratSum.sumH || 0}}</li>
+              <li>$闲：{{baccaratSum.sumX || 0}}</li>
+              <li>$闲对：{{baccaratSum.sumXd || 0}}</li>
+              <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
+             </ul>
+             <ul>
+              <li>฿庄：{{baccaratSum.sumZ || 0}}</li>
+              <li>฿庄对：{{baccaratSum.sumZd || 0}}</li>
+              <li>฿庄保险：{{baccaratSum.sumZbx || 0}}</li>
+              <li>฿和：{{baccaratSum.sumH || 0}}</li>
+              <li>฿闲：{{baccaratSum.sumX || 0}}</li>
+              <li>฿闲对：{{baccaratSum.sumXd || 0}}</li>
+              <li>฿闲保险：{{baccaratSum.sumXbx || 0}}</li>
              </ul>
           </el-card>
       </el-col>
-       <!--按钮-->
-      <el-col :span="4" :xs="24">
-          <el-card class="box-card-box" style="text-align:center">
-              <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
-              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <el-button type="primary" plain @click="betRecord">下注记录</el-button>
-          </el-card>
-      </el-col>
+     
        <!--路单展示-->
       <el-col :span="10" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
@@ -75,8 +87,10 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="4" :xs="12">
                   <div class="f1">
-                    <span>筹码:{{baccaratSum.sumChip || 0}}</span>
-                    <span>现金:{{baccaratSum.sumCash || 0}}</span>
+                    <span>$筹码:{{baccaratSum.sumChip || 0}}</span>
+                    <span>$现金:{{baccaratSum.sumCash || 0}}</span>
+                     <span>฿筹码:{{baccaratSum.sumChip || 0}}</span>
+                    <span>฿现金:{{baccaratSum.sumCash || 0}}</span>
                   </div>
                </el-col>
               <el-col :span="14" :xs="24">
@@ -147,64 +161,67 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+       <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
+          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="320px">
                <template slot-scope="scope">
-                  <el-radio-group v-model.number="scope.row.type">
-                <el-radio :label="0">现金</el-radio>
-                <el-radio :label="1">筹码</el-radio>
-              </el-radio-group>
+                  <el-radio-group  @change='DataChange' v-model.number="scope.row.type">
+                    <el-radio :label="0">$现金</el-radio>
+                    <el-radio :label="1">$筹码</el-radio>
+                    <el-radio :label="2">฿现金</el-radio>
+                    <el-radio :label="3">฿筹码</el-radio>
+                  </el-radio-group>
               </template>
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="和" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄对" align="center" key="card4" prop="card4"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲对" align="center" key="card5" prop="card5"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄保险" align="center" key="card6" prop="card6"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲保险" align="center" key="card7" prop="card7"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
             <el-table-column label="小" align="center" key="card9" prop="card9"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
           <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
@@ -360,6 +377,9 @@ export default {
     betRecord(){},
     openData(data){
       this.open = data
+        if(this.title=='点码')
+      this.getTableInfo()
+      this.getResult()
     },
     //桌台信息
     getTableInfo(){
@@ -809,6 +829,7 @@ export default {
   .el-card__body{
     display: flex;
     flex-direction: column;
+    padding: 15px;
     button{
       width: 80%;
       height: 80px;
@@ -819,13 +840,14 @@ export default {
     }
     ul{
       padding: 0;
+      margin: 0;
      text-align: left;
       li{
         list-style: none;
         display: inline-block;
         min-width: 60px;
         margin: 0 10px;
-        line-height: 45px;
+        line-height: 39px;
       }
     }
   }
@@ -978,9 +1000,10 @@ export default {
     }
     .f1{
       display: flex;
-      flex-direction: column;
       text-align: left;
+      flex-wrap: wrap;
       span{
+        flex-basis: 50%;
         line-height: 50px;
       }
     }
@@ -1040,6 +1063,7 @@ export default {
 
 }
 .betBox {
+  .el-table__row .el-table__cell .cell .el-radio-group .el-radio{margin-right: 10px;}
   .el-input--medium .el-input__inner{
     line-height: 25px;
     height: 25px;

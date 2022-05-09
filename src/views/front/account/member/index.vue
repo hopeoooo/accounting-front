@@ -232,8 +232,10 @@
         <div class="count-item-box">
           <span class="count-item">主卡号合计:{{ count.parentCount }}</span
           ><span class="count-item">子卡号合计:{{ count.childCount }}</span
-          ><span class="count-item">押金:{{ count.depositCount }}</span
-          ><span class="count-item">补卡费:{{ count.repairCount }}</span>
+          ><span class="count-item">($)押金:{{ count.depositCount }}</span
+          ><span class="count-item">(฿)押金:{{ count.depositCountTh }}</span
+          ><span class="count-item">($)补卡费:{{ count.repairCount }}</span
+          ><span class="count-item">(฿)补卡费:{{ count.repairCountTh }}</span>
         </div>
 
         <pagination
@@ -367,7 +369,7 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              label="百家乐洗码比例（筹码）"
+              label="百家乐洗码比例（$筹码）"
               prop="baccaratRollingRatioChip"
               label-width="200px"
             >
@@ -380,7 +382,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="百家乐洗码比例（现金）"
+              label="百家乐洗码比例（$现金）"
               prop="baccaratRollingRatioCash"
               label-width="200px"
             >
@@ -395,7 +397,35 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              label="龙虎洗码比例（筹码）"
+              label="百家乐洗码比例（฿筹码）"
+              prop="baccaratRollingRatioChipTh"
+              label-width="200px"
+            >
+              <el-input
+                style="width:50px"
+                v-model="form.baccaratRollingRatioChipTh"
+                placeholder=""
+              />%
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="百家乐洗码比例（฿现金）"
+              prop="baccaratRollingRatioCashTh"
+              label-width="200px"
+            >
+              <el-input
+                style="width:50px"
+                v-model="form.baccaratRollingRatioCashTh"
+                placeholder=""
+              />%
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="0">
+          <el-col :span="12">
+            <el-form-item
+              label="龙虎洗码比例（$筹码）"
               prop="dragonTigerRatioChip"
               label-width="200px"
             >
@@ -408,13 +438,41 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="龙虎洗码比例（现金）"
+              label="龙虎洗码比例（$现金）"
               prop="dragonTigerRatioCash"
               label-width="200px"
             >
               <el-input
                 style="width:50px"
                 v-model="form.dragonTigerRatioCash"
+                placeholder=""
+              />%
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="0">
+          <el-col :span="12">
+            <el-form-item
+              label="龙虎洗码比例（฿筹码）"
+              prop="dragonTigerRatioChipTh"
+              label-width="200px"
+            >
+              <el-input
+                style="width:50px"
+                v-model="form.dragonTigerRatioChipTh"
+                placeholder=""
+              />%
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="龙虎洗码比例（฿现金）"
+              prop="dragonTigerRatioCashTh"
+              label-width="200px"
+            >
+              <el-input
+                style="width:50px"
+                v-model="form.dragonTigerRatioCashTh"
                 placeholder=""
               />%
             </el-form-item>
@@ -545,31 +603,59 @@
           ><span>{{ memlist.rebateRatio ? memlist.rebateRatio : "-" }}</span>
         </div>
         <div class="list">
-          <span>百家乐洗码比例（筹码）</span
+          <span>百家乐洗码比例（$筹码）</span
           ><span>{{
             memlist.baccaratRollingRatioChip
               ? memlist.baccaratRollingRatioChip
               : "-"
           }}</span>
         </div>
+         <div class="list">
+          <span>百家乐洗码比例（฿筹码）</span
+          ><span>{{
+            memlist.baccaratRollingRatioChipTh
+              ? memlist.baccaratRollingRatioChipTh
+              : "-"
+          }}</span>
+        </div>
         <div class="list">
-          <span>百家乐洗码比例（现金）</span
+          <span>百家乐洗码比例（$现金）</span
           ><span>{{
             memlist.baccaratRollingRatioCash
               ? memlist.baccaratRollingRatioCash
               : "-"
           }}</span>
         </div>
+         <div class="list">
+          <span>百家乐洗码比例（฿现金）</span
+          ><span>{{
+            memlist.baccaratRollingRatioCashTh
+              ? memlist.baccaratRollingRatioCashTh
+              : "-"
+          }}</span>
+        </div>
         <div class="list">
-          <span>龙虎洗码比例（筹码）</span
+          <span>龙虎洗码比例（$筹码）</span
           ><span>{{
             memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "-"
           }}</span>
         </div>
+         <div class="list">
+          <span>龙虎洗码比例（฿筹码）</span
+          ><span>{{
+            memlist.dragonTigerRatioChipTh ? memlist.dragonTigerRatioChipTh : "-"
+          }}</span>
+        </div>
         <div class="list">
-          <span>龙虎洗码比例（现金）</span
+          <span>龙虎洗码比例（$现金）</span
           ><span>{{
             memlist.dragonTigerRatioCash ? memlist.dragonTigerRatioCash : "-"
+          }}</span>
+        </div>
+        <div class="list">
+          <span>龙虎洗码比例（฿现金）</span
+          ><span>{{
+            memlist.dragonTigerRatioCashTh ? memlist.dragonTigerRatioCashTh : "-"
           }}</span>
         </div>
         <div class="list">
@@ -697,7 +783,7 @@ export default {
 
       isshow: true,
       oddsList: [],
-      count: { childCount: 0, depositCount: 0, parentCount: 0, repairCount: 0 },
+      count: { childCount: 0, depositCount: 0,depositCountTh:0, parentCount: 0, repairCount: 0,repairCountTh:0 },
       openType: "" //add 新增卡号;addChild 新增子卡;edit 卡号修改
     };
   },
@@ -759,7 +845,7 @@ export default {
         baccaratRollingRatioChip: [
           {
             required: true,
-            message: "百家乐洗码比例（筹码）不能为空",
+            message: "百家乐洗码比例（$筹码）不能为空",
             trigger: "blur"
           },
           {
@@ -770,7 +856,7 @@ export default {
         baccaratRollingRatioCash: [
           {
             required: true,
-            message: "百家乐洗码比例（现金）不能为空",
+            message: "百家乐洗码比例（$现金）不能为空",
             trigger: "blur"
           },
           {
@@ -781,7 +867,7 @@ export default {
         dragonTigerRatioChip: [
           {
             required: true,
-            message: "龙虎洗码比例（筹码）不能为空",
+            message: "龙虎洗码比例（$筹码）不能为空",
             trigger: "blur"
           },
           {
@@ -792,7 +878,51 @@ export default {
         dragonTigerRatioCash: [
           {
             required: true,
-            message: "龙虎洗码比例（现金）不能为空",
+            message: "龙虎洗码比例（$现金）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratRollingRatioChipTh: [
+          {
+            required: true,
+            message: "百家乐洗码比例（฿筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        baccaratRollingRatioCashTh: [
+          {
+            required: true,
+            message: "百家乐洗码比例（฿现金）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        dragonTigerRatioChipTh: [
+          {
+            required: true,
+            message: "龙虎洗码比例（฿筹码）不能为空",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+            message: "请输入大于0的数字"
+          }
+        ],
+        dragonTigerRatioCashTh: [
+          {
+            required: true,
+            message: "龙虎洗码比例（฿现金）不能为空",
             trigger: "blur"
           },
           {
@@ -895,6 +1025,10 @@ export default {
         baccaratRollingRatioCash: "",
         dragonTigerRatioChip: "",
         dragonTigerRatioCash: "",
+        baccaratRollingRatioChipTh: "",
+        baccaratRollingRatioCashTh: "",
+        dragonTigerRatioChipTh: "",
+        dragonTigerRatioCashTh: "",
         isCash: 1,
         isSettlement: 1,
         isOut: 1,
@@ -961,6 +1095,7 @@ export default {
       this.reset();
       this.form = Object.assign({}, row);
       // 将用户更多信息加进form里
+      this.getOddsList();
       this.getMemberInfo(row.id);
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
@@ -1024,12 +1159,14 @@ export default {
     getOddsList() {
       listOdds().then(response => {
         this.oddsList = response.data;
-        this.form.baccaratRollingRatioChip =
-          response.data.baccaratRollingRatioChip;
-        this.form.baccaratRollingRatioCash =
-          response.data.baccaratRollingRatioCash;
+        this.form.baccaratRollingRatioChip =response.data.baccaratRollingRatioChip;
+        this.form.baccaratRollingRatioCash =response.data.baccaratRollingRatioCash;
         this.form.dragonTigerRatioChip = response.data.dragonTigerRatioChip;
         this.form.dragonTigerRatioCash = response.data.dragonTigerRatioCash;
+        this.form.baccaratRollingRatioChipTh =response.data.baccaratRollingRatioChipTh;
+        this.form.baccaratRollingRatioCashTh =response.data.baccaratRollingRatioCashTh;
+        this.form.dragonTigerRatioChipTh = response.data.dragonTigerRatioChipTh;
+        this.form.dragonTigerRatioCashTh = response.data.dragonTigerRatioCashTh;
       });
     }
   }

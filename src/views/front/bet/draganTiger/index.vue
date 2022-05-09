@@ -118,11 +118,11 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
                <template slot-scope="scope">
-                  <el-radio-group v-model.number="scope.row.type">
+                  <el-radio-group @change='DataChange' v-model.number="scope.row.type">
                 <el-radio :label="0">现金</el-radio>
                 <el-radio :label="1">筹码</el-radio>
               </el-radio-group>
@@ -130,22 +130,22 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="龙" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="虎" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="和" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
-                  <el-input v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
           
@@ -284,6 +284,9 @@ export default {
     betRecord(){},
     openData(data){
       this.open = data
+       if(this.title=='点码')
+      this.getTableInfo()
+      this.getResult()
     },
     //桌台信息
     getTableInfo(){
@@ -620,17 +623,8 @@ export default {
       this.formLudan.gameNum = c.gameNum
       this.formLudan.tableId = c.tableId
 
-      let v = c.gameResult
-      let arr =v.split('')
-      arr.forEach(e=>{
-        if(e==1){
-          this.formLudan.radio1 = 1
-        }else if(e==4){
-         this.formLudan.radio1 = 4
-        }else if(e==7){
-         this.formLudan.radio1 = 7
-        }
-      })
+      this.formLudan.radio1 = c.gameResult
+      
       
     },
       submitLudan(){
@@ -792,11 +786,11 @@ export default {
             font-style: normal;
             }
             .type1{
-              background: url("../../../../assets/images/ludan/z1.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/l.webp") center no-repeat;
               background-size: 100%;
             }
             .type2{
-              background: url("../../../../assets/images/ludan/x1.webp") center no-repeat;
+              background: url("../../../../assets/images/ludan/hu.webp") center no-repeat;
               background-size: 100%;
             }
             .type3{
