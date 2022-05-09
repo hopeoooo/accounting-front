@@ -75,7 +75,105 @@
           </el-col>
         </el-row>
 
-        <el-table v-loading="loading" :data="userList">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          show-summary
+          sum-text="小计"
+          :summary-method="getSummaries1"
+        >
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
+          <el-table-column
+            label="会员卡号"
+            align="center"
+            key="card"
+            prop="card"
+          />
+          <el-table-column
+            label="姓名"
+            align="center"
+            key="userName"
+            prop="userName"
+          />
+          <el-table-column label="类型" align="center" key="type" prop="type">
+            <template slot-scope="scope">
+              <span v-if="scope.row.type == '11'">汇入</span>
+              <span v-if="scope.row.type == '12'">汇出</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="货币类型"
+            align="center"
+            key="operationType"
+            prop="operationType"
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.operationType == 0">筹码</span>
+              <span v-if="scope.row.operationType == 1">现金</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="$金额"
+            align="center"
+            key="amount"
+            prop="amount"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.amount | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            label="฿金额"
+            align="center"
+            key="amountTh"
+            prop="amountTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.amountTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            label="操作时间"
+            align="center"
+            key="operationTime"
+            prop="operationTime"
+          />
+
+          <el-table-column
+            label="操作员"
+            align="center"
+            key="createBy"
+            prop="createBy"
+          />
+
+          <el-table-column
+            label="操作备注"
+            align="center"
+            key="remark"
+            prop="remark"
+            width="150"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.remark" style="text-align:center">{{
+                scope.row.remark
+              }}</span>
+              <span v-else>--</span>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- 用于渲染总计 -->
+        <el-table
+          v-loading="loading"
+          :data="userList"
+           class="table2"
+          show-summary
+          sum-text="总计"
+          :summary-method="getSummaries"
+        >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             label="会员卡号"
@@ -275,6 +373,65 @@ export default {
       this.$delete(params, "pageSize");
     },
 
+    //  小计规则
+    getSummaries1(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "小计";
+          // return;
+        } else if (index == 4 || index == 5) {
+          // 只有第4、5列的金额 才需要小计
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                const pel = prev + curr; // 主要代码
+                return pel;
+              } else {
+                // return prev;
+                const pel = prev; // 主要代码
+                return pel;
+              }
+            }, 0);
+            sums[index] += "";
+            if (index == 4 || index == 5) {
+              // 结算洗码费金额需要保留两位小数点
+              sums[index] = MoneyFormat(sums[index]);
+            }
+          } else {
+            // sums[index] = 'N/A';
+          }
+        } else {
+          sums[index] = "";
+        }
+      });
+      return sums;
+    },
+    //合计规则
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "合计";
+          return;
+        }
+
+        if (index === 4) {
+          sums[index] = MoneyFormat(this.userTotal.sumAmount);
+          return;
+        }
+        if (index === 5) {
+          sums[index] = MoneyFormat(this.userTotal.sumAmountTh);
+          return;
+        }
+      });
+      return sums;
+    },
+
     /** 查询按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -348,7 +505,7 @@ export default {
             }
             return result;
           }
-                   if (j == "operationType") {
+          if (j == "operationType") {
             let result = "";
             switch (v[j]) {
               case 0:

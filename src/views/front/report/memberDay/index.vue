@@ -330,8 +330,8 @@
 import { listWaterDetailed, totalWaterDetailed } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
 export default {
-  // 洗码费结算明细表
-  name: "waterInfo",
+  // 台面上下水报表
+  name: "tableWater",
   data() {
     return {
       // 添加卡号

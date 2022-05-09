@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-04-30 10:22:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-08 17:59:02
+ * @LastEditTime: 2022-05-09 11:24:07
  * @Description: file content
  */
 import request from '@/utils/request'
@@ -90,6 +90,115 @@ export function totalWaterDetailed(query) {
 export function listAccessCodeDetailed(query) {
   return request({
     url: '/system/accessCodeDetailed/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询注单修改记录列表
+export function listBetUpdate(query) {
+  return request({
+    url: '/bet/update/list',
+    method: 'get',
+    params: query
+  })
+}
+// 查询点码列表
+export function listPorint(query) {
+  return request({
+    url: '/sys/porint/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 点码修改 确认修改
+export function editPorint(query) {
+  return request({
+    url: '/sys/porint/edit',
+    method: 'get',
+    params: query
+  })
+}
+// 点码修改  计算差距
+export function reckonPorint(query) {
+  return request({
+    url: '/sys/porint/reckon',
+    method: 'get',
+    params: query
+  })
+}
+
+// 点码修改列表
+export function listUpdatePorint(query) {
+  return request({
+    url: '/sys/porint/update/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询输赢报表列表
+export function listWinLose(query) {
+  return request({
+    url: 'sys/winLose/list',
+    method: 'get',
+    params: query
+  })
+}
+// 查询收码报表
+export function listReceipt(query) {
+  return request({
+    url: '/sys/receipt/list',
+    method: 'get',
+    params: query
+  })
+}
+
+
+//
+// 查询 客户日报表
+export function listReport(query) {
+  return request({
+    url: '/sys/report/list',
+    method: 'get',
+    params: query
+  })
+}
+
+//总计 客户日报表
+export function totalReport(query) {
+  return request({
+    url: '/sys/report/total',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 查询台面上下水报表
+export function listTablePlumbing(query) {
+  return request({
+    url: '/sys/tablePlumbing/list',
+    method: 'get',
+    params: query
+  })
+}
+
+//总计台面上下水报表
+export function totalTablePlumbing(query) {
+  return request({
+    url: '/sys/tablePlumbing/total',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 查询员工录入错账报表
+export function listInputError(query) {
+  return request({
+    url: '/sys/inputError/list',
     method: 'get',
     params: query
   })
