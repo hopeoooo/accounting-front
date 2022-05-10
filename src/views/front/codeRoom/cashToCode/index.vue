@@ -81,6 +81,16 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="是否可换现"
+            align="center"
+            key="isCash"
+            prop="isCash"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.isCash == 0 ? "否" : "是" }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="$筹码余额"
             align="center"
             sortable
@@ -102,16 +112,7 @@
               <span>{{ scope.row.chipAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="是否可换现"
-            align="center"
-            key="isCash"
-            prop="isCash"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.isCash == 0 ? "否" : "是" }}</span>
-            </template>
-          </el-table-column>
+
           <el-table-column
             label="备注"
             align="center"
@@ -323,7 +324,7 @@
           />
         </el-form-item>
         <el-form-item
-          label="换现金额"
+          label="$换现金额"
           prop="chipAmount"
           v-if="openType == 'exchange'"
         >
@@ -612,6 +613,7 @@ export default {
       // this.form = Object.assign({},row)
       this.form["card"] = row.card;
       this.form["isCash"] = row.isCash;
+      this.form["status"] = row.status;
       this.open = true;
       this.openType = "buy";
 
@@ -624,6 +626,7 @@ export default {
       // this.form = Object.assign({},row)
       this.form["card"] = row.card;
       this.form["isCash"] = row.isCash;
+      this.form["status"] = row.status;
       this.open = true;
       this.openType = "exchange";
 
@@ -681,33 +684,40 @@ export default {
     },
     /** 提交按钮 */
     submitForm: function() {
-      this.form["chipAmount"] = Number(this.form["chipAmount"]);
-      this.form["chipAmountTh"] = Number(this.form["chipAmountTh"]);
       if (this.openType == "exchange") {
+        // 换现
         if (this.form.status == 1) {
           this.$modal.msgError("该卡号已停用");
           return;
-        }
-        if (this.form.isCash == 0) {
+        } else if (this.form.isCash == 0) {
           this.$modal.msgError("当前会员不可换现");
           return;
+        } else {
+          this.form["chipAmount"] = Number(this.form["chipAmount"]);
+          this.form["chipAmountTh"] = Number(this.form["chipAmountTh"]);
+          this.$refs["form"].validate((valid, res) => {
+            if (valid) {
+              addCashExchange(this.form)
+                .then(response => {
+                  this.$modal.msgSuccess("换现成功");
+                  this.open = false;
+                  this.getList();
+                })
+                .catch(err => {
+                  this.$modal.msgError("换现失败");
+                });
+            } else {
+              //提示校验错误
+              // this.$modal.msgError(Object.values(res)[0][0].message);
+            }
+          });
         }
-      }
-      this.$refs["form"].validate((valid, res) => {
-        if (valid) {
-          if (this.openType == "exchange") {
-            // 换现
-            addCashExchange(this.form)
-              .then(response => {
-                this.$modal.msgSuccess("换现成功");
-                this.open = false;
-                this.getList();
-              })
-              .catch(err => {
-                this.$modal.msgError("换现失败");
-              });
-          } else {
-            // 买码
+      } else {
+        // 买码
+        this.form["chipAmount"] = Number(this.form["chipAmount"]);
+        this.form["chipAmountTh"] = Number(this.form["chipAmountTh"]);
+        this.$refs["form"].validate((valid, res) => {
+          if (valid) {
             addBuyCode(this.form)
               .then(response => {
                 this.$modal.msgSuccess("买码成功");
@@ -717,12 +727,12 @@ export default {
               .catch(err => {
                 this.$modal.msgError("买码失败");
               });
+          } else {
+            //提示校验错误
+            // this.$modal.msgError(Object.values(res)[0][0].message);
           }
-        } else {
-          //提示校验错误
-          // this.$modal.msgError(Object.values(res)[0][0].message);
-        }
-      });
+        });
+      }
     }
   }
 };
