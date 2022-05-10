@@ -297,9 +297,10 @@
         :rules="rules"
         :show-message="true"
         label-width="120px"
+
       >
         <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder="" :disabled="true" />
+          <el-input v-model="form.card" placeholder=""  style="width:150px" :disabled="true" />
         </el-form-item>
         <el-form-item
           label="$买入筹码金额"
@@ -309,6 +310,7 @@
           <el-input
             v-model="form.chipAmount"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -320,6 +322,7 @@
           <el-input
             v-model="form.chipAmountTh"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -331,6 +334,7 @@
           <el-input
             v-model="form.chipAmount"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -342,6 +346,7 @@
           <el-input
             v-model="form.chipAmountTh"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -704,7 +709,7 @@ export default {
                   this.getList();
                 })
                 .catch(err => {
-                  this.$modal.msgError("换现失败");
+                  // this.$modal.msgError("换现失败");
                 });
             } else {
               //提示校验错误
@@ -725,7 +730,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("买码失败");
+                // this.$modal.msgError("买码失败");
               });
           } else {
             //提示校验错误

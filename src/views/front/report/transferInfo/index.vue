@@ -415,13 +415,13 @@ export default {
       });
       return sums;
     },
-    //合计规则
+    //总计规则
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "合计";
+          sums[index] = "总计";
           return;
         }
 

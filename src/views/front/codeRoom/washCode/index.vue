@@ -198,7 +198,7 @@
           </el-table-column>
         </el-table>
 
-        <!-- 用于渲染合计 -->
+        <!-- 用于渲染总计 -->
         <el-table
           v-loading="loading"
           :data="userList"
@@ -573,7 +573,7 @@ export default {
     // 决定这一行的 CheckBox 是否可以勾选
     onSelectable(row, index) {
       // 如果该会员是不可结算洗码状态/卡号停用/洗码费为0，“结算”按钮置灰，并且不可选中该会员
-      if (row.isSettlement == 0 || row.status == 1 || row.waterAmount == 0) {
+      if (row.isSettlement == 0 || row.status == 1 || (row.waterAmount == 0 && row.waterAmountTh == 0)) {
         return false;
       } else {
         return true;
@@ -624,13 +624,13 @@ export default {
       return sums;
     },
 
-    //合计规则
+    //总计规则
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "合计";
+          sums[index] = "总计";
           // return;
         }
         if (index === 5) {
@@ -806,7 +806,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("结算失败");
+                // this.$modal.msgError("结算失败");
               });
           } else {
             // 批量结算
@@ -823,7 +823,7 @@ export default {
               .catch(err => {
                 console.log(err);
 
-                this.$modal.msgError("结算失败");
+                // this.$modal.msgError("结算失败");
               });
           }
         } else {
