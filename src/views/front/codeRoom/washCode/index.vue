@@ -695,7 +695,7 @@ export default {
     /** 结算洗码 */
     handleSettlement(row) {
       // 如果该会员是不可结算洗码状态/卡号停用/洗码费为0，“结算”按钮置灰，并且不可选中该会员
-      if (row.isSettlement == 0 || row.status == 1 || row.waterAmount == 0) {
+      if (row.isSettlement == 0 || row.status == 1 || (row.waterAmount == 0 && row.waterAmountTh == 0)) {
         return false;
       }
 
