@@ -47,7 +47,7 @@
           <el-card class="box-card-box-list" style="text-align:center">
             <el-row :gutter="0" style="width:100%">
                <el-col :span="24" :xs="24">
-                  <div class="f1">
+                  <div class="f2">
                      <span>$筹码:{{sgSum.sumChip || 0}}</span>
                     <span>$现金:{{sgSum.sumCash || 0}}</span>
                      <span>฿筹码:{{sgSum.sumChipTh || 0}}</span>
@@ -55,7 +55,7 @@
                   </div>
                </el-col>
          
-               <el-col :span="24" :xs="24" class="control">  
+               <el-col :span="24" :xs="24" class="control1">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
                   <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
                   <el-button type="primary" @click="ponintCode">点码</el-button>
@@ -74,10 +74,10 @@
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="360px">
                <template slot-scope="scope">
                   <el-radio-group @change='DataChange' v-model.number="scope.row.type">
-                    <el-radio :label="0">$现金</el-radio>
-                    <el-radio :label="1">$筹码</el-radio>
-                    <el-radio :label="2">฿现金</el-radio>
-                    <el-radio :label="3">฿筹码</el-radio>
+                    <el-radio :label="0">$筹码</el-radio>
+                    <el-radio :label="1">$现金</el-radio>
+                    <el-radio :label="2">฿筹码</el-radio>
+                    <el-radio :label="3">฿现金</el-radio>
                   </el-radio-group>
               </template>
           </el-table-column>
@@ -709,12 +709,12 @@ export default {
         align-items: center;
         justify-content: flex-start;
         flex-wrap:wrap;
-        &.control {
+        &.control1 {
           justify-content:  space-around;
         }
       }
     }
-    .f1{
+    .f2{
       display: flex;
       justify-content: space-around;
       width: 100%;

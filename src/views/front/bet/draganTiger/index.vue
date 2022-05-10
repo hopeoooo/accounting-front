@@ -13,20 +13,32 @@
        <!--桌台信息-->
       <el-col :span="6" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
-             <ul>
+              <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
-              <li>累计：{{tableInfo.total || 0}}</li>
-              <li>筹码：{{tableInfo.chip || 0}}</li>
-              <li>现金：{{tableInfo.cash || 0}}</li>
+             </ul>
+             <ul>
+              <li>$累计：{{tableInfo.total || 0}}</li>
+              <li>$筹码：{{tableInfo.chip || 0}}</li>
+              <li>$现金：{{tableInfo.cash || 0}}</li>
+             </ul>
+              <ul>
+              <li>฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
+              <li>฿现金：{{tableInfo.cashTh || 0}}</li>
              </ul>
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>龙：{{lhSum.sumL || 0}}</li>
-              <li>虎：{{lhSum.sumHu || 0}}</li>
-              <li>和：{{lhSum.sumH || 0}}</li>
+              <li>$龙：{{lhSum.sumL || 0}}</li>
+              <li>$虎：{{lhSum.sumHu || 0}}</li>
+              <li>$和：{{lhSum.sumH || 0}}</li>
+             </ul> 
+             <ul>
+              <li>฿龙：{{lhSum.sumLTh || 0}}</li>
+              <li>฿虎：{{lhSum.sumHuTh || 0}}</li>
+              <li>฿和：{{lhSum.sumHTh || 0}}</li>
              </ul> 
           </el-card>
       </el-col>
@@ -71,8 +83,10 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="4" :xs="12">
                   <div class="f1">
-                    <span>筹码:{{lhSum.sumChip || 0}}</span>
-                    <span>现金:{{lhSum.sumCash || 0}}</span>
+                    <span>$筹码:{{lhSum.sumChip || 0}}</span>
+                    <span>$现金:{{lhSum.sumCash || 0}}</span>
+                     <span>฿筹码:{{lhSum.sumChipTh || 0}}</span>
+                    <span>฿现金:{{lhSum.sumCashTh || 0}}</span>
                   </div>
                </el-col>
               <el-col :span="10" :xs="24">
@@ -120,11 +134,13 @@
 
      <el-table v-loading="loading" class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
+          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="320px">
                <template slot-scope="scope">
                   <el-radio-group @change='DataChange' v-model.number="scope.row.type">
-                <el-radio :label="0">现金</el-radio>
-                <el-radio :label="1">筹码</el-radio>
+                    <el-radio :label="0">$筹码</el-radio>
+                    <el-radio :label="1">$现金</el-radio>
+                    <el-radio :label="2">฿筹码</el-radio>
+                    <el-radio :label="3">฿现金</el-radio>
               </el-radio-group>
               </template>
           </el-table-column>
@@ -252,6 +268,12 @@ export default {
      
           sumChip:'',
           sumCash:'',
+          sumLTh:'',
+          sumHuTh:'',
+          sumHTh:'',
+     
+          sumChipTh:'',
+          sumCashTh:'',
       }
      
     };
@@ -413,18 +435,33 @@ export default {
       })
       arr1 = arr.filter(v => Object.keys(v).length!==0)
       param['bet']= arr1
-      const  newData = this.sumArr(arr1)
-
-      this.sumdata.sumL = newData['龙']
-      this.sumdata.sumHu = newData['虎']
-      this.sumdata.sumH = newData['和']
      
-      const arrCash =arr1.filter(e =>e.type==0)
-      const newCash =this.sumArr(arrCash)
-      const arrChip =arr1.filter(e =>e.type==1)
+     
+      
+      const arrChip =arr1.filter(e =>e.type==0)
       const newChip =this.sumArr(arrChip)
+      const arrCash =arr1.filter(e =>e.type==1)
+      const newCash =this.sumArr(arrCash)
+      const arrChipTh =arr1.filter(e =>e.type==2)
+      const newChipTh =this.sumArr(arrChipTh)
+      const arrCashTh =arr1.filter(e =>e.type==3)
+      const newCashTh =this.sumArr(arrCashTh)
+
+       let  arrMJ = arrCash.concat(arrChip)
+      let  arrTh = arrCashTh.concat(arrChipTh)
+      const  newDataMj = this.sumArr(arrMJ)
+      this.sumdata.sumL = newDataMj['龙']
+      this.sumdata.sumHu = newDataMj['虎']
+      this.sumdata.sumH = newDataMj['和']
+      const  newDataTh = this.sumArr(arrTh)
+      this.sumdata.sumLTh = newDataTh['龙']
+      this.sumdata.sumHuTh = newDataTh['虎']
+      this.sumdata.sumHTh = newDataTh['和']
+
       this.sumdata.sumChip = newChip['龙']+newChip['虎']+newChip['和']
       this.sumdata.sumCash = newCash['龙']+newCash['虎']+newCash['和']
+      this.sumdata.sumChipTh = newChipTh['龙']+newChipTh['虎']+newChipTh['和']
+      this.sumdata.sumCashTh = newCashTh['龙']+newCashTh['虎']+newCashTh['和']
      this.setLhSum(this.sumdata)
       dragantigerOpen({'json':param}).then(res => {
           this.subData= res.data
@@ -688,13 +725,14 @@ export default {
     }
     ul{
       padding: 0;
+      margin: 0;
      text-align: left;
       li{
         list-style: none;
         display: inline-block;
         min-width: 60px;
         margin: 0 10px;
-        line-height: 45px;
+        line-height: 39px;
       }
     }
   }
@@ -824,9 +862,10 @@ export default {
     }
     .f1{
       display: flex;
-      flex-direction: column;
       text-align: left;
+      flex-wrap: wrap;
       span{
+        flex-basis: 50%;
         line-height: 50px;
       }
     }
@@ -886,6 +925,7 @@ export default {
 
 }
 .betBox {
+  .el-table__row .el-table__cell .cell .el-radio-group .el-radio{margin-right: 10px;}
   .el-input--medium .el-input__inner{
     line-height: 25px;
     height: 25px;

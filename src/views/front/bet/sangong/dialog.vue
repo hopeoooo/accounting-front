@@ -85,7 +85,7 @@
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
-                  <div class="list">
+                  <!-- <div class="list">
                     <div>$保险筹码</div>
                     <div>
                       <el-input v-model.number="form.insurance" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -114,9 +114,8 @@
                      <div>
                        <span v-if="form.insuranceGap==0">正确</span>
                        <span v-else style="color:red">错误</span>
-                       <!-- {{insuranceGap==0?'正确':'错误'}} -->
                        </div>
-                  </div>
+                  </div> -->
                   <div class="list" v-if="title=='收码'">
                     <div>$筹码收码</div>
                     <div>

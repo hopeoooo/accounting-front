@@ -43,13 +43,13 @@
               <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
              </ul>
              <ul>
-              <li>฿庄：{{baccaratSum.sumZ || 0}}</li>
-              <li>฿庄对：{{baccaratSum.sumZd || 0}}</li>
-              <li>฿庄保险：{{baccaratSum.sumZbx || 0}}</li>
-              <li>฿和：{{baccaratSum.sumH || 0}}</li>
-              <li>฿闲：{{baccaratSum.sumX || 0}}</li>
-              <li>฿闲对：{{baccaratSum.sumXd || 0}}</li>
-              <li>฿闲保险：{{baccaratSum.sumXbx || 0}}</li>
+              <li>฿庄：{{baccaratSum.sumZTh || 0}}</li>
+              <li>฿庄对：{{baccaratSum.sumZdTh || 0}}</li>
+              <li>฿庄保险：{{baccaratSum.sumZbxTh || 0}}</li>
+              <li>฿和：{{baccaratSum.sumHTh || 0}}</li>
+              <li>฿闲：{{baccaratSum.sumXTh || 0}}</li>
+              <li>฿闲对：{{baccaratSum.sumXdTh || 0}}</li>
+              <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
              </ul>
           </el-card>
       </el-col>
@@ -89,8 +89,8 @@
                   <div class="f1">
                     <span>$筹码:{{baccaratSum.sumChip || 0}}</span>
                     <span>$现金:{{baccaratSum.sumCash || 0}}</span>
-                     <span>฿筹码:{{baccaratSum.sumChip || 0}}</span>
-                    <span>฿现金:{{baccaratSum.sumCash || 0}}</span>
+                     <span>฿筹码:{{baccaratSum.sumChipTh || 0}}</span>
+                    <span>฿现金:{{baccaratSum.sumCashTh || 0}}</span>
                   </div>
                </el-col>
               <el-col :span="14" :xs="24">
@@ -167,10 +167,10 @@
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="320px">
                <template slot-scope="scope">
                   <el-radio-group  @change='DataChange' v-model.number="scope.row.type">
-                    <el-radio :label="0">$现金</el-radio>
-                    <el-radio :label="1">$筹码</el-radio>
-                    <el-radio :label="2">฿现金</el-radio>
-                    <el-radio :label="3">฿筹码</el-radio>
+                   <el-radio :label="0">$筹码</el-radio>
+                    <el-radio :label="1">$现金</el-radio>
+                    <el-radio :label="2">฿筹码</el-radio>
+                    <el-radio :label="3">฿现金</el-radio>
                   </el-radio-group>
               </template>
           </el-table-column>
@@ -334,17 +334,28 @@ export default {
       result:'',//赛果
       //庄闲和筹码现金合计
       sumdata:{
-         sumZ:'',
+          sumZ:'',
           sumX:'',
           sumH:'',
           sumZd:'',
           sumXd:'',
           sumZbx:'',
           sumXbx:'',
-          sumD:'',
-          sumX:'',
+          sumBig:'',
+          sumSmall:'',
           sumChip:'',
           sumCash:'',
+          sumZTh:'',
+          sumXTh:'',
+          sumHTh:'',
+          sumZdTh:'',
+          sumXdTh:'',
+          sumZbxTh:'',
+          sumXbxTh:'',
+          sumBigTh:'',
+          sumSmallTh:'',
+          sumChipTh:'',
+          sumCashTh:'',
       }
      
     };
@@ -526,8 +537,18 @@ export default {
       })
       arr1 = arr.filter(v => Object.keys(v).length!==0)
       param['bet']= arr1
-      const  newData = this.sumArr(arr1)
      
+      const arrCash =arr1.filter(e =>e.type==1)
+      const newCash =this.sumArr(arrCash)
+      const arrChip =arr1.filter(e =>e.type==0)
+      const newChip =this.sumArr(arrChip)
+      const arrCashTh =arr1.filter(e =>e.type==3)
+      const newCashTh =this.sumArr(arrCashTh)
+      const arrChipTh =arr1.filter(e =>e.type==2)
+      const newChipTh =this.sumArr(arrChipTh)
+      let  arrMJ = arrCash.concat(arrChip)
+      let  arrTh = arrCashTh.concat(arrChipTh)
+       const  newData = this.sumArr(arrMJ)     
       this.sumdata.sumZ = newData['4']
       this.sumdata.sumX = newData['1']
       this.sumdata.sumH = newData['7']
@@ -535,15 +556,24 @@ export default {
       this.sumdata.sumXd = newData['5']
       this.sumdata.sumZbx = newData['3']
       this.sumdata.sumXbx = newData['0']
-      this.sumdata.sumD = newData['9']
-      this.sumdata.sumX = newData['6']
-     
-      const arrCash =arr1.filter(e =>e.type==0)
-      const newCash =this.sumArr(arrCash)
-      const arrChip =arr1.filter(e =>e.type==1)
-      const newChip =this.sumArr(arrChip)
+      this.sumdata.sumBig = newData['9']
+      this.sumdata.sumSmall = newData['6']
+
+        const  newDataTh = this.sumArr(arrTh)     
+      this.sumdata.sumZTh = newDataTh['4']
+      this.sumdata.sumXTh = newDataTh['1']
+      this.sumdata.sumHTh = newDataTh['7']
+      this.sumdata.sumZdTh = newDataTh['8']
+      this.sumdata.sumXdTh = newDataTh['5']
+      this.sumdata.sumZbxTh = newDataTh['3']
+      this.sumdata.sumXbxTh = newDataTh['0']
+      this.sumdata.sumBigTh = newDataTh['9']
+      this.sumdata.sumSmallTh = newDataTh['6']
+      console.log(arrMJ,arrTh)
       this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
       this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']
+       this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']
+      this.sumdata.sumCashTh = newCashTh['4']+newCashTh['1']+newCashTh['7']+newCashTh['8']+newCashTh['5']+newCashTh['9']+newCashTh['6']
      this.setBaccaratSum(this.sumdata)
       baccaratOpen({'json':param}).then(res => {
           this.subData= res.data
