@@ -342,7 +342,7 @@
       :title="title"
       :visible.sync="open"
       v-if="open"
-      width="800px"
+      width="500px"
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="150px">
