@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-      <div><h1>百家乐</h1>
+      <div><h1>三公</h1>
        <span>桌台编号</span>
        <el-select v-model="tableId" @change="valChange(tableId)" placeholder="请选择">
         <el-option
@@ -16,23 +16,18 @@
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
               <template slot-scope="scope">
-                <!-- <el-radio-group v-model.number="scope.row.type">
-                  <el-radio :label="0">现金</el-radio>
-                  <el-radio :label="1">筹码</el-radio>
-                </el-radio-group> -->
-                {{scope.row.type==0?'现金':(scope.row.type==1?'筹码':'-')}}
+                <span v-if="scope.row.type==0">$现金</span>
+                <span v-else-if="scope.row.type==1">$筹码</span>
+                <span v-else-if="scope.row.type==2">฿现金</span>
+                <span v-else-if="scope.row.type==3">฿筹码</span>
+                <span v-else>-</span>
+                <!-- {{scope.row.type==0?'现金':(scope.row.type==1?'筹码':'-')}} -->
               </template>
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
-           <el-table-column label="庄" align="center" key="card1" prop="card1"  ></el-table-column>
-           <el-table-column label="闲" align="center" key="card2" prop="card2"  ></el-table-column>
-           <el-table-column label="和" align="center" key="card3" prop="card3"  ></el-table-column>
-           <el-table-column label="庄对" align="center" key="card4" prop="card4"  ></el-table-column>
-           <el-table-column label="闲对" align="center" key="card5" prop="card5"  ></el-table-column>
-           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  ></el-table-column>
-           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  ></el-table-column>
-           <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
-            <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
+           <el-table-column label="输" align="center" key="lose" prop="lose"  ></el-table-column>
+           <el-table-column label="赢" align="center" key="win" prop="win"  ></el-table-column>
+          
           <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
           <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
              
@@ -42,10 +37,10 @@
 </template>
 
 <script>
-import { baccaratGet} from "@/api/bet/baccarat";
+import { sangongGet} from "@/api/bet/sangong";
 import {listTable} from "@/api/sys/table";
 export default {
-  name: "ShowBj",
+  name: "ShowLh",
   data() {
 
     return {
@@ -57,7 +52,7 @@ export default {
       tableId:'',
       // 选中数组
       queryParams: {
-        gameId:1,
+        gameId:4,
         pageNum: 1,
         pageSize: 10000
       },
@@ -122,9 +117,9 @@ export default {
     },
     //桌台信息
     getTableInfo(id){
-       baccaratGet({'tableInfo':id}).then(res => {
-         if(res.data)
-          this.betList = res.json;
+       sangongGet({'tableId':id}).then(res => {
+         if(res.data.json)
+          this.betList = res.data.json;
           this.loading = false;
         }
       );

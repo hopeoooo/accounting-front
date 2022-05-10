@@ -15,12 +15,13 @@
      <el-table v-loading="loading" class="betBox" height="800px" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
-              <template slot-scope="scope">
-                <!-- <el-radio-group v-model.number="scope.row.type">
-                  <el-radio :label="0">现金</el-radio>
-                  <el-radio :label="1">筹码</el-radio>
-                </el-radio-group> -->
-                {{scope.row.type==0?'现金':(scope.row.type==1?'筹码':'-')}}
+             <template slot-scope="scope">
+                <span v-if="scope.row.type==0">$现金</span>
+                <span v-else-if="scope.row.type==1">$筹码</span>
+                <span v-else-if="scope.row.type==2">฿现金</span>
+                <span v-else-if="scope.row.type==3">฿筹码</span>
+                <span v-else>-</span>
+                <!-- {{scope.row.type==0?'现金':(scope.row.type==1?'筹码':'-')}} -->
               </template>
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>

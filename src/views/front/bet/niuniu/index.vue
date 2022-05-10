@@ -8,6 +8,9 @@
             <h1>当前操作员</h1>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
+              <!-- <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button> -->
+              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
+              <!-- <el-button class="loginout" type="primary" plain @click="betRecord">下注记录</el-button> -->
           </el-card>
       </el-col>
        <!--桌台信息-->
@@ -17,9 +20,16 @@
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
-              <li>累计：{{tableInfo.total || 0}}</li>
-              <li>筹码：{{tableInfo.chip || 0}}</li>
-              <li>现金：{{tableInfo.cash || 0}}</li>
+             </ul>
+             <ul>
+              <li>$累计：{{tableInfo.total || 0}}</li>
+              <li>$筹码：{{tableInfo.chip || 0}}</li>
+              <li>$现金：{{tableInfo.cash || 0}}</li>
+             </ul>
+              <ul>
+              <li>฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
+              <li>฿现金：{{tableInfo.cashTh || 0}}</li>
              </ul>
           </el-card>
          
@@ -38,8 +48,10 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="24" :xs="24">
                   <div class="f1">
-                    <span>筹码:{{nnSum.sumChip || 0}}</span>
-                    <span>现金:{{nnSum.sumCash || 0}}</span>
+                     <span>$筹码:{{nnSum.sumChip || 0}}</span>
+                    <span>$现金:{{nnSum.sumCash || 0}}</span>
+                     <span>฿筹码:{{nnSum.sumChipTh || 0}}</span>
+                    <span>฿现金:{{nnSum.sumCashTh || 0}}</span>
                   </div>
                </el-col>
          
@@ -59,12 +71,14 @@
 
      <el-table v-loading="loading" class="betBox" height="500px" :data="nnList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
+          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="360px">
                <template slot-scope="scope">
                   <el-radio-group @change='DataChange' v-model.number="scope.row.type">
-                <el-radio :label="0">现金</el-radio>
-                <el-radio :label="1">筹码</el-radio>
-              </el-radio-group>
+                    <el-radio :label="0">$现金</el-radio>
+                    <el-radio :label="1">$筹码</el-radio>
+                    <el-radio :label="2">฿现金</el-radio>
+                    <el-radio :label="3">฿筹码</el-radio>
+                  </el-radio-group>
               </template>
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
@@ -172,16 +186,14 @@ export default {
    
       // userName:'',
       tableInfo:'', //桌台信息
-      iskaipai:false,
+      iskaipai:true,
       result:'',//赛果
       //庄闲和筹码现金合计
       sumdata:{
-         sumL:'',
-          sumHu:'',
-          sumH:'',
-     
           sumChip:'',
           sumCash:'',
+          sumChipTh:'',
+          sumCashTh:'',
       }
      
     };
@@ -329,14 +341,20 @@ export default {
       })
       arr1 = arr.filter(v => Object.keys(v).length!==0)
       param['bet']= arr1
-      debugger
       const  newData = this.sumArr(arr1)
       const arrCash =arr1.filter(e =>e.type==0)
       const newCash =this.sumArr(arrCash)
       const arrChip =arr1.filter(e =>e.type==1)
       const newChip =this.sumArr(arrChip)
+      const arrCashTh =arr1.filter(e =>e.type==2)
+      const newCashTh =this.sumArr(arrCashTh)
+      const arrChipTh =arr1.filter(e =>e.type==3)
+      const newChipTh =this.sumArr(arrChipTh)
+
       this.sumdata.sumChip = newChip['输']+newChip['赢']
       this.sumdata.sumCash = newCash['输']+newCash['赢']
+      this.sumdata.sumChipTh = newChipTh['输']+newChipTh['赢']
+      this.sumdata.sumCashTh = newCashTh['输']+newCashTh['赢']
      this.setNnSum(this.sumdata)
       niuniuOpen({'json':param}).then(res => {
           this.subData= res.data
@@ -380,7 +398,7 @@ export default {
           let that=this
           setTimeout(function(){  
             that.getTableInfo() 
-            that.getResult()
+            // that.getResult()
           },1000)
           this. getSend()  
           this.iskaipai = true
@@ -559,15 +577,16 @@ export default {
     .loginout{
       height: 60px;
     }
-    ul{
+   ul{
       padding: 0;
+      margin: 10px 0;
      text-align: left;
       li{
         list-style: none;
         display: inline-block;
         min-width: 60px;
         margin: 0 10px;
-        line-height: 45px;
+        line-height: 39px;
       }
     }
   }
