@@ -609,7 +609,10 @@ export default {
               }
             }, 0);
             sums[index] += "";
-            sums[index] = Number(sums[index]).toFixed(2);
+            // sums[index] = Number(sums[index]).toFixed(2);
+            if (index == 5 || index == 7) {
+               sums[index] = parseInt(sums[index]);
+            }
             if (index == 6 || index == 8) {
               // 未结算洗码费金额需要保留两位小数点
               sums[index] = MoneyFormat(sums[index]);

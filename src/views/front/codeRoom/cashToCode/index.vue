@@ -530,11 +530,11 @@ export default {
           sums[index] = "总计";
           return;
         }
-        if (index === 3) {
+        if (index === 4) {
           sums[index] = MoneyFormat(this.userTotal.chipAmount);
           return;
         }
-        if (index === 4) {
+        if (index === 5) {
           sums[index] = MoneyFormat(this.userTotal.chipAmountTh);
           return;
         }
@@ -549,7 +549,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (index == 1 || index == 2 || index == 5 || index == 6) {
+        if (index == 1 || index == 2 || index == 3 || index == 7) {
           sums[index] = "";
           return;
         }
@@ -568,8 +568,8 @@ export default {
             }
           }, 0);
           sums[index] += "";
-          sums[index] = Number(sums[index]).toFixed(2);
-          if (index == 3 || index == 4) {
+          // sums[index] = Number(sums[index]).toFixed(2);
+          if (index == 4|| index == 5) {
             // 金额需要保留两位小数点
             sums[index] = MoneyFormat(sums[index]);
           }

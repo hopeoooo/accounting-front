@@ -551,7 +551,7 @@ export default {
             }
           }, 0);
           sums[index] += "";
-          sums[index] = Number(sums[index]).toFixed(2);
+          // sums[index] = Number(sums[index]).toFixed(2);
           if (index == 3 || index == 4) {
             // 金额需要保留两位小数点
             sums[index] = MoneyFormat(sums[index]);
