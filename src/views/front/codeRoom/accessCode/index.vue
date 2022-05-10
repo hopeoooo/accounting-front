@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container access-code-page">
     <el-row :gutter="20">
       <!--用户数据-->
       <el-col :span="24" :xs="24">
@@ -389,7 +389,7 @@
         <!-- 存码 结束-->
 
         <!-- 取码 开始-->
-        <div style="border:'1px solid #000'" v-if="openType == 'withdraw'">
+        <div class="withdraw-box" v-if="openType == 'withdraw'">
           <div style="display:flex">
             <el-form-item label="$现有筹码" prop="chipBalance">
               <el-input
@@ -406,28 +406,29 @@
               />
             </el-form-item>
           </div>
-
-          <el-form-item label="$取出筹码" prop="chipAmount">
-            <el-input
-              v-model="form.chipAmount"
-              placeholder=""
-              class="access-input"
-              :disabled="form.chipBalance == 0"
-              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-            />
-          </el-form-item>
-          <el-form-item label="$取出现金" prop="cashAmount">
-            <el-input
-              v-model="form.cashAmount"
-              placeholder=""
-              class="access-input"
-              :disabled="form.cashBalance == 0"
-              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-            />
-          </el-form-item>
+          <div style="display:flex">
+            <el-form-item label="$取出筹码" prop="chipAmount">
+              <el-input
+                v-model="form.chipAmount"
+                placeholder=""
+                class="access-input"
+                :disabled="form.chipBalance == 0"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
+            </el-form-item>
+            <el-form-item label="$取出现金" prop="cashAmount">
+              <el-input
+                v-model="form.cashAmount"
+                placeholder=""
+                class="access-input"
+                :disabled="form.cashBalance == 0"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
+            </el-form-item>
+          </div>
         </div>
 
-        <div style="border:'1px solid #000'" v-if="openType == 'withdraw'">
+        <div class="withdraw-box" v-if="openType == 'withdraw'">
           <div style="display:flex">
             <el-form-item label="฿现有筹码" prop="chipBalanceTh">
               <el-input
@@ -444,29 +445,30 @@
               />
             </el-form-item>
           </div>
-
-          <el-form-item
-            label="฿取出筹码"
-            prop="chipAmountTh"
-            :show-message="false"
-          >
-            <el-input
-              v-model="form.chipAmountTh"
-              placeholder=""
-              class="access-input"
-              :disabled="form.chipBalanceTh == 0"
-              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-            />
-          </el-form-item>
-          <el-form-item label="฿取出现金" prop="cashAmountTh">
-            <el-input
-              v-model="form.cashAmountTh"
-              placeholder=""
-              class="access-input"
-              :disabled="form.cashBalanceTh == 0"
-              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-            />
-          </el-form-item>
+          <div style="display:flex">
+            <el-form-item
+              label="฿取出筹码"
+              prop="chipAmountTh"
+              :show-message="false"
+            >
+              <el-input
+                v-model="form.chipAmountTh"
+                placeholder=""
+                class="access-input"
+                :disabled="form.chipBalanceTh == 0"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
+            </el-form-item>
+            <el-form-item label="฿取出现金" prop="cashAmountTh">
+              <el-input
+                v-model="form.cashAmountTh"
+                placeholder=""
+                class="access-input"
+                :disabled="form.cashBalanceTh == 0"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
+            </el-form-item>
+          </div>
         </div>
 
         <!-- 取码结束 -->
@@ -488,8 +490,8 @@
           type="primary"
           @click="submitForm"
           :disabled="
-          openType=='withdraw' &&
-            form.chipBalance == 0 &&
+            openType == 'withdraw' &&
+              form.chipBalance == 0 &&
               form.cashBalanceTh == 0 &&
               form.chipBalanceTh == 0 &&
               form.cashBalanceTh == 0
@@ -975,7 +977,7 @@ export default {
 
     // 明细
     handleDetail(card) {
-      this.$router.push({ name: "DepositInfo" ,query:{card:card}});
+      this.$router.push({ name: "DepositInfo", query: { card: card } });
     },
     /** 提交按钮 */
     submitForm: function() {
@@ -1055,6 +1057,13 @@ export default {
 .access-code-form {
   .el-form-item.is-error .access-input .el-input__inner {
     border-color: #dcdfe6 !important;
+  }
+
+  .withdraw-box {
+    border: 1px solid #dcdfe6;
+    margin: 10px auto;
+    padding-top: 22px;
+
   }
 }
 </style>

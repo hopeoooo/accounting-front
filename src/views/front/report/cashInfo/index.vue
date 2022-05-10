@@ -88,12 +88,7 @@
             key="card"
             prop="card"
           />
-          <el-table-column
-            label="姓名"
-            align="center"
-            key="name"
-            prop="name"
-          />
+          <el-table-column label="姓名" align="center" key="name" prop="name" />
           <el-table-column
             label="操作类型"
             align="center"
@@ -114,7 +109,6 @@
               <span v-if="scope.row.type == '10'">洗码结算</span>
               <span v-if="scope.row.type == '11'">汇入</span>
               <span v-if="scope.row.type == '12'">汇出</span>
-
             </template>
           </el-table-column>
 
@@ -125,8 +119,8 @@
             prop="before"
           >
             <template slot-scope="scope">
-              <span
-                v-if="scope.row.change  !=0">{{ scope.row.before }}→({{ scope.row.change }})→{{
+              <span v-if="scope.row.change != 0"
+                >{{ scope.row.before }}→({{ scope.row.change }})→{{
                   scope.row.after
                 }}</span
               >
@@ -141,16 +135,14 @@
             prop="beforeTh"
           >
             <template slot-scope="scope">
-                  <span
-                v-if="scope.row.changeTh  !=0">{{ scope.row.beforeTh }}→({{ scope.row.changeTh }})→{{
+              <span v-if="scope.row.changeTh != 0"
+                >{{ scope.row.beforeTh }}→({{ scope.row.changeTh }})→{{
                   scope.row.afterTh
                 }}</span
               >
               <span v-else>--</span>
             </template>
-
           </el-table-column>
-
 
           <el-table-column
             label="操作时间"
@@ -198,6 +190,7 @@
 <script>
 import { listChipRecord } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
+import moment from "moment";
 export default {
   // 客户筹码明细表
   name: "cashInfo",
@@ -234,8 +227,15 @@ export default {
       deptName: undefined,
       // 默认密码
       initPassword: undefined,
-      // 日期范围
-      dateRange: [],
+      // 日期范围 默认今日
+      dateRange: [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD")
+      ],
       // 岗位选项
       postOptions: [],
       // 角色选项
@@ -247,10 +247,10 @@ export default {
         label: "label"
       },
       queryParams: {
-        card: "",
+        card: this.$route.query.card?this.$route.query.card:"",
         isAdmin: 0,
         type: null,
-        dateRange: [],
+        // dateRange: [],
         pageNum: 1,
         pageSize: 30
       }
@@ -261,6 +261,8 @@ export default {
   },
   created() {
     this.getList();
+
+
   },
 
   methods: {
@@ -269,16 +271,13 @@ export default {
       let params = {
         card: this.queryParams.card,
         type: this.queryParams.type,
+        isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
         pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize
+        pageSize: this.queryParams.pageSize,
+        startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
+        endTime: this.dateRange ? this.addDateRange(this.dateRange)[1] : null
       };
 
-      params["isAdmin"] = this.queryParams.isAdmin == false ? 0 : 1;
-
-      if (this.dateRange) {
-        params["startTime"] = this.addDateRange(this.dateRange)[0];
-        params["endTime"] = this.addDateRange(this.dateRange)[1];
-      }
       this.loading = true;
       listChipRecord(params).then(response => {
         this.userList = response.rows;
@@ -347,46 +346,46 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "type") {
-            let result = ""
+            let result = "";
             switch (v[j]) {
               case 1:
-                result="存码"
+                result = "存码";
                 break;
               case 2:
-                result="取码"
+                result = "取码";
                 break;
               case 3:
-                result="下注赢"
+                result = "下注赢";
                 break;
               case 4:
-                result="下注输"
+                result = "下注输";
                 break;
               case 5:
-                result="签单"
+                result = "签单";
                 break;
               case 6:
-                result="还单"
+                result = "还单";
                 break;
               case 7:
-                result="换现"
+                result = "换现";
                 break;
               case 8:
-                result="注单修改"
+                result = "注单修改";
                 break;
               case 9:
-                result="注单补录"
+                result = "注单补录";
                 break;
               case 10:
-                result="洗码结算"
+                result = "洗码结算";
                 break;
               case 11:
-                result="汇入"
+                result = "汇入";
                 break;
               case 12:
-                result="汇出"
+                result = "汇出";
                 break;
               case 13:
-                result="买码"
+                result = "买码";
                 break;
               default:
                 break;

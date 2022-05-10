@@ -219,6 +219,7 @@
 <script>
 import { listAccessCodeDetailed } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
+import moment from "moment";
 export default {
   // 存取码明细表
   name: "depositInfo",
@@ -255,8 +256,15 @@ export default {
       deptName: undefined,
       // 默认密码
       initPassword: undefined,
-      // 日期范围
-      dateRange: [],
+      // 日期范围 默认今日
+      dateRange: [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD")
+      ],
       // 岗位选项
       postOptions: [],
       // 角色选项
@@ -268,10 +276,10 @@ export default {
         label: "label"
       },
       queryParams: {
-        card: "",
+                card: this.$route.query.card?this.$route.query.card:"",
         isAdmin: 0,
         type: null,
-        dateRange: [],
+        // dateRange: [],
         pageNum: 1,
         pageSize: 30
       }
@@ -290,16 +298,14 @@ export default {
       let params = {
         card: this.queryParams.card,
         type: this.queryParams.type,
+         isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
         pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize
+        pageSize: this.queryParams.pageSize,
+                startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
+        endTime: this.dateRange ? this.addDateRange(this.dateRange)[1] : null
       };
 
-      params["isAdmin"] = this.queryParams.isAdmin == false ? 0 : 1;
 
-      if (this.dateRange) {
-        params["startTime"] = this.addDateRange(this.dateRange)[0];
-        params["endTime"] = this.addDateRange(this.dateRange)[1];
-      }
       this.loading = true;
       listAccessCodeDetailed(params).then(response => {
         this.userList = response.rows;

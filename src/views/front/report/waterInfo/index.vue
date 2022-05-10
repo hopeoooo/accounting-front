@@ -253,14 +253,14 @@
           <el-table-column
             label="฿结算洗码量"
             align="center"
-            key="water"
-            prop="water"
+            key="waterTh"
+            prop="waterTh"
           />
           <el-table-column
             label="฿应结算洗码费"
             align="center"
-            key="waterAmount"
-            prop="waterAmount"
+            key="waterAmountTh"
+            prop="waterAmountTh"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
@@ -269,8 +269,8 @@
           <el-table-column
             label="฿实际结算洗码费"
             align="center"
-            key="actualWaterAmount"
-            prop="actualWaterAmount"
+            key="actualWaterAmountTh"
+            prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.actualWaterAmount  }}</span>
@@ -329,6 +329,7 @@
 <script>
 import { listWaterDetailed, totalWaterDetailed } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
+import moment from "moment";
 export default {
   // 洗码费结算明细表
   name: "waterInfo",
@@ -365,8 +366,15 @@ export default {
       deptName: undefined,
       // 默认密码
       initPassword: undefined,
-      // 日期范围
-      dateRange: [],
+      // 日期范围 默认今日
+      dateRange: [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD")
+      ],
       // 岗位选项
       postOptions: [],
       // 角色选项
@@ -378,10 +386,10 @@ export default {
         label: "label"
       },
       queryParams: {
-        card: "",
+                card: this.$route.query.card?this.$route.query.card:"",
         isAdmin: 0,
         cardType: 0,
-        dateRange: []
+        // dateRange: []
       }
     };
   },
@@ -397,17 +405,15 @@ export default {
     getList() {
       let params = {
         card: this.queryParams.card,
+        cardType:this.queryParams.cardType == false ? 0 : 1,
+        isAdmin:this.queryParams.isAdmin == false ? 0 : 1,
         pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize
+        pageSize: this.queryParams.pageSize,
+                startTime:this.dateRange ? this.addDateRange(this.dateRange)[0]:null,
+        endTime:this.dateRange ? this.addDateRange(this.dateRange)[1]:null,
       };
 
-      params["cardType"] = this.queryParams.cardType == false ? 0 : 1;
-      params["isAdmin"] = this.queryParams.isAdmin == false ? 0 : 1;
 
-      if (this.dateRange) {
-        params["startTime"] = this.addDateRange(this.dateRange)[0];
-        params["endTime"] = this.addDateRange(this.dateRange)[1];
-      }
       this.loading = true;
       listWaterDetailed(params).then(response => {
         this.userList = response.rows;
