@@ -183,11 +183,7 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSettlement(scope.row)"
-                :disabled="
-                  scope.row.isSettlement == 0 ||
-                    scope.row.status == 1 ||
-                    scope.row.waterAmount == 0
-                "
+                :disabled="disabledSet(scope.row)"
                 >结算</el-button
               >
 
@@ -498,6 +494,16 @@ export default {
     this.getList();
   },
   methods: {
+    disabledSet(row) {
+      if (
+        row.isSettlement == 0 ||
+        row.status == 1 ||
+        (row.waterAmount == 0 && row.waterAmountTh == 0)
+      ) {
+        return true;
+      }
+      return false;
+    },
     /** 查询赔率设置列表 */
     getOddsList() {
       listOdds().then(response => {
@@ -785,7 +791,7 @@ export default {
     // 明细
     handleDetail(card) {
       //TODO: 前往明细表
-      this.$router.push({ name: "WaterInfo" ,query:{card:card}});
+      this.$router.push({ name: "WaterInfo", query: { card: card } });
     },
     /** 提交按钮 */
     submitForm: function() {
