@@ -105,8 +105,8 @@
             key="operationType"
             prop="operationType"
           >
-               <template slot-scope="scope">
-              <span>{{ scope.row.operationType == 0?"筹码":"现金" }}</span>
+            <template slot-scope="scope">
+              <span>{{ scope.row.operationType == 0 ? "筹码" : "现金" }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -132,7 +132,7 @@
             prop="actualWaterAmount"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount  }}</span>
+              <span>{{ scope.row.actualWaterAmount }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -158,7 +158,7 @@
             prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmountTh  }}</span>
+              <span>{{ scope.row.actualWaterAmountTh }}</span>
             </template>
           </el-table-column>
 
@@ -204,7 +204,6 @@
           class="table2"
           show-summary
           :summary-method="getSummaries"
-
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -220,8 +219,8 @@
             key="operationType"
             prop="operationType"
           >
-               <template slot-scope="scope">
-              <span>{{ scope.row.operationType == 0?"筹码":"现金" }}</span>
+            <template slot-scope="scope">
+              <span>{{ scope.row.operationType == 0 ? "筹码" : "现金" }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -247,7 +246,7 @@
             prop="actualWaterAmount"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount  }}</span>
+              <span>{{ scope.row.actualWaterAmount }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -273,7 +272,7 @@
             prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount  }}</span>
+              <span>{{ scope.row.actualWaterAmount }}</span>
             </template>
           </el-table-column>
 
@@ -321,8 +320,6 @@
         />
       </el-col>
     </el-row>
-
-
   </div>
 </template>
 
@@ -386,9 +383,9 @@ export default {
         label: "label"
       },
       queryParams: {
-                card: this.$route.query.card?this.$route.query.card:"",
+        card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
-        cardType: 0,
+        cardType: 0
         // dateRange: []
       }
     };
@@ -405,14 +402,13 @@ export default {
     getList() {
       let params = {
         card: this.queryParams.card,
-        cardType:this.queryParams.cardType == false ? 0 : 1,
-        isAdmin:this.queryParams.isAdmin == false ? 0 : 1,
+        cardType: this.queryParams.cardType == false ? 0 : 1,
+        isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
-                startTime:this.dateRange ? this.addDateRange(this.dateRange)[0]:null,
-        endTime:this.dateRange ? this.addDateRange(this.dateRange)[1]:null,
+        startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
+        endTime: this.dateRange ? this.addDateRange(this.dateRange)[1] : null
       };
-
 
       this.loading = true;
       listWaterDetailed(params).then(response => {
@@ -459,7 +455,7 @@ export default {
               }
             }, 0);
             sums[index] += "";
-            if (index == 4 || index == 7 ) {
+            if (index == 4 || index == 7) {
               // 结算洗码费金额需要保留两位小数点
               sums[index] = MoneyFormat(sums[index]);
             }
@@ -502,7 +498,7 @@ export default {
           return;
         }
         if (index === 8) {
-          sums[index] = (this.userTotal.actualWaterAmountTh);
+          sums[index] = this.userTotal.actualWaterAmountTh;
           return;
         }
       });
@@ -543,24 +539,54 @@ export default {
       // 表头对应关系
       require.ensure([], () => {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
-        const tHeader = ["会员卡号", "姓名", "结算币种", "$结算洗码量", "$应结算洗码费", "$实际结算洗码费", "฿结算洗码量", "฿应结算洗码费", "฿实际结算洗码费", "截止日期", "结算日期", "操作员", "操作备注"];
+        const tHeader = [
+          "会员卡号",
+          "姓名",
+          "结算币种",
+          "$结算洗码量",
+          "$应结算洗码费",
+          "$实际结算洗码费",
+          "฿结算洗码量",
+          "฿应结算洗码费",
+          "฿实际结算洗码费",
+          "截止日期",
+          "结算日期",
+          "操作员",
+          "操作备注"
+        ];
         // 上面设置Excel的表格第一行的标题
-        const filterVal = ["card", "name",  "operationType", "water", "waterAmount", "actualWaterAmount", "waterTh", "waterAmountTh", "actualWaterAmountTh", "deadline", "createTime", "createBy", "remark"];
+        const filterVal = [
+          "card",
+          "name",
+          "operationType",
+          "water",
+          "waterAmount",
+          "actualWaterAmount",
+          "waterTh",
+          "waterAmountTh",
+          "actualWaterAmountTh",
+          "deadline",
+          "createTime",
+          "createBy",
+          "remark"
+        ];
         // 上面的index、nickName、name是tableData里对象的属性
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
-         const time_str = this.$getCurrentTime();
+        const time_str = this.$getCurrentTime();
         export_json_to_excel(tHeader, data, `洗码费结算明细列表-${time_str}`);
       });
     },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j=="operationType") {
-          return v[j]==0?"筹码":"现金"
-        }
-        return v[j]
-      }));
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j == "operationType") {
+            return v[j] == 0 ? "筹码" : "现金";
+          }
+          return v[j];
+        })
+      );
     }
   }
 };
