@@ -358,36 +358,47 @@
       :title="title"
       :visible.sync="open"
       v-if="open"
-      width="600px"
+      width="500px"
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <div style="display:flex">
-          <el-form-item label="卡号:" prop="card">
-            <el-input
-              v-model="form.card"
-              placeholder=""
-              :disabled="true"
-              style="width:150px"
-            />
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="100px"
+        class="bet-form-box"
+      >
+        <div class="bet-form-row">
+          <el-form-item
+            label="卡号:"
+            prop="card"
+            class="bet-form-item"
+            label-width="50px"
+          >
+            <el-input v-model="form.card" placeholder="" style="width:150px" />
           </el-form-item>
-          <div>
+          <div class="bet-form-item">
             <span>台号:</span> <span>{{ form.tableId }}</span>
           </div>
         </div>
-        <div style="display:flex">
-          <div>
+        <div class="bet-form-row">
+          <div class="bet-form-item">
             <span>靴号:</span> <span>{{ form.bootNum }}</span>
           </div>
-          <div>
+          <div class="bet-form-item">
             <span>局号:</span> <span>{{ form.gameNum }}</span>
           </div>
         </div>
-        <div style="display:flex">
-          <div>
+        <div class="bet-form-row">
+          <div class="bet-form-item">
             <span>输赢:</span> <span>{{ form.bootNum }}</span>
           </div>
-          <el-form-item label="币种:" prop="type">
+          <el-form-item
+            label="币种:"
+            prop="type"
+            class="bet-form-item"
+            label-width="50px"
+          >
             <el-select v-model="form.type" placeholder="请选择">
               <el-option
                 v-for="item in typeOptions"
@@ -400,42 +411,30 @@
           </el-form-item>
         </div>
 
-        <div>下注时间: {{ form.createTime }}</div>
+        <div class="bet-time">下注时间: {{ form.createTime }}</div>
 
         <!-- 龙虎 -->
-        <div v-if="openGame == '龙虎'" style="display:flex">
+        <div v-if="openGame == '龙虎'" class="longhu-box">
           <!-- 下注金额 -->
-          <div>
-            <div>下注金额</div>
-            <div>
-              <el-form-item label="龙:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="虎:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="和:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-            </div>
+          <div class="longhu-amount-box">
+            <div class="box-label">下注金额</div>
+            <!-- <div> -->
+            <el-form-item label="龙:" label-width="30px">
+              <el-input v-model="form.card" placeholder="" />
+            </el-form-item>
+            <el-form-item label="虎:" label-width="30px">
+              <el-input v-model="form.card" placeholder="" />
+            </el-form-item>
+            <el-form-item label="和:" label-width="30px">
+              <el-input v-model="form.card" placeholder="" />
+            </el-form-item>
+            <!-- </div> -->
           </div>
 
           <!-- 开牌结果 -->
-          <div>
-            <div>开牌结果</div>
-            <el-radio-group v-model="form.radio">
+          <div class="longhu-result-box">
+            <div class="box-label">开牌结果</div>
+            <el-radio-group v-model="form.radio" class="result-list">
               <el-radio :label="3">龙</el-radio>
               <el-radio :label="6">虎</el-radio>
               <el-radio :label="9">和</el-radio>
@@ -445,18 +444,19 @@
 
         <!-- 牛牛/三公/推筒子 -->
         <div
+          class="niuniu-box"
           v-if="
             openGame == '牛牛' || openGame == '三公' || openGame == '推筒子'
           "
         >
-          <el-form-item label="下注金额:">
+          <el-form-item label="下注金额:" label-width="80px">
             <el-input
               v-model="form.betMoney"
               placeholder=""
               style="width:150px"
             />
           </el-form-item>
-          <el-form-item label="开牌结果:" prop="gameResult">
+          <el-form-item label="开牌结果:" prop="gameResult" label-width="80px">
             <el-radio-group v-model="form.gameResult">
               <el-radio :label="0">赢</el-radio>
               <el-radio :label="1">输</el-radio>
@@ -465,80 +465,84 @@
         </div>
 
         <!-- 百家乐 -->
-        <div v-if="openGame == '百家乐'">
+        <div v-if="openGame == '百家乐'" class="bjl-box">
           <!-- 下注金额 -->
-          <div>
-            <div>下注金额</div>
-            <div>
-              <el-form-item label="庄:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="闲:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="和:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="庄对:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="闲对:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="庄保险:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="闲保险:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="大:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
-              <el-form-item label="小:">
-                <el-input
-                  v-model="form.card"
-                  placeholder=""
-                  style="width:150px"
-                />
-              </el-form-item>
+          <div class="bet-amount-box">
+            <div class="box-label">下注金额</div>
+            <div  class="bet-amount-container">
+              <div  class="amount-left-box">
+                <el-form-item label="庄:" label-width="60px">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="闲:" label-width="60px">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="和:" label-width="60px">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="庄对:" label-width="60px">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="闲对:" label-width="60px">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+              </div>
+              <div  class="amount-left-box">
+                <el-form-item label="庄保险:">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="闲保险:">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="大:">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+                <el-form-item label="小:">
+                  <el-input
+                    v-model="form.card"
+                    placeholder=""
+
+                  />
+                </el-form-item>
+              </div>
             </div>
           </div>
 
           <!-- 开牌结果 -->
-          <div>
-            <div>开牌结果</div>
+          <div class="game-result-box">
+            <div class="box-label">开牌结果</div>
             <el-checkbox-group v-model="checkList">
               <el-checkbox label="4">庄</el-checkbox>
               <el-checkbox label="1">闲</el-checkbox>
@@ -1125,5 +1129,90 @@ export default {
 .wanfa {
   display: inline-block;
   width: 50%;
+}
+
+.bet-form-box {
+  width: 80%;
+  margin: 0 auto;
+  .bet-form-row {
+    display: flex;
+    justify-content: space-between;
+    .bet-form-item {
+      width: 40%;
+      height: 35px;
+      margin-bottom: 10px;
+      .el-form-item__label {
+        text-align: left;
+      }
+    }
+  }
+  .niuniu-box {
+    .el-form-item__label {
+      text-align: left;
+    }
+  }
+  // 百家乐
+  .bjl-box {
+    .bet-amount-box {
+      text-align: center;
+      border: 1px solid rgb(172, 166, 166);
+      margin: 10px auto;
+      padding-top: 22px;
+      .el-form-item__label {
+        text-align: left;
+      }
+      .bet-amount-container{
+        display: flex;
+      }
+      .amount-left-box{
+        width: 50%;
+            .el-form-item__label {
+      text-align: left;
+    }
+      }
+    }
+    .game-result-box {
+      text-align: left;
+      border: 1px solid rgb(172, 166, 166);
+      margin: 10px auto;
+      padding: 10px;
+    }
+    .box-label {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  }
+
+  .bet-time {
+    margin: 10px 0;
+  }
+  // 龙虎
+  .longhu-box {
+    display: flex;
+    justify-content: space-between;
+    .longhu-amount-box {
+      width: 40%;
+      text-align: center;
+      border: 1px solid rgb(172, 166, 166);
+      // margin: 10px auto;
+      padding: 10px;
+    }
+    .longhu-result-box {
+      width: 40%;
+      text-align: center;
+      border: 1px solid rgb(172, 166, 166);
+      // margin: 10px auto;
+      padding: 10px;
+      .result-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        .el-radio {
+          margin: 18px auto;
+        }
+      }
+    }
+  }
 }
 </style>
