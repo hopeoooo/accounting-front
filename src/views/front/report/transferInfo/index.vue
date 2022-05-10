@@ -426,11 +426,11 @@ export default {
         }
 
         if (index === 4) {
-          sums[index] = MoneyFormat(this.userTotal.sumAmount);
+          sums[index] = MoneyFormat(this.userTotal.amount);
           return;
         }
         if (index === 5) {
-          sums[index] = MoneyFormat(this.userTotal.sumAmountTh);
+          sums[index] = MoneyFormat(this.userTotal.amountTh);
           return;
         }
       });
