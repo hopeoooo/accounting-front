@@ -270,13 +270,14 @@
         label-width="100px"
       >
         <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder="" :disabled="true" />
+          <el-input v-model="form.card" placeholder=""  style="width:150px" :disabled="true" />
         </el-form-item>
         <!-- 签单 -->
         <el-form-item label="$签单金额" prop="amount" v-if="openType == 'sign'">
           <el-input
             v-model="form.amount"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -288,6 +289,7 @@
           <el-input
             v-model="form.amountTh"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -691,7 +693,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("还单失败");
+                // this.$modal.msgError("还单失败");
               });
           } else {
             // 签单
@@ -705,7 +707,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("签单失败");
+                // this.$modal.msgError("签单失败");
               });
           }
         } else {

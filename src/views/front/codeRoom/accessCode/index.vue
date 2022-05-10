@@ -318,7 +318,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="800px"
+      width="600px"
       v-if="open"
       append-to-body
     >
@@ -331,7 +331,12 @@
         class="access-code-form"
       >
         <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder="" :disabled="true" />
+          <el-input
+            v-model="form.card"
+            placeholder=""
+            :disabled="true"
+            style="width:150px"
+          />
         </el-form-item>
 
         <!-- 存码 开始-->
@@ -345,6 +350,7 @@
               v-model="form.chipAmount"
               placeholder=""
               class="access-input"
+              style="width:150px"
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
@@ -357,6 +363,7 @@
               v-model="form.cashAmount"
               placeholder=""
               class="access-input"
+              style="width:150px"
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
@@ -369,6 +376,7 @@
               v-model="form.chipAmountTh"
               placeholder=""
               class="access-input"
+              style="width:150px"
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
@@ -381,6 +389,7 @@
               v-model="form.cashAmountTh"
               placeholder=""
               class="access-input"
+              style="width:150px"
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
@@ -1005,7 +1014,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("取码失败");
+                // this.$modal.msgError("取码失败");
               });
           } else {
             // this.form["cardType"] = 1;
@@ -1016,7 +1025,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("存码失败");
+                // this.$modal.msgError("存码失败");
               });
           }
         } else {
@@ -1063,7 +1072,6 @@ export default {
     border: 1px solid #dcdfe6;
     margin: 10px auto;
     padding-top: 22px;
-
   }
 }
 </style>

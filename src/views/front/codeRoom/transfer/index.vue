@@ -18,7 +18,7 @@
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="fromSearch.isAdmin">过滤内部卡号</el-checkbox>
+
           </el-form-item>
           <el-form-item>
             <el-button
@@ -149,7 +149,12 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder="" :disabled="true" />
+          <el-input
+            v-model="form.card"
+            placeholder=""
+            style="width:150px"
+            :disabled="true"
+          />
         </el-form-item>
 
         <el-form-item
@@ -159,6 +164,7 @@
           <el-input
             v-model="form.amount"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -170,6 +176,7 @@
           <el-input
             v-model="form.amountTh"
             placeholder=""
+             style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -266,8 +273,8 @@ export default {
         pageSize: 30
       },
       fromSearch: {
-        card: "",
-        isAdmin: false
+        card: null,
+
       }
     };
   },
@@ -334,7 +341,6 @@ export default {
     /** 查询用户列表 */
     getList() {
       let params = Object.assign({}, this.fromSearch, this.queryParams);
-      params["isAdmin"] = this.fromSearch.isAdmin == false ? 0 : 1;
       this.loading = true;
       listRemittance(params).then(response => {
         this.userList = response.rows;
@@ -382,8 +388,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
-      this.fromSearch.isAdmin = 0;
-      this.fromSearch.card = "";
+      this.fromSearch.card = null;
       this.total = 0;
       this.resetForm("queryForm");
       this.handleQuery();
@@ -413,7 +418,7 @@ export default {
     // 明细
     handleDetail(card) {
       // this.$router.push("TransferInfo")
-      this.$router.push({name: "TransferInfo",query:{card:card}})
+      this.$router.push({ name: "TransferInfo", query: { card: card } });
     },
     /** 提交按钮 */
     submitForm: function() {
@@ -442,7 +447,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("汇入失败");
+                // this.$modal.msgError("汇入失败");
               });
           } else {
             addImport(this.form)
@@ -452,7 +457,7 @@ export default {
                 this.getList();
               })
               .catch(err => {
-                this.$modal.msgError("汇入失败");
+                // this.$modal.msgError("汇入失败");
               });
           }
         }

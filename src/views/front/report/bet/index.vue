@@ -100,7 +100,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-loading="loading" :data="userList" show-summary sum-text="合计" class="table2" :summary-method="getSummaries"  @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="userList" show-summary sum-text="总计" class="table2" :summary-method="getSummaries"  @selection-change="handleSelectionChange">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
               <el-table-column label="会员卡号" align="center" key="card" prop="card" />
            <el-table-column label="台号" align="center" key="tableId" prop="tableId" />
@@ -310,13 +310,13 @@ export default {
       this.single = selection.length!=1
       this.multiple = !selection.length
     },
-    //合计规则
+    //总计规则
     getSummaries(param) {
         const { columns, data } = param;
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '合计';
+            sums[index] = '总计';
             return;
           }
            if (index === 6) {
