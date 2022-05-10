@@ -26,7 +26,7 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >搜索</el-button
+              >查询</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
               >重置</el-button
@@ -297,7 +297,7 @@ export default {
     // 根据名称筛选部门树
   },
   created() {
-    this.getList();
+    // this.getList();
   },
   methods: {
     amountValitor(rule, value, callback) {
