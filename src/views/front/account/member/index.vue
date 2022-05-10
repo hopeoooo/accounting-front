@@ -232,10 +232,10 @@
         <div class="count-item-box">
           <span class="count-item">主卡号合计:{{ count.parentCount }}</span
           ><span class="count-item">子卡号合计:{{ count.childCount }}</span
-          ><span class="count-item">($)押金:{{ count.depositCount }}</span
-          ><span class="count-item">(฿)押金:{{ count.depositCountTh }}</span
-          ><span class="count-item">($)补卡费:{{ count.repairCount }}</span
-          ><span class="count-item">(฿)补卡费:{{ count.repairCountTh }}</span>
+          ><span class="count-item">$押金:{{ count.depositCount }}</span
+          ><span class="count-item">฿押金:{{ count.depositCountTh }}</span
+          ><span class="count-item">$补卡费:{{ count.repairCount }}</span
+          ><span class="count-item">฿补卡费:{{ count.repairCountTh }}</span>
         </div>
 
         <pagination
@@ -547,14 +547,14 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="12">
-              <el-form-item label="是否走账" prop="isBill" label-width="110px">
-                <el-select v-model="form.isBill" placeholder="" style="width:100px">
+          <el-col :span="12">
+              <el-form-item label="是否内部卡号" prop="isAdmin" label-width="110px" v-if="openType == 'addChild'">
+                <el-select v-model="form.isAdmin" placeholder="" style="width:100px">
                   <el-option label="否" :value="0"></el-option>
                   <el-option label="是" :value="1"></el-option>
                 </el-select>
             </el-form-item>
-          </el-col> -->
+          </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="24">
@@ -587,27 +587,35 @@
     >
       <div class="detailBox">
         <div class="list">
-          <span>押金</span
-          ><span>{{ memlist.deposit ? memlist.deposit : "-" }}</span>
+          <span>$押金</span
+          ><span>{{ memlist.deposit ? memlist.deposit : "0" }}</span>
+        </div>
+         <div class="list">
+          <span>฿押金</span
+          ><span>{{ memlist.depositTh ? memlist.depositTh : "0" }}</span>
         </div>
         <div class="list">
-          <span>补卡费</span
-          ><span>{{ memlist.repair ? memlist.repair : "-" }}</span>
+          <span>$补卡费</span
+          ><span>{{ memlist.repair ? memlist.repair : "0" }}</span>
+        </div>
+         <div class="list">
+          <span>฿补卡费</span
+          ><span>{{ memlist.repairTh ? memlist.repairTh : "0" }}</span>
         </div>
         <div class="list">
           <span>占股比例</span
-          ><span>{{ memlist.shareRatio ? memlist.shareRatio : "-" }}</span>
+          ><span>{{ memlist.shareRatio ? memlist.shareRatio : "0" }}</span>
         </div>
         <div class="list">
           <span>返点比例</span
-          ><span>{{ memlist.rebateRatio ? memlist.rebateRatio : "-" }}</span>
+          ><span>{{ memlist.rebateRatio ? memlist.rebateRatio : "0" }}</span>
         </div>
         <div class="list">
           <span>百家乐洗码比例（$筹码）</span
           ><span>{{
             memlist.baccaratRollingRatioChip
               ? memlist.baccaratRollingRatioChip
-              : "-"
+              : "0"
           }}</span>
         </div>
          <div class="list">
@@ -615,7 +623,7 @@
           ><span>{{
             memlist.baccaratRollingRatioChipTh
               ? memlist.baccaratRollingRatioChipTh
-              : "-"
+              : "0"
           }}</span>
         </div>
         <div class="list">
@@ -623,7 +631,7 @@
           ><span>{{
             memlist.baccaratRollingRatioCash
               ? memlist.baccaratRollingRatioCash
-              : "-"
+              : "0"
           }}</span>
         </div>
          <div class="list">
@@ -631,31 +639,31 @@
           ><span>{{
             memlist.baccaratRollingRatioCashTh
               ? memlist.baccaratRollingRatioCashTh
-              : "-"
+              : "0"
           }}</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（$筹码）</span
           ><span>{{
-            memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "-"
+            memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "0"
           }}</span>
         </div>
          <div class="list">
           <span>龙虎洗码比例（฿筹码）</span
           ><span>{{
-            memlist.dragonTigerRatioChipTh ? memlist.dragonTigerRatioChipTh : "-"
+            memlist.dragonTigerRatioChipTh ? memlist.dragonTigerRatioChipTh : "0"
           }}</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（$现金）</span
           ><span>{{
-            memlist.dragonTigerRatioCash ? memlist.dragonTigerRatioCash : "-"
+            memlist.dragonTigerRatioCash ? memlist.dragonTigerRatioCash : "0"
           }}</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（฿现金）</span
           ><span>{{
-            memlist.dragonTigerRatioCashTh ? memlist.dragonTigerRatioCashTh : "-"
+            memlist.dragonTigerRatioCashTh ? memlist.dragonTigerRatioCashTh : "0"
           }}</span>
         </div>
         <div class="list">
@@ -674,9 +682,9 @@
           <span>是否可结算洗码</span
           ><span>{{
             memlist.isSettlement
-              ? memlist.isSettlement == 0
+              ? (memlist.isSettlement == 0
                 ? "否"
-                : "是"
+                : "是")
               : "-"
           }}</span>
         </div>
@@ -1036,6 +1044,7 @@ export default {
         status: 0, //0 正常 1停用
         cardType: 0,
         // isBill:'',
+        isAdmin:0,
         remark: ""
       };
       // 将form部分重置为newForm
