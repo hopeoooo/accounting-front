@@ -1,269 +1,276 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input
-          v-model="queryParams.roleName"
-          placeholder="请输入角色名称"
-          clearable
-          style="width: 240px"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="权限字符" prop="roleKey">
-        <el-input
-          v-model="queryParams.roleKey"
-          placeholder="请输入权限字符"
-          clearable
-          style="width: 240px"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          placeholder="角色状态"
-          clearable
-          style="width: 240px"
+    <el-row :gutter="20">
+      <!--用户数据-->
+      <el-col :span="24" :xs="24">
+        <el-form
+          :model="queryParams"
+          ref="queryForm"
+          size="small"
+          :inline="true"
+          label-width="68px"
         >
-          <el-option
-            v-for="dict in dict.type.sys_normal_disable"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+          <el-form-item label="会员卡号" prop="card">
+            <el-input
+              v-model="queryParams.card"
+              placeholder=""
+              clearable
+              style="width: 150px; "
+            />
+          </el-form-item>
+          <el-form-item label="台号" prop="tableId">
+            <el-select v-model="queryParams.tableId" placeholder="请选择">
+              <el-option
+                v-for="item in tableOptions"
+                :key="item.tableId"
+                :label="item.tableId"
+                :value="item.tableId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="游戏类型" prop="gameId">
+            <el-select v-model="queryParams.gameId" placeholder="请选择">
+              <el-option
+                v-for="item in Gameoptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <!-- <el-form-item label="币种类型" prop="type">
+            <el-select v-model="queryParams.type" placeholder="请选择">
+              <el-option
+                v-for="item in typeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="靴号" prop="bootNum">
+            <el-input
+              v-model="queryParams.bootNum"
+              placeholder=""
+              clearable
+              style="width: 100px; "
+            />
+          </el-form-item>
+          <el-form-item label="局号" prop="gameNum">
+            <el-input
+              v-model="queryParams.gameNum"
+              placeholder=""
+              clearable
+              style="width: 100px; "
+            />
+          </el-form-item>
+          <el-form-item label="操作员" prop="createBy">
+            <el-input
+              v-model="queryParams.createBy"
+              placeholder=""
+              clearable
+              style="width: 100px; "
+            />
+          </el-form-item>
+          <el-form-item label="修改时间">
+            <el-date-picker
+              v-model="dateRange"
+              style="width: 400px"
+              value-format="yyyy-MM-dd hh:mm:ss"
+              type="datetimerange"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              v-for="(item, index) in TimeList"
+              :key="'Time' + index"
+              style="margin-right: 10px"
+              type="primary"
+              :plain="Datatype == index ? false : true"
+              size="mini"
+              @click="TimeCheck(index, item.val)"
+              >{{ item.name }}</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="mini"
+              @click="handleQuery"
+              v-prclick
+              >查询</el-button
+            >
+            <el-button
+              icon="el-icon-refresh"
+              size="mini"
+              @click="resetQuery"
+              v-prclick
+              >重置</el-button
+            >
+
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="mini"
+              @click="handleExport"
+              >导出</el-button
+            >
+          </el-form-item>
+        </el-form>
+
+        <el-table v-loading="loading" :data="userList">
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
+          <el-table-column
+            label="会员卡号"
+            align="center"
+            key="card"
+            prop="card"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="创建时间">
-        <el-date-picker
-          v-model="dateRange"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+          <el-table-column
+            label="台号"
+            align="center"
+            key="tableId"
+            prop="tableId"
+          />
+          <el-table-column
+            label="靴号"
+            align="center"
+            key="bootNum"
+            prop="bootNum"
+          />
+          <el-table-column
+            label="局号"
+            align="center"
+            key="gameNum"
+            prop="gameNum"
+          />
+          <el-table-column
+            label="下注玩法"
+            align="center"
+            key="option"
+            prop="option"
+            width="180px"
+          />
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:role:add']"
-        >新增</el-button>
+          <el-table-column label="币种" align="center" key="type" prop="type" />
+
+          <el-table-column
+            label="下注金额"
+            align="center"
+            key="amount"
+            prop="amount"
+          />
+          <el-table-column
+            label="开牌结果"
+            align="center"
+            key="result"
+            prop="result"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.result }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="输赢" align="center" key="win" prop="win" />
+          <el-table-column
+            label="下注时间"
+            align="center"
+            key="betTime"
+            prop="betTime"
+          />
+          <el-table-column
+            label="操作员"
+            align="center"
+            key="createBy"
+            prop="createBy"
+          />
+          <el-table-column
+            label="最近修改时间"
+            align="center"
+            key="updateTime"
+            prop="updateTime"
+          />
+        </el-table>
+
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:role:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:role:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:role:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
-    <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="角色编号" prop="roleId" width="120" />
-      <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="显示顺序" prop="roleSort" width="100" />
-      <el-table-column label="状态" align="center" width="100">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.status"
-            active-value="0"
-            inactive-value="1"
-            @change="handleStatusChange(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope" v-if="scope.row.roleId !== 1">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:role:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:role:remove']"
-          >删除</el-button>
-          <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:role:edit']">
-            <span class="el-dropdown-link">
-              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="handleDataScope" icon="el-icon-circle-check"
-                v-hasPermi="['system:role:edit']">数据权限</el-dropdown-item>
-              <el-dropdown-item command="handleAuthUser" icon="el-icon-user"
-                v-hasPermi="['system:role:edit']">分配用户</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="form.roleName" placeholder="请输入角色名称" />
-        </el-form-item>
-        <el-form-item prop="roleKey">
-          <span slot="label">
-            <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)" placement="top">
-              <i class="el-icon-question"></i>
-            </el-tooltip>
-            权限字符
-          </span>
-          <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
-        </el-form-item>
-        <el-form-item label="角色顺序" prop="roleSort">
-          <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="菜单权限">
-          <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
-          <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
-          <el-tree
-            class="tree-border"
-            :data="menuOptions"
-            show-checkbox
-            ref="menu"
-            node-key="id"
-            :check-strictly="!form.menuCheckStrictly"
-            empty-text="加载中，请稍候"
-            :props="defaultProps"
-          ></el-tree>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
-
-    <!-- 分配角色数据权限对话框 -->
-    <el-dialog :title="title" :visible.sync="openDataScope" width="500px" append-to-body>
-      <el-form :model="form" label-width="80px">
-        <el-form-item label="角色名称">
-          <el-input v-model="form.roleName" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="权限字符">
-          <el-input v-model="form.roleKey" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="权限范围">
-          <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
-            <el-option
-              v-for="item in dataScopeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="数据权限" v-show="form.dataScope == 2">
-          <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="deptNodeAll" @change="handleCheckedTreeNodeAll($event, 'dept')">全选/全不选</el-checkbox>
-          <el-checkbox v-model="form.deptCheckStrictly" @change="handleCheckedTreeConnect($event, 'dept')">父子联动</el-checkbox>
-          <el-tree
-            class="tree-border"
-            :data="deptOptions"
-            show-checkbox
-            default-expand-all
-            ref="dept"
-            node-key="id"
-            :check-strictly="!form.deptCheckStrictly"
-            empty-text="加载中，请稍候"
-            :props="defaultProps"
-          ></el-tree>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitDataScope">确 定</el-button>
-        <el-button @click="cancelDataScope">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listBetUpdate,listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus } from "@/api/system/role";
-import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/menu";
-import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
+import {
+  listSign,
+  listSignTotal,
+  addSigned,
+  addReturnOrder
+} from "@/api/coderoom/sign";
+import { listTable } from "@/api/sys/table";
+import {
+  listBetRecord,
+  listBetRecordTotal,
+  editBetRecord,
+  repairBetRecord,
+  listBetUpdate
+} from "@/api/report/report";
+import moment from "moment";
 
+const betOptionList = {
+  4: "庄",
+  1: "闲",
+  7: "和",
+  8: "庄对",
+  5: "闲对",
+  3: "庄保险", //庄保险
+  0: "闲保险", //闲保险
+  9: "大",
+  6: "小",
+  龙: "龙",
+  虎: "虎",
+  和: "和",
+  "-": "-"
+};
+
+// 百家乐
+const optionMap = {
+  banker: "4",
+  player: "1",
+  tie: "7",
+  bankerPair: "8",
+  playerPair: "5",
+  bankerIns: "3", //庄保险
+  playerIns: "0", //闲保险
+  big: "9",
+  small: "6"
+};
+// 龙虎
+const longhuOptionMap = {
+  dragon: "龙",
+  tiger: "虎",
+  tie: "和" //和
+};
 export default {
   // 注单修改记录
-  name: "betResive",
-  dicts: ['sys_normal_disable'],
+  name: "BetResive",
   data() {
     return {
+      // 添加卡号
+      isMain: false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -276,177 +283,295 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 角色表格数据
-      roleList: [],
+      // 用户表格数据
+      userList: [],
+
+      userTotal: {},
+      //会员详情
+      memlist: {},
       // 弹出层标题
       title: "",
+      // 部门树选项
+      deptOptions: undefined,
       // 是否显示弹出层
       open: false,
-      // 是否显示弹出层（数据权限）
-      openDataScope: false,
-      menuExpand: false,
-      menuNodeAll: false,
-      deptExpand: true,
-      deptNodeAll: false,
-      // 日期范围
-      dateRange: [],
-      // 数据范围选项
-      dataScopeOptions: [
-        {
-          value: "1",
-          label: "全部数据权限"
-        },
-        {
-          value: "2",
-          label: "自定数据权限"
-        },
-        {
-          value: "3",
-          label: "本部门数据权限"
-        },
-        {
-          value: "4",
-          label: "本部门及以下数据权限"
-        },
-        {
-          value: "5",
-          label: "仅本人数据权限"
-        }
+      // 弹窗类型:edit 编辑；repair 补录
+      openType: "",
+      // 弹窗游戏
+      openGame: "",
+      detailOpen: false,
+      // 部门名称
+      deptName: undefined,
+      // 默认密码
+      initPassword: undefined,
+      // 日期范围 默认今日
+      dateRange: [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD HH:mm:ss")
       ],
-      // 菜单列表
-      menuOptions: [],
-      // 部门列表
-      deptOptions: [],
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        roleName: undefined,
-        roleKey: undefined,
-        status: undefined
-      },
+      // 岗位选项
+      postOptions: [],
+      // 角色选项
+      roleOptions: [],
       // 表单参数
       form: {},
+      // 开牌结果，用于表单
+      gameResultList: [],
+
+      formOption: {
+        banker: "",
+        player: "",
+        bankerIns: "", //庄保险
+        playerIns: "", //闲保险
+        tie: "",
+        playerPair: "",
+        bankerPair: "",
+        big: "",
+        small: ""
+      },
+      longhuFormOption: {
+        dragon: "",
+        tiger: "",
+        tie: ""
+      },
+
+      formBetMoney: null,
+
       defaultProps: {
         children: "children",
         label: "label"
       },
-      // 表单校验
-      rules: {
-        roleName: [
-          { required: true, message: "角色名称不能为空", trigger: "blur" }
-        ],
-        roleKey: [
-          { required: true, message: "权限字符不能为空", trigger: "blur" }
-        ],
-        roleSort: [
-          { required: true, message: "角色顺序不能为空", trigger: "blur" }
-        ]
-      }
+
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 30,
+        card: "", //会员姓名
+        tableId: "", //台号
+        gameId: "", //游戏类型
+        type: null, //	币种()
+        bootNum: "", //靴号
+        gameNum: "", //局号
+        createBy: "", //操作员
+        startTime: moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        endTime: moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD HH:mm:ss")
+      },
+
+      // 台号列表
+      tableOptions: [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "1",
+          label: "1"
+        },
+        {
+          value: "2",
+          label: "2"
+        },
+        {
+          value: "3",
+          label: "3"
+        },
+        {
+          value: "4",
+          label: "4"
+        }
+      ],
+      // 游戏类型列表
+      Gameoptions: [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: 1,
+          label: "百家乐"
+        },
+        {
+          value: 2,
+          label: "龙虎"
+        },
+        {
+          value: 3,
+          label: "牛牛"
+        },
+        {
+          value: 4,
+          label: "三公"
+        },
+        {
+          value: 5,
+          label: "推筒子"
+        }
+      ],
+      // 币种类型列表
+      typeOptions: [
+        {
+          value: null,
+          label: "全部"
+        },
+        {
+          value: 0,
+          label: "$筹码"
+        },
+        {
+          value: 1,
+          label: "$现金"
+        },
+        {
+          value: 2,
+          label: "฿筹码"
+        },
+        {
+          value: 3,
+          label: "฿现金"
+        },
+
+        {
+          value: 4,
+          label: "$筹码+$现金"
+        },
+        {
+          value: 5,
+          label: "฿筹码+฿现金"
+        }
+      ],
+      // 币种类型列表
+      typeOptions2: [
+        {
+          value: 0,
+          label: "$筹码"
+        },
+        {
+          value: 1,
+          label: "$现金"
+        },
+        {
+          value: 2,
+          label: "฿筹码"
+        },
+        {
+          value: 3,
+          label: "฿现金"
+        }
+      ],
+      Datatype: 0,
+      TimeList: [
+        {
+          name: "今日",
+          val: [
+            moment(new Date())
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment(new Date())
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: "昨日",
+          val: [
+            moment()
+              .subtract(1, "days")
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .subtract(1, "days")
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        }
+      ],
+
+      checkList: []
     };
+  },
+  computed: {
+    rules() {
+      if (this.openType == "edit") {
+        return {
+          card: [{ require: true }]
+        };
+      }
+    }
+  },
+  watch: {
+    formOption: {
+      handler(newVal, oldVal) {
+        // 生成新的option,用于form提交
+        this.getNewOption(newVal);
+      },
+      deep: true,
+      immediate: true
+    },
+    longhuFormOption: {
+      handler(newVal, oldVal) {
+        // 生成新的option,用于form提交
+        this.getNewLongHuOption(newVal);
+      },
+      deep: true,
+      immediate: true
+    }
   },
   created() {
     this.getList();
+    this.getTableOptions();
   },
+
   methods: {
-    /** 查询角色列表 */
-    getList() {
-      this.loading = true;
-      listRole(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-          this.roleList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
+    TimeCheck(index, time) {
+      this.Datatype = index;
+      this.queryParams["startTime"] = time[0];
+      this.queryParams["endTime"] = time[1];
+      this.dateRange = [time[0], time[1]];
     },
-    /** 查询菜单树结构 */
-    getMenuTreeselect() {
-      menuTreeselect().then(response => {
-        this.menuOptions = response.data;
-      });
-    },
-    /** 查询部门树结构 */
-    getDeptTreeselect() {
-      deptTreeselect().then(response => {
-        this.deptOptions = response.data;
-      });
-    },
-    // 所有菜单节点数据
-    getMenuAllCheckedKeys() {
-      // 目前被选中的菜单节点
-      let checkedKeys = this.$refs.menu.getCheckedKeys();
-      // 半选中的菜单节点
-      let halfCheckedKeys = this.$refs.menu.getHalfCheckedKeys();
-      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-      return checkedKeys;
-    },
-    // 所有部门节点数据
-    getDeptAllCheckedKeys() {
-      // 目前被选中的部门节点
-      let checkedKeys = this.$refs.dept.getCheckedKeys();
-      // 半选中的部门节点
-      let halfCheckedKeys = this.$refs.dept.getHalfCheckedKeys();
-      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-      return checkedKeys;
-    },
-    /** 根据角色ID查询菜单树结构 */
-    getRoleMenuTreeselect(roleId) {
-      return roleMenuTreeselect(roleId).then(response => {
-        this.menuOptions = response.menus;
-        return response;
-      });
-    },
-    /** 根据角色ID查询部门树结构 */
-    getRoleDeptTreeselect(roleId) {
-      return roleDeptTreeselect(roleId).then(response => {
-        this.deptOptions = response.depts;
-        return response;
-      });
-    },
-    // 角色状态修改
-    handleStatusChange(row) {
-      let text = row.status === "0" ? "启用" : "停用";
-      this.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗？').then(function() {
-        return changeRoleStatus(row.roleId, row.status);
-      }).then(() => {
-        this.$modal.msgSuccess(text + "成功");
-      }).catch(function() {
-        row.status = row.status === "0" ? "1" : "0";
-      });
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 取消按钮（数据权限）
-    cancelDataScope() {
-      this.openDataScope = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      if (this.$refs.menu != undefined) {
-        this.$refs.menu.setCheckedKeys([]);
-      }
-      this.menuExpand = false,
-      this.menuNodeAll = false,
-      this.deptExpand = true,
-      this.deptNodeAll = false,
-      this.form = {
-        roleId: undefined,
-        roleName: undefined,
-        roleKey: undefined,
-        roleSort: 0,
-        status: "0",
-        menuIds: [],
-        deptIds: [],
-        menuCheckStrictly: true,
-        deptCheckStrictly: true,
-        remark: undefined
+    getTableOptions() {
+      const params = {
+        pageSize: 500,
+        pageNum: 1
       };
-      this.resetForm("form");
+      listTable(params).then(response => {
+        this.tableOptions = response.rows;
+      });
     },
+    /** 查询用户列表 */
+    getList() {
+      const { tableId, gameId, type, bootNum, gameNum } = this.queryParams;
+      let params = {
+        card: this.queryParams.card, //卡号
+        tableId: tableId ? Number(tableId) : null, //台号
+        gameId: gameId ? Number(gameId) : null, //游戏类型
+        // type: type ? Number(type) : null, //	币种(0 筹码 1现金)
+        bootNum: bootNum ? Number(bootNum) : null, //靴号
+        gameNum: gameNum ? Number(gameNum) : null, //局号
+        createBy: this.queryParams.createBy, //操作员
+        startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
+        endTime: this.dateRange ? this.addDateRange(this.dateRange)[1] : null,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize
+      };
+      this.loading = true;
+      listBetUpdate(params).then(response => {
+        this.userList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+
+      this.$delete(params, "pageNum");
+      this.$delete(params, "pageSize");
+    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -454,162 +579,180 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = [];
+      this.dateRange = [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD HH:mm:ss")
+      ];
+      this.Datatype = 0;
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.roleId)
-      this.single = selection.length!=1
-      this.multiple = !selection.length
-    },
-    // 更多操作触发
-    handleCommand(command, row) {
-      switch (command) {
-        case "handleDataScope":
-          this.handleDataScope(row);
-          break;
-        case "handleAuthUser":
-          this.handleAuthUser(row);
-          break;
-        default:
-          break;
-      }
-    },
-    // 树权限（展开/折叠）
-    handleCheckedTreeExpand(value, type) {
-      if (type == 'menu') {
-        let treeList = this.menuOptions;
-        for (let i = 0; i < treeList.length; i++) {
-          this.$refs.menu.store.nodesMap[treeList[i].id].expanded = value;
-        }
-      } else if (type == 'dept') {
-        let treeList = this.deptOptions;
-        for (let i = 0; i < treeList.length; i++) {
-          this.$refs.dept.store.nodesMap[treeList[i].id].expanded = value;
-        }
-      }
-    },
-    // 树权限（全选/全不选）
-    handleCheckedTreeNodeAll(value, type) {
-      if (type == 'menu') {
-        this.$refs.menu.setCheckedNodes(value ? this.menuOptions: []);
-      } else if (type == 'dept') {
-        this.$refs.dept.setCheckedNodes(value ? this.deptOptions: []);
-      }
-    },
-    // 树权限（父子联动）
-    handleCheckedTreeConnect(value, type) {
-      if (type == 'menu') {
-        this.form.menuCheckStrictly = value ? true: false;
-      } else if (type == 'dept') {
-        this.form.deptCheckStrictly = value ? true: false;
-      }
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.getMenuTreeselect();
-      this.open = true;
-      this.title = "添加角色";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const roleId = row.roleId || this.ids
-      const roleMenu = this.getRoleMenuTreeselect(roleId);
-      getRole(roleId).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.$nextTick(() => {
-          roleMenu.then(res => {
-            let checkedKeys = res.checkedKeys
-            checkedKeys.forEach((v) => {
-                this.$nextTick(()=>{
-                    this.$refs.menu.setChecked(v, true ,false);
-                })
-            })
-          });
-        });
-        this.title = "修改角色";
-      });
-    },
-    /** 选择角色权限范围触发 */
-    dataScopeSelectChange(value) {
-      if(value !== '2') {
-        this.$refs.dept.setCheckedKeys([]);
-      }
-    },
-    /** 分配数据权限操作 */
-    handleDataScope(row) {
-      this.reset();
-      const roleDeptTreeselect = this.getRoleDeptTreeselect(row.roleId);
-      getRole(row.roleId).then(response => {
-        this.form = response.data;
-        this.openDataScope = true;
-        this.$nextTick(() => {
-          roleDeptTreeselect.then(res => {
-            this.$refs.dept.setCheckedKeys(res.checkedKeys);
-          });
-        });
-        this.title = "分配数据权限";
-      });
-    },
-    /** 分配用户操作 */
-    handleAuthUser: function(row) {
-      const roleId = row.roleId;
-      this.$router.push("/system/role-auth/user/" + roleId);
-    },
-    /** 提交按钮 */
-    submitForm: function() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.form.roleId != undefined) {
-            this.form.menuIds = this.getMenuAllCheckedKeys();
-            updateRole(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            this.form.menuIds = this.getMenuAllCheckedKeys();
-            addRole(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
-    /** 提交按钮（数据权限） */
-    submitDataScope: function() {
-      if (this.form.roleId != undefined) {
-        this.form.deptIds = this.getDeptAllCheckedKeys();
-        dataScope(this.form).then(response => {
-          this.$modal.msgSuccess("修改成功");
-          this.openDataScope = false;
-          this.getList();
-        });
-      }
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const roleIds = row.roleId || this.ids;
-      this.$modal.confirm('是否确认删除角色编号为"' + roleIds + '"的数据项？').then(function() {
-        return delRole(roleIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    },
+
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/role/export', {
-        ...this.queryParams
-      }, `role_${new Date().getTime()}.xlsx`)
+      // 表头对应关系
+      require.ensure([], () => {
+        const { export_json_to_excel } = require("@/excel/Export2Excel");
+        const tHeader = [
+          "会员卡号",
+          "台号",
+          "游戏类型",
+          "币种",
+          "靴号",
+          "局号",
+          "下注玩法",
+          "币种",
+          "下注金额",
+          "开牌结果",
+          "输赢",
+          "下注时间",
+          "操作员",
+          "最近修改时间"
+        ];
+        // 上面设置Excel的表格第一行的标题
+        const filterVal = [
+          "card",
+          "tableId",
+          "gameId",
+          "type",
+          "bootNum",
+          "gameNum",
+          "option",
+          "type",
+          "amount",
+          "result",
+          "win",
+          "betTime",
+          "createBy",
+          "updateTime"
+        ];
+        // 上面的index、nickName、name是tableData里对象的属性
+        const list = this.userList; //把data里的tableData存到list
+        const time_str = this.$getCurrentTime();
+        const data = this.formatJson(filterVal, list);
+        export_json_to_excel(tHeader, data, `注单记录列表-${time_str}`);
+      });
+    },
+    // 该方法负责将数组转化成二维数组
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]));
     }
   }
 };
 </script>
+<style lang="scss">
+.detailBox {
+  border: 1px solid #bcbcbc;
+  .list {
+    border-bottom: 1px solid #bcbcbc;
+    span {
+      display: inline-block;
+      text-align: center;
+      width: 49%;
+      &:nth-child(1) {
+        border-right: 1px solid #bcbcbc;
+        width: 50%;
+      }
+    }
+  }
+}
+.el-table.table2 {
+  .el-table__header-wrapper,
+  .el-table__body-wrapper {
+    display: none;
+  }
+}
+.wanfa {
+  display: inline-block;
+  width: 50%;
+}
+
+.bet-form-box {
+  width: 80%;
+  margin: 0 auto;
+  .bet-form-row {
+    display: flex;
+    justify-content: space-between;
+    .bet-form-item {
+      width: 40%;
+      height: 35px;
+      margin-bottom: 10px;
+      .el-form-item__label {
+        text-align: left;
+      }
+    }
+  }
+  .niuniu-box {
+    .el-form-item__label {
+      text-align: left;
+    }
+  }
+  // 百家乐
+  .bjl-box {
+    .bet-amount-box {
+      text-align: center;
+      border: 1px solid rgb(172, 166, 166);
+      margin: 10px auto;
+      padding-top: 22px;
+      .el-form-item__label {
+        text-align: right;
+      }
+      .bet-amount-container {
+        display: flex;
+      }
+      .amount-left-box {
+        width: 50%;
+        .el-form-item__label {
+          // text-align: left;
+        }
+      }
+    }
+    .game-result-box {
+      text-align: left;
+      border: 1px solid rgb(172, 166, 166);
+      margin: 10px auto;
+      padding: 10px;
+    }
+    .box-label {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  }
+
+  .bet-time {
+    margin: 10px 0;
+  }
+  // 龙虎
+  .longhu-box {
+    display: flex;
+    justify-content: space-between;
+    .longhu-amount-box {
+      width: 40%;
+      text-align: center;
+      border: 1px solid rgb(172, 166, 166);
+      // margin: 10px auto;
+      padding: 10px;
+    }
+    .longhu-result-box {
+      width: 40%;
+      text-align: center;
+      border: 1px solid rgb(172, 166, 166);
+      // margin: 10px auto;
+      padding: 10px;
+      .result-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        .el-radio {
+          margin: 18px auto;
+        }
+      }
+    }
+  }
+}
+</style>

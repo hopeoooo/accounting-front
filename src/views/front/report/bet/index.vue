@@ -77,7 +77,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="录入时间">
+          <el-form-item label="下注时间">
             <el-date-picker
               v-model="dateRange"
               style="width: 400px"
@@ -106,9 +106,14 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
+              v-prclick
               >查询</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+            <el-button
+              icon="el-icon-refresh"
+              size="mini"
+              @click="resetQuery"
+              v-prclick
               >重置</el-button
             >
 
@@ -164,13 +169,16 @@
             width="180px"
           >
             <template slot-scope="scope">
-              <span
+              <!-- <span
                 v-for="(e, key) in scope.row.option"
                 :key="key"
                 class="wanfa"
               >
-                {{ getText(e.betOption) }}:{{ e.betMoney }}
-              </span>
+                {{ getText(e.betOption, scope.row.gameId) }}:{{ e.betMoney }}
+              </span> -->
+              <!--百家乐、龙虎 -->
+              <span v-if="scope.row.gameId == 1||scope.row.gameId == 2">{{getPlayText(scope.row.option)}}</span>
+              <span v-else>-</span>
             </template>
           </el-table-column>
           <el-table-column label="币种" align="center" key="type" prop="type">
@@ -244,8 +252,8 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="总计"
           class="table2"
+          sum-text="总计"
           :summary-method="getSummaries"
           @selection-change="handleSelectionChange"
         >
@@ -279,12 +287,28 @@
             align="center"
             key="option"
             prop="option"
+            width="180px"
           >
-            <template slot-scope="scope"> </template>
+            <template slot-scope="scope">
+              <!-- <span
+                v-for="(e, key) in scope.row.option"
+                :key="key"
+                class="wanfa"
+              >
+                {{ getText(e.betOption, scope.row.gameId) }}:{{ e.betMoney }}
+              </span> -->
+              <!--百家乐、龙虎 -->
+              <span v-if="scope.row.gameId == 1||scope.row.gameId == 2">{{getPlayText(scope.row.option)}}</span>
+              <span v-else>-</span>
+            </template>
           </el-table-column>
           <el-table-column label="币种" align="center" key="type" prop="type">
-            <template slot-scope="scope">
-              <span>{{ scope.row.type == 0 ? "筹码 " : "现金" }}</span>
+            <template slot-scope="scope" class="wanfabox">
+              <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
+              <span v-if="scope.row.type == 0">$筹码</span>
+              <span v-if="scope.row.type == 1">$现金</span>
+              <span v-if="scope.row.type == 2">฿筹码</span>
+              <span v-if="scope.row.type == 3">฿现金</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -298,7 +322,11 @@
             align="center"
             key="gameResult"
             prop="gameResult"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ gameResult(scope.row.gameResult) }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="输赢"
             align="center"
@@ -369,6 +397,7 @@
         class="bet-form-box"
       >
         <div class="bet-form-row">
+          <!-- 卡号、台号 -->
           <el-form-item
             label="卡号:"
             prop="card"
@@ -377,20 +406,53 @@
           >
             <el-input v-model="form.card" placeholder="" style="width:150px" />
           </el-form-item>
-          <div class="bet-form-item">
-            <span>台号:</span> <span>{{ form.tableId }}</span>
-          </div>
+          <el-form-item
+            label="台号:"
+            prop="tableId"
+            class="bet-form-item"
+            label-width="50px"
+          >
+            <el-input
+              v-model="form.tableId"
+              placeholder=""
+              style="width:150px"
+              :disabled="true"
+            />
+          </el-form-item>
         </div>
+        <!-- 靴号、局号 -->
         <div class="bet-form-row">
-          <div class="bet-form-item">
-            <span>靴号:</span> <span>{{ form.bootNum }}</span>
-          </div>
-          <div class="bet-form-item">
-            <span>局号:</span> <span>{{ form.gameNum }}</span>
-          </div>
+          <el-form-item
+            label="靴号:"
+            prop="bootNum"
+            class="bet-form-item"
+            label-width="50px"
+          >
+            <el-input
+              v-model="form.bootNum"
+              placeholder=""
+              style="width:150px"
+              :disabled="true"
+            />
+          </el-form-item>
+          <el-form-item
+            label="局号:"
+            prop="gameNum"
+            class="bet-form-item"
+            label-width="50px"
+          >
+            <el-input
+              v-model="form.gameNum"
+              placeholder=""
+              style="width:150px"
+              :disabled="openType == 'edit'"
+            />
+          </el-form-item>
         </div>
+
+        <!-- 输赢、币种 -->
         <div class="bet-form-row">
-          <div class="bet-form-item">
+          <div class="bet-form-item" v-if="openType == 'edit'">
             <span>输赢:</span> <span>{{ form.bootNum }}</span>
           </div>
           <el-form-item
@@ -401,7 +463,7 @@
           >
             <el-select v-model="form.type" placeholder="请选择">
               <el-option
-                v-for="item in typeOptions"
+                v-for="item in typeOptions2"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -420,13 +482,25 @@
             <div class="box-label">下注金额</div>
             <!-- <div> -->
             <el-form-item label="龙:" label-width="30px">
-              <el-input v-model="form.card" placeholder="" />
+              <el-input
+                v-model="longhuFormOption.dragon"
+                placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
             </el-form-item>
             <el-form-item label="虎:" label-width="30px">
-              <el-input v-model="form.card" placeholder="" />
+              <el-input
+                v-model="longhuFormOption.tiger"
+                placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
             </el-form-item>
             <el-form-item label="和:" label-width="30px">
-              <el-input v-model="form.card" placeholder="" />
+              <el-input
+                v-model="longhuFormOption.tie"
+                placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
             </el-form-item>
             <!-- </div> -->
           </div>
@@ -434,10 +508,10 @@
           <!-- 开牌结果 -->
           <div class="longhu-result-box">
             <div class="box-label">开牌结果</div>
-            <el-radio-group v-model="form.radio" class="result-list">
-              <el-radio :label="3">龙</el-radio>
-              <el-radio :label="6">虎</el-radio>
-              <el-radio :label="9">和</el-radio>
+            <el-radio-group v-model="form.gameResult" class="result-list">
+              <el-radio label="龙">龙</el-radio>
+              <el-radio label="虎">虎</el-radio>
+              <el-radio label="和">和</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -454,12 +528,13 @@
               v-model="form.betMoney"
               placeholder=""
               style="width:150px"
+              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
           <el-form-item label="开牌结果:" prop="gameResult" label-width="80px">
             <el-radio-group v-model="form.gameResult">
-              <el-radio :label="0">赢</el-radio>
-              <el-radio :label="1">输</el-radio>
+              <el-radio label="赢">赢</el-radio>
+              <el-radio label="输">输</el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
@@ -469,71 +544,71 @@
           <!-- 下注金额 -->
           <div class="bet-amount-box">
             <div class="box-label">下注金额</div>
-            <div  class="bet-amount-container">
-              <div  class="amount-left-box">
+            <div class="bet-amount-container">
+              <div class="amount-left-box">
                 <el-form-item label="庄:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.banker"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
                 <el-form-item label="闲:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.player"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
                 <el-form-item label="和:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.tie"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
                 <el-form-item label="庄对:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.bankerPair"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
                 <el-form-item label="闲对:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.playerPair"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
               </div>
-              <div  class="amount-left-box">
-                <el-form-item label="庄保险:">
+              <div class="amount-left-box">
+                <el-form-item label="庄保险:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.bankerIns"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="闲保险:">
+                <el-form-item label="闲保险:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.playerIns"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="大:">
+                <el-form-item label="大:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.big"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="小:">
+                <el-form-item label="小:" label-width="60px">
                   <el-input
-                    v-model="form.card"
+                    v-model="formOption.small"
                     placeholder=""
-
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
               </div>
@@ -543,12 +618,16 @@
           <!-- 开牌结果 -->
           <div class="game-result-box">
             <div class="box-label">开牌结果</div>
-            <el-checkbox-group v-model="checkList">
+            <el-checkbox-group
+              v-model="gameResultList"
+              @change="onGameResultChange"
+              :min="openType=='edit'?1:0"
+            >
               <el-checkbox label="4">庄</el-checkbox>
               <el-checkbox label="1">闲</el-checkbox>
               <el-checkbox label="7">和</el-checkbox>
-              <el-checkbox label="5">庄对</el-checkbox>
-              <el-checkbox label="8">闲对</el-checkbox>
+              <el-checkbox label="8">庄对</el-checkbox>
+              <el-checkbox label="5">闲对</el-checkbox>
               <el-checkbox label="9">大</el-checkbox>
               <el-checkbox label="6">小</el-checkbox>
             </el-checkbox-group>
@@ -571,10 +650,48 @@ import {
   addReturnOrder
 } from "@/api/coderoom/sign";
 import { listTable } from "@/api/sys/table";
-import { listBetRecord, listBetRecordTotal } from "@/api/report/report";
+import {
+  listBetRecord,
+  listBetRecordTotal,
+  editBetRecord,
+  repairBetRecord
+} from "@/api/report/report";
 import moment from "moment";
 
-const betList = [{}];
+const betOptionList = {
+  4: "庄",
+  1: "闲",
+  7: "和",
+  8: "庄对",
+  5: "闲对",
+  3: "庄保险", //庄保险
+  0: "闲保险", //闲保险
+  9: "大",
+  6: "小",
+  龙: "龙",
+  虎: "虎",
+  和: "和",
+  "-": "-"
+};
+
+// 百家乐
+const optionMap = {
+  banker: "4",
+  player: "1",
+  tie: "7",
+  bankerPair: "8",
+  playerPair: "5",
+  bankerIns: "3", //庄保险
+  playerIns: "0", //闲保险
+  big: "9",
+  small: "6"
+};
+// 龙虎
+const longhuOptionMap = {
+  dragon: "龙",
+  tiger: "虎",
+  tie: "和" //和
+};
 export default {
   // 注单记录
   name: "BetRecord",
@@ -597,7 +714,7 @@ export default {
       // 用户表格数据
       userList: [],
 
-      userTotal: "",
+      userTotal: {},
       //会员详情
       memlist: {},
       // 弹出层标题
@@ -630,6 +747,28 @@ export default {
       roleOptions: [],
       // 表单参数
       form: {},
+      // 开牌结果，用于表单
+      gameResultList: [],
+
+      formOption: {
+        banker: "",
+        player: "",
+        bankerIns: "", //庄保险
+        playerIns: "", //闲保险
+        tie: "",
+        playerPair: "",
+        bankerPair: "",
+        big: "",
+        small: ""
+      },
+      longhuFormOption: {
+        dragon: "",
+        tiger: "",
+        tie: ""
+      },
+
+      formBetMoney: null,
+
       defaultProps: {
         children: "children",
         label: "label"
@@ -653,6 +792,7 @@ export default {
           .endOf("day")
           .format("YYYY-MM-DD HH:mm:ss")
       },
+
       // 台号列表
       tableOptions: [
         {
@@ -710,51 +850,47 @@ export default {
           label: "全部"
         },
         {
-          value: 1,
+          value: 0,
           label: "$筹码"
         },
         {
-          value: 2,
+          value: 1,
           label: "$现金"
         },
         {
-          value: 3,
+          value: 2,
           label: "฿筹码"
         },
         {
-          value: 4,
+          value: 3,
           label: "฿现金"
         },
 
         {
-          value: 5,
+          value: 4,
           label: "$筹码+$现金"
         },
         {
-          value: 6,
+          value: 5,
           label: "฿筹码+฿现金"
         }
       ],
       // 币种类型列表
       typeOptions2: [
         {
-          value: null,
-          label: "全部"
-        },
-        {
-          value: 1,
+          value: 0,
           label: "$筹码"
         },
         {
-          value: 2,
+          value: 1,
           label: "$现金"
         },
         {
-          value: 3,
+          value: 2,
           label: "฿筹码"
         },
         {
-          value: 4,
+          value: 3,
           label: "฿现金"
         }
       ],
@@ -785,14 +921,35 @@ export default {
           ]
         }
       ],
-      rules: {},
+
       checkList: []
     };
   },
-
+  computed: {
+    rules() {
+      if (this.openType == "edit") {
+        return {
+          card: [{ require: true }]
+        };
+      }
+    }
+  },
   watch: {
-    checkList(newVal, oldVal) {
-      return newVal.join("");
+    formOption: {
+      handler(newVal, oldVal) {
+        // 生成新的option,用于form提交
+        this.getNewOption(newVal);
+      },
+      deep: true,
+      immediate: true
+    },
+    longhuFormOption: {
+      handler(newVal, oldVal) {
+        // 生成新的option,用于form提交
+        this.getNewLongHuOption(newVal);
+      },
+      deep: true,
+      immediate: true
     }
   },
   created() {
@@ -862,16 +1019,17 @@ export default {
           return;
         }
         if (index === 6) {
-          sums[index] = this.userTotal.betMoney;
+          sums[index] =this.userTotal? this.userTotal.betMoney : "";
           return;
         }
         if (index === 8) {
-          sums[index] = this.userTotal.winLose;
+          sums[index] = this.userTotal?this.userTotal.winLose : "";
           return;
         }
       });
       return sums;
     },
+    // 小计规则
     getSummaries1(param) {
       const { columns, data } = param;
       const sums = [];
@@ -881,12 +1039,8 @@ export default {
           return;
         }
         if (
-          index == 1 ||
-          index == 2 ||
-          index == 3 ||
-          index == 4 ||
-          index == 5 ||
-          index == 7
+          index != 6 &&
+          index != 8
         ) {
           sums[index] = "";
           return;
@@ -923,6 +1077,9 @@ export default {
       this.form = {};
       this.resetForm("form");
       this.openType = "";
+      this.gameResultList = [];
+      this.formBetMoney = null;
+      this.resetOption();
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -939,33 +1096,52 @@ export default {
           .endOf("day")
           .format("YYYY-MM-DD HH:mm:ss")
       ];
+      this.Datatype = 0
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    getGameName(gameNum) {
-      // 通过gameNum 得到游戏名称 gameName
-      const game = this.Gameoptions.filter(item => item.value == gameNum)[0];
-      return game.label;
+    getGameName(gameId) {
+      if (gameId) {
+        //通过gameId 得到游戏名称 gameName
+        const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+        return game.label;
+      } else {
+        return "百家乐";
+      }
     },
 
     /** 编辑 */
     handleEdit(row) {
       // this.reset();
       this.form = Object.assign({}, row);
+      this.form.option = {};
+
       this.open = true;
       this.openType = "edit";
-      const gameName = this.getGameName(row.gameNum);
+      const gameName = this.getGameName(row.gameId);
       this.openGame = gameName;
       this.title = `${gameName}注单修改`;
+      if (gameName == "百家乐") {
+        this.gameResultList = this.getFormGameResult(row.gameResult);
+      }
+
+      if (gameName != "百家乐") {
+        this.form.betMoney = "";
+      }
     },
 
     /** 补录 */
     handleRepair(row) {
       // this.reset();
       this.form = Object.assign({}, row);
+      this.form.card ="";
+      this.form.gameNum = "";
+      this.form.type = null;
+      this.form.option = {};
+      this.form.gameResult = "";
+      this.form.optionTime = row.createTime;
       this.open = true;
       this.openType = "repair";
-
       const gameName = this.getGameName(row.gameNum);
       this.openGame = gameName;
       this.title = `${gameName}注单补录`;
@@ -1019,43 +1195,33 @@ export default {
     },
 
     // 下注玩法
-    getText(a) {
-      switch (a) {
-        case "1":
-          return "闲";
-        case "3":
-          return "庄保险";
-        case "0":
-          return "闲保险";
-
-        case "4":
-          return "庄";
-
-        case "7":
-          return "和";
-
-        case "5":
-          return "闲对";
-
-        case "8":
-          return "庄对";
-
-        case "9":
-          return "大";
-
-        case "6":
-          return "小";
-
-        default:
-          break;
-        // code block
+    getText(betOption, gameId) {
+      if (betOptionList[betOption]) {
+        return betOptionList[betOption];
+      } else {
+        return "-";
       }
+    },
+    getPlayText(option){
+      let playText =""
+      let result = [];
+      for (let index = 0; index < option.length; index++) {
+        const element = option[index];
+        const {betOption,betMoney} = element
+        const betName = betOptionList[betOption]
+        if (betName) {
+          const item = `${betName}:${betMoney}`
+          result.push(item)
+        }
+      }
+      playText = result.join(" / ")
+      return playText
     },
     // 开牌结果
     gameResult(c) {
       let arr1 = [];
       let arr = c.split("");
-      console.log(arr);
+
       arr.forEach(e => {
         if (e == 1) {
           arr1.push("闲");
@@ -1079,27 +1245,140 @@ export default {
       });
       return arr1.toString();
     },
-    /** 提交按钮 */
-    submitForm: function() {
-      console.log(this.title);
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.title == "还单") {
-            addReturnOrder(this.form).then(response => {
-              this.$modal.msgSuccess("还单编辑成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            this.form["cardType"] = 1;
-            addSigned(this.form).then(response => {
-              this.$modal.msgSuccess("签单编辑成功");
-              this.open = false;
-              this.getList();
-            });
+
+    // 弹窗里的开牌结果
+    getFormGameResult(c) {
+      let arr1 = [];
+      let arr = c.split("");
+      return arr;
+    },
+    // 开牌结果选择变化
+    onGameResultChange(val) {
+      console.log("开牌结果选择变化", val);
+      this.gameResultList = val;
+      this.form.gameResult = val.join("");
+    },
+    // 生成新的百家乐的option,用于form提交
+    getNewOption(formOption) {
+      // 比如 formOption = {"banker":20}
+      let newOption = {};
+      let betAmount = 0;
+      for (const key in formOption) {
+        if (formOption.hasOwnProperty(key)) {
+          //例如 value 是20
+          const value = Number(formOption[key]);
+
+          if (value) {
+            // 比如formOption的里key是banker,对应到optionMap里的值是4
+            const optionKey = optionMap[key];
+            // {4:20}
+            newOption[optionKey] = value;
+            betAmount += Number(value);
           }
         }
-      });
+      }
+      // 生成新的百家乐的option,用于form提交
+      this.form.option = newOption;
+      // 计算下注金额
+      this.formBetMoney = betAmount;
+    },
+
+    // 生成新的龙虎的option,用于form提交
+    getNewLongHuOption(formOption) {
+      // 比如 formOption = {"dragon":20}
+      let newOption = {};
+      let betAmount = 0;
+      for (const key in formOption) {
+        if (formOption.hasOwnProperty(key)) {
+          //例如 value 是20
+          const value = Number(formOption[key]);
+
+          if (value) {
+            // 比如formOption的里key是dragon,对应到longhuOptionMap里的值是"龙"
+            const optionKey = longhuOptionMap[key];
+            // {"龙":20}
+            newOption[optionKey] = value;
+            betAmount += Number(value);
+          }
+        }
+      }
+      // 生成新的option,用于form提交
+      this.form.option = newOption;
+      // 计算下注金额
+      this.formBetMoney = betAmount;
+    },
+
+    resetOption() {
+      // 重置option
+      this.formOption = {
+        banker: "",
+        player: "",
+        bankerIns: "", //庄保险
+        playerIns: "", //闲保险
+        tie: "",
+        playerPair: "",
+        bankerPair: "",
+        big: "",
+        small: ""
+      };
+      this.longhuFormOption = {
+        dragon: "",
+        tiger: "",
+        tie: ""
+      };
+    },
+
+    /** 提交按钮 */
+    submitForm: function() {
+      if (this.openType == "edit") {
+        //
+        if (
+          (this.openGame == "百家乐" || this.openGame == "龙虎") &&
+          (!this.form.card || !this.formBetMoney)
+        ) {
+          // 百家乐 、龙虎
+          this.$modal.msgError("请录入完整注单数据");
+          return;
+        }
+
+        if (
+          (this.openGame == "牛牛" ||
+            this.openGame == "三公" ||
+            this.openGame == "推筒子") &&
+          (!this.form.card || !this.form.betMoney)
+        ) {
+          // 、牛牛、三公、推筒子
+          this.$modal.msgError("请录入完整注单数据");
+          return;
+        }
+        // 注单修改
+        editBetRecord(this.form).then(response => {
+          this.$modal.msgSuccess("注单修改成功”");
+          this.open = false;
+          this.formBetMoney = 0;
+          this.resetOption();
+          this.getList();
+        });
+      } else {
+        if (
+          !this.form.card ||
+          this.form.gamaNum ||
+          !this.formBetMoney ||
+          !this.form.type ||
+          !this.form.gameResult
+        ) {
+          this.$modal.msgError("请录入完整注单数据");
+          return;
+        }
+        // 注单补录
+        repairBetRecord(this.form).then(response => {
+          this.$modal.msgSuccess("注单补录成功”");
+          this.open = false;
+          this.formBetMoney = 0;
+          this.resetOption();
+          this.getList();
+        });
+      }
     }
   }
 };
@@ -1159,16 +1438,16 @@ export default {
       margin: 10px auto;
       padding-top: 22px;
       .el-form-item__label {
-        text-align: left;
+        text-align: right;
       }
-      .bet-amount-container{
+      .bet-amount-container {
         display: flex;
       }
-      .amount-left-box{
+      .amount-left-box {
         width: 50%;
-            .el-form-item__label {
-      text-align: left;
-    }
+        .el-form-item__label {
+          // text-align: left;
+        }
       }
     }
     .game-result-box {
