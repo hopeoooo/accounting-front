@@ -519,13 +519,14 @@
           <el-form-item label="下注金额:" label-width="80px">
             <el-input
               v-model="form.betMoney"
+              @change="onBetMoneyChange"
               placeholder=""
               style="width:150px"
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
           <el-form-item label="开牌结果:" prop="gameResult" label-width="80px">
-            <el-radio-group v-model="form.gameResult">
+            <el-radio-group v-model="form.gameResult" @change="onNiuGameResultChange">
               <el-radio label="赢">赢</el-radio>
               <el-radio label="输">输</el-radio>
             </el-radio-group>
@@ -1218,7 +1219,7 @@ export default {
       this.gameResultList = val;
       this.form.gameResult = val.join("");
     },
-    // 生成新的百家乐的option,用于form提交
+    // 百家乐:生成新的百家乐的option,用于form提交
     getNewOption(formOption) {
       // 比如 formOption = {"banker":20}
       let newOption = {};
@@ -1243,7 +1244,7 @@ export default {
       this.formBetMoney = betAmount;
     },
 
-    // 生成新的龙虎的option,用于form提交
+    //龙虎: 生成新的龙虎的option,用于form提交
     getNewLongHuOption(formOption) {
       // 比如 formOption = {"dragon":20}
       let newOption = {};
@@ -1268,6 +1269,22 @@ export default {
       this.formBetMoney = betAmount;
     },
 
+    // 牛牛/三公/推筒子:当betMoney变化时生成option
+    onBetMoneyChange(val) {
+      if (this.form.gameResult) {
+        this.form.option = {
+          [this.form.gameResult]: Number(val)
+        };
+      }
+    },
+    // 牛牛/三公/推筒子:当gameResulty变化时生成option
+    onNiuGameResultChange(val) {
+      if (this.form.betMoney) {
+        this.form.option = {
+          [val]: Number(this.form.betMoney)
+        };
+      }
+    },
     resetOption() {
       // 重置option
       this.formOption = {
@@ -1326,7 +1343,7 @@ export default {
           (!this.form.card ||
             !this.form.gameNum ||
             !this.formBetMoney ||
-            this.form.type == null||
+            this.form.type == null ||
             !this.form.gameResult)
         ) {
           this.$modal.msgError("请录入完整注单数据");
