@@ -135,69 +135,163 @@
             align="center"
             key="card"
             prop="card"
-          />
+          >
+            <template slot-scope="scope">
+              <span
+                :class="String(scope.row.card).indexOf('->') == -1 ? '' : 'red'"
+                >{{ scope.row.card }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="台号"
             align="center"
             key="tableId"
             prop="tableId"
-          />
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.tableId).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.tableId }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="靴号"
             align="center"
             key="bootNum"
             prop="bootNum"
-          />
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.bootNum).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.bootNum }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="局号"
             align="center"
             key="gameNum"
             prop="gameNum"
-          />
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.gameNum).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.gameNum }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="下注玩法"
             align="center"
             key="option"
             prop="option"
-            width="180px"
-          />
+            width="250px"
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.option).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.option }}</span
+              >
+            </template>
+          </el-table-column>
 
-          <el-table-column label="币种" align="center" key="type" prop="type" />
+          <el-table-column label="币种" align="center" key="type" prop="type" width="250px">
+            <template slot-scope="scope">
+              <span
+                :class="String(scope.row.type).indexOf('->') == -1 ? '' : 'red'"
+                >{{ scope.row.type }}</span
+              >
+            </template>
+          </el-table-column>
 
           <el-table-column
             label="下注金额"
             align="center"
             key="amount"
             prop="amount"
-          />
+            width="200px"
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.amount).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.amount }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="开牌结果"
             align="center"
             key="result"
             prop="result"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.result }}</span>
+              <span
+                :class="
+                  String(scope.row.result).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.result }}</span
+              >
             </template>
           </el-table-column>
-          <el-table-column label="输赢" align="center" key="win" prop="win" />
+          <el-table-column label="输赢" align="center" key="win" prop="win" width="200px">
+            <template slot-scope="scope">
+              <span
+                :class="String(scope.row.win).indexOf('->') == -1 ? '' : 'red'"
+                >{{ scope.row.win }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="下注时间"
             align="center"
             key="betTime"
             prop="betTime"
-          />
+            width="200px"
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.betTime).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.betTime }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="操作员"
             align="center"
             key="createBy"
             prop="createBy"
-          />
+            width="200px"
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.createBy).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.createBy }}</span
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             label="最近修改时间"
             align="center"
             key="updateTime"
             prop="updateTime"
+            width="200px"
           />
         </el-table>
 
@@ -562,11 +656,15 @@ export default {
         pageSize: this.queryParams.pageSize
       };
       this.loading = true;
-      listBetUpdate(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+      listBetUpdate(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -754,5 +852,8 @@ export default {
       }
     }
   }
+}
+.red{
+  color: red;
 }
 </style>
