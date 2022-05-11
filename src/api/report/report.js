@@ -1,8 +1,8 @@
 /*
  * @Author:
  * @Date: 2022-04-30 10:22:00
- * @LastEditors: Alan
- * @LastEditTime: 2022-05-10 00:36:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-11 14:53:53
  * @Description: file content
  */
 import request from '@/utils/request'
@@ -33,6 +33,23 @@ export function listBetRecordTotal(query) {
   })
 }
 
+// 注单修改
+export function editBetRecord(data) {
+  return request({
+    url: '/bet/record/edit',
+    method: 'post',
+    params: data
+  })
+}
+
+// 注单补录
+export function repairBetRecord(data) {
+  return request({
+    url: '/bet/record/repair',
+    method: 'post',
+    params: data
+  })
+}
 // 查询汇款明细列表
 export function listRemittanceDetailed(query) {
   return request({
