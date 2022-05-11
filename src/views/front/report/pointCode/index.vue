@@ -18,9 +18,9 @@
                         >
                             <el-option
                                 v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
+                                :key="item.tableId"
+                                :label="item.tableId"
+                                :value="item.tableId"
                             >
                             </el-option>
                         </el-select>
@@ -219,6 +219,7 @@
                       align="center"
                       fixed="right"
                       class-name="small-padding fixed-width"
+                      width="200px"
                     >
                       <template slot-scope="scope">
                         <el-button
@@ -228,7 +229,6 @@
                           @click="handleUpdate(scope.row)"
                           >点码修改</el-button
                         >
-                     
                       </template>
                     </el-table-column>
                 </el-table>
@@ -243,17 +243,21 @@
             </el-col>
         </el-row>
          <!-- 添加或修改用户配置对话框 -->
-        <Dialog :title='title' :open='open' @getOpen='openData' />
+        <Dialog :title='title' :open='open' :formData='formData' @getOpen='openData'  v-if="open"/>
     </div>
 </template>
 
 <script>
 import { listPorint } from "@/api/report/report";
+import {tableIdComboBoxInfo} from "@/api/sys/table";
+import Dialog from "./dialog.vue"
 export default {
     // 客户日报表
     name: "PointCode",
+    components:{Dialog},
     data() {
         return {
+            formData:{},
             options: [
                 {
                     value: "",
@@ -276,6 +280,8 @@ export default {
                     label: "4",
                 },
             ],
+            title:'点码修改',
+            open:false,
             //总计
             userTotal: {},
             // 总条数
@@ -295,15 +301,30 @@ export default {
             queryParams: {
                 tableId: "",
                 dateRange: [],
+                 pageNum: 1,
+                pageSize: 30
             },
         };
     },
 
     created() {
         this.getList();
+        this.getTableList()
     },
 
     methods: {
+        openData(data){
+          this.open = data
+          this.getList()
+        },
+        getTableList() {
+          this.loading = true;
+          tableIdComboBoxInfo().then(response => {
+            this.options = response.rows;
+            this.loading = false;
+          });
+        
+        },
         /**
          * @description: 报表数据
          * @param {*}
@@ -331,8 +352,8 @@ export default {
              * @return {*}
              */
             listPorint(params).then((response) => {
-                this.userList = response.rows;
-                this.total = response.total;
+                this.userList = response.list.rows;
+                this.total = response.list.total;
                 this.loading = false;
             });
 
@@ -361,8 +382,10 @@ export default {
             this.queryParams.pageNum = 1;
             this.getList();
         },
-        handleUpdate(){
-
+        handleUpdate(row){
+           this.formData = row
+            this.open = true;
+           
 
         },
         /**

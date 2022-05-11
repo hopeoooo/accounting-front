@@ -26,7 +26,7 @@
                     <div>金额</div>
                     <div>状态</div>
                   </div>
-                  <div class="list">
+                  <div class="list" v-if="form.gameId ==2">
                     <div>$和钱</div>
                     <div>
                       <el-input v-model.number="form.tie" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -91,28 +91,28 @@
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
-                  <div class="list">
+                  <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>$保险筹码</div>
                     <div>
                       <el-input v-model.number="form.insurance" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>$保险筹码增</div>
                     <div>
                       <el-input v-model.number="form.insuranceAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>$保险筹码减</div>
                     <div>
                       <el-input v-model.number="form.insuranceSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>$保险筹码差距</div>
                     <div>
                       {{form.insuranceGap||'-'}}
@@ -163,7 +163,7 @@
                     <div>金额</div>
                     <div>状态</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==2">
                     <div>$和钱</div>
                     <div>
                       <el-input v-model.number="form.tieTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -228,28 +228,28 @@
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
-                  <div class="list">
+                  <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>฿保险筹码</div>
                     <div>
                       <el-input v-model.number="form.insuranceTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>฿保险筹码增</div>
                     <div>
                       <el-input v-model.number="form.insuranceAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>฿保险筹码减</div>
                     <div>
                       <el-input v-model.number="form.insuranceSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
-                   <div class="list">
+                   <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>฿保险筹码差距</div>
                     <div>
                       {{form.insuranceGapTh||'-'}}
@@ -257,10 +257,9 @@
                      <div>
                        <span v-if="form.insuranceGapTh==0">正确</span>
                        <span v-else style="color:red">错误</span>
-                       <!-- {{insuranceGap==0?'正确':'错误'}} -->
                        </div>
                   </div>
-                  <div class="list" v-if="title=='收码'">
+                  <!-- <div class="list" v-if="title=='收码'">
                     <div>฿筹码收码</div>
                     <div>
                       {{form.chipReceiptTh||"-"}}
@@ -273,7 +272,7 @@
                       {{form.cashReceiptTh||"-"}}
                     </div>
                      <div>-</div>
-                  </div>
+                  </div> -->
               </el-form>
            </el-col>
            <el-col :span="24" :xs="24">
@@ -297,15 +296,16 @@
 </template>
 
 <script>
-import { dragantigerReckon,dragantigerEdit} from "@/api/bet/draganTiger";
+import { reckonPorint,editPorint} from "@/api/report/report";
 
 export default {
   name: "Dialog",
-  props:['title','open'],
+  props:['title','open','formData'],
   data() {
     return {
-      form: {},
+     
       isOpen:this.open,
+      form: this.formData,
       rules:{},
       loading:false,
       aTotal:'',
@@ -347,11 +347,25 @@ export default {
     };
   },
   created() {
-    console.log(this.isOpen)
+    console.log(this.form)
+    this. getForm()
   },
   watch: {
       open (val) {
         this.isOpen = val
+      },
+      form:{
+        handler(newValue,oldValue){
+          console.log(newValue,oldValue)
+          this.$forceUpdate()
+        },
+        deep:true //深度监听
+
+        // handler(newval,oldval){
+        //   console.log(newval,oldval)
+        //   this.$forceUpdate()
+        // },
+        // deep:true
       }
     },
   methods: {
@@ -410,25 +424,23 @@ export default {
         }
          this.resetForm("form");
     },
+    getForm(){
+    
+      this.$forceUpdate()
+      console.log(this.form)   
+    },
      /** 提交按钮 */
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.title == "收码") {
-            dragantigerEdit(this.form).then(response => {
-              this.$modal.msgSuccess("收码修改成功");
-              this.isOpen= !this.isOpen
-              this.$emit('getOpen',this.isOpen)
-              this.reset()
-            });
-          } else {
-            dragantigerEdit(this.form).then(response => {
+       
+            editPorint(this.form).then(response => {
               this.$modal.msgSuccess("点码修改成功");
                this.isOpen= !this.isOpen
               this.$emit('getOpen',this.isOpen)
               this.reset()
             });
-          }
+          
         }
       });
     },
@@ -488,27 +500,9 @@ export default {
     count(){
       console.log(this.form)
      
-          if (this.title == "收码") {
-            this.form['type']=1
-            console.log(typeof(this.form.type))
-            dragantigerReckon(this.form).then(res => {
-              this.$modal.msgSuccess("收码计算差距成功");
-              let arr =res.data
-              this.form['cashGap']=arr.cashGap
-              this.form['chipGap']=arr.chipGap
-              this.form['insuranceGap']=arr.insuranceGap
-               this.form['cashReceipt']=arr.cashReceipt
-              this.form['chipReceipt']=arr.chipReceipt
-               this.form['cashGapTh']=arr.cashGapTh
-              this.form['chipGapTh']=arr.chipGapTh
-              this.form['insuranceGapTh']=arr.insuranceGapTh
-               this.form['cashReceiptTh']=arr.cashReceiptTh
-              this.form['chipReceiptTh']=arr.chipReceiptTh
-              this.$forceUpdate()
-            });
-          } else {
+          
             this.form['type']=0
-            dragantigerReckon(this.form).then(res => {
+            reckonPorint(this.form).then(res => {
               this.$modal.msgSuccess("点码计算差距成功");
                let arr =res.data
               this.form['cashGap']=arr.cashGap
@@ -519,7 +513,7 @@ export default {
               this.form['insuranceGapTh']=arr.insuranceGapTh
               this.$forceUpdate()             
             });
-          }
+          
      
     },
   },
