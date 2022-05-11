@@ -257,7 +257,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.dispatch('usre/LogOut').then(() => {
+        this.$store.dispatch('user/LogOut').then(() => {
           location.href = '/index';
         })
       }).catch(() => {});
