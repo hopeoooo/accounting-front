@@ -17,6 +17,14 @@ export function listTableTotal(query) {
     params: query
   })
 }
+// 桌台下拉框
+export function tableIdComboBoxInfo(query) {
+  return request({
+    url: '/system/table/tableIdComboBoxInfo',
+    method: 'get',
+    params: query
+  })
+}
 // 新增桌台
 export function addUpTable(data) {
   return request({
