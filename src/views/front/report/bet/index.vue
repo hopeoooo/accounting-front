@@ -134,7 +134,6 @@
           show-summary
           sum-text="小计"
           :summary-method="getSummaries1"
-
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -255,7 +254,6 @@
           class="table2"
           sum-text="总计"
           :summary-method="getSummaries"
-
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -1113,6 +1111,7 @@ export default {
       this.form.type = null;
       this.form.option = {};
       this.form.gameResult = "";
+      this.form.betMoney = null;
       this.form.optionTime = row.createTime;
       this.open = true;
       this.openType = "repair";
@@ -1172,10 +1171,10 @@ export default {
             // 币种
             return this.typeMap[v[j]];
           }
-          if (j == 'gameResult') {
-            return this.getGameResult(v[j])
+          if (j == "gameResult") {
+            return this.getGameResult(v[j]);
           }
-          return v[j]
+          return v[j];
         })
       );
     },
@@ -1202,7 +1201,7 @@ export default {
       let arr = c.split("");
 
       arr.forEach(e => {
-        arr1.push(betOptionList[e])
+        arr1.push(betOptionList[e]);
       });
       return arr1.join(" ");
     },
@@ -1321,12 +1320,27 @@ export default {
           this.getList();
         });
       } else {
+        // 补录
         if (
-          !this.form.card ||
-          this.form.gamaNum ||
-          !this.formBetMoney ||
-          !this.form.type ||
-          !this.form.gameResult
+          (this.openGame == "百家乐" || this.openGame == "龙虎") &&
+          (!this.form.card ||
+            !this.form.gameNum ||
+            !this.formBetMoney ||
+            this.form.type == null||
+            !this.form.gameResult)
+        ) {
+          this.$modal.msgError("请录入完整注单数据");
+          return;
+        }
+        if (
+          (this.openGame == "牛牛" ||
+            this.openGame == "三公" ||
+            this.openGame == "推筒子") &&
+          (!this.form.card ||
+            !this.form.gameNum ||
+            !this.form.betMoney ||
+            this.form.type == null ||
+            !this.form.gameResult)
         ) {
           this.$modal.msgError("请录入完整注单数据");
           return;
