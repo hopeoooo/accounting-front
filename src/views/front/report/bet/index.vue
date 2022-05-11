@@ -134,7 +134,7 @@
           show-summary
           sum-text="小计"
           :summary-method="getSummaries1"
-          @selection-change="handleSelectionChange"
+
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -169,21 +169,21 @@
             width="180px"
           >
             <template slot-scope="scope">
-              <!-- <span
-                v-for="(e, key) in scope.row.option"
-                :key="key"
-                class="wanfa"
-              >
-                {{ getText(e.betOption, scope.row.gameId) }}:{{ e.betMoney }}
-              </span> -->
               <!--百家乐、龙虎 -->
-              <span v-if="scope.row.gameId == 1||scope.row.gameId == 2">{{getPlayText(scope.row.option)}}</span>
+              <span v-if="scope.row.gameId == 1 || scope.row.gameId == 2">{{
+                getPlayText(scope.row.option)
+              }}</span>
               <span v-else>-</span>
             </template>
           </el-table-column>
           <el-table-column label="币种" align="center" key="type" prop="type">
             <template slot-scope="scope" class="wanfabox">
-              <span>{{ scope.row.type == 0 ? "筹码 " : "现金" }}</span>
+              <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
+              <!-- <span v-if="scope.row.type == 0">$筹码</span>
+              <span v-if="scope.row.type == 1">$现金</span>
+              <span v-if="scope.row.type == 2">฿筹码</span>
+              <span v-if="scope.row.type == 3">฿现金</span> -->
+              <span>{{ typeMap[scope.row.type] }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -199,7 +199,7 @@
             prop="gameResult"
           >
             <template slot-scope="scope">
-              <span>{{ gameResult(scope.row.gameResult) }}</span>
+              <span>{{ getGameResult(scope.row.gameResult) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -255,7 +255,7 @@
           class="table2"
           sum-text="总计"
           :summary-method="getSummaries"
-          @selection-change="handleSelectionChange"
+
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -290,15 +290,10 @@
             width="180px"
           >
             <template slot-scope="scope">
-              <!-- <span
-                v-for="(e, key) in scope.row.option"
-                :key="key"
-                class="wanfa"
-              >
-                {{ getText(e.betOption, scope.row.gameId) }}:{{ e.betMoney }}
-              </span> -->
               <!--百家乐、龙虎 -->
-              <span v-if="scope.row.gameId == 1||scope.row.gameId == 2">{{getPlayText(scope.row.option)}}</span>
+              <span v-if="scope.row.gameId == 1 || scope.row.gameId == 2">{{
+                getPlayText(scope.row.option)
+              }}</span>
               <span v-else>-</span>
             </template>
           </el-table-column>
@@ -324,7 +319,7 @@
             prop="gameResult"
           >
             <template slot-scope="scope">
-              <span>{{ gameResult(scope.row.gameResult) }}</span>
+              <span>{{ getGameResult(scope.row.gameResult) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -621,7 +616,7 @@
             <el-checkbox-group
               v-model="gameResultList"
               @change="onGameResultChange"
-              :min="openType=='edit'?1:0"
+              :min="openType == 'edit' ? 1 : 0"
             >
               <el-checkbox label="4">庄</el-checkbox>
               <el-checkbox label="1">闲</el-checkbox>
@@ -671,6 +666,8 @@ const betOptionList = {
   龙: "龙",
   虎: "虎",
   和: "和",
+  输: "输",
+  赢: "赢",
   "-": "-"
 };
 
@@ -794,28 +791,7 @@ export default {
       },
 
       // 台号列表
-      tableOptions: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        }
-      ],
+      tableOptions: [],
       // 游戏类型列表
       Gameoptions: [
         {
@@ -921,8 +897,12 @@ export default {
           ]
         }
       ],
-
-      checkList: []
+      typeMap: {
+        0: "$筹码",
+        1: "$现金",
+        2: "฿筹码",
+        3: "฿现金"
+      }
     };
   },
   computed: {
@@ -1003,12 +983,7 @@ export default {
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
-    },
+
     //总计规则
     getSummaries(param) {
       const { columns, data } = param;
@@ -1019,11 +994,11 @@ export default {
           return;
         }
         if (index === 6) {
-          sums[index] =this.userTotal? this.userTotal.betMoney : "";
+          sums[index] = this.userTotal ? this.userTotal.betMoney : "";
           return;
         }
         if (index === 8) {
-          sums[index] = this.userTotal?this.userTotal.winLose : "";
+          sums[index] = this.userTotal ? this.userTotal.winLose : "";
           return;
         }
       });
@@ -1038,10 +1013,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (
-          index != 6 &&
-          index != 8
-        ) {
+        if (index != 6 && index != 8) {
           sums[index] = "";
           return;
         }
@@ -1096,7 +1068,7 @@ export default {
           .endOf("day")
           .format("YYYY-MM-DD HH:mm:ss")
       ];
-      this.Datatype = 0
+      this.Datatype = 0;
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -1104,6 +1076,8 @@ export default {
       if (gameId) {
         //通过gameId 得到游戏名称 gameName
         const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+        console.log("通过gameId 得到游戏名称 gameName", game, gameId);
+
         return game.label;
       } else {
         return "百家乐";
@@ -1134,7 +1108,7 @@ export default {
     handleRepair(row) {
       // this.reset();
       this.form = Object.assign({}, row);
-      this.form.card ="";
+      this.form.card = "";
       this.form.gameNum = "";
       this.form.type = null;
       this.form.option = {};
@@ -1142,7 +1116,7 @@ export default {
       this.form.optionTime = row.createTime;
       this.open = true;
       this.openType = "repair";
-      const gameName = this.getGameName(row.gameNum);
+      const gameName = this.getGameName(row.gameId);
       this.openGame = gameName;
       this.title = `${gameName}注单补录`;
     },
@@ -1154,8 +1128,6 @@ export default {
         const tHeader = [
           "会员卡号",
           "台号",
-          "游戏类型",
-          "币种",
           "靴号",
           "局号",
           "下注玩法",
@@ -1170,8 +1142,6 @@ export default {
         const filterVal = [
           "card",
           "tableId",
-          "gameId",
-          "type",
           "bootNum",
           "gameNum",
           "option",
@@ -1191,59 +1161,50 @@ export default {
     },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]));
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j == "option") {
+            // 下注玩法
+            const option = this.getPlayText(v[j]);
+            return option;
+          }
+          if (j == "type") {
+            // 币种
+            return this.typeMap[v[j]];
+          }
+          if (j == 'gameResult') {
+            return this.getGameResult(v[j])
+          }
+          return v[j]
+        })
+      );
     },
 
-    // 下注玩法
-    getText(betOption, gameId) {
-      if (betOptionList[betOption]) {
-        return betOptionList[betOption];
-      } else {
-        return "-";
-      }
-    },
-    getPlayText(option){
-      let playText =""
+    // 生成下注玩法
+    getPlayText(option) {
+      let playText = "";
       let result = [];
       for (let index = 0; index < option.length; index++) {
         const element = option[index];
-        const {betOption,betMoney} = element
-        const betName = betOptionList[betOption]
+        const { betOption, betMoney } = element;
+        const betName = betOptionList[betOption];
         if (betName) {
-          const item = `${betName}:${betMoney}`
-          result.push(item)
+          const item = `${betName}:${betMoney}`;
+          result.push(item);
         }
       }
-      playText = result.join(" / ")
-      return playText
+      playText = result.join(" / ");
+      return playText;
     },
-    // 开牌结果
-    gameResult(c) {
+    // 生成开牌结果
+    getGameResult(c) {
       let arr1 = [];
       let arr = c.split("");
 
       arr.forEach(e => {
-        if (e == 1) {
-          arr1.push("闲");
-        } else if (e == 0) {
-          arr1.push("闲保险");
-        } else if (e == 3) {
-          arr1.push("庄保险");
-        } else if (e == 4) {
-          arr1.push("庄");
-        } else if (e == 7) {
-          arr1.push("和");
-        } else if (e == 5) {
-          arr1.push("闲对");
-        } else if (e == 8) {
-          arr1.push("庄对");
-        } else if (e == 9) {
-          arr1.push("大");
-        } else if (e == 6) {
-          arr1.push("小");
-        }
+        arr1.push(betOptionList[e])
       });
-      return arr1.toString();
+      return arr1.join(" ");
     },
 
     // 弹窗里的开牌结果
