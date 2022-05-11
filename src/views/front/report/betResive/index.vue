@@ -205,7 +205,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="币种" align="center" key="type" prop="type" width="250px">
+          <el-table-column label="币种" align="center" key="type" prop="type" width="150px">
             <template slot-scope="scope">
               <span
                 :class="String(scope.row.type).indexOf('->') == -1 ? '' : 'red'"
