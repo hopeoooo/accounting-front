@@ -204,7 +204,7 @@
                             <span :class="String(scope.row.insuranceAddTh).indexOf('->')==-1?'':'red'">{{ scope.row.insuranceAddTh || "--" }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="时间" align="center">
+                    <el-table-column label="修改时间" align="center">
                         <template slot-scope="scope">
                             <span :class="String(scope.row.createTime).indexOf('->')==-1?'':'red'">{{ scope.row.createTime || "--" }}</span>
                         </template>
@@ -441,7 +441,7 @@ export default {
                     "฿输赢",
                     "฿保险输赢",
                     "฿保险筹码增减",
-                    "时间",
+                    "修改时间",
                     "操作备注",
                 ];
                 // 上面设置Excel的表格第一行的标题
