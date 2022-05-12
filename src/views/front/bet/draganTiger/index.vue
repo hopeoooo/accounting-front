@@ -47,7 +47,7 @@
           <el-card class="box-card-box" style="text-align:center">
               <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <el-button type="primary" plain @click="betRecord">下注记录</el-button>
+              <!-- <el-button type="primary" plain @click="betRecord">下注记录</el-button> -->
           </el-card>
       </el-col>
        <!--路单展示-->
@@ -465,20 +465,9 @@ export default {
      this.setLhSum(this.sumdata)
       dragantigerOpen({'json':param}).then(res => {
           this.subData= res.data
-           this.betList.forEach(e=>{
-            Object.keys(e).forEach(i=>{
-              if(this.isEmpty(e[i])) {
-                  delete e[i];
-
-                }
-            })
-            return e
-          })
           let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
-          
             this.subData.bet.forEach((e,i)=>{
-            arr2[i]={...e,...arr2[i],...this.betList[i]}
-             
+            arr2[i]={...arr2[i],...this.betList[i],...e}
           })
           this.betList = arr2
           this.setLhList(arr2)

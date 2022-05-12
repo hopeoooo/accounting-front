@@ -358,19 +358,10 @@ export default {
      this.setNnSum(this.sumdata)
       niuniuOpen({'json':param}).then(res => {
           this.subData= res.data
-           this.betList.forEach(e=>{
-            Object.keys(e).forEach(i=>{
-              if(this.isEmpty(e[i])) {
-                  delete e[i];
-
-                }
-            })
-            return e
-          })
           let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
           
             this.subData.bet.forEach((e,i)=>{
-            arr2[i]={...e,...arr2[i],...this.betList[i]}
+            arr2[i]={...arr2[i],...this.betList[i],...e}
              
           })
           this.betList = arr2
