@@ -16,7 +16,7 @@
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId"
+                :label="item.tableId?item.tableId:'全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -201,6 +201,7 @@
 import { listTable } from "@/api/sys/table";
 import { listReceipt } from "@/api/report/report";
 import moment from "moment";
+
 export default {
   // 客户日报表
   name: "Receipt",
@@ -225,7 +226,7 @@ export default {
         label: "label"
       },
       queryParams: {
-        tableId: "",
+        tableId: null,
         dateRange: [
           moment()
             .subtract(1, "days")
@@ -291,6 +292,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
+         this.tableOptions.push({tableId:null})
       });
     },
 
@@ -323,7 +325,7 @@ export default {
      */
     resetQuery() {
       this.queryParams = {
-        tableId: "",
+        tableId: null,
         pageNum: 1,
         dateRange: [
           moment()

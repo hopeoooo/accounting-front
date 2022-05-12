@@ -23,7 +23,7 @@
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId"
+                :label="item.tableId ? item.tableId : '全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -472,7 +472,7 @@ export default {
         pageNum: 1,
         pageSize: 30,
         card: "", //会员姓名
-        tableId: "", //台号
+        tableId: null, //台号
         gameId: "", //游戏类型
         type: null, //	币种()
         bootNum: "", //靴号
@@ -486,29 +486,8 @@ export default {
           .format("YYYY-MM-DD HH:mm:ss")
       },
 
-      // 台号列表
-      tableOptions: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        }
-      ],
+      //台号列表
+      tableOptions: [],
       // 游戏类型列表
       Gameoptions: [
         {
@@ -627,9 +606,7 @@ export default {
       }
     }
   },
-  watch: {
-
-  },
+  watch: {},
   created() {
     this.getList();
     this.getTableOptions();
@@ -649,6 +626,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
+        this.tableOptions.push({ tableId: null });
       });
     },
     /** 查询用户列表 */
@@ -742,7 +720,7 @@ export default {
         const list = this.userList; //把data里的tableData存到list
         const time_str = this.$getCurrentTime();
         const data = this.formatJson(filterVal, list);
-        export_json_to_excel(tHeader, data, `注单记录列表-${time_str}`);
+        export_json_to_excel(tHeader, data, `注单修改记录列表-${time_str}`);
       });
     },
     // 该方法负责将数组转化成二维数组

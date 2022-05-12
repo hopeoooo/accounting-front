@@ -23,7 +23,7 @@
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId"
+                :label="item.tableId ? item.tableId : '全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -788,7 +788,7 @@ export default {
         pageNum: 1,
         pageSize: 30,
         card: "", //会员姓名
-        tableId: "", //台号
+        tableId: null, //台号
         gameId: "", //游戏类型
         type: null, //	币种()
         bootNum: "", //靴号
@@ -963,6 +963,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
+        this.tableOptions.push({tableId:null})
       });
     },
     /** 查询用户列表 */
@@ -972,7 +973,7 @@ export default {
         card: this.queryParams.card, //卡号
         tableId: tableId ? Number(tableId) : null, //台号
         gameId: gameId ? Number(gameId) : null, //游戏类型
-        type: type ? Number(type) : null, //	币种(0 筹码 1现金)
+        type: type !=null ? Number(type) : null, //	币种(0 筹码 1现金)
         bootNum: bootNum ? Number(bootNum) : null, //靴号
         gameNum: gameNum ? Number(gameNum) : null, //局号
         createBy: this.queryParams.createBy, //操作员
@@ -1206,8 +1207,8 @@ export default {
     },
 
     // 生成下注玩法
-    getPlayText(option=[]) {
-      if ( !option || option.length == 0) {
+    getPlayText(option = []) {
+      if (!option || option.length == 0) {
         return "-";
       }
       let playText = "";

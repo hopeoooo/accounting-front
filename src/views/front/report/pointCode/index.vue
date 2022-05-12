@@ -14,9 +14,9 @@
           <el-form-item label="台号" prop="userName">
             <el-select v-model="queryParams.tableId" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId"
+                :label="item.tableId?item.tableId:'全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -242,6 +242,7 @@
 import { listPorint } from "@/api/report/report";
 import { tableIdComboBoxInfo } from "@/api/sys/table";
 import Dialog from "./dialog.vue";
+import { listTable } from "@/api/sys/table";
 export default {
   // 客户日报表
   name: "PointCode",
@@ -249,28 +250,8 @@ export default {
   data() {
     return {
       formData: {},
-      options: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        }
-      ],
+      //台号列表
+      tableOptions: [],
       title: "点码修改",
       open: false,
       //总计
@@ -290,7 +271,7 @@ export default {
         label: "label"
       },
       queryParams: {
-        tableId: this.$route.query.tableId ? this.$route.query.tableId : "",
+        tableId: this.$route.query.tableId ? this.$route.query.tableId : null,
         dateRange: [],
         pageNum: 1,
         pageSize: 30
@@ -300,7 +281,8 @@ export default {
 
   created() {
     this.getList();
-    this.getTableList();
+    this.getTableOptions();
+    // this.getTableList();
   },
 
   methods: {
@@ -356,6 +338,16 @@ export default {
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
+    getTableOptions() {
+      const params = {
+        pageSize: 500,
+        pageNum: 1
+      };
+      listTable(params).then(response => {
+        this.tableOptions = response.rows;
+        this.tableOptions.push({tableId:null})
+      });
+    },
 
     /**
      * @description: 重置表单
@@ -364,7 +356,7 @@ export default {
      */
     reset() {
       this.form = {
-        tableId: ""
+        tableId: null, //台号
       };
       this.resetForm("form");
     },
@@ -389,7 +381,7 @@ export default {
      */
     resetQuery() {
       this.queryParams = {
-        tableId: "",
+        tableId: null, //台号
         pageNum: 1,
         dateRange: [],
         pageSize: this.queryParams.pageSize
