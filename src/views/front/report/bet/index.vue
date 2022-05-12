@@ -838,28 +838,28 @@ export default {
           label: "全部"
         },
         {
-          value: 0,
+          value: 1,
           label: "$筹码"
         },
         {
-          value: 1,
+          value: 2,
           label: "$现金"
         },
         {
-          value: 2,
+          value: 3,
           label: "฿筹码"
         },
         {
-          value: 3,
+          value: 4,
           label: "฿现金"
         },
 
         {
-          value: 4,
+          value: 5,
           label: "$筹码+$现金"
         },
         {
-          value: 5,
+          value: 6,
           label: "฿筹码+฿现金"
         }
       ],
