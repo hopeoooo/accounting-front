@@ -147,7 +147,9 @@ export default {
           this.total = response.total;
           this.loading = false;
         }
-      );
+      ).catch(err=>{
+        this.loading = false;
+      })
     },
     // 返回按钮
     handleClose() {

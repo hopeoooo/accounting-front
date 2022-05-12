@@ -189,6 +189,21 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="游戏类型"
+            align="center"
+            key="gameId"
+            prop="gameId"
+          >
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.gameId).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ getGameName(scope.row.gameId) }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
             label="下注玩法"
             align="center"
             key="option"
@@ -205,7 +220,13 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="币种" align="center" key="type" prop="type" width="150px">
+          <el-table-column
+            label="币种"
+            align="center"
+            key="type"
+            prop="type"
+            width="150px"
+          >
             <template slot-scope="scope">
               <span
                 :class="String(scope.row.type).indexOf('->') == -1 ? '' : 'red'"
@@ -246,7 +267,13 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="输赢" align="center" key="win" prop="win" width="200px">
+          <el-table-column
+            label="输赢"
+            align="center"
+            key="win"
+            prop="win"
+            width="200px"
+          >
             <template slot-scope="scope">
               <span
                 :class="String(scope.row.win).indexOf('->') == -1 ? '' : 'red'"
@@ -601,22 +628,7 @@ export default {
     }
   },
   watch: {
-    formOption: {
-      handler(newVal, oldVal) {
-        // 生成新的option,用于form提交
-        this.getNewOption(newVal);
-      },
-      deep: true,
-      immediate: true
-    },
-    longhuFormOption: {
-      handler(newVal, oldVal) {
-        // 生成新的option,用于form提交
-        this.getNewLongHuOption(newVal);
-      },
-      deep: true,
-      immediate: true
-    }
+
   },
   created() {
     this.getList();
@@ -698,10 +710,9 @@ export default {
         const tHeader = [
           "会员卡号",
           "台号",
-          "游戏类型",
-          "币种",
           "靴号",
           "局号",
+          "游戏类型",
           "下注玩法",
           "币种",
           "下注金额",
@@ -715,10 +726,9 @@ export default {
         const filterVal = [
           "card",
           "tableId",
-          "gameId",
-          "type",
           "bootNum",
           "gameNum",
+          "gameId",
           "option",
           "type",
           "amount",
@@ -737,7 +747,24 @@ export default {
     },
     // 该方法负责将数组转化成二维数组
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]));
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j == "gameId") {
+            // 游戏类型
+            return this.getGameName(v[j]);
+          }
+          return v[j];
+        })
+      );
+    },
+    getGameName(gameId) {
+      if (gameId) {
+        //通过gameId 得到游戏名称 gameName
+        const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+        return game.label;
+      } else {
+        return "百家乐";
+      }
     }
   }
 };
@@ -853,7 +880,7 @@ export default {
     }
   }
 }
-.red{
+.red {
   color: red;
 }
 </style>

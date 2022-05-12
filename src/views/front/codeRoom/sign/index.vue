@@ -270,14 +270,19 @@
         label-width="100px"
       >
         <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder=""  style="width:150px" :disabled="true" />
+          <el-input
+            v-model="form.card"
+            placeholder=""
+            style="width:150px"
+            :disabled="true"
+          />
         </el-form-item>
         <!-- 签单 -->
         <el-form-item label="$签单金额" prop="amount" v-if="openType == 'sign'">
           <el-input
             v-model="form.amount"
             placeholder=""
-             style="width:150px"
+            style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -289,7 +294,7 @@
           <el-input
             v-model="form.amountTh"
             placeholder=""
-             style="width:150px"
+            style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -347,7 +352,11 @@
         <el-button
           type="primary"
           @click="submitForm"
-          :disabled="openType=='back' && form.signedAmount == 0 && form.signedAmountTh == 0"
+          :disabled="
+            openType == 'back' &&
+              form.signedAmount == 0 &&
+              form.signedAmountTh == 0
+          "
           >确认</el-button
         >
         <el-button @click="cancel">取消</el-button>
@@ -369,6 +378,7 @@ const fieldMap = {
   amountTh: "signedAmountTh"
 };
 export default {
+  // 签单
   name: "Sign",
   data() {
     return {
@@ -485,16 +495,24 @@ export default {
       let params = Object.assign({}, this.fromSearch, this.queryParams);
       params["isAdmin"] = this.fromSearch.isAdmin == false ? 0 : 1;
       this.loading = true;
-      listSign(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-      listSignTotal(params).then(response => {
-        this.userTotal = response.data;
+      listSign(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listSignTotal(params)
+        .then(response => {
+          this.userTotal = response.data;
 
-        this.loading = false;
-      });
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -554,6 +572,7 @@ export default {
           // sums[index] = Number(sums[index]).toFixed(2);
           if (index == 3 || index == 4) {
             // 金额需要保留两位小数点
+            sums[index] = Number(sums[index]).toFixed(2);
             sums[index] = MoneyFormat(sums[index]);
           }
         } else {
@@ -621,7 +640,7 @@ export default {
     // 明细
     handleDetail(card) {
       //TODO: 前往明细表
-      this.$router.push({ name: "SignInfo" ,query:{card:card}});
+      this.$router.push({ name: "SignInfo", query: { card: card } });
     },
     /** 导出按钮操作 */
     handleExport() {

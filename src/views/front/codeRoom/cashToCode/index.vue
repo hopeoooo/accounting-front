@@ -507,12 +507,16 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       listCashChipTotal(params).then(response => {
         this.userTotal = response.data;
 
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -571,6 +575,7 @@ export default {
           // sums[index] = Number(sums[index]).toFixed(2);
           if (index == 4|| index == 5) {
             // 金额需要保留两位小数点
+             sums[index] = (Number(sums[index])).toFixed(2)
             sums[index] = MoneyFormat(sums[index]);
           }
         } else {

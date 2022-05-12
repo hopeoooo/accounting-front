@@ -95,7 +95,6 @@
           v-loading="loading"
           :data="userList"
           @selection-change="handleSelectionChange"
-          style="min-height:450px;"
           empty-text="暂无数据"
         >
           <!-- <el-table-column
