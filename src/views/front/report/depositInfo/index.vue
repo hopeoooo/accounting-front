@@ -120,9 +120,9 @@
           >
             <template slot-scope="scope">
               <span v-if="scope.row.chipAmount != 0"
-                >{{ scope.row.chipAmountBefore }}→({{ scope.row.chipAmount }})→{{
-                  scope.row.chipAmountAfter
-                }}</span
+                >{{ scope.row.chipAmountBefore }}→({{
+                  scope.row.chipAmount
+                }})→{{ scope.row.chipAmountAfter }}</span
               >
               <span v-else>--</span>
             </template>
@@ -135,9 +135,9 @@
           >
             <template slot-scope="scope">
               <span v-if="scope.row.cashAmount != 0"
-                >{{ scope.row.cashAmountBefore }}→({{ scope.row.cashAmount }})→{{
-                  scope.row.cashAmountAfter
-                }}</span
+                >{{ scope.row.cashAmountBefore }}→({{
+                  scope.row.cashAmount
+                }})→{{ scope.row.cashAmountAfter }}</span
               >
               <span v-else>--</span>
             </template>
@@ -276,7 +276,7 @@ export default {
         label: "label"
       },
       queryParams: {
-                card: this.$route.query.card?this.$route.query.card:"",
+        card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
         type: null,
         // dateRange: [],
@@ -298,13 +298,12 @@ export default {
       let params = {
         card: this.queryParams.card,
         type: this.queryParams.type,
-         isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
+        isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
-                startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
+        startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
         endTime: this.dateRange ? this.addDateRange(this.dateRange)[1] : null
       };
-
 
       this.loading = true;
       listAccessCodeDetailed(params).then(response => {
@@ -324,7 +323,14 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = [];
+      this.dateRange = [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD")
+      ];
       this.queryParams = {
         card: "",
         isAdmin: 0,

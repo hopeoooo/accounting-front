@@ -799,7 +799,7 @@ export default {
     rules() {
       return {
         card: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" }
+          { required: true, message: "卡号不能为空", trigger: "blur" }
           // {
           //   min: 2,
           //   max: 20,
@@ -1020,6 +1020,7 @@ export default {
     // 表单重置
     reset() {
       const newForm = {
+        card:"",
         name: "",
         sex: 0,
         phone: "",
