@@ -278,7 +278,7 @@ import {
 import { getRoleList } from "@/api/account/role";
 
 export default {
-  name: "employee",
+  name: "Employee",
 
   data() {
     return {

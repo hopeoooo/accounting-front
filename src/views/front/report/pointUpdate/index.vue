@@ -183,7 +183,7 @@
                             <span :class="String(scope.row.insuranceGapTh).indexOf('->')==-1?'':'red'">{{ scope.row.insuranceGapTh || "--" }}</span>
                         </template>
                     </el-table-column>
-                  
+
                      <el-table-column label="฿洗码量" align="center">
                         <template slot-scope="scope">
                             <span :class="String(scope.row.waterTh).indexOf('->')==-1?'':'red'">{{ scope.row.waterTh || "--" }}</span>
@@ -322,8 +322,10 @@ export default {
           tableIdComboBoxInfo().then(response => {
             this.options = response.rows;
             this.loading = false;
-          });
-        
+          }).catch(err=>{
+            this.loading = false;
+          })
+
         },
         /**
          * @description: 报表数据
@@ -355,7 +357,9 @@ export default {
                 this.userList = response.rows;
                 this.total = response.total;
                 this.loading = false;
-            });
+            }).catch(err=>{
+              this.loading = false;
+            })
 
             this.$delete(params, "pageNum");
             this.$delete(params, "pageSize");
@@ -385,7 +389,7 @@ export default {
         handleUpdate(row){
            this.formData = row
             this.open = true;
-           
+
 
         },
         /**

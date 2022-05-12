@@ -132,7 +132,7 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChip"
-                 style="witdh:200px"
+                style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -195,7 +195,7 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
-                 style="witdh:200px"
+                style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -216,7 +216,7 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChipTh"
-                 style="witdh:200px"
+                style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -279,7 +279,7 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCashTh"
-                 style="witdh:200px"
+                style="witdh:200px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
                 <template slot="suffix">
@@ -315,7 +315,7 @@
 import { listOdds, UpOdds } from "@/api/sys/odds";
 
 export default {
-  name: "odds",
+  name: "Odds",
   data() {
     return {
       loading: false,
@@ -354,9 +354,8 @@ export default {
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
-
-          },
+            message: "只能输入0-100"
+          }
           // {
           //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
           //   message: "请输入大于0的数字"
@@ -367,7 +366,7 @@ export default {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
+          }
           // {
           //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
           //   message: "请输入大于0的数字"
@@ -378,7 +377,7 @@ export default {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
+          }
           // {
           //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
           //   message: "请输入大于0的数字"
@@ -389,7 +388,7 @@ export default {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
+          }
           // {
           //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
           //   message: "请输入大于0的数字"
@@ -400,56 +399,49 @@ export default {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratPlayerPair: [
           {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratLarge: [
           {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratSmall: [
           {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         dragonWin: [
           {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         tigerWin: [
           {
             required: true,
             message: "百家乐洗码比例（筹码）不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         tieWin: [
           {
             required: true,
             message: "不能为空",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratRollingRatioChip: [
           {
@@ -461,8 +453,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratRollingRatioCash: [
           {
@@ -474,8 +465,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         dragonTigerRatioChip: [
           {
@@ -487,8 +477,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         dragonTigerRatioCash: [
           {
@@ -500,8 +489,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratRollingRatioChipTh: [
           {
@@ -513,8 +501,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         baccaratRollingRatioCashTh: [
           {
@@ -526,8 +513,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         dragonTigerRatioChipTh: [
           {
@@ -539,8 +525,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ],
         dragonTigerRatioCashTh: [
           {
@@ -552,8 +537,7 @@ export default {
             validator: this.perValidator,
             message: "只能输入0-100",
             trigger: "blur"
-          },
-
+          }
         ]
       }
     };
@@ -593,40 +577,53 @@ export default {
     /** 查询赔率设置列表 */
     getList() {
       this.loading = true;
-      listOdds().then(response => {
-        this.oddsList = response.data;
-        if (this.oddsList.rollingCommissionRounding == 0) {
-          this.checked = false;
-        } else {
-          this.checked = true;
-        }
-        if (this.oddsList.bankerWinPumpRounding == 0) {
-          this.checked1 = false;
-        } else {
-          this.checked1 = true;
-        }
-        this.loading = false;
-      });
+      listOdds()
+        .then(response => {
+          this.oddsList = response.data;
+          if (this.oddsList.rollingCommissionRounding == 0) {
+            this.checked = false;
+          } else {
+            this.checked = true;
+          }
+          if (this.oddsList.bankerWinPumpRounding == 0) {
+            this.checked1 = false;
+          } else {
+            this.checked1 = true;
+          }
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
     },
 
     /** 修改按钮操作 */
     submit() {
-
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.loading = true;
           // 转成数字类型
-          this.oddsList.baccaratPump = parseInt(this.oddsList.baccaratPump)
-          this.oddsList.baccaratRollingRatioChip = parseInt(this.oddsList.baccaratRollingRatioChip)
-          this.oddsList.baccaratRollingRatioCash = parseInt(this.oddsList.baccaratRollingRatioCash)
-          this.oddsList.dragonTigerRatioChip = parseInt(this.oddsList.dragonTigerRatioChip)
-          this.oddsList.dragonTigerRatioCash = parseInt(this.oddsList.dragonTigerRatioCash)
+          this.oddsList.baccaratPump = parseInt(this.oddsList.baccaratPump);
+          this.oddsList.baccaratRollingRatioChip = parseInt(
+            this.oddsList.baccaratRollingRatioChip
+          );
+          this.oddsList.baccaratRollingRatioCash = parseInt(
+            this.oddsList.baccaratRollingRatioCash
+          );
+          this.oddsList.dragonTigerRatioChip = parseInt(
+            this.oddsList.dragonTigerRatioChip
+          );
+          this.oddsList.dragonTigerRatioCash = parseInt(
+            this.oddsList.dragonTigerRatioCash
+          );
           UpOdds(this.oddsList)
             .then(response => {
               this.$modal.msgSuccess("保存成功");
               this.loading = false;
             })
-            .catch(() => {});
+            .catch(err => {
+              this.loading = false;
+            });
         }
       });
     },

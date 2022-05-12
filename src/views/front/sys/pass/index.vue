@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-05-02 22:14:15
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-04 00:31:02
+ * @LastEditTime: 2022-05-12 17:30:57
  * @Description: file content
 -->
 <template>
@@ -37,6 +37,7 @@
 import { updateUserPwd } from "@/api/system/user";
 
 export default {
+  name:"Pass",
   data() {
     const equalToPassword = (rule, value, callback) => {
       if (this.user.newPassword !== value) {

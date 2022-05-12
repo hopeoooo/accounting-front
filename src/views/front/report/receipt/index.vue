@@ -230,11 +230,11 @@ export default {
           moment()
             .subtract(1, "days")
             .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
+            .format("YYYY-MM-DD"),
           moment()
             .subtract(1, "days")
             .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
+            .format("YYYY-MM-DD")
         ]
       }
     };
@@ -276,7 +276,9 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -327,11 +329,11 @@ export default {
           moment()
             .subtract(1, "days")
             .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
+            .format("YYYY-MM-DD"),
           moment()
             .subtract(1, "days")
             .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
+            .format("YYYY-MM-DD")
         ],
         pageSize: this.queryParams.pageSize
       };

@@ -793,16 +793,24 @@ export default {
       let params = Object.assign({}, this.fromSearch, this.queryParams);
       params["isAdmin"] = this.fromSearch.isAdmin == false ? 0 : 1;
       this.loading = true;
-      listAccessCode(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-      listAccessCodeTotal(params).then(response => {
-        this.userTotal = response.data;
+      listAccessCode(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listAccessCodeTotal(params)
+        .then(response => {
+          this.userTotal = response.data;
 
-        this.loading = false;
-      });
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -843,6 +851,7 @@ export default {
           // sums[index] = Number(sums[index]).toFixed(2);
           if (index == 3 || index == 4 || index == 5 || index == 6) {
             // 金额需要保留两位小数点
+            sums[index] = Number(sums[index]).toFixed(2);
             sums[index] = MoneyFormat(sums[index]);
           }
         } else {

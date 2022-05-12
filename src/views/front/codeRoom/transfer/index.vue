@@ -220,6 +220,7 @@ import {
 } from "@/api/coderoom/transfer";
 
 export default {
+  // 汇款
   name: "Transfer",
   data() {
     return {
@@ -346,7 +347,9 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       //  listRemittanceTotal(params).then(response => {
       //     this.userTotal = response.data;
 

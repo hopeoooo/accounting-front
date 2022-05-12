@@ -78,7 +78,6 @@
           :row-class-name="status_change"
           show-summary
           :summary-method="getSummaries1"
-          style="min-height:450px;"
           empty-text="暂无数据"
           ref="washCodeList"
         >
@@ -531,12 +530,16 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       listWashCodeTotal(params).then(response => {
         this.userTotal = response.data;
 
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -616,6 +619,7 @@ export default {
             }
             if (index == 6 || index == 8) {
               // 未结算洗码费金额需要保留两位小数点
+              sums[index] = (Number(sums[index])).toFixed(2)
               sums[index] = MoneyFormat(sums[index]);
             }
           } else {
@@ -805,7 +809,7 @@ export default {
             // 结算洗码
             settlementWater(this.form)
               .then(response => {
-                this.$modal.msgSuccess("结算洗码成功”");
+                this.$modal.msgSuccess("结算洗码成功");
                 this.open = false;
                 this.getList();
               })
@@ -820,7 +824,7 @@ export default {
             };
             batchSettlementWater(params)
               .then(response => {
-                this.$modal.msgSuccess("结算洗码成功”");
+                this.$modal.msgSuccess("结算洗码成功");
                 this.open = false;
                 this.getList();
               })

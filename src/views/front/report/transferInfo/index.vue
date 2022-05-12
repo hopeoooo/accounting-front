@@ -278,7 +278,7 @@ import { MoneyFormat } from "@/filter";
 import moment from "moment";
 export default {
   // 汇款明细表
-  name: "transferInfo",
+  name: "TransferInfo",
   data() {
     return {
       // 添加卡号
@@ -368,11 +368,15 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       listRemittanceDetailedTotal(params).then(response => {
         this.userTotal = response.data;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
