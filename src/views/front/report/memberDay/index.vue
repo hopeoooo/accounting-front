@@ -172,10 +172,12 @@ export default {
                 label: "label",
             },
             queryParams: {
-                card: "",
+                card: null,
                 isAdmin: 0,
                 cardType: 0,
                 dateRange: [],
+                pageNum:1,
+                pageSize:30
             },
         };
     },
@@ -284,7 +286,7 @@ export default {
          */
         reset() {
             this.form = {
-                card: "",
+                card: null,
                 userName: "",
                 signedAmount: "",
                 remark: "",
@@ -309,7 +311,7 @@ export default {
          */
         resetQuery() {
             this.queryParams = {
-                card: "",
+                card: null,
                 pageNum: 1,
                 dateRange: [],
                 pageSize: this.queryParams.pageSize,
