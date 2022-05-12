@@ -329,7 +329,7 @@ import { MoneyFormat } from "@/filter";
 import moment from "moment";
 export default {
   // 洗码费结算明细表
-  name: "waterInfo",
+  name: "WaterInfo",
   data() {
     return {
       // 添加卡号
@@ -415,11 +415,15 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       totalWaterDetailed(params).then(response => {
         this.userTotal = response.data;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },

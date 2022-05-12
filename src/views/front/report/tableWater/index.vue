@@ -138,7 +138,7 @@
 import { listTablePlumbing, totalTablePlumbing } from "@/api/report/report";
 export default {
     // 台面上下水
-    name: "waterInfo",
+    name: "TableWater",
     data() {
         return {
             //总计
@@ -248,7 +248,9 @@ export default {
                 this.userList = response.rows;
                 this.total = response.total;
                 this.loading = false;
-            });
+            }).catch(err=>{
+              this.loading = false;
+            })
             /**
              * @description: 总计
              * @param {*}
@@ -257,7 +259,9 @@ export default {
             totalTablePlumbing(params).then((response) => {
                 this.userTotal = response.data;
                 this.loading = false;
-            });
+            }).catch(err=>{
+              this.loading = false;
+            })
             this.$delete(params, "pageNum");
             this.$delete(params, "pageSize");
         },

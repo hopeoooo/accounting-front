@@ -222,7 +222,7 @@ import { MoneyFormat } from "@/filter";
 import moment from "moment";
 export default {
   // 存取码明细表
-  name: "depositInfo",
+  name: "DepositInfo",
   data() {
     return {
       // 添加卡号
@@ -310,7 +310,9 @@ export default {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(err=>{
+        this.loading = false;
+      })
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");

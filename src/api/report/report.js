@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-04-30 10:22:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-11 14:53:53
+ * @LastEditTime: 2022-05-12 16:04:16
  * @Description: file content
  */
 import request from '@/utils/request'
@@ -168,6 +168,15 @@ export function listReceipt(query) {
 export function listWinLose(query) {
   return request({
     url: '/sys/winLose/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询输赢 总计
+export function totalWinLose(query) {
+  return request({
+    url: '/sys/winLose/total',
     method: 'get',
     params: query
   })

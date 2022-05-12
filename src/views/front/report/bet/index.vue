@@ -161,6 +161,16 @@
             prop="gameNum"
           />
           <el-table-column
+            label="游戏类型"
+            align="center"
+            key="gameId"
+            prop="gameId"
+          >
+            <template slot-scope="scope">
+              <span>{{ getGameName(scope.row.gameId) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="下注玩法"
             align="center"
             key="option"
@@ -526,7 +536,10 @@
             />
           </el-form-item>
           <el-form-item label="开牌结果:" prop="gameResult" label-width="80px">
-            <el-radio-group v-model="form.gameResult" @change="onNiuGameResultChange">
+            <el-radio-group
+              v-model="form.gameResult"
+              @change="onNiuGameResultChange"
+            >
               <el-radio label="赢">赢</el-radio>
               <el-radio label="输">输</el-radio>
             </el-radio-group>
@@ -690,7 +703,7 @@ const longhuOptionMap = {
 };
 export default {
   // 注单记录
-  name: "BetRecord",
+  name: "Bet",
   data() {
     return {
       // 添加卡号
@@ -969,16 +982,24 @@ export default {
         pageSize: this.queryParams.pageSize
       };
       this.loading = true;
-      listBetRecord(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-      listBetRecordTotal(params).then(response => {
-        this.userTotal = response.data;
+      listBetRecord(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listBetRecordTotal(params)
+        .then(response => {
+          this.userTotal = response.data;
 
-        this.loading = false;
-      });
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -1075,7 +1096,7 @@ export default {
       if (gameId) {
         //通过gameId 得到游戏名称 gameName
         const game = this.Gameoptions.filter(item => item.value == gameId)[0];
-        console.log("通过gameId 得到游戏名称 gameName", game, gameId);
+        // console.log("通过gameId 得到游戏名称 gameName", game, gameId);
 
         return game.label;
       } else {
@@ -1163,6 +1184,10 @@ export default {
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {
+          if (j == "gameId") {
+            // 游戏类型
+            return this.getGameName(v[j]);
+          }
           if (j == "option") {
             // 下注玩法
             const option = this.getPlayText(v[j]);
@@ -1181,7 +1206,10 @@ export default {
     },
 
     // 生成下注玩法
-    getPlayText(option) {
+    getPlayText(option=[]) {
+      if ( !option || option.length == 0) {
+        return "-";
+      }
       let playText = "";
       let result = [];
       for (let index = 0; index < option.length; index++) {
@@ -1204,7 +1232,7 @@ export default {
       arr.forEach(e => {
         arr1.push(betOptionList[e]);
       });
-      return arr1.join(" ");
+      return arr1.join(" / ");
     },
 
     // 弹窗里的开牌结果
@@ -1330,7 +1358,7 @@ export default {
         }
         // 注单修改
         editBetRecord(this.form).then(response => {
-          this.$modal.msgSuccess("注单修改成功”");
+          this.$modal.msgSuccess("注单修改成功");
           this.open = false;
           this.formBetMoney = 0;
           this.resetOption();
@@ -1364,7 +1392,7 @@ export default {
         }
         // 注单补录
         repairBetRecord(this.form).then(response => {
-          this.$modal.msgSuccess("注单补录成功”");
+          this.$modal.msgSuccess("注单补录成功");
           this.open = false;
           this.formBetMoney = 0;
           this.resetOption();
