@@ -183,7 +183,7 @@
                             <span>{{ scope.row.insuranceGapTh || "--" }}</span>
                         </template>
                     </el-table-column>
-                  
+
                      <el-table-column label="฿洗码量" align="center">
                         <template slot-scope="scope">
                             <span>{{ scope.row.waterTh || "--" }}</span>
@@ -299,7 +299,7 @@ export default {
                 label: "label",
             },
             queryParams: {
-                tableId: "",
+                tableId: this.$route.query.tableId ? this.$route.query.tableId : "",
                 dateRange: [],
                  pageNum: 1,
                 pageSize: 30
@@ -323,7 +323,7 @@ export default {
             this.options = response.rows;
             this.loading = false;
           });
-        
+
         },
         /**
          * @description: 报表数据
@@ -385,7 +385,7 @@ export default {
         handleUpdate(row){
            this.formData = row
             this.open = true;
-           
+
 
         },
         /**

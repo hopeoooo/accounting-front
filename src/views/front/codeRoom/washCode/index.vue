@@ -184,6 +184,7 @@
                 icon="el-icon-tickets"
                 @click="handleSettlement(scope.row)"
                 :disabled="disabledSet(scope.row)"
+                 v-prclick
                 >结算</el-button
               >
 

@@ -296,7 +296,14 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = [];
+           this.dateRange = [
+        moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD"),
+        moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD")
+      ];
       this.queryParams = {
         card: "",
         isAdmin: 0,
