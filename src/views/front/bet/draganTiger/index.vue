@@ -17,14 +17,16 @@
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
+               <li style="font-size:20px">$累计：{{tableInfo.total || 0}}</li>
+               <li style="font-size:20px">฿累计：{{tableInfo.totalTh || 0}}</li>
              </ul>
              <ul>
-              <li>$累计：{{tableInfo.total || 0}}</li>
+             
               <li>$筹码：{{tableInfo.chip || 0}}</li>
               <li>$现金：{{tableInfo.cash || 0}}</li>
              </ul>
               <ul>
-              <li>฿累计：{{tableInfo.totalTh || 0}}</li>
+             
               <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
               <li>฿现金：{{tableInfo.cashTh || 0}}</li>
              </ul>
@@ -132,7 +134,7 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" stripe class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="320px">
                <template slot-scope="scope">
@@ -247,11 +249,7 @@ export default {
       basedata:{
 
       },
-      betList:[
-        {id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},
-        {id:11},{id:12},{id:13},{id:14},{id:15},{id:16},{id:17},{id:18},{id:19},{id:20},
-        {id:21},{id:22},{id:23},{id:24},{id:25},{id:26},{id:27},{id:28},{id:29},{id:30},
-      ],
+      betList:Array(30).fill().map((e,i)=>Object({id:i+1,type:0})),
       subData:[],
       rulesLudan:{},
       radio1:'',
@@ -416,10 +414,12 @@ export default {
             
              isDialog =true
              this.$modal.msgError("请检查币种是否漏勾选");
+             return
           };
           if(!e.card && !isDialog){
             isDialog =true
             this.$modal.msgError("请检查考号是否漏填");
+            return
           }
         }
       })
@@ -465,7 +465,7 @@ export default {
      this.setLhSum(this.sumdata)
       dragantigerOpen({'json':param}).then(res => {
           this.subData= res.data
-          let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1}))
+          let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1,type:0}))
             this.subData.bet.forEach((e,i)=>{
             arr2[i]={...arr2[i],...this.betList[i],...e}
           })
@@ -480,7 +480,14 @@ export default {
     updataBet(){
         dragantigerInput({'json':this.subData}).then(res=>{
           this.loading = false;
-          this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
+          // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
+          this.betList = this.betList.map(o=>{
+                return {
+                  "type":o.type,
+                  "card":o.card,
+                  "id":o.id,
+                }
+          })
           this.radio1 =''
           this.sumdata={
             sumL:'',
@@ -701,7 +708,7 @@ export default {
 }
 .box-card-box{
   margin-bottom: 15px;
-  .el-card__body{
+  font-size: 18px;  .el-card__body{
     display: flex;
     flex-direction: column;
     button{
@@ -918,6 +925,9 @@ export default {
   .el-input--medium .el-input__inner{
     line-height: 25px;
     height: 25px;
+    border: 0;
+    text-align: center;
+    background: none;
   }
   .el-table__header-wrapper{
     thead{

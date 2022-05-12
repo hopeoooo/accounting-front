@@ -4,7 +4,7 @@
       
          <el-row :gutter="20">
            <el-col :span="6" :xs="12">
-             <el-table v-loading="loading" class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries" @cell-mouse-leave="handleSelectionChange">
+             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries" @cell-mouse-leave="handleSelectionChange">
                  <el-table-column label="面值$" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
@@ -61,7 +61,7 @@
                      {{form.chipGap || '-'}}
                     </div>
                     <div>
-                       <span v-if="form.chipGap==0">正确</span>
+                       <span v-if="!form.chipGap">{{form.chipGap==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                     </div>
                   </div>
@@ -71,7 +71,7 @@
                       {{form.cashGap || '-'}}
                     </div>
                     <div>
-                        <span v-if="form.cashGap==0">正确</span>
+                        <span v-if="!form.cashGap">{{form.cashGap==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                        </div>
                   </div>
@@ -81,7 +81,7 @@
                       {{(form.chipGap||'-')+(form.cashGap||'')}}
                     </div>
                      <div>
-                        <span v-if="form.cashGap==0 && form.cashGap==0">正确</span>
+                       <span v-if="!form.cashGap || !form.chipGap">{{form.cashGap==0 || form.chipGap?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
@@ -112,7 +112,7 @@
                       {{form.insuranceGap||'-'}}
                     </div>
                      <div>
-                       <span v-if="form.insuranceGap==0">正确</span>
+                       <span v-if="!form.insuranceGap">{{form.insuranceGap==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                        </div>
                   </div> -->
@@ -133,7 +133,7 @@
               </el-form>
            </el-col>
            <el-col :span="6" :xs="12">
-             <el-table v-loading="loading" class="bbetbox"  height="auto" :data="Listdata1"  border show-summary sum-text="小计" :summary-method="getSummaries1" @cell-mouse-leave="handleSelectionChange">
+             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata1"  border show-summary sum-text="小计" :summary-method="getSummaries1" @cell-mouse-leave="handleSelectionChange">
                  <el-table-column label="面值฿" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
@@ -190,7 +190,7 @@
                      {{form.chipGapTh || '-'}}
                     </div>
                     <div>
-                       <span v-if="form.chipGapTh==0">正确</span>
+                       <span v-if="!form.chipGapTh">{{form.chipGapTh==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                     </div>
                   </div>
@@ -200,7 +200,7 @@
                       {{form.cashGapTh || '-'}}
                     </div>
                     <div>
-                        <span v-if="form.cashGapTh==0">正确</span>
+                        <span v-if="!form.cashGapTh">{{form.cashGapTh==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                        </div>
                   </div>
@@ -210,7 +210,7 @@
                       {{(form.chipGapTh||'-')+(form.cashGapTh||'')}}
                     </div>
                      <div>
-                        <span v-if="form.cashGapTh==0 && form.chipGapTh==0">正确</span>
+                        <span v-if="!form.cashGapTh || !form.chipGapTh">{{form.cashGapTh==0 || form.chipGapTh?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
@@ -241,7 +241,7 @@
                       {{form.insuranceGapTh||'-'}}
                     </div>
                      <div>
-                       <span v-if="form.insuranceGapTh==0">正确</span>
+                      <span v-if="!form.insuranceGapTh">{{form.insuranceGapTh==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                        </div>
                   </div> -->
@@ -513,7 +513,16 @@ export default {
 
 <style lang="scss">
 .dialogBox{
-  .gameDialog{
+
+
+    .gameDialog{
+       .el-input__inner{
+          line-height: 25px;
+          height: 25px;
+          border: 0;
+          text-align: center;
+          background: none;
+        }
     border-bottom:1px solid #DCDFE6 ;
         border-right: 1px solid #DCDFE6 ;
     .list{
@@ -532,7 +541,14 @@ export default {
       }
     }
   }
-  .bbetbox{
+    .bbetbox{
+    .el-input__inner{
+          line-height: 25px;
+          height: 25px;
+          border: 0;
+          text-align: center;
+          background: none;
+        }
    
     .el-table__body-wrapper{
       tbody{

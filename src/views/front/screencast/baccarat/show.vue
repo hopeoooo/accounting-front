@@ -46,7 +46,7 @@
 import { baccaratGet} from "@/api/bet/baccarat";
 import {listTable} from "@/api/sys/table";
 export default {
-  name: "ShowBj",
+  name: "Screencastbaccarat",
   data() {
 
     return {
@@ -160,7 +160,7 @@ export default {
 }
 .box-card-box{
   margin-bottom: 15px;
-  .el-card__body{
+  font-size: 18px;  .el-card__body{
     display: flex;
     flex-direction: column;
     button{
@@ -253,14 +253,7 @@ export default {
         }
       }
     }
-    .f1{
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      span{
-        line-height: 50px;
-      }
-    }
+ 
     .btn{
       padding: 10px 30px;
       background: #919191;

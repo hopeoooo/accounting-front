@@ -40,7 +40,7 @@
 import { sangongGet} from "@/api/bet/sangong";
 import {listTable} from "@/api/sys/table";
 export default {
-  name: "ShowLh",
+  name: "Screencastsangong",
   data() {
 
     return {
@@ -154,7 +154,7 @@ export default {
 }
 .box-card-box{
   margin-bottom: 15px;
-  .el-card__body{
+  font-size: 18px;  .el-card__body{
     display: flex;
     flex-direction: column;
     button{
@@ -247,14 +247,7 @@ export default {
         }
       }
     }
-    .f1{
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      span{
-        line-height: 50px;
-      }
-    }
+
     .btn{
       padding: 10px 30px;
       background: #919191;
