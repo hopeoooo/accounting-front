@@ -57,6 +57,7 @@
             label="时间范围"
             :quickbtn="true"
             :alltime="false"
+            
           />
           <el-form-item>
             <el-button

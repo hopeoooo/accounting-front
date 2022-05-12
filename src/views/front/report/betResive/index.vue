@@ -123,6 +123,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
+              v-prclick
               >导出</el-button
             >
           </el-form-item>

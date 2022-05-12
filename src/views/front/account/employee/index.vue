@@ -79,7 +79,7 @@
       </el-table-column>
       <el-table-column label="年龄" prop="brithday">
         <template slot-scope="scope">
-          {{ getYear - scope.row.brithday }}
+          {{ scope.row.brithday ? getYear - scope.row.brithday:"-" }}
         </template>
       </el-table-column>
       <el-table-column label="籍贯" prop="address">

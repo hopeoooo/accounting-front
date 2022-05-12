@@ -96,7 +96,7 @@
           </el-table-column>
           <el-table-column label="฿输赢" align="center" key="chipWinLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWinLoseTh || 0 }}</span>
+              <span>{{ scope.row.sumWinLoseTh || 0 }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿卡号累计输赢" align="center" key="winLoseTh">
@@ -106,7 +106,7 @@
           </el-table-column>
           <el-table-column label="฿洗码量" align="center" key="waterTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh || 0 }}</span>
+              <span>{{ scope.row.sumWaterTh || 0 }}</span>
             </template>
           </el-table-column>
 

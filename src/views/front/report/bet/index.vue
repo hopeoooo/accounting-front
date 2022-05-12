@@ -291,6 +291,16 @@
             prop="gameNum"
           />
           <el-table-column
+            label="游戏类型"
+            align="center"
+            key="gameId"
+            prop="gameId"
+          >
+            <template slot-scope="scope">
+              <span>{{ getGameName(scope.row.gameId) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="下注玩法"
             align="center"
             key="option"
@@ -456,7 +466,7 @@
         <!-- 输赢、币种 -->
         <div class="bet-form-row">
           <div class="bet-form-item" v-if="openType == 'edit'">
-            <span>输赢:</span> <span>{{ form.bootNum }}</span>
+            <span>输赢:</span> <span>{{ form.winLose }}</span>
           </div>
           <el-form-item
             label="币种:"
@@ -963,7 +973,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
-        this.tableOptions.push({tableId:null})
+        this.tableOptions.push({ tableId: null });
       });
     },
     /** 查询用户列表 */
@@ -973,7 +983,7 @@ export default {
         card: this.queryParams.card, //卡号
         tableId: tableId ? Number(tableId) : null, //台号
         gameId: gameId ? Number(gameId) : null, //游戏类型
-        type: type !=null ? Number(type) : null, //	币种(0 筹码 1现金)
+        type: type != null ? Number(type) : null, //	币种(0 筹码 1现金)
         bootNum: bootNum ? Number(bootNum) : null, //靴号
         gameNum: gameNum ? Number(gameNum) : null, //局号
         createBy: this.queryParams.createBy, //操作员

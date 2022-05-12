@@ -13,6 +13,7 @@
             :clearable="false"
             @change="setTimedata"
             :picker-options="pickerOptions"
+            clearable
         ></el-date-picker>
         <el-button
             v-for="(item, index) in TimeList"
