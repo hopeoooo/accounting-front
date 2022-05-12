@@ -17,10 +17,10 @@
                             placeholder="请选择"
                         >
                             <el-option
-                                v-for="item in options"
-                                :key="item.tableId"
-                                :label="item.tableId"
-                                :value="item.tableId"
+                              v-for="item in tableOptions"
+                              :key="item.tableId"
+                              :label="item.tableId?item.tableId:'全部'"
+                              :value="item.tableId"
                             >
                             </el-option>
                         </el-select>
@@ -250,6 +250,7 @@
 <script>
 import { listUpdatePorint } from "@/api/report/report";
 import {tableIdComboBoxInfo} from "@/api/sys/table";
+import { listTable } from "@/api/sys/table";
 // import Dialog from "./dialog.vue"
 export default {
     // 客户日报表
@@ -258,28 +259,8 @@ export default {
     data() {
         return {
             formData:{},
-            options: [
-                {
-                    value: "",
-                    label: "全部",
-                },
-                {
-                    value: "1",
-                    label: "1",
-                },
-                {
-                    value: "2",
-                    label: "2",
-                },
-                {
-                    value: "3",
-                    label: "3",
-                },
-                {
-                    value: "4",
-                    label: "4",
-                },
-            ],
+            //台号列表
+            tableOptions: [],
             title:'点码修改',
             open:false,
             //总计
@@ -299,7 +280,7 @@ export default {
                 label: "label",
             },
             queryParams: {
-                tableId: "",
+                tableId: null,
                 dateRange: [],
                  pageNum: 1,
                 pageSize: 30
@@ -309,7 +290,8 @@ export default {
 
     created() {
         this.getList();
-        this.getTableList()
+          this.getTableOptions();
+        // this.getTableList()
     },
 
     methods: {
@@ -364,6 +346,16 @@ export default {
             this.$delete(params, "pageNum");
             this.$delete(params, "pageSize");
         },
+        getTableOptions() {
+          const params = {
+            pageSize: 500,
+            pageNum: 1
+          };
+          listTable(params).then(response => {
+            this.tableOptions = response.rows;
+            this.tableOptions.push({tableId:null})
+          });
+        },
 
         /**
          * @description: 重置表单
@@ -372,7 +364,7 @@ export default {
          */
         reset() {
             this.form = {
-                tableId: "",
+                tableId: null,
             };
             this.resetForm("form");
         },
@@ -399,7 +391,7 @@ export default {
          */
         resetQuery() {
             this.queryParams = {
-                tableId: "",
+                tableId: null, //台号
                 pageNum: 1,
                 dateRange: [],
                 pageSize: this.queryParams.pageSize,
