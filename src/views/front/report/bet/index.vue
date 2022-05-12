@@ -667,6 +667,7 @@ import {
   addReturnOrder
 } from "@/api/coderoom/sign";
 import { listTable } from "@/api/sys/table";
+import { MoneyFormat } from "@/filter";
 import {
   listBetRecord,
   listBetRecordTotal,
@@ -940,18 +941,21 @@ export default {
     formOption: {
       handler(newVal, oldVal) {
         // 生成新的option,用于form提交
+        console.log("生成新的百家乐option,用于form提交", newVal, oldVal);
         this.getNewOption(newVal);
       },
       deep: true,
-      immediate: true
+      immediate: false
     },
     longhuFormOption: {
       handler(newVal, oldVal) {
         // 生成新的option,用于form提交
+        console.log("生成新的龙虎option,用于form提交", newVal, oldVal);
+
         this.getNewLongHuOption(newVal);
       },
       deep: true,
-      immediate: true
+      immediate: false
     }
   },
   created() {
@@ -1024,12 +1028,16 @@ export default {
           sums[index] = "总计";
           return;
         }
-        if (index === 6) {
-          sums[index] = this.userTotal ? this.userTotal.betMoney : "";
+        if (index === 7) {
+          sums[index] = this.userTotal
+            ? MoneyFormat(this.userTotal.betMoney)
+            : "";
           return;
         }
-        if (index === 8) {
-          sums[index] = this.userTotal ? this.userTotal.winLose : "";
+        if (index === 9) {
+          sums[index] = this.userTotal
+            ? MoneyFormat(this.userTotal.winLose)
+            : "";
           return;
         }
       });
@@ -1044,7 +1052,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (index != 6 && index != 8) {
+        if (index != 7 && index != 9) {
           sums[index] = "";
           return;
         }
@@ -1062,7 +1070,9 @@ export default {
               return pel;
             }
           }, 0);
+
           sums[index] += "";
+          sums[index] = Number(sums[index]).toFixed(2);
         } else {
           // sums[index] = 'N/A';
         }
@@ -1325,7 +1335,7 @@ export default {
       }
     },
     resetOption() {
-      // 重置option
+      // 重置百家乐option
       this.formOption = {
         banker: "",
         player: "",
@@ -1337,6 +1347,7 @@ export default {
         big: "",
         small: ""
       };
+      // 重置龙虎option
       this.longhuFormOption = {
         dragon: "",
         tiger: "",
