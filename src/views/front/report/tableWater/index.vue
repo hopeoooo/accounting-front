@@ -115,6 +115,7 @@
 
 <script>
 import { listTablePlumbing, totalTablePlumbing } from "@/api/report/report";
+import moment from "moment";
 export default {
   // 台面上下水
   name: "TableWater",
@@ -141,7 +142,12 @@ export default {
         isAdmin: 0,
         cardType: 0,
         dateRange: [
-
+          moment(new Date())
+            .startOf("day")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          moment(new Date())
+            .endOf("day")
+            .format("YYYY-MM-DD HH:mm:ss")
         ]
       }
     };
@@ -293,7 +299,14 @@ export default {
       this.queryParams = {
         userName: "",
         pageNum: 1,
-        dateRange: [],
+        dateRange: [
+          moment(new Date())
+            .startOf("day")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          moment(new Date())
+            .endOf("day")
+            .format("YYYY-MM-DD HH:mm:ss")
+        ],
         pageSize: this.queryParams.pageSize
       };
       this.resetForm("queryForm");

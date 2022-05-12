@@ -175,7 +175,8 @@
             align="center"
             key="option"
             prop="option"
-            width="180px"
+            width="200px"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <!--百家乐、龙虎 -->
@@ -206,9 +207,19 @@
             align="center"
             key="gameResult"
             prop="gameResult"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ getGameResult(scope.row.gameResult) }}</span>
+              <div>
+                <span
+                  v-for="(item, index) in scope.row.gameResult"
+                  :key="index"
+                  :class="getResultStyle(item)"
+                >
+                  {{ getGameResult2(item, index) }}
+                </span>
+              </div>
+              <!-- <span>{{ getGameResult(scope.row.gameResult) }}</span> -->
             </template>
           </el-table-column>
           <el-table-column
@@ -222,6 +233,7 @@
             align="center"
             key="createTime"
             prop="createTime"
+            width="180px"
           />
           <el-table-column
             label="操作员"
@@ -610,6 +622,13 @@
                 <el-form-item label="闲保险:" label-width="60px">
                   <el-input
                     v-model="formOption.playerIns"
+                    placeholder=""
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+                <el-form-item label="和保险:" label-width="60px">
+                  <el-input
+                    v-model="formOption.tieIns"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
@@ -1256,6 +1275,31 @@ export default {
       return arr1.join(" / ");
     },
 
+    getGameResult2(result, index) {
+      if (index == 0) {
+        return betOptionList[result];
+      } else {
+        return `/ ${betOptionList[result]}`;
+      }
+    },
+
+    //开牌结果样式
+    getResultStyle(option) {
+      if (option == 4 || option == 1) {
+        // 龙/庄（红色）
+        return "result-long-banker";
+      }
+      if (option == 4 || option == 1) {
+        // 虎/闲（蓝色）
+        return "result-hu-player";
+      }
+      if (option == 7) {
+        // 和（绿色）
+        return "result-tie";
+      }
+      return "";
+    },
+
     // 弹窗里的开牌结果
     getFormGameResult(c) {
       let arr1 = [];
@@ -1535,5 +1579,14 @@ export default {
       }
     }
   }
+}
+.result-long-banker {
+  color: red;
+}
+.result-hu-player {
+  color: blue;
+}
+.result-tie {
+  color: green;
 }
 </style>

@@ -210,6 +210,7 @@
             key="option"
             prop="option"
             width="250px"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <span

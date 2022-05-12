@@ -236,7 +236,9 @@ export default {
             .subtract(1, "days")
             .endOf("day")
             .format("YYYY-MM-DD")
-        ]
+        ],
+        pageSize:30,
+        pageNum:1
       }
     };
   },
