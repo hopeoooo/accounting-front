@@ -87,7 +87,7 @@
                       {{(form.chipGap||'-')+(form.cashGap||'')}}
                     </div>
                      <div>
-                       <span v-if="!form.cashGap || !form.chipGap">{{form.cashGap==0 || form.chipGap?'正确':'-'}}</span>
+                       <span v-if="!form.cashGap || !form.chipGap">{{form.cashGap !=0 && form.chipGap !=0 ?'-':'正确'}}</span>
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
@@ -224,7 +224,7 @@
                       {{(form.chipGapTh||'-')+(form.cashGapTh||'')}}
                     </div>
                      <div>
-                        <span v-if="!form.cashGapTh || !form.chipGapTh">{{form.cashGapTh==0 || form.chipGapTh?'正确':'-'}}</span>
+                        <span v-if="!form.cashGapTh || !form.chipGapTh">{{form.cashGapTh!=0 && form.chipGapTh!=0?'-':'正确'}}</span>
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
