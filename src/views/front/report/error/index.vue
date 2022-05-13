@@ -121,14 +121,7 @@ export default {
         userName: "",
         isAdmin: 0,
         cardType: 0,
-        dateRange: [
-          moment(new Date())
-            .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
-          moment(new Date())
-            .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
-        ]
+        dateRange: []
       }
     };
   },
@@ -189,14 +182,7 @@ export default {
       this.queryParams = {
         userName: "",
         pageNum: 1,
-        dateRange: [
-          moment(new Date())
-            .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
-          moment(new Date())
-            .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
-        ],
+        dateRange: [],
         pageSize: this.queryParams.pageSize
       };
       this.resetForm("queryForm");

@@ -34,7 +34,7 @@
                             style="width: 240px; margin-right: 20px"
                         />
                     </el-form-item> -->
-                    <el-form-item label="收码时间">
+                    <el-form-item label="修改时间">
                         <el-date-picker
                             v-model="queryParams.dateRange"
                             value-format="yyyy-MM-dd"
@@ -353,7 +353,7 @@ export default {
           };
           listTable(params).then(response => {
             this.tableOptions = response.rows;
-            this.tableOptions.push({tableId:null})
+            this.tableOptions.unshift({tableId:null})
           });
         },
 

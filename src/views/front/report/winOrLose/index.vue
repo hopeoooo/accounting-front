@@ -56,8 +56,8 @@
             :query="queryParams"
             label="时间范围"
             :quickbtn="true"
-            :alltime="false"
-            
+            :alltime="true"
+
           />
           <el-form-item>
             <el-button
@@ -482,7 +482,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
-        this.tableOptions.push({tableId:null})
+        this.tableOptions.unshift({tableId:null})
       });
     },
 
@@ -621,7 +621,7 @@ export default {
           sums[index] = "小计";
         } else if (index > 1) {
           const values = data.map(item => Number(item[column.property]));
-          console.log(values);
+
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr);
@@ -634,7 +634,7 @@ export default {
                 return pel;
               }
             }, 0);
-            if (index != 3 || index != 9) {
+            if (index != 3 && index != 9) {
               sums[index] = Number(sums[index]).toFixed(2);
               sums[index] = MoneyFormat(sums[index]);
             } else {

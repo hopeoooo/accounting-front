@@ -144,10 +144,10 @@ export default {
         dateRange: [
           moment(new Date())
             .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
+            .format("YYYY-MM-DD"),
           moment(new Date())
             .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
+            .format("YYYY-MM-DD")
         ]
       }
     };
@@ -222,11 +222,11 @@ export default {
     getList() {
       let params = {
         startTime:
-          this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange && this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[0]
             : "",
         endTime:
-          this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange && this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[1]
             : "",
         pageNum: this.queryParams.pageNum,
@@ -302,10 +302,10 @@ export default {
         dateRange: [
           moment(new Date())
             .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
+            .format("YYYY-MM-DD"),
           moment(new Date())
             .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
+            .format("YYYY-MM-DD")
         ],
         pageSize: this.queryParams.pageSize
       };

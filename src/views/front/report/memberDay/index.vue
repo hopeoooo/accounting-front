@@ -72,7 +72,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$卡号累计输赢"
+            label="$累计输赢"
             align="center"
             key="sumWinLose"
           >
@@ -86,7 +86,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$卡号洗码量累计"
+            label="$累计洗码量"
             align="center"
             key="sumWater"
           >
@@ -99,7 +99,7 @@
               <span>{{ scope.row.sumWinLoseTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿卡号累计输赢" align="center" key="winLoseTh">
+          <el-table-column label="฿累计输赢" align="center" key="winLoseTh">
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh || 0 }}</span>
             </template>
@@ -111,7 +111,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿卡号洗码量累计"
+            label="฿累计洗码量"
             align="center"
             key="sumWaterTh"
           >

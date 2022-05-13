@@ -354,7 +354,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
-        this.tableOptions.push({tableId:null})
+        this.tableOptions.unshift({tableId:null})
       });
     },
 

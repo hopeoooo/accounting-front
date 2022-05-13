@@ -1017,7 +1017,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
-        this.tableOptions.push({ tableId: null });
+        this.tableOptions.unshift({ tableId: null });
       });
     },
     /** 查询用户列表 */
@@ -1310,11 +1310,11 @@ export default {
 
     //开牌结果样式
     getResultStyle(option) {
-      if (option == 4 || option == 1) {
+      if (option == 4 || option == "龙") {
         // 龙/庄（红色）
         return "result-long-banker";
       }
-      if (option == 4 || option == 1) {
+      if (option == 1 || option == "虎") {
         // 虎/闲（蓝色）
         return "result-hu-player";
       }
