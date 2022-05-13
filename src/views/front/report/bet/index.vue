@@ -317,7 +317,7 @@
             align="center"
             key="option"
             prop="option"
-            width="180px"
+            width="200px"
           >
             <template slot-scope="scope">
               <!--百家乐、龙虎 -->
@@ -347,9 +347,18 @@
             align="center"
             key="gameResult"
             prop="gameResult"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ getGameResult(scope.row.gameResult) }}</span>
+              <div>
+                <span
+                  v-for="(item, index) in scope.row.gameResult"
+                  :key="index"
+                  :class="getResultStyle(item)"
+                >
+                  {{ getGameResult2(item, index) }}
+                </span>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -363,6 +372,7 @@
             align="center"
             key="createTime"
             prop="createTime"
+            width="180px"
           />
           <el-table-column
             label="操作员"
@@ -427,22 +437,17 @@
             label="卡号:"
             prop="card"
             class="bet-form-item"
-            label-width="50px"
+            label-width="65px"
           >
-            <el-input v-model="form.card" placeholder="" style="width:150px" />
+            <el-input v-model="form.card" placeholder="" />
           </el-form-item>
           <el-form-item
             label="台号:"
             prop="tableId"
             class="bet-form-item"
-            label-width="50px"
+            label-width="65px"
           >
-            <el-input
-              v-model="form.tableId"
-              placeholder=""
-              style="width:150px"
-              :disabled="true"
-            />
+            <el-input v-model="form.tableId" placeholder="" :disabled="true" />
           </el-form-item>
         </div>
         <!-- 靴号、局号 -->
@@ -451,25 +456,19 @@
             label="靴号:"
             prop="bootNum"
             class="bet-form-item"
-            label-width="50px"
+            label-width="65px"
           >
-            <el-input
-              v-model="form.bootNum"
-              placeholder=""
-              style="width:150px"
-              :disabled="true"
-            />
+            <el-input v-model="form.bootNum" placeholder="" :disabled="true" />
           </el-form-item>
           <el-form-item
             label="局号:"
             prop="gameNum"
             class="bet-form-item"
-            label-width="50px"
+            label-width="65px"
           >
             <el-input
               v-model="form.gameNum"
               placeholder=""
-              style="width:150px"
               :disabled="openType == 'edit'"
             />
           </el-form-item>
@@ -478,13 +477,14 @@
         <!-- 输赢、币种 -->
         <div class="bet-form-row">
           <div class="bet-form-item" v-if="openType == 'edit'">
-            <span>输赢:</span> <span>{{ form.winLose }}</span>
+            <span class="winlose-label">输赢:</span>
+            <span>{{ form.winLose }}</span>
           </div>
           <el-form-item
             label="币种:"
             prop="type"
             class="bet-form-item"
-            label-width="50px"
+            label-width="65px"
           >
             <el-select v-model="form.type" placeholder="请选择">
               <el-option
@@ -504,7 +504,7 @@
         <div v-if="openGame == '龙虎'" class="longhu-box">
           <!-- 下注金额 -->
           <div class="longhu-amount-box">
-            <div class="box-label">下注金额</div>
+            <div class="box-label"><i class="start-symbol">*</i>下注金额</div>
             <!-- <div> -->
             <el-form-item label="龙:" label-width="30px">
               <el-input
@@ -722,14 +722,28 @@ const optionMap = {
   playerPair: "5",
   bankerIns: "3", //庄保险
   playerIns: "0", //闲保险
+  tieIns: "2", //和保险
   big: "9",
-  small: "6"
+  small: "6",
+  4: "banker",
+  1: "player",
+  7: "tie",
+  8: "bankerPair",
+  5: "playerPair",
+  3: "bankerIns", //庄保险
+  0: "playerIns", //闲保险
+  2: "tieIns", //和保险
+  9: "big",
+  6: "small"
 };
 // 龙虎
 const longhuOptionMap = {
   dragon: "龙",
   tiger: "虎",
-  tie: "和" //和
+  tie: "和", //和
+  龙: "dragon",
+  虎: "tiger",
+  和: "tie"
 };
 export default {
   // 注单记录
@@ -951,7 +965,14 @@ export default {
     rules() {
       if (this.openType == "edit") {
         return {
-          card: [{ require: true }]
+          card: [{ required: true }],
+          type: [{ required: true }]
+        };
+      } else {
+        return {
+          card: [{ required: true }],
+          gameNum: [{ required: true }],
+          type: [{ required: true }]
         };
       }
     }
@@ -970,7 +991,6 @@ export default {
       handler(newVal, oldVal) {
         // 生成新的option,用于form提交
         console.log("生成新的龙虎option,用于form提交", newVal, oldVal);
-
         this.getNewLongHuOption(newVal);
       },
       deep: true,
@@ -1148,7 +1168,7 @@ export default {
     handleEdit(row) {
       // this.reset();
       this.form = Object.assign({}, row);
-      this.form.option = {};
+      // this.form.option = {};
 
       this.open = true;
       this.openType = "edit";
@@ -1156,17 +1176,21 @@ export default {
       this.openGame = gameName;
       this.title = `${gameName}注单修改`;
       if (gameName == "百家乐") {
+        this.initOption(row.option);
         this.gameResultList = this.getFormGameResult(row.gameResult);
       }
+      if (gameName == "龙虎") {
+        this.initLongHuOption(row.option);
+      }
 
-      if (gameName != "百家乐") {
-        this.form.betMoney = "";
+      if (gameName != "百家乐" || gameName != "龙虎") {
+        this.form.betMoney = row.betMoney;
       }
     },
 
     /** 补录 */
     handleRepair(row) {
-      // this.reset();
+      this.reset();
       this.form = Object.assign({}, row);
       this.form.card = "";
       this.form.gameNum = "";
@@ -1312,6 +1336,16 @@ export default {
       this.gameResultList = val;
       this.form.gameResult = val.join("");
     },
+    initOption(options) {
+      // 百家乐：将下注金额带入表单，生成初始化的formOption，用于百家乐的表单里的下注金额数据绑定
+      for (let index = 0; index < options.length; index++) {
+        const element = options[index];
+        // betOption数字4变成英文banker : 4->banker ,对应formOption里的banker
+        const key = optionMap[element.betOption];
+        // {banker:20}
+        this.formOption[key] = element.betMoney;
+      }
+    },
     // 百家乐:生成新的百家乐的option,用于form提交
     getNewOption(formOption) {
       // 比如 formOption = {"banker":20}
@@ -1335,6 +1369,17 @@ export default {
       this.form.option = newOption;
       // 计算下注金额
       this.formBetMoney = betAmount;
+    },
+
+    initLongHuOption(options) {
+      //龙虎：将下注金额带入表单，生成初始化的formOption，用于龙虎的表单里的下注金额数据绑定
+      for (let index = 0; index < options.length; index++) {
+        const element = options[index];
+        // betOption中文 "龙"变成英文 "dragon" : "龙"->"dragon" ,对应longhuFormOption里的dragon
+        const key = longhuOptionMap[element.betOption];
+        // {dragon:20}
+        this.longhuFormOption[key] = element.betMoney;
+      }
     },
 
     //龙虎: 生成新的龙虎的option,用于form提交
@@ -1385,6 +1430,7 @@ export default {
         player: "",
         bankerIns: "", //庄保险
         playerIns: "", //闲保险
+        tierIns: "", //和保险
         tie: "",
         playerPair: "",
         bankerPair: "",
@@ -1497,8 +1543,12 @@ export default {
 }
 
 .bet-form-box {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
+
+  .start-symbol {
+    color: red;
+  }
   .bet-form-row {
     display: flex;
     justify-content: space-between;
@@ -1506,8 +1556,18 @@ export default {
       width: 40%;
       height: 35px;
       margin-bottom: 10px;
+      .winlose-label {
+        display: inline-block;
+        width: 65px;
+        font-size: 14px;
+        color: #606266;
+        font-weight: 500;
+        text-align: right;
+        padding-right: 12px;
+        margin-right: 15px;
+      }
       .el-form-item__label {
-        text-align: left;
+        // text-align: left;
       }
     }
   }
@@ -1523,6 +1583,7 @@ export default {
       border: 1px solid rgb(172, 166, 166);
       margin: 10px auto;
       padding-top: 22px;
+
       .el-form-item__label {
         text-align: right;
       }
@@ -1545,6 +1606,11 @@ export default {
     .box-label {
       margin-bottom: 10px;
       text-align: center;
+      &::before {
+        content: "*";
+        color: #ff4949;
+        margin-right: 4px;
+      }
     }
   }
 
