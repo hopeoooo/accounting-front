@@ -402,6 +402,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.title == "收码") {
+            this.form['type']=1
             baccaratEdit(this.form).then(response => {
               this.$modal.msgSuccess("收码修改成功");
               this.isOpen= !this.isOpen
@@ -409,6 +410,7 @@ export default {
               this.reset()
             });
           } else {
+            this.form['type']=0
             baccaratEdit(this.form).then(response => {
               this.$modal.msgSuccess("点码修改成功");
                this.isOpen= !this.isOpen

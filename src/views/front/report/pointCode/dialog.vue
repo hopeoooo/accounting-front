@@ -433,7 +433,7 @@ export default {
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-       
+            this.form['type']=0
             editPorint(this.form).then(response => {
               this.$modal.msgSuccess("点码修改成功");
                this.isOpen= !this.isOpen
