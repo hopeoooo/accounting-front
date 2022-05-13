@@ -399,7 +399,7 @@ export default {
     betRecord(){},
     openData(data){
       this.open = data
-        if(this.title=='点码')
+        // if(this.title=='点码')
       this.getTableInfo()
       this.getResult()
     },
