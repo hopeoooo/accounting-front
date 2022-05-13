@@ -14,9 +14,9 @@
           <el-form-item label="台号" prop="userName">
             <el-select v-model="queryParams.tableId" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId"
+                :label="item.tableId?item.tableId:'全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -67,134 +67,134 @@
         <el-table v-loading="loading" :data="userList">
           <el-table-column label="台号" fixed align="center" prop="tableId" />
           <el-table-column label="靴号" align="center" prop="bootNum" />
-          <el-table-column label="$系统点码数" align="center">
+          <el-table-column label="$系统点码数" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysChip }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$手动点码数" align="center">
+          <el-table-column label="$手动点码数" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.personChip }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$筹码差距" align="center">
+          <el-table-column label="$筹码差距" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipGap || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$现金差距" align="center">
+          <el-table-column label="$现金差距" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashGap || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$筹码增减" align="center">
+          <el-table-column label="$筹码增减" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAdd || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险系统点码数" align="center">
+          <el-table-column label="$保险系统点码数" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsurance || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险手动点码数" align="center">
+          <el-table-column label="$保险手动点码数" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.personInsurance || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码差距" align="center">
+          <el-table-column label="$保险筹码差距" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGap || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$洗码量" align="center">
+          <el-table-column label="$洗码量" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.water || 0 }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="$输赢" align="center">
+          <el-table-column label="$输赢" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipWin || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险输赢" align="center">
+          <el-table-column label="$保险输赢" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWin || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码增减" align="center">
+          <el-table-column label="$保险筹码增减" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAdd || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿系统点码数" align="center">
+          <el-table-column label="฿系统点码数" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysChipTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿手动点码数" align="center">
+          <el-table-column label="฿手动点码数" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.personChipTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿筹码差距" align="center">
+          <el-table-column label="฿筹码差距" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipGapTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿现金差距" align="center">
+          <el-table-column label="฿现金差距" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashGapTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿筹码增减" align="center">
+          <el-table-column label="฿筹码增减" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAddTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险系统点码数" align="center">
+          <el-table-column label="฿保险系统点码数" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsuranceTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险手动点码数" align="center">
+          <el-table-column label="฿保险手动点码数" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.personInsuranceTh || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险筹码差距" align="center">
+          <el-table-column label="฿保险筹码差距" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGapTh || "--" }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="฿洗码量" align="center">
+          <el-table-column label="฿洗码量" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿输赢" align="center">
+          <el-table-column label="฿输赢" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinTh || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险输赢" align="center">
+          <el-table-column label="฿保险输赢" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinTh || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险筹码增减" align="center">
+          <el-table-column label="฿保险筹码增减" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAddTh || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="点码时间" align="center">
+          <el-table-column label="点码时间" align="center" width="180px">
             <template slot-scope="scope">
               <span>{{ scope.row.createTime || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作备注" align="center">
+          <el-table-column label="操作备注" align="center" width="180px" :show-overflow-tooltip="true">
             <template slot-scope="scope">
               <span>{{ scope.row.remark || "--" }}</span>
             </template>
@@ -205,6 +205,7 @@
             fixed="right"
             class-name="small-padding fixed-width"
             width="200px"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <el-button
@@ -242,6 +243,8 @@
 import { listPorint } from "@/api/report/report";
 import { tableIdComboBoxInfo } from "@/api/sys/table";
 import Dialog from "./dialog.vue";
+import { listTable } from "@/api/sys/table";
+import moment from "moment";
 export default {
   // 客户日报表
   name: "PointCode",
@@ -249,28 +252,8 @@ export default {
   data() {
     return {
       formData: {},
-      options: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        }
-      ],
+      //台号列表
+      tableOptions: [],
       title: "点码修改",
       open: false,
       //总计
@@ -290,8 +273,15 @@ export default {
         label: "label"
       },
       queryParams: {
-        tableId: this.$route.query.tableId ? this.$route.query.tableId : "",
-        dateRange: [],
+        tableId: this.$route.query.tableId ? this.$route.query.tableId : null,
+        dateRange:  [
+          moment(new Date())
+            .startOf("day")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          moment(new Date())
+            .endOf("day")
+            .format("YYYY-MM-DD HH:mm:ss")
+        ],
         pageNum: 1,
         pageSize: 30
       }
@@ -300,7 +290,8 @@ export default {
 
   created() {
     this.getList();
-    this.getTableList();
+    this.getTableOptions();
+    // this.getTableList();
   },
 
   methods: {
@@ -356,6 +347,16 @@ export default {
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
+    getTableOptions() {
+      const params = {
+        pageSize: 500,
+        pageNum: 1
+      };
+      listTable(params).then(response => {
+        this.tableOptions = response.rows;
+        this.tableOptions.unshift({tableId:null})
+      });
+    },
 
     /**
      * @description: 重置表单
@@ -364,7 +365,7 @@ export default {
      */
     reset() {
       this.form = {
-        tableId: ""
+        tableId: null, //台号
       };
       this.resetForm("form");
     },
@@ -389,9 +390,16 @@ export default {
      */
     resetQuery() {
       this.queryParams = {
-        tableId: "",
+        tableId: null, //台号
         pageNum: 1,
-        dateRange: [],
+        dateRange: [
+          moment(new Date())
+            .startOf("day")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          moment(new Date())
+            .endOf("day")
+            .format("YYYY-MM-DD HH:mm:ss")
+        ],
         pageSize: this.queryParams.pageSize
       };
       this.resetForm("queryForm");

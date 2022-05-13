@@ -22,11 +22,12 @@
           <el-form-item label="统计时间">
             <el-date-picker
               v-model="queryParams.dateRange"
-              value-format="yyyy-MM-dd"
-              type="daterange"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              type="datetimerange"
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              clearable
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -58,11 +59,11 @@
           <el-table-column
             label="姓名"
             align="center"
-            key="operationType"
-            prop="operationType"
+            key="nickName"
+            prop="nickName"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.operationType == 0 ? "筹码" : "现金" }}</span>
+              <span>{{ scope.row.nickName }}</span>
             </template>
           </el-table-column>
           <el-table-column label="录入次数" align="center" key="input">
@@ -96,6 +97,7 @@
 
 <script>
 import { listInputError } from "@/api/report/report";
+import moment from "moment"
 export default {
   // 员工录入错账报表
   name: "Error",

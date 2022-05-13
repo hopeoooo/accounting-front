@@ -30,10 +30,10 @@
           <el-form-item label="台号" prop="userName">
             <el-select v-model="queryParams.tableId" placeholder="请选择">
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in tableOptions"
+                :key="item.tableId"
+                :label="item.tableId?item.tableId:'全部'"
+                :value="item.tableId"
               >
               </el-option>
             </el-select>
@@ -56,7 +56,8 @@
             :query="queryParams"
             label="时间范围"
             :quickbtn="true"
-            :alltime="false"
+            :alltime="true"
+
           />
           <el-form-item>
             <el-button
@@ -99,6 +100,7 @@
             align="center"
             key="betMoney"
             prop="betMoney"
+            sortable
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney | MoneyFormat }}</span>
@@ -149,6 +151,7 @@
             align="center"
             key="betMoneyTh"
             prop="betMoneyTh"
+            sortable
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoneyTh | MoneyFormat }}</span>
@@ -225,6 +228,7 @@
             align="center"
             key="betMoney"
             prop="betMoney"
+            sortable
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney || 0 }}</span>
@@ -275,6 +279,7 @@
             align="center"
             key="betMoneyTh"
             prop="betMoneyTh"
+            sortable
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoneyTh || 0 }}</span>
@@ -349,6 +354,7 @@ import { listReceipt, listWinLose, totalWinLose } from "@/api/report/report";
 import moment from "moment";
 import TableTime from "@/components/TableTime/";
 import { MoneyFormat } from "@/filter";
+import { listTable } from "@/api/sys/table";
 export default {
   // 输赢
   name: "WinOrLose",
@@ -371,30 +377,18 @@ export default {
         {
           value: "3",
           label: "牛牛"
+        },
+        {
+          value: 4,
+          label: "三公"
+        },
+        {
+          value: 5,
+          label: "推筒子"
         }
       ],
-      options: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        }
-      ],
+      //台号列表
+      tableOptions: [],
       //总计
       userTotal: {},
       // 总条数
@@ -413,10 +407,12 @@ export default {
       },
       queryParams: {
         card: "",
-        tableId: "",
+        tableId: null, //台号
         gameId: "",
         isAdmin: 0,
         cardType: 0,
+        pageNum:1,
+        pageSize:10,
         startDate: moment(new Date())
           .startOf("day")
           .format("YYYY-MM-DD HH:mm:ss"),
@@ -429,6 +425,7 @@ export default {
 
   created() {
     this.getList();
+    this.getTableOptions();
   },
 
   methods: {
@@ -478,6 +475,16 @@ export default {
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
+    getTableOptions() {
+      const params = {
+        pageSize: 500,
+        pageNum: 1
+      };
+      listTable(params).then(response => {
+        this.tableOptions = response.rows;
+        this.tableOptions.unshift({tableId:null})
+      });
+    },
 
     /**
      * @description: 重置表单
@@ -486,7 +493,7 @@ export default {
      */
     reset() {
       this.form = {
-        tableId: ""
+        tableId: null
       };
       this.resetForm("form");
     },
@@ -510,12 +517,17 @@ export default {
       this.queryParams = {
         gameId: "",
         card: "",
-        tableId: "",
+        tableId: null,
         isAdmin: 0,
         cardType: 0,
         pageNum: 1,
-        dateRange: [],
-        pageSize: this.queryParams.pageSize
+        pageSize: this.queryParams.pageSize,
+        startDate: moment(new Date())
+          .startOf("day")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        endDate: moment(new Date())
+          .endOf("day")
+          .format("YYYY-MM-DD HH:mm:ss")
       };
       this.resetForm("queryForm");
       this.handleQuery();
@@ -609,7 +621,7 @@ export default {
           sums[index] = "小计";
         } else if (index > 1) {
           const values = data.map(item => Number(item[column.property]));
-          console.log(values);
+
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr);
@@ -622,11 +634,11 @@ export default {
                 return pel;
               }
             }, 0);
-            if (index != 3 || index != 9) {
+            if (index != 3 && index != 9) {
               sums[index] = Number(sums[index]).toFixed(2);
               sums[index] = MoneyFormat(sums[index]);
             } else {
-               sums[index] += "";
+              sums[index] += "";
             }
           } else {
             sums[index] = "N/A";
