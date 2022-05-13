@@ -50,53 +50,53 @@
           />
           <el-table-column label="$筹码输赢" align="center" key="chipWinLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWinLose || 0 }}</span>
+              <span>{{ scope.row.chipWinLose  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$现金输赢" align="center" key="cashWinLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashWinLose || 0 }}</span>
+              <span>{{ scope.row.cashWinLose  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$合计输赢" align="center" key="winLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.winLose || 0 }}</span>
+              <span>{{ scope.row.winLose  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险输赢" align="center" key="insuranceWinLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWinLose || 0 }}</span>
+              <span>{{ scope.row.insuranceWinLose  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$洗码量" align="center" key="water">
             <template slot-scope="scope">
-              <span>{{ scope.row.water || 0 }}</span>
+              <span>{{ scope.row.water  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿筹码输赢" align="center" key="chipWinLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWinLoseTh || 0 }}</span>
+              <span>{{ scope.row.chipWinLoseTh  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿现金输赢" align="center" key="cashWinLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashWinLoseTh || 0 }}</span>
+              <span>{{ scope.row.cashWinLoseTh  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险输赢" align="center" key="insuranceWinLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWinLoseTh || 0 }}</span>
+              <span>{{ scope.row.insuranceWinLoseTh  | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿合计输赢" align="center" key="winLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh || 0 }}</span>
+              <span>{{ scope.row.winLoseTh  | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
           <el-table-column label="฿洗码量" align="center" key="waterTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh || 0 }}</span>
+              <span>{{ scope.row.waterTh  | MoneyFormat }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -116,6 +116,7 @@
 <script>
 import { listTablePlumbing, totalTablePlumbing } from "@/api/report/report";
 import moment from "moment";
+import { MoneyFormat } from "@/filter";
 export default {
   // 台面上下水
   name: "TableWater",
@@ -148,7 +149,9 @@ export default {
           moment(new Date())
             .endOf("day")
             .format("YYYY-MM-DD")
-        ]
+        ],
+        pageNum:1,
+        pageSize:30,
       }
     };
   },
@@ -172,43 +175,43 @@ export default {
           return;
         }
         if (index === 1) {
-          sums[index] = this.userTotal.chipWinLose;
+          sums[index] =MoneyFormat(this.userTotal.chipWinLose);
           return;
         }
         if (index === 2) {
-          sums[index] = this.userTotal.cashWinLose;
+          sums[index] =MoneyFormat( this.userTotal.cashWinLose);
           return;
         }
         if (index === 3) {
-          sums[index] = this.userTotal.winLose;
+          sums[index] =MoneyFormat( this.userTotal.winLose);
           return;
         }
         if (index === 4) {
-          sums[index] = this.userTotal.insuranceWinLose;
+          sums[index] =MoneyFormat( this.userTotal.insuranceWinLose) ;
           return;
         }
         if (index === 5) {
-          sums[index] = this.userTotal.water;
+          sums[index] =MoneyFormat( this.userTotal.water) ;
           return;
         }
         if (index === 6) {
-          sums[index] = this.userTotal.chipWinLoseTh;
+          sums[index] =MoneyFormat( this.userTotal.chipWinLoseTh);
           return;
         }
         if (index === 7) {
-          sums[index] = this.userTotal.cashWinLoseTh;
+          sums[index] =MoneyFormat( this.userTotal.cashWinLoseTh) ;
           return;
         }
         if (index === 8) {
-          sums[index] = this.userTotal.insuranceWinLoseTh;
+          sums[index] =MoneyFormat( this.userTotal.insuranceWinLoseTh) ;
           return;
         }
         if (index === 9) {
-          sums[index] = this.userTotal.winLoseTh;
+          sums[index] =MoneyFormat( this.userTotal.winLoseTh) ;
           return;
         }
         if (index === 10) {
-          sums[index] = this.userTotal.waterTh;
+          sums[index] =MoneyFormat( this.userTotal.waterTh) ;
           return;
         }
       });

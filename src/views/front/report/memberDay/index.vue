@@ -47,6 +47,114 @@
           v-loading="loading"
           :data="userList"
           show-summary
+          sum-text="小计"
+          :summary-method="getSummaries1"
+        >
+          <el-table-column
+            label="会员卡号"
+            align="center"
+            key="card"
+            prop="card"
+          />
+          <el-table-column label="姓名" align="center" key="name" prop="name">
+            <template slot-scope="scope">
+              <span>{{ scope.row.name || "--" }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="日期" align="center" key="date" prop="date">
+            <template slot-scope="scope">
+              <span>{{ scope.row.date || "--" }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="$输赢"
+            align="center"
+            key="winLose"
+            prop="winLose"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.winLose |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="$累计输赢"
+            align="center"
+            key="sumWinLose"
+            prop="sumWinLose"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sumWinLose |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="$洗码量"
+            align="center"
+            key="water"
+            prop="water"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.water |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="$累计洗码量"
+            align="center"
+            key="sumWater"
+            prop="sumWater"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sumWater |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿输赢"
+            align="center"
+            key="sumWinLoseTh"
+            prop="sumWinLoseTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sumWinLoseTh |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿累计输赢"
+            align="center"
+            key="winLoseTh"
+            prop="winLoseTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.winLoseTh |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="฿洗码量"
+            align="center"
+            key="waterTh"
+            prop="waterTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sumWaterTh |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            label="฿累计洗码量"
+            align="center"
+            key="sumWaterTh"
+            prop="sumWaterTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sumWaterTh |MoneyFormat}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- 用于渲染总计 -->
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          class="table2"
+          show-summary
           sum-text="总计"
           :summary-method="getSummaries"
         >
@@ -56,17 +164,22 @@
             key="card"
             prop="card"
           />
-          <el-table-column label="姓名" align="center" key="name">
+          <el-table-column label="姓名" align="center" key="name" prop="name">
             <template slot-scope="scope">
               <span>{{ scope.row.name || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="日期" align="center" key="date">
+          <el-table-column label="日期" align="center" key="date" prop="date">
             <template slot-scope="scope">
               <span>{{ scope.row.date || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$输赢" align="center" key="winLose">
+          <el-table-column
+            label="$输赢"
+            align="center"
+            key="winLose"
+            prop="winLose"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose || 0 }}</span>
             </template>
@@ -75,12 +188,18 @@
             label="$累计输赢"
             align="center"
             key="sumWinLose"
+            prop="sumWinLose"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWinLose || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$洗码量" align="center" key="water">
+          <el-table-column
+            label="$洗码量"
+            align="center"
+            key="water"
+            prop="water"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.water || 0 }}</span>
             </template>
@@ -89,22 +208,38 @@
             label="$累计洗码量"
             align="center"
             key="sumWater"
+            prop="sumWater"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWater || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿输赢" align="center" key="chipWinLoseTh">
+          <el-table-column
+            label="฿输赢"
+            align="center"
+            key="chipWinLoseTh"
+            prop="chipWinLoseTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWinLoseTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿累计输赢" align="center" key="winLoseTh">
+          <el-table-column
+            label="฿累计输赢"
+            align="center"
+            key="winLoseTh"
+            prop="winLoseTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿洗码量" align="center" key="waterTh">
+          <el-table-column
+            label="฿洗码量"
+            align="center"
+            key="waterTh"
+            prop="waterTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWaterTh || 0 }}</span>
             </template>
@@ -114,13 +249,13 @@
             label="฿累计洗码量"
             align="center"
             key="sumWaterTh"
+            prop="sumWaterTh"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWaterTh || 0 }}</span>
             </template>
           </el-table-column>
         </el-table>
-
         <pagination
           v-show="total > 0"
           :total="total"
@@ -135,6 +270,7 @@
 
 <script>
 import { listReport, totalReport } from "@/api/report/report";
+import { MoneyFormat } from "@/filter";
 export default {
   // 客户日报表
   name: "MemberDay",
@@ -172,6 +308,82 @@ export default {
   },
 
   methods: {
+    // 小计规则
+    getSummaries2(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "小计";
+        } else if (index > 2) {
+          const values = data.map(item => {
+            console.log(item, column.property, item[column.property]);
+
+            return Number(item[column.property]);
+          });
+          console.log(index, column, data, data.length, values);
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                const pel = prev + curr;
+                return pel;
+              } else {
+                // return prev;
+                const pel = prev;
+                return pel;
+              }
+            }, 0);
+
+            sums[index] = Number(sums[index]).toFixed(2);
+            sums[index] = MoneyFormat(sums[index]);
+          } else {
+            sums[index] = "N/A";
+          }
+        } else {
+          sums[index] = "";
+        }
+      });
+      return sums;
+    },
+
+        //  小计规则
+    getSummaries1(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "小计";
+          // return;
+        } else if (
+          index > 2
+        ) {
+
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                const pel = prev + curr; // 主要代码
+                return pel;
+              } else {
+                // return prev;
+                const pel = prev; // 主要代码
+                return pel;
+              }
+            }, 0);
+            sums[index] += "";
+            sums[index] = Number(sums[index]).toFixed(2);
+            sums[index] = MoneyFormat(sums[index]);
+          } else {
+            // sums[index] = 'N/A';
+          }
+        } else {
+          sums[index] = "";
+        }
+      });
+      return sums;
+    },
     /**
      * @description: 报表底部总计
      * @param {*} param
@@ -186,35 +398,35 @@ export default {
           return;
         }
         if (index === 3) {
-          sums[index] = this.userTotal.winLose || 0;
+          sums[index] = MoneyFormat(this.userTotal.winLose);
           return;
         }
         if (index === 4) {
-          sums[index] = this.userTotal.sumWinLose || 0;
+          sums[index] = MoneyFormat(this.userTotal.sumWinLose);
           return;
         }
         if (index === 5) {
-          sums[index] = this.userTotal.water || 0;
+          sums[index] = MoneyFormat(this.userTotal.water);
           return;
         }
         if (index === 6) {
-          sums[index] = this.userTotal.sumWater || 0;
+          sums[index] = MoneyFormat(this.userTotal.sumWater);
           return;
         }
         if (index === 7) {
-          sums[index] = this.userTotal.winLoseTh || 0;
+          sums[index] = MoneyFormat(this.userTotal.winLoseTh);
           return;
         }
         if (index === 8) {
-          sums[index] = this.userTotal.sumWinLoseTh || 0;
+          sums[index] = MoneyFormat(this.userTotal.sumWinLoseTh);
           return;
         }
         if (index === 9) {
-          sums[index] = this.userTotal.waterTh || 0;
+          sums[index] = MoneyFormat(this.userTotal.waterTh);
           return;
         }
         if (index === 10) {
-          sums[index] = this.userTotal.sumWaterTh || 0;
+          sums[index] = MoneyFormat(this.userTotal.sumWaterTh);
           return;
         }
       });
@@ -248,8 +460,8 @@ export default {
        */
       listReport(params)
         .then(response => {
-          this.userList = response.rows;
-          this.total = response.total;
+          this.userList = response.rows || [];
+          this.total = response.total || 0;
           this.loading = false;
         })
         .catch(err => {
@@ -260,12 +472,14 @@ export default {
        * @param {*}
        * @return {*}
        */
-      totalReport(params).then(response => {
-        this.userTotal = response.data;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      totalReport(params)
+        .then(response => {
+          this.userTotal = response.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -313,4 +527,11 @@ export default {
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.el-table.table2 {
+  .el-table__header-wrapper,
+  .el-table__body-wrapper {
+    display: none;
+  }
+}
+</style>

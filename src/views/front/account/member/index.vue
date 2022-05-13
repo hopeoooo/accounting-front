@@ -254,6 +254,7 @@
       width="800px"
       @close="onDialogClose"
       append-to-body
+      ref="dialogForm"
     >
       <el-form
         ref="form"
@@ -307,7 +308,7 @@
               <el-select v-model="form.sex" placeholder="">
                 <el-option label="男" :value="0"></el-option>
                 <el-option label="女" :value="1"></el-option>
-                <el-option label="未知" :value="2"></el-option>
+                <!-- <el-option label="未知" :value="2"></el-option> -->
               </el-select>
             </el-form-item>
           </el-col>
@@ -547,11 +548,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-              <el-form-item label="是否内部卡号" prop="isAdmin" label-width="110px" v-if="openType == 'addChild'">
-                <el-select v-model="form.isAdmin" placeholder="" style="width:100px">
-                  <el-option label="否" :value="0"></el-option>
-                  <el-option label="是" :value="1"></el-option>
-                </el-select>
+            <el-form-item
+              label="是否内部卡号"
+              prop="isAdmin"
+              label-width="110px"
+              v-if="openType == 'addChild'"
+            >
+              <el-select
+                v-model="form.isAdmin"
+                placeholder=""
+                style="width:100px"
+              >
+                <el-option label="否" :value="0"></el-option>
+                <el-option label="是" :value="1"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -571,7 +581,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="resetAddForm">重置</el-button>
       </div>
@@ -589,7 +599,7 @@
           <span>$押金</span
           ><span>{{ memlist.deposit ? memlist.deposit : "0" }}</span>
         </div>
-         <div class="list">
+        <div class="list">
           <span>฿押金</span
           ><span>{{ memlist.depositTh ? memlist.depositTh : "0" }}</span>
         </div>
@@ -597,7 +607,7 @@
           <span>$补卡费</span
           ><span>{{ memlist.repair ? memlist.repair : "0" }}</span>
         </div>
-         <div class="list">
+        <div class="list">
           <span>฿补卡费</span
           ><span>{{ memlist.repairTh ? memlist.repairTh : "0" }}</span>
         </div>
@@ -617,7 +627,7 @@
               : "0"
           }}</span>
         </div>
-         <div class="list">
+        <div class="list">
           <span>百家乐洗码比例（฿筹码）</span
           ><span>{{
             memlist.baccaratRollingRatioChipTh
@@ -633,7 +643,7 @@
               : "0"
           }}</span>
         </div>
-         <div class="list">
+        <div class="list">
           <span>百家乐洗码比例（฿现金）</span
           ><span>{{
             memlist.baccaratRollingRatioCashTh
@@ -647,10 +657,12 @@
             memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "0"
           }}</span>
         </div>
-         <div class="list">
+        <div class="list">
           <span>龙虎洗码比例（฿筹码）</span
           ><span>{{
-            memlist.dragonTigerRatioChipTh ? memlist.dragonTigerRatioChipTh : "0"
+            memlist.dragonTigerRatioChipTh
+              ? memlist.dragonTigerRatioChipTh
+              : "0"
           }}</span>
         </div>
         <div class="list">
@@ -662,35 +674,37 @@
         <div class="list">
           <span>龙虎洗码比例（฿现金）</span
           ><span>{{
-            memlist.dragonTigerRatioCashTh ? memlist.dragonTigerRatioCashTh : "0"
+            memlist.dragonTigerRatioCashTh
+              ? memlist.dragonTigerRatioCashTh
+              : "0"
           }}</span>
         </div>
         <div class="list">
           <span>是否抽水</span
           ><span>{{
-            memlist.isPump ? (memlist.isPump == 0 ? "否" : "是") : "-"
+            memlist.isPump != null ? (memlist.isPump == 0 ? "否" : "是") : "-"
           }}</span>
         </div>
         <div class="list">
           <span>是否可换现</span
           ><span>{{
-            memlist.isCash ? (memlist.isCash == 0 ? "否" : "是") : "-"
+            memlist.isCash != null ? (memlist.isCash == 0 ? "否" : "是") : "-"
           }}</span>
         </div>
         <div class="list">
           <span>是否可结算洗码</span
           ><span>{{
-            memlist.isSettlement
-              ? (memlist.isSettlement == 0
+            memlist.isSettlement != null
+              ? memlist.isSettlement == 0
                 ? "否"
-                : "是")
+                : "是"
               : "-"
           }}</span>
         </div>
         <div class="list">
           <span>是否可汇出</span
           ><span>{{
-            memlist.isOut ? (memlist.isOut == 0 ? "否" : "是") : "-"
+            memlist.isOut != null ? (memlist.isOut == 0 ? "否" : "是") : "-"
           }}</span>
         </div>
         <!-- <div class="list"><span>是否走账</span><span>{{memlist.isBill?(memlist.isBill==0?"否":"是"):'-'}}</span></div> -->
@@ -759,6 +773,8 @@ export default {
       roleOptions: [],
       // 表单参数
       form: {},
+      // 初始化的表单参数，用于重置时还原
+      initForm: {},
       defaultProps: {
         children: "children",
         label: "label"
@@ -790,7 +806,14 @@ export default {
 
       isshow: true,
       oddsList: [],
-      count: { childCount: 0, depositCount: 0,depositCountTh:0, parentCount: 0, repairCount: 0,repairCountTh:0 },
+      count: {
+        childCount: 0,
+        depositCount: 0,
+        depositCountTh: 0,
+        parentCount: 0,
+        repairCount: 0,
+        repairCountTh: 0
+      },
       openType: "" //add 新增卡号;addChild 新增子卡;edit 卡号修改
     };
   },
@@ -948,6 +971,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getOddsList();
   },
   methods: {
     equalToPassword(rule, value, callback) {
@@ -998,6 +1022,8 @@ export default {
         this.memlist = response.data;
         // 将用户更多信息加进form里
         this.form = { ...this.form, ...response.data };
+        // initForm用于重置时还原
+        this.initForm = { ...this.form, ...response.data };
       });
     },
     // 多选框选中数据
@@ -1007,10 +1033,19 @@ export default {
       this.multiple = !selection.length;
     },
 
-    // 新增卡号里的重置按钮
+    // 弹窗里的重置按钮
     resetAddForm() {
       // this.open = false;
-      this.reset();
+      if (this.openType == "edit") {
+        this.form = Object.assign({}, this.initForm);
+        this.refs.dialogForm.$forceUpdate();
+      }
+      if (this.openType == "add") {
+        this.reset();
+      }
+      if (this.openType == "addChild") {
+        this.reset();
+      }
     },
     // 弹窗关闭时
     onDialogClose() {
@@ -1019,7 +1054,7 @@ export default {
     // 表单重置
     reset() {
       const newForm = {
-        card:"",
+        card: this.openType == "edit" ? this.form.card : "",
         name: "",
         sex: 0,
         phone: "",
@@ -1044,17 +1079,18 @@ export default {
         status: 0, //0 正常 1停用
         cardType: 0,
         // isBill:'',
-        isAdmin:0,
+        isAdmin: 0,
         remark: ""
       };
       // 将form部分重置为newForm
       this.form = { ...this.form, ...newForm };
-      if (this.openType != "edit") {
-        // 不是修改卡号时，点击重置按钮需要清除卡号
-        this.form.card = "";
-      }
+      this.addOdds()
+      // if (this.openType != "edit") {
+      //   // 不是修改卡号时，点击重置按钮需要清除卡号
+      //   this.form.card = "";
+      // }
 
-      this.resetForm("form");
+      // this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -1077,7 +1113,6 @@ export default {
       this.isMain = false;
       this.title = "新增卡号";
       this.reset();
-      this.getOddsList();
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
     },
@@ -1089,8 +1124,9 @@ export default {
       this.isshow = true;
       this.title = "新增子卡卡号";
       this.reset();
+      // 将用户更多信息加进form里
       this.form["parentCard"] = parentCard;
-      this.getOddsList();
+      this.addOdds()
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
     },
@@ -1103,9 +1139,10 @@ export default {
       this.title = "卡号修改";
       this.reset();
       this.form = Object.assign({}, row);
+
       // 将用户更多信息加进form里
-      this.getOddsList();
       this.getMemberInfo(row.id);
+      this.addOdds();
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
     },
@@ -1168,15 +1205,34 @@ export default {
     getOddsList() {
       listOdds().then(response => {
         this.oddsList = response.data;
-        this.form.baccaratRollingRatioChip =response.data.baccaratRollingRatioChip;
-        this.form.baccaratRollingRatioCash =response.data.baccaratRollingRatioCash;
-        this.form.dragonTigerRatioChip = response.data.dragonTigerRatioChip;
-        this.form.dragonTigerRatioCash = response.data.dragonTigerRatioCash;
-        this.form.baccaratRollingRatioChipTh =response.data.baccaratRollingRatioChipTh;
-        this.form.baccaratRollingRatioCashTh =response.data.baccaratRollingRatioCashTh;
-        this.form.dragonTigerRatioChipTh = response.data.dragonTigerRatioChipTh;
-        this.form.dragonTigerRatioCashTh = response.data.dragonTigerRatioCashTh;
+        // this.form.baccaratRollingRatioChip =
+        //   response.data.baccaratRollingRatioChip;
+        // this.form.baccaratRollingRatioCash =
+        //   response.data.baccaratRollingRatioCash;
+        // this.form.dragonTigerRatioChip = response.data.dragonTigerRatioChip;
+        // this.form.dragonTigerRatioCash = response.data.dragonTigerRatioCash;
+        // this.form.baccaratRollingRatioChipTh =
+        //   response.data.baccaratRollingRatioChipTh;
+        // this.form.baccaratRollingRatioCashTh =
+        //   response.data.baccaratRollingRatioCashTh;
+        // this.form.dragonTigerRatioChipTh = response.data.dragonTigerRatioChipTh;
+        // this.form.dragonTigerRatioCashTh = response.data.dragonTigerRatioCashTh;
+
       });
+    },
+    addOdds() {
+      if (this.oddsList) {
+        this.form.baccaratRollingRatioChip = this.oddsList.baccaratRollingRatioChip;
+        this.form.baccaratRollingRatioCash = this.oddsList.baccaratRollingRatioCash;
+        this.form.dragonTigerRatioChip = this.oddsList.dragonTigerRatioChip;
+        this.form.dragonTigerRatioCash = this.oddsList.dragonTigerRatioCash;
+        this.form.baccaratRollingRatioChipTh = this.oddsList.baccaratRollingRatioChipTh;
+        this.form.baccaratRollingRatioCashTh = this.oddsList.baccaratRollingRatioCashTh;
+        this.form.dragonTigerRatioChipTh = this.oddsList.dragonTigerRatioChipTh;
+        this.form.dragonTigerRatioCashTh = this.oddsList.dragonTigerRatioCashTh;
+         // initForm用于重置时还原
+        this.initForm = Object.assign({}, this.form);
+      }
     }
   }
 };

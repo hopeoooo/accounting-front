@@ -177,6 +177,7 @@ export default {
         this.query.startDate = "";
         this.query.endDate = "";
       }
+      this.Datatype = null;
     },
     /**
      * @description: 阶段日期

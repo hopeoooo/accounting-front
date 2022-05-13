@@ -79,7 +79,7 @@
       </el-table-column>
       <el-table-column label="年龄" prop="brithday">
         <template slot-scope="scope">
-          {{ scope.row.brithday ? getYear - scope.row.brithday:"-" }}
+          {{ scope.row.brithday ? getYear - scope.row.brithday : "--" }}
         </template>
       </el-table-column>
       <el-table-column label="籍贯" prop="address">
@@ -140,8 +140,20 @@
     />
 
     <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" @close="onDialogClose" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-if="open">
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="600px"
+      @close="onDialogClose"
+      append-to-body
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="100px"
+        v-if="open"
+      >
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="工号" prop="userName">
@@ -164,7 +176,7 @@
               <el-select v-model="form.sex" placeholder="">
                 <el-option label="男" :value="0"></el-option>
                 <el-option label="女" :value="1"></el-option>
-                <el-option label="未知" :value="2"></el-option>
+                <!-- <el-option label="未知" :value="2"></el-option> -->
               </el-select>
             </el-form-item>
           </el-col>
@@ -244,13 +256,14 @@
                 value-format="yyyy"
                 style="width:180px"
                 placeholder="选择年"
+                :picker-options="pickerOptions"
               >
               </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click="submitForm">确定</el-button>
         <el-button @click="resetBtn">重置</el-button>
       </div>
@@ -349,14 +362,22 @@ export default {
       },
       // 表单参数
       form: {},
+      // 初始化的表单参数，用于重置时还原
+      initForm: {},
       defaultProps: {
         children: "children",
         label: "label"
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getFullYear() > new Date().getFullYear();
+        }
       }
     };
   },
   created() {
     this.getList();
+    this.getRole();
   },
   computed: {
     ...mapState("user", ["user"]),
@@ -408,7 +429,7 @@ export default {
     },
     // 查询角色列表
     getRole() {
-      let params = { pageNum: 1, pageSize: 30 };
+      let params = { pageNum: 1, pageSize: 50 };
       getRoleList(params).then(response => {
         this.roleList = response.rows;
         console.log(response.rows);
@@ -446,7 +467,12 @@ export default {
 
     // 弹窗里的重置按钮
     resetBtn() {
-      this.reset();
+      if (this.openType == "edit") {
+        this.form = Object.assign({}, this.initForm);
+      }
+      if (this.openType == "add") {
+        this.reset();
+      }
     },
     // 取消按钮（数据权限）
     cancelDataScope() {
@@ -454,8 +480,8 @@ export default {
       this.reset();
     },
     // 弹窗关闭时
-    onDialogClose(){
-      this.openType=""
+    onDialogClose() {
+      this.openType = "";
     },
     // 表单重置
     reset() {
@@ -495,7 +521,7 @@ export default {
       this.open = true;
       this.title = "新增员工";
 
-      this.getRole();
+      // this.getRole();
       setTimeout(() => {
         // 移除表单校验结果
         this.$refs.form && this.$refs.form.clearValidate();
@@ -509,7 +535,8 @@ export default {
       this.title = "编辑员工";
       // this.form = Object.assign({}, row);
       this.form = { ...this.form, ...row };
-      this.getRole();
+      this.initForm = { ...this.form, ...row };
+      // this.getRole();
       setTimeout(() => {
         // 移除表单校验结果
         this.$refs.form && this.$refs.form.clearValidate();

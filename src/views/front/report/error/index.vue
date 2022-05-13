@@ -121,7 +121,9 @@ export default {
         userName: "",
         isAdmin: 0,
         cardType: 0,
-        dateRange: []
+        dateRange: [],
+        pageNum:1,
+        pageSize:30,
       }
     };
   },
