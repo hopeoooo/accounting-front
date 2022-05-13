@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Notification, MessageBox, Message, Loading } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { getIP } from '@/utils/getip'
 import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from "@/utils/ruoyi";
 import cache from '@/plugins/cache'
@@ -26,8 +27,13 @@ service.interceptors.request.use(config => {
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
+  // getIP().then((ipAddr) => {
+  //       console.log(ipAddr); // 192.168.0.122
+  //   });
+
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    // config.headers['x-forwarded-for'] = getIP()
   }
   // get请求映射params参数
   if (config.method === 'get' && config.params) {

@@ -344,6 +344,7 @@
       v-if="open"
       width="500px"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="150px">
         <el-form-item label="结算卡号:" prop="card" v-if="openType == 'set'">

@@ -1,6 +1,6 @@
 <template>
    <!-- 点收码 -->
-    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1400px" :before-close="handleClose" append-to-body v-if="isOpen"> 
+    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1400px" :before-close="handleClose" append-to-body v-if="isOpen" :close-on-click-modal="false"> 
       
          <el-row :gutter="20">
            <el-col :span="6" :xs="12">

@@ -145,6 +145,7 @@
       :visible.sync="open"
       width="600px"
       @close="onDialogClose"
+      :close-on-click-modal="false"
       append-to-body
     >
       <el-form

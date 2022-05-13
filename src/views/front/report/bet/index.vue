@@ -439,6 +439,7 @@
       v-if="open"
       width="500px"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form
         ref="form"
