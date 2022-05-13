@@ -63,7 +63,7 @@
               <span>{{ scope.row.winLose || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险输赢" align="center" key="winLose">
+          <el-table-column label="$保险输赢" align="center" key="insuranceWinLose">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinLose || 0 }}</span>
             </template>
@@ -83,7 +83,7 @@
               <span>{{ scope.row.cashWinLoseTh || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险输赢" align="center" key="winLose">
+          <el-table-column label="฿保险输赢" align="center" key="insuranceWinLoseTh">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinLoseTh || 0 }}</span>
             </template>
