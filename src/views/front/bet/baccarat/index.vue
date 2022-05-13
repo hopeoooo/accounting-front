@@ -16,19 +16,19 @@
        <!--桌台信息-->
       <el-col :span="10" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
-             <ul>
+            <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
               <li style="font-size:20px">$累计：{{tableInfo.total || 0}}</li>
               <li style="font-size:20px">฿累计：{{tableInfo.totalTh || 0}}</li>
-             </ul>
-             <ul>
-              
+            </ul>
+            <ul>
+            
               <li>$筹码：{{tableInfo.chip || 0}}</li>
               <li>$现金：{{tableInfo.cash || 0}}</li>
-             </ul>
-              <ul>
+            </ul>
+            <ul>
              
               <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
               <li>฿现金：{{tableInfo.cashTh || 0}}</li>
@@ -40,6 +40,7 @@
               <li>$庄对：{{baccaratSum.sumZd || 0}}</li>
               <li>$庄保险：{{baccaratSum.sumZbx || 0}}</li>
               <li>$和：{{baccaratSum.sumH || 0}}</li>
+              <li>$和保险：{{baccaratSum.sumHbx || 0}}</li>
               <li>$闲：{{baccaratSum.sumX || 0}}</li>
               <li>$闲对：{{baccaratSum.sumXd || 0}}</li>
               <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
@@ -51,6 +52,7 @@
               <li>฿庄对：{{baccaratSum.sumZdTh || 0}}</li>
               <li>฿庄保险：{{baccaratSum.sumZbxTh || 0}}</li>
               <li>฿和：{{baccaratSum.sumHTh || 0}}</li>
+              <li>$和保险：{{baccaratSum.sumHbxTh || 0}}</li>
               <li>฿闲：{{baccaratSum.sumXTh || 0}}</li>
               <li>฿闲对：{{baccaratSum.sumXdTh || 0}}</li>
               <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
@@ -182,7 +184,7 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d\-\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder=""  />
               </template>
           </el-table-column>
            <el-table-column label="庄" align="center" key="card1" prop="card1"  >
@@ -220,6 +222,11 @@
                   <el-input @change='DataChange' v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
+           <el-table-column label="和保险" align="center" key="card10" prop="card10"  >
+               <template slot-scope="scope">
+                  <el-input @change='DataChange' v-model.number="scope.row.card10" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  >
                <template slot-scope="scope">
                   <el-input @change='DataChange' v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -230,7 +237,7 @@
                   <el-input @change='DataChange' v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-          <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
+          <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
           <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
              
          
@@ -343,6 +350,7 @@ export default {
           sumXd:'',
           sumZbx:'',
           sumXbx:'',
+          sumHbx:'',
           sumBig:'',
           sumSmall:'',
           sumChip:'',
@@ -354,6 +362,7 @@ export default {
           sumXdTh:'',
           sumZbxTh:'',
           sumXbxTh:'',
+          sumHbxTh:'',
           sumBigTh:'',
           sumSmallTh:'',
           sumChipTh:'',
@@ -509,6 +518,7 @@ export default {
               "0":o.card7,
               "9":o.card8,
               "6":o.card9,
+              "2":o.card10,
             }
       })
       
@@ -560,6 +570,7 @@ export default {
       this.sumdata.sumXd = newData['5']
       this.sumdata.sumZbx = newData['3']
       this.sumdata.sumXbx = newData['0']
+      this.sumdata.sumHbx = newData['2']
       this.sumdata.sumBig = newData['9']
       this.sumdata.sumSmall = newData['6']
 
@@ -571,6 +582,7 @@ export default {
       this.sumdata.sumXdTh = newDataTh['5']
       this.sumdata.sumZbxTh = newDataTh['3']
       this.sumdata.sumXbxTh = newDataTh['0']
+       this.sumdata.sumHbxTh = newDataTh['2']
       this.sumdata.sumBigTh = newDataTh['9']
       this.sumdata.sumSmallTh = newDataTh['6']
       console.log(arrMJ,arrTh)
@@ -594,6 +606,11 @@ export default {
     },
     //录入
     updataBet(){
+       this.$confirm('是否确定录入？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         baccaratInput({'json':this.subData}).then(res=>{
           this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
@@ -607,19 +624,7 @@ export default {
           this.radio1 =''
           this.checkboxGroup1 =[]
           this.checkboxGroup2 =[]
-          this.sumdata={
-          sumZ:'',
-            sumX:'',
-            sumH:'',
-            sumZd:'',
-            sumXd:'',
-            sumZbx:'',
-            sumXbx:'',
-            sumD:'',
-            sumX:'',
-            sumChip:'',
-            sumCash:'',
-          }
+          this.sumdata={ }
           this.setBaccaratList(this.betList)
           this.setBaccaratSum(this.sumdata)
           let that=this
@@ -630,7 +635,7 @@ export default {
           this. getSend()  
           this.iskaipai = true
         }) 
-        
+      }).catch(() => {});  
     },
     //数组对象求和
     sumArr(arr){
@@ -639,7 +644,7 @@ export default {
           Object.keys(p).forEach(k=>p[k]+=c[k]?c[k]:0)
 
           return p
-        }, {'1': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0})
+        }, {'1': 0,'2': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0})
       }
       
     },
@@ -874,8 +879,8 @@ export default {
       li{
         list-style: none;
         display: inline-block;
-        min-width: 60px;
-        margin: 0 10px;
+        min-width:100px;
+        margin: 0 8px;
         line-height: 39px;
       }
     }
@@ -1052,7 +1057,7 @@ export default {
         line-height: 40px;
         background: #919191;
         border-radius: 6px;
-        color: #fff;
+        color: #999;
         margin: 0 10px;
         display: flex;
         align-items: center;
@@ -1081,10 +1086,10 @@ export default {
       }
       .is-active,.is-checked{
          .el-checkbox-button__inner,.el-radio-button__inner{
-           opacity: 1;
+          opacity: 1;
            font-size: 20px;
-           border: 0;
            font-weight: bold;
+           color: #fff;
         }
       }
     }
@@ -1103,15 +1108,15 @@ export default {
   .el-table__header-wrapper{
     thead{
       th{
-        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(10){
+        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
           background: red;
           color: #fff;
         }
-        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(11){
+        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12){
           background: blue;
           color: #fff;
         }
-        &:nth-child(5){
+        &:nth-child(5),&:nth-child(10){
           background: green;
           color: #fff;
         }
@@ -1123,9 +1128,11 @@ export default {
   position: relative;
   &::after{
     content: '请选择币种';
-     position: absolute;
+    position: absolute;
     bottom: -5px;
-    left: 10px;
+    width: 100%;
+    text-align: center;
+    left: 0px;
     color: red;
     font-size: 12px;
     z-index: 1;
@@ -1136,8 +1143,10 @@ export default {
   &::after{
     content: '请填写卡号';
     position: absolute;
+    width: 100%;
+    text-align: center;
     bottom: -5px;
-    left: 10px;
+    left: 0px;
     color: red;
     font-size: 12px;
     z-index: 1;
@@ -1158,11 +1167,12 @@ export default {
         line-height: 40px;
         background: #919191;
         border-radius: 6px;
-        color: #fff;
+        color: #999;
         margin: 0 10px;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-sizing: border-box;
       }
 
       .red{
@@ -1191,6 +1201,7 @@ export default {
            font-size: 20px;
            border: 0;
            font-weight: bold;
+           color: #fff;
         }
       }
       }

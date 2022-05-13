@@ -83,7 +83,7 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder="" />
               </template>
           </el-table-column>
            <el-table-column label="输" align="center" key="lose" prop="lose"  >
@@ -369,6 +369,11 @@ export default {
     },
     //录入
     updataBet(){
+       this.$confirm('是否确定录入？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         niuniuInput({'json':this.subData}).then(res=>{
           this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1,type:0})),
@@ -397,7 +402,7 @@ export default {
           this. getSend()  
           this.iskaipai = true
         }) 
-        
+      }).catch(() => {});    
     },
     //数组对象求和
     sumArr(arr){
@@ -578,7 +583,7 @@ export default {
       li{
         list-style: none;
         display: inline-block;
-        min-width: 60px;
+        min-width: 100px;
         margin: 0 10px;
         line-height: 39px;
       }
@@ -806,7 +811,9 @@ export default {
     content: '请选择币种';
      position: absolute;
     bottom: -5px;
-    left: 10px;
+    width: 100%;
+    text-align: center;
+    left: 0px;
     color: red;
     font-size: 12px;
     z-index: 1;
@@ -818,7 +825,9 @@ export default {
     content: '请填写卡号';
     position: absolute;
     bottom: -5px;
-    left: 10px;
+    width: 100%;
+    text-align: center;
+    left: 0px;
     color: red;
     font-size: 12px;
     z-index: 1;

@@ -177,7 +177,7 @@ export default {
       li{
         list-style: none;
         display: inline-block;
-        min-width: 60px;
+        min-width: 100px;
         margin: 0 10px;
         line-height: 45px;
       }
@@ -333,30 +333,7 @@ export default {
     }
   }
 }
-.table-info-red td:nth-child(1){
-  position: relative;
-  &::after{
-    content: '请选择币种';
-     position: absolute;
-    bottom: -5px;
-    left: 10px;
-    color: red;
-    font-size: 12px;
-    z-index: 1;
-  }
-}
-.table-info-red1 td:nth-child(2){
-  position: relative;
-  &::after{
-    content: '请填写卡号';
-    position: absolute;
-    bottom: -5px;
-    left: 10px;
-    color: red;
-    font-size: 12px;
-    z-index: 1;
-  }
-}
+
 .table-info-red td,.table-info-red1 td{
   // background: rgb(199, 135, 135);
 }
