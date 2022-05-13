@@ -32,7 +32,7 @@
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId?item.tableId:'全部'"
+                :label="item.tableId ? item.tableId : '全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -57,7 +57,6 @@
             label="时间范围"
             :quickbtn="true"
             :alltime="true"
-
           />
           <el-form-item>
             <el-button
@@ -113,7 +112,7 @@
             prop="water"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.water || 0 }}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -164,7 +163,7 @@
             prop="waterTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh || 0 }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -411,8 +410,8 @@ export default {
         gameId: "",
         isAdmin: 0,
         cardType: 0,
-        pageNum:1,
-        pageSize:10,
+        pageNum: 1,
+        pageSize: 30,
         startDate: moment(new Date())
           .startOf("day")
           .format("YYYY-MM-DD HH:mm:ss"),
@@ -482,7 +481,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
-        this.tableOptions.unshift({tableId:null})
+        this.tableOptions.unshift({ tableId: null });
       });
     },
 
@@ -620,8 +619,10 @@ export default {
         if (index === 0) {
           sums[index] = "小计";
         } else if (index > 1) {
-          const values = data.map(item => Number(item[column.property]));
-
+          const values = data.map(item => {
+            return Number(item[column.property]);
+          });
+          console.log(index, column, data, data.length, values);
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr);
@@ -666,7 +667,7 @@ export default {
           return;
         }
         if (index == 3) {
-          sums[index] = this.userTotal ? this.userTotal.water : "";
+          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.water) : "";
           return;
         }
         if (index == 4) {
@@ -696,7 +697,7 @@ export default {
           return;
         }
         if (index == 9) {
-          sums[index] = this.userTotal ? this.userTotal.waterTh : "";
+          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.waterTh)  : "";
           return;
         }
         if (index == 10) {

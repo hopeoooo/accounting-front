@@ -201,7 +201,11 @@
             align="center"
             key="betMoney"
             prop="betMoney"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.betMoney | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="开牌结果"
             align="center"
@@ -227,7 +231,11 @@
             align="center"
             key="winLose"
             prop="winLose"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="下注时间"
             align="center"
@@ -341,7 +349,11 @@
             align="center"
             key="betMoney"
             prop="betMoney"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.betMoney | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="开牌结果"
             align="center"
@@ -366,7 +378,11 @@
             align="center"
             key="winLose"
             prop="winLose"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="下注时间"
             align="center"
@@ -1098,9 +1114,12 @@ export default {
         }
 
         const values = data.map(item => Number(item[column.property]));
+
         if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
+            console.log(value);
+
             if (!isNaN(value)) {
               const pel = prev + curr; // 主要代码
               return pel;
@@ -1216,6 +1235,7 @@ export default {
           "台号",
           "靴号",
           "局号",
+          "游戏类型",
           "下注玩法",
           "币种",
           "下注金额",
@@ -1230,6 +1250,7 @@ export default {
           "tableId",
           "bootNum",
           "gameNum",
+          "gameId",
           "option",
           "type",
           "betMoney",
@@ -1289,7 +1310,7 @@ export default {
       playText = result.join(" / ");
       return playText;
     },
-    // 生成开牌结果
+    // 生成开牌结果(用于excel导出)
     getGameResult(c) {
       let arr1 = [];
       let arr = c.split("");
@@ -1299,7 +1320,7 @@ export default {
       });
       return arr1.join(" / ");
     },
-
+    // 生成开牌结果(用于表格渲染)
     getGameResult2(result, index) {
       if (index == 0) {
         return betOptionList[result];

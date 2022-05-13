@@ -114,7 +114,11 @@
             align="center"
             key="water"
             prop="water"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.water | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="$应结算洗码费"
             align="center"
@@ -132,7 +136,7 @@
             prop="actualWaterAmount"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount }}</span>
+              <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -140,7 +144,11 @@
             align="center"
             key="waterTh"
             prop="waterTh"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="฿应结算洗码费"
             align="center"
@@ -148,7 +156,7 @@
             prop="waterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
+              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -158,7 +166,7 @@
             prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmountTh }}</span>
+              <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -228,7 +236,11 @@
             align="center"
             key="water"
             prop="water"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.water | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="$应结算洗码费"
             align="center"
@@ -246,7 +258,7 @@
             prop="actualWaterAmount"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount }}</span>
+              <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -254,7 +266,11 @@
             align="center"
             key="waterTh"
             prop="waterTh"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="฿应结算洗码费"
             align="center"
@@ -272,7 +288,7 @@
             prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount }}</span>
+              <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -335,7 +351,7 @@ export default {
       // 添加卡号
       isMain: false,
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -391,7 +407,7 @@ export default {
     };
   },
   watch: {
-    // 根据名称筛选部门树
+
   },
   created() {
     this.getList();
@@ -411,19 +427,23 @@ export default {
       };
 
       this.loading = true;
-      listWaterDetailed(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
-      totalWaterDetailed(params).then(response => {
-        this.userTotal = response.data;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      listWaterDetailed(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      totalWaterDetailed(params)
+        .then(response => {
+          this.userTotal = response.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -459,10 +479,8 @@ export default {
               }
             }, 0);
             sums[index] += "";
-            if (index == 4 || index == 7) {
-              // 结算洗码费金额需要保留两位小数点
-              sums[index] = MoneyFormat(sums[index]);
-            }
+            sums[index] = Number(sums[index]).toFixed(2);
+            sums[index] = MoneyFormat(sums[index]);
           } else {
             // sums[index] = 'N/A';
           }
@@ -482,7 +500,7 @@ export default {
           return;
         }
         if (index === 3) {
-          sums[index] = this.userTotal.sumWater;
+          sums[index] = MoneyFormat(this.userTotal.sumWater);
           return;
         }
         if (index === 4) {
@@ -490,11 +508,11 @@ export default {
           return;
         }
         if (index === 5) {
-          sums[index] = this.userTotal.sumWaterAmount;
+          sums[index] = MoneyFormat(this.userTotal.sumWaterAmount);
           return;
         }
         if (index === 6) {
-          sums[index] = this.userTotal.actualWaterAmount;
+          sums[index] = MoneyFormat(this.userTotal.actualWaterAmount);
           return;
         }
         if (index === 7) {
@@ -502,7 +520,7 @@ export default {
           return;
         }
         if (index === 8) {
-          sums[index] = this.userTotal.actualWaterAmountTh;
+          sums[index] = MoneyFormat(this.userTotal.actualWaterAmountTh);
           return;
         }
       });
@@ -512,7 +530,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        card: "",
+        card: null,
         userName: "",
         signedAmount: "",
         remark: ""
