@@ -255,6 +255,7 @@
       @close="onDialogClose"
       append-to-body
       ref="dialogForm"
+      :close-on-click-modal="false"
     >
       <el-form
         ref="form"
@@ -593,6 +594,7 @@
       :visible.sync="detailOpen"
       width="400px"
       append-to-body
+      :close-on-click-modal="false"
     >
       <div class="detailBox">
         <div class="list">

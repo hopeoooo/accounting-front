@@ -146,6 +146,7 @@
       width="600px"
       v-if="open"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="卡号" prop="card">

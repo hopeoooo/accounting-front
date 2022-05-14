@@ -123,7 +123,11 @@
             sortable
             key="water"
             prop="water"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.water | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="$未结算洗码费"
             align="center"
@@ -141,7 +145,11 @@
             sortable
             key="waterTh"
             prop="waterTh"
-          />
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="฿未结算洗码费"
             align="center"
@@ -183,7 +191,7 @@
                 icon="el-icon-tickets"
                 @click="handleSettlement(scope.row)"
                 :disabled="disabledSet(scope.row)"
-                 v-prclick
+                v-prclick
                 >结算</el-button
               >
 
@@ -344,6 +352,7 @@
       v-if="open"
       width="500px"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="150px">
         <el-form-item label="结算卡号:" prop="card" v-if="openType == 'set'">
@@ -357,10 +366,10 @@
           <span>{{ this.cards.length }}</span>
         </el-form-item>
         <el-form-item label="$应结洗码量:" prop="water">
-          <span>{{ form.water }}</span>
+          <span>{{ form.water | MoneyFormat }}</span>
         </el-form-item>
         <el-form-item label="฿应结洗码量:" prop="water">
-          <span>{{ form.waterTh }}</span>
+          <span>{{ form.waterTh | MoneyFormat}}</span>
         </el-form-item>
         <el-form-item label="$应结洗码费:" prop="waterAmount">
           <span>{{ form.waterAmount | MoneyFormat }}</span>
@@ -526,20 +535,24 @@ export default {
       params["isAdmin"] = this.queryParams.isAdmin == false ? 0 : 1;
       params["cardType"] = this.queryParams.cardType == false ? 0 : 1;
       this.loading = true;
-      listWashCode(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
-      listWashCodeTotal(params).then(response => {
-        this.userTotal = response.data;
+      listWashCode(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listWashCodeTotal(params)
+        .then(response => {
+          this.userTotal = response.data;
 
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -577,7 +590,11 @@ export default {
     // 决定这一行的 CheckBox 是否可以勾选
     onSelectable(row, index) {
       // 如果该会员是不可结算洗码状态/卡号停用/洗码费为0，“结算”按钮置灰，并且不可选中该会员
-      if (row.isSettlement == 0 || row.status == 1 || (row.waterAmount == 0 && row.waterAmountTh == 0)) {
+      if (
+        row.isSettlement == 0 ||
+        row.status == 1 ||
+        (row.waterAmount == 0 && row.waterAmountTh == 0)
+      ) {
         return false;
       } else {
         return true;
@@ -614,12 +631,10 @@ export default {
             }, 0);
             sums[index] += "";
             // sums[index] = Number(sums[index]).toFixed(2);
-            if (index == 5 || index == 7) {
-               sums[index] = parseInt(sums[index]);
-            }
-            if (index == 6 || index == 8) {
+
+            if (index == 5 || index == 6 || index == 7 || index == 8) {
               // 未结算洗码费金额需要保留两位小数点
-              sums[index] = (Number(sums[index])).toFixed(2)
+              sums[index] = Number(sums[index]).toFixed(2);
               sums[index] = MoneyFormat(sums[index]);
             }
           } else {
@@ -643,7 +658,7 @@ export default {
         }
         if (index === 5) {
           // 未结算洗码量
-          sums[index] = this.userTotal.water;
+          sums[index] = MoneyFormat(this.userTotal.water);
           // return;
         }
         if (index === 6) {
@@ -653,7 +668,7 @@ export default {
         }
         if (index === 7) {
           // 未结算洗码量
-          sums[index] = this.userTotal.waterTh;
+          sums[index] = MoneyFormat(this.userTotal.waterTh);
           // return;
         }
         if (index === 8) {
@@ -703,7 +718,11 @@ export default {
     /** 结算洗码 */
     handleSettlement(row) {
       // 如果该会员是不可结算洗码状态/卡号停用/洗码费为0，“结算”按钮置灰，并且不可选中该会员
-      if (row.isSettlement == 0 || row.status == 1 || (row.waterAmount == 0 && row.waterAmountTh == 0)) {
+      if (
+        row.isSettlement == 0 ||
+        row.status == 1 ||
+        (row.waterAmount == 0 && row.waterAmountTh == 0)
+      ) {
         return false;
       }
 

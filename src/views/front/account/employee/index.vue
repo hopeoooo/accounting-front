@@ -146,6 +146,7 @@
       width="600px"
       @close="onDialogClose"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form
         ref="form"

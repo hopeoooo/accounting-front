@@ -85,6 +85,7 @@
       width="600px"
       append-to-body
       v-if="open"
+      :close-on-click-modal="false"
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="0">

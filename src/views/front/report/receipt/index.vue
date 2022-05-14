@@ -16,7 +16,7 @@
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId?item.tableId:'全部'"
+                :label="item.tableId ? item.tableId : '全部'"
                 :value="item.tableId"
               >
               </el-option>
@@ -74,7 +74,6 @@
             <template slot-scope="scope">
               <el-button
                 type="text"
-
                 size="mini"
                 @click="handleDetail(scope.row.tableId)"
                 v-prclick
@@ -84,93 +83,93 @@
           </el-table-column>
           <el-table-column label="$筹码-收" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.chip }}</span>
+              <span>{{ scope.row.chip | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$现金-收" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.cash }}</span>
+              <span>{{ scope.row.cash | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险筹码-收" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.insurance || 0 }}</span>
+              <span>{{ scope.row.insurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$筹码增减" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipAdd || 0 }}</span>
+              <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$现金增减" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashAdd || 0 }}</span>
+              <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险筹码增减" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceAdd || 0 }}</span>
+              <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$洗码量" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.water || 0 }}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$输赢" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.win || 0 }}</span>
+              <span>{{ scope.row.win | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险输赢" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWin || 0 }}</span>
+              <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
           <el-table-column label="฿筹码-收" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipTh || 0 }}</span>
+              <span>{{ scope.row.chipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿现金-收" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashTh || 0 }}</span>
+              <span>{{ scope.row.cashTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险筹码-收" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceTh || 0 }}</span>
+              <span>{{ scope.row.insuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿筹码增减" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipAddTh || 0 }}</span>
+              <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿现金增减" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh || 0 }}</span>
+              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险筹码增减" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashAddTh || 0 }}</span>
+              <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿洗码量" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh || 0 }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿输赢" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh || 0 }}</span>
+              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险输赢" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.winTh || 0 }}</span>
+              <span>{{ scope.row.winTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="收码时间" align="center">
@@ -201,7 +200,7 @@
 import { listTable } from "@/api/sys/table";
 import { listReceipt } from "@/api/report/report";
 import moment from "moment";
-
+import { MoneyFormat } from "@/filter";
 export default {
   // 客户日报表
   name: "Receipt",
@@ -237,8 +236,8 @@ export default {
             .endOf("day")
             .format("YYYY-MM-DD")
         ],
-        pageSize:30,
-        pageNum:1
+        pageSize: 30,
+        pageNum: 1
       }
     };
   },
@@ -275,13 +274,15 @@ export default {
        * @param {*}
        * @return {*}
        */
-      listReceipt(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      listReceipt(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -294,7 +295,7 @@ export default {
       };
       listTable(params).then(response => {
         this.tableOptions = response.rows;
-         this.tableOptions.unshift({tableId:null})
+        this.tableOptions.unshift({ tableId: null });
       });
     },
 

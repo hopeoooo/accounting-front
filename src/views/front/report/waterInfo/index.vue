@@ -401,7 +401,9 @@ export default {
       queryParams: {
         card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
-        cardType: 0
+        cardType: 0,
+        pageSize:30,
+        pageNum:1
         // dateRange: []
       }
     };

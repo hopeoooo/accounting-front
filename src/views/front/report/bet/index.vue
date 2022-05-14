@@ -81,11 +81,14 @@
             <el-date-picker
               v-model="dateRange"
               style="width: 400px"
-              value-format="yyyy-MM-dd hh:mm:ss"
+              value-format="yyyy-MM-dd HH:mm:ss"
               type="datetimerange"
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              :default-time="['00:00:00', '23:59:59']"
+              @change="setTimedata"
+              clearable
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -147,24 +150,28 @@
             align="center"
             key="tableId"
             prop="tableId"
+            width="80px"
           />
           <el-table-column
             label="靴号"
             align="center"
             key="bootNum"
             prop="bootNum"
+            width="60px"
           />
           <el-table-column
             label="局号"
             align="center"
             key="gameNum"
             prop="gameNum"
+            width="60px"
           />
           <el-table-column
             label="游戏类型"
             align="center"
             key="gameId"
             prop="gameId"
+            width="80px"
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -175,7 +182,6 @@
             align="center"
             key="option"
             prop="option"
-            width="200px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -186,7 +192,13 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column label="币种" align="center" key="type" prop="type">
+          <el-table-column
+            label="币种"
+            align="center"
+            key="type"
+            prop="type"
+            width="80px"
+          >
             <template slot-scope="scope" class="wanfabox">
               <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
               <!-- <span v-if="scope.row.type == 0">$筹码</span>
@@ -211,7 +223,6 @@
             align="center"
             key="gameResult"
             prop="gameResult"
-            width="150px"
           >
             <template slot-scope="scope">
               <div>
@@ -254,7 +265,7 @@
             fixed="right"
             label="操作"
             align="center"
-            width="260"
+            width="150"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
@@ -280,10 +291,10 @@
         <el-table
           v-loading="loading"
           :data="userList"
-          show-summary
           class="table2"
+          show-summary
           sum-text="总计"
-          :summary-method="getSummaries"
+          :summary-method="getSummaries1"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -297,24 +308,28 @@
             align="center"
             key="tableId"
             prop="tableId"
+            width="80px"
           />
           <el-table-column
             label="靴号"
             align="center"
             key="bootNum"
             prop="bootNum"
+            width="60px"
           />
           <el-table-column
             label="局号"
             align="center"
             key="gameNum"
             prop="gameNum"
+            width="60px"
           />
           <el-table-column
             label="游戏类型"
             align="center"
             key="gameId"
             prop="gameId"
+            width="80px"
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -325,7 +340,7 @@
             align="center"
             key="option"
             prop="option"
-            width="200px"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <!--百家乐、龙虎 -->
@@ -335,13 +350,20 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column label="币种" align="center" key="type" prop="type">
+          <el-table-column
+            label="币种"
+            align="center"
+            key="type"
+            prop="type"
+            width="80px"
+          >
             <template slot-scope="scope" class="wanfabox">
               <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
-              <span v-if="scope.row.type == 0">$筹码</span>
+              <!-- <span v-if="scope.row.type == 0">$筹码</span>
               <span v-if="scope.row.type == 1">$现金</span>
               <span v-if="scope.row.type == 2">฿筹码</span>
-              <span v-if="scope.row.type == 3">฿现金</span>
+              <span v-if="scope.row.type == 3">฿现金</span> -->
+              <span>{{ typeMap[scope.row.type] }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -359,7 +381,6 @@
             align="center"
             key="gameResult"
             prop="gameResult"
-            width="150px"
           >
             <template slot-scope="scope">
               <div>
@@ -371,6 +392,7 @@
                   {{ getGameResult2(item, index) }}
                 </span>
               </div>
+              <!-- <span>{{ getGameResult(scope.row.gameResult) }}</span> -->
             </template>
           </el-table-column>
           <el-table-column
@@ -401,7 +423,7 @@
             fixed="right"
             label="操作"
             align="center"
-            width="260"
+            width="150"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
@@ -439,6 +461,7 @@
       v-if="open"
       width="500px"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form
         ref="form"
@@ -1020,8 +1043,29 @@ export default {
   },
 
   methods: {
+    /**
+     * @description: 设置时间
+     * @return *
+     */
+    setTimedata(Date) {
+      if (Date) {
+        for (let index = 0; index < this.TimeList.length; index++) {
+          const element = this.TimeList[index];
+          if (Date[0] == element.val[0] && Date[1] == element.val[1]) {
+            this.Datatype = index;
+            break;
+          }
+        }
+      } else {
+        this.queryParams["startTime"] = "";
+        this.queryParams["endTime"] = "";
+        this.Datatype = null;
+      }
+    },
     TimeCheck(index, time) {
       this.Datatype = index;
+      console.log(time);
+
       this.queryParams["startTime"] = time[0];
       this.queryParams["endTime"] = time[1];
       this.dateRange = [time[0], time[1]];
