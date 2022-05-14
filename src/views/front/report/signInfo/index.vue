@@ -101,7 +101,7 @@
             prop="amount"
           >
             <template slot-scope="scope">
-              <span  v-if="scope.row.amount  !=0"
+              <span v-if="scope.row.amount != 0"
                 >{{ scope.row.amountBefore }}→({{ scope.row.amount }})→{{
                   scope.row.amountAfter
                 }}</span
@@ -116,7 +116,7 @@
             prop="amountTh"
           >
             <template slot-scope="scope">
-              <span  v-if="scope.row.amountTh  !=0"
+              <span v-if="scope.row.amountTh != 0"
                 >{{ scope.row.amountBeforeTh }}→({{ scope.row.amountTh }})→{{
                   scope.row.amountAfterTh
                 }}</span
@@ -239,7 +239,7 @@ export default {
         label: "label"
       },
       queryParams: {
-                card: this.$route.query.card?this.$route.query.card:"",
+        card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
         type: null,
         // dateRange: [],
@@ -261,21 +261,23 @@ export default {
       let params = {
         card: this.queryParams.card,
         type: this.queryParams.type,
-            isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
+        isAdmin: this.queryParams.isAdmin == false ? 0 : 1,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
-                startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
+        startTime: this.dateRange ? this.addDateRange(this.dateRange)[0] : null,
         endTime: this.dateRange ? this.addDateRange(this.dateRange)[1] : null
       };
 
       this.loading = true;
-      listSignedDetailed(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      listSignedDetailed(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -288,7 +290,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-          this.dateRange = [
+      this.dateRange = [
         moment(new Date())
           .startOf("day")
           .format("YYYY-MM-DD"),

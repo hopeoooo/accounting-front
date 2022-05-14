@@ -259,9 +259,10 @@
       :title="title"
       :visible.sync="open"
       width="600px"
-      append-to-body
-      v-if="open"
+      append-to-
       :close-on-click-modal="false"
+      v-if="open"
+
     >
       <el-form
         ref="form"

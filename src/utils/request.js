@@ -28,7 +28,6 @@ service.interceptors.request.use(config => {
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
-  
   getIP().then((ipAddr) => {
     IP = ipAddr
     }); 
@@ -66,7 +65,7 @@ service.interceptors.request.use(config => {
           cache.session.setJSON('sessionObj', requestObj)
         }
       }
-      
+
     }
   }
   return config
