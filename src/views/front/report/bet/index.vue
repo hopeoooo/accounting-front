@@ -294,7 +294,7 @@
           class="table2"
           show-summary
           sum-text="总计"
-          :summary-method="getSummaries1"
+          :summary-method="getSummaries"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column

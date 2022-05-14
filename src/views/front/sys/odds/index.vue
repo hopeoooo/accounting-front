@@ -549,7 +549,6 @@ export default {
     perValidator(rule, value, callback) {
       // 百分比校验
       // 只能输入0-100
-
       if (value > 100 || value < 0) {
         callback(new Error("只能输入0-100"));
       } else {

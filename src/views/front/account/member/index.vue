@@ -228,7 +228,7 @@
           </el-table-column>
         </el-table>
 
-        <div class="count-item-box">
+        <div class="count-item-box" v-if="userList && userList.length >0">
           <span class="count-item">主卡号合计:{{ count.parentCount }}</span
           ><span class="count-item">子卡号合计:{{ count.childCount }}</span
           ><span class="count-item">$押金:{{ count.depositCount }}</span
@@ -256,7 +256,6 @@
       append-to-body
       :close-on-click-modal="false"
       ref="dialogForm"
-
     >
       <el-form
         ref="form"
@@ -341,12 +340,20 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="押金" prop="deposit">
-              <el-input v-model="form.deposit" placeholder="请输入押金" />
+              <el-input
+                v-model="form.deposit"
+                placeholder="请输入押金"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="补卡费" prop="repair">
-              <el-input v-model="form.repair" placeholder="请输入补卡费" />
+              <el-input
+                v-model="form.repair"
+                placeholder="请输入补卡费"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -356,6 +363,7 @@
               <el-input
                 v-model="form.shareRatio"
                 placeholder="请输入占股比例"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
           </el-col>
@@ -364,6 +372,7 @@
               <el-input
                 v-model="form.rebateRatio"
                 placeholder="请输入返点比例"
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
           </el-col>
@@ -376,9 +385,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.baccaratRollingRatioChip"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -389,9 +399,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.baccaratRollingRatioCash"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -404,9 +415,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.baccaratRollingRatioChipTh"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -417,9 +429,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.baccaratRollingRatioCashTh"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -432,9 +445,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.dragonTigerRatioChip"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -445,9 +459,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.dragonTigerRatioCash"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -460,9 +475,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.dragonTigerRatioChipTh"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -473,9 +489,10 @@
               label-width="200px"
             >
               <el-input
-                style="width:50px"
+                style="width:80px"
                 v-model="form.dragonTigerRatioCashTh"
                 placeholder=""
+                oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
           </el-col>
@@ -861,18 +878,29 @@ export default {
           {
             pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
             message: "请输入大于0的数字"
-          }
+          },
+
         ],
         shareRatio: [
+          // {
+          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+          //   message: "请输入大于0的数字"
+          // },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         rebateRatio: [
+          // {
+          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
+          //   message: "请输入大于0的数字"
+          // },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         baccaratRollingRatioChip: [
@@ -882,8 +910,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         baccaratRollingRatioCash: [
@@ -893,8 +922,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         dragonTigerRatioChip: [
@@ -904,8 +934,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         dragonTigerRatioCash: [
@@ -915,8 +946,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         baccaratRollingRatioChipTh: [
@@ -926,8 +958,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         baccaratRollingRatioCashTh: [
@@ -937,8 +970,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         dragonTigerRatioChipTh: [
@@ -948,8 +982,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ],
         dragonTigerRatioCashTh: [
@@ -959,8 +994,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            validator: this.perValidator,
+            message: "只能输入0-100",
+            trigger: "blur"
           }
         ]
       };
@@ -980,6 +1016,15 @@ export default {
     equalToPassword(rule, value, callback) {
       if (this.form.password !== value) {
         callback(new Error("两次输入的密码不一致"));
+      } else {
+        callback();
+      }
+    },
+    perValidator(rule, value, callback) {
+      // 百分比校验
+      // 只能输入0-100
+      if (value > 100 || value < 0) {
+        callback(new Error("只能输入0-100"));
       } else {
         callback();
       }
@@ -1041,13 +1086,15 @@ export default {
       // this.open = false;
       if (this.openType == "edit") {
         this.form = Object.assign({}, this.initForm);
-        this.refs.dialogForm.$forceUpdate();
+        this.$refs.dialogForm.$forceUpdate();
       }
       if (this.openType == "add") {
         this.reset();
+        this.addOdds();
       }
       if (this.openType == "addChild") {
         this.reset();
+        this.addOdds();
       }
     },
     // 弹窗关闭时
@@ -1087,7 +1134,6 @@ export default {
       };
       // 将form部分重置为newForm
       this.form = { ...this.form, ...newForm };
-      this.addOdds()
       // if (this.openType != "edit") {
       //   // 不是修改卡号时，点击重置按钮需要清除卡号
       //   this.form.card = "";
@@ -1116,6 +1162,7 @@ export default {
       this.isMain = false;
       this.title = "新增卡号";
       this.reset();
+      this.addOdds();
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
     },
@@ -1129,7 +1176,7 @@ export default {
       this.reset();
       // 将用户更多信息加进form里
       this.form["parentCard"] = parentCard;
-      this.addOdds()
+      this.addOdds();
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
     },
@@ -1142,10 +1189,8 @@ export default {
       this.title = "卡号修改";
       this.reset();
       this.form = Object.assign({}, row);
-
       // 将用户更多信息加进form里
       this.getMemberInfo(row.id);
-      this.addOdds();
       // 移除表单校验结果
       this.$refs.form && this.$refs.form.clearValidate();
     },
@@ -1220,7 +1265,6 @@ export default {
         //   response.data.baccaratRollingRatioCashTh;
         // this.form.dragonTigerRatioChipTh = response.data.dragonTigerRatioChipTh;
         // this.form.dragonTigerRatioCashTh = response.data.dragonTigerRatioCashTh;
-
       });
     },
     addOdds() {
@@ -1233,7 +1277,7 @@ export default {
         this.form.baccaratRollingRatioCashTh = this.oddsList.baccaratRollingRatioCashTh;
         this.form.dragonTigerRatioChipTh = this.oddsList.dragonTigerRatioChipTh;
         this.form.dragonTigerRatioCashTh = this.oddsList.dragonTigerRatioCashTh;
-         // initForm用于重置时还原
+        // initForm用于重置时还原
         this.initForm = Object.assign({}, this.form);
       }
     }
