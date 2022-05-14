@@ -173,11 +173,18 @@ export default {
       if (Date) {
         this.query.startDate = Date[0];
         this.query.endDate = Date[1];
+        for (let index = 0; index < this.TimeList.length; index++) {
+          const element = this.TimeList[index];
+          if (Date[0] == element.val[0] && Date[1] == element.val[1]) {
+            this.Datatype = index;
+            break;
+          }
+        }
       } else {
         this.query.startDate = "";
         this.query.endDate = "";
+        this.Datatype = null;
       }
-      this.Datatype = null;
     },
     /**
      * @description: 阶段日期

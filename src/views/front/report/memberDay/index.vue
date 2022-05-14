@@ -73,7 +73,7 @@
             prop="winLose"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.winLose |MoneyFormat}}</span>
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -83,7 +83,7 @@
             prop="sumWinLose"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLose |MoneyFormat}}</span>
+              <span>{{ scope.row.sumWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -93,7 +93,7 @@
             prop="water"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.water |MoneyFormat}}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -103,29 +103,30 @@
             prop="sumWater"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWater |MoneyFormat}}</span>
+              <span>{{ scope.row.sumWater | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="฿输赢"
             align="center"
-            key="sumWinLoseTh"
-            prop="sumWinLoseTh"
+            key="winLoseTh"
+            prop="winLoseTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLoseTh |MoneyFormat}}</span>
+              <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="฿累计输赢"
             align="center"
-            key="winLoseTh"
-            prop="winLoseTh"
+            key="sumWinLoseTh"
+            prop="sumWinLoseTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh |MoneyFormat}}</span>
+              <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
+
           <el-table-column
             label="฿洗码量"
             align="center"
@@ -133,7 +134,7 @@
             prop="waterTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh |MoneyFormat}}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -144,7 +145,7 @@
             prop="sumWaterTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh |MoneyFormat}}</span>
+              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -308,46 +309,7 @@ export default {
   },
 
   methods: {
-    // 小计规则
-    getSummaries2(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "小计";
-        } else if (index > 2) {
-          const values = data.map(item => {
-            console.log(item, column.property, item[column.property]);
-
-            return Number(item[column.property]);
-          });
-          console.log(index, column, data, data.length, values);
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                const pel = prev + curr;
-                return pel;
-              } else {
-                // return prev;
-                const pel = prev;
-                return pel;
-              }
-            }, 0);
-
-            sums[index] = Number(sums[index]).toFixed(2);
-            sums[index] = MoneyFormat(sums[index]);
-          } else {
-            sums[index] = "N/A";
-          }
-        } else {
-          sums[index] = "";
-        }
-      });
-      return sums;
-    },
-
-        //  小计规则
+    //  小计规则
     getSummaries1(param) {
       const { columns, data } = param;
       const sums = [];
@@ -355,10 +317,7 @@ export default {
         if (index === 0) {
           sums[index] = "小计";
           // return;
-        } else if (
-          index > 2
-        ) {
-
+        } else if (index == 3 || index == 5 || index == 7 || index == 9) {
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -372,8 +331,8 @@ export default {
                 return pel;
               }
             }, 0);
-            sums[index] += "";
-            sums[index] = Number(sums[index]).toFixed(2);
+            // sums[index] += "";
+            // sums[index] = Number(sums[index]).toFixed(2);
             sums[index] = MoneyFormat(sums[index]);
           } else {
             // sums[index] = 'N/A';
@@ -401,32 +360,19 @@ export default {
           sums[index] = MoneyFormat(this.userTotal.winLose);
           return;
         }
-        if (index === 4) {
-          sums[index] = MoneyFormat(this.userTotal.sumWinLose);
-          return;
-        }
+
         if (index === 5) {
           sums[index] = MoneyFormat(this.userTotal.water);
           return;
         }
-        if (index === 6) {
-          sums[index] = MoneyFormat(this.userTotal.sumWater);
-          return;
-        }
+
         if (index === 7) {
           sums[index] = MoneyFormat(this.userTotal.winLoseTh);
           return;
         }
-        if (index === 8) {
-          sums[index] = MoneyFormat(this.userTotal.sumWinLoseTh);
-          return;
-        }
+
         if (index === 9) {
           sums[index] = MoneyFormat(this.userTotal.waterTh);
-          return;
-        }
-        if (index === 10) {
-          sums[index] = MoneyFormat(this.userTotal.sumWaterTh);
           return;
         }
       });
@@ -441,11 +387,11 @@ export default {
       let params = {
         card: this.queryParams.card,
         startTime:
-          this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange && this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[0]
             : "",
         endTime:
-          this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange && this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[1]
             : "",
         pageNum: this.queryParams.pageNum,

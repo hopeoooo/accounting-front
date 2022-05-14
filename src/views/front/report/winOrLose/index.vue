@@ -18,13 +18,13 @@
               clearable
               style="width: 240px; margin-right: 20px"
             />
-            <el-checkbox v-model="queryParams.isAdmin"
-              >过滤内部卡号</el-checkbox
-            >
             <el-checkbox
               v-model="queryParams.cardType"
               :disabled="!queryParams.card"
               >包含子卡号</el-checkbox
+            >
+            <el-checkbox v-model="queryParams.isAdmin"
+              >过滤内部卡号</el-checkbox
             >
           </el-form-item>
           <el-form-item label="台号" prop="userName">
@@ -622,7 +622,7 @@ export default {
           const values = data.map(item => {
             return Number(item[column.property]);
           });
-          console.log(index, column, data, data.length, values);
+          // console.log(index, column, data, data.length, values);
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr);
@@ -635,12 +635,8 @@ export default {
                 return pel;
               }
             }, 0);
-            if (index != 3 && index != 9) {
-              sums[index] = Number(sums[index]).toFixed(2);
-              sums[index] = MoneyFormat(sums[index]);
-            } else {
-              sums[index] += "";
-            }
+            // sums[index] = Number(sums[index]).toFixed(2);
+            sums[index] = MoneyFormat(sums[index]);
           } else {
             sums[index] = "N/A";
           }
@@ -697,7 +693,9 @@ export default {
           return;
         }
         if (index == 9) {
-          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.waterTh)  : "";
+          sums[index] = this.userTotal
+            ? MoneyFormat(this.userTotal.waterTh)
+            : "";
           return;
         }
         if (index == 10) {

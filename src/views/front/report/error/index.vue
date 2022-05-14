@@ -138,11 +138,11 @@ export default {
       let params = {
         userName: this.queryParams.userName,
         startTime:
-          this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange && this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[0]
             : "",
         endTime:
-          this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange &&this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[1]
             : "",
         pageNum: this.queryParams.pageNum,

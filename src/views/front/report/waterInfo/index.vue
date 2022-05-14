@@ -401,7 +401,9 @@ export default {
       queryParams: {
         card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
-        cardType: 0
+        cardType: 0,
+        pageSize:30,
+        pageNum:1
         // dateRange: []
       }
     };
@@ -479,7 +481,7 @@ export default {
               }
             }, 0);
             sums[index] += "";
-            sums[index] = Number(sums[index]).toFixed(2);
+            // sums[index] = Number(sums[index]).toFixed(2);
             sums[index] = MoneyFormat(sums[index]);
           } else {
             // sums[index] = 'N/A';
