@@ -1174,8 +1174,9 @@ export default {
             }
           }, 0);
 
-          sums[index] += "";
-          sums[index] = Number(sums[index]).toFixed(2);
+          // sums[index] += "";
+          // sums[index] = Number(sums[index]).toFixed(2);
+           sums[index] = MoneyFormat(sums[index]);
         } else {
           // sums[index] = 'N/A';
         }

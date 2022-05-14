@@ -109,16 +109,6 @@
           <el-table-column
             label="฿输赢"
             align="center"
-            key="sumWinLoseTh"
-            prop="sumWinLoseTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="฿累计输赢"
-            align="center"
             key="winLoseTh"
             prop="winLoseTh"
           >
@@ -127,13 +117,24 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="฿累计输赢"
+            align="center"
+            key="sumWinLoseTh"
+            prop="sumWinLoseTh"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column
             label="฿洗码量"
             align="center"
             key="waterTh"
             prop="waterTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -316,7 +317,7 @@ export default {
         if (index === 0) {
           sums[index] = "小计";
           // return;
-        } else if (index == 3 || index == 5 ||index == 7 ||index == 9  ) {
+        } else if (index == 3 || index == 5 || index == 7 || index == 9) {
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
             sums[index] = values.reduce((prev, curr) => {
@@ -330,8 +331,8 @@ export default {
                 return pel;
               }
             }, 0);
-            sums[index] += "";
-            sums[index] = Number(sums[index]).toFixed(2);
+            // sums[index] += "";
+            // sums[index] = Number(sums[index]).toFixed(2);
             sums[index] = MoneyFormat(sums[index]);
           } else {
             // sums[index] = 'N/A';
@@ -374,7 +375,6 @@ export default {
           sums[index] = MoneyFormat(this.userTotal.waterTh);
           return;
         }
-
       });
       return sums;
     },
