@@ -50,53 +50,62 @@
           />
           <el-table-column label="$筹码输赢" align="center" key="chipWinLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWinLose  | MoneyFormat }}</span>
+              <span>{{ scope.row.chipWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$现金输赢" align="center" key="cashWinLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashWinLose  | MoneyFormat }}</span>
+              <span>{{ scope.row.cashWinLose | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="$保险输赢"
+            align="center"
+            key="insuranceWinLose"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.insuranceWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$合计输赢" align="center" key="winLose">
             <template slot-scope="scope">
-              <span>{{ scope.row.winLose  | MoneyFormat }}</span>
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险输赢" align="center" key="insuranceWinLose">
-            <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWinLose  | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
+
           <el-table-column label="$洗码量" align="center" key="water">
             <template slot-scope="scope">
-              <span>{{ scope.row.water  | MoneyFormat }}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿筹码输赢" align="center" key="chipWinLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWinLoseTh  | MoneyFormat }}</span>
+              <span>{{ scope.row.chipWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿现金输赢" align="center" key="cashWinLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashWinLoseTh  | MoneyFormat }}</span>
+              <span>{{ scope.row.cashWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险输赢" align="center" key="insuranceWinLoseTh">
+          <el-table-column
+            label="฿保险输赢"
+            align="center"
+            key="insuranceWinLoseTh"
+          >
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWinLoseTh  | MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿合计输赢" align="center" key="winLoseTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh  | MoneyFormat }}</span>
+              <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
           <el-table-column label="฿洗码量" align="center" key="waterTh">
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh  | MoneyFormat }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -150,8 +159,8 @@ export default {
             .endOf("day")
             .format("YYYY-MM-DD")
         ],
-        pageNum:1,
-        pageSize:30,
+        pageNum: 1,
+        pageSize: 30
       }
     };
   },
@@ -175,43 +184,43 @@ export default {
           return;
         }
         if (index === 1) {
-          sums[index] =MoneyFormat(this.userTotal.chipWinLose);
+          sums[index] = MoneyFormat(this.userTotal.chipWinLose);
           return;
         }
         if (index === 2) {
-          sums[index] =MoneyFormat( this.userTotal.cashWinLose);
+          sums[index] = MoneyFormat(this.userTotal.cashWinLose);
           return;
         }
         if (index === 3) {
-          sums[index] =MoneyFormat( this.userTotal.winLose);
+          sums[index] = MoneyFormat(this.userTotal.winLose);
           return;
         }
         if (index === 4) {
-          sums[index] =MoneyFormat( this.userTotal.insuranceWinLose) ;
+          sums[index] = MoneyFormat(this.userTotal.insuranceWinLose);
           return;
         }
         if (index === 5) {
-          sums[index] =MoneyFormat( this.userTotal.water) ;
+          sums[index] = MoneyFormat(this.userTotal.water);
           return;
         }
         if (index === 6) {
-          sums[index] =MoneyFormat( this.userTotal.chipWinLoseTh);
+          sums[index] = MoneyFormat(this.userTotal.chipWinLoseTh);
           return;
         }
         if (index === 7) {
-          sums[index] =MoneyFormat( this.userTotal.cashWinLoseTh) ;
+          sums[index] = MoneyFormat(this.userTotal.cashWinLoseTh);
           return;
         }
         if (index === 8) {
-          sums[index] =MoneyFormat( this.userTotal.insuranceWinLoseTh) ;
+          sums[index] = MoneyFormat(this.userTotal.insuranceWinLoseTh);
           return;
         }
         if (index === 9) {
-          sums[index] =MoneyFormat( this.userTotal.winLoseTh) ;
+          sums[index] = MoneyFormat(this.userTotal.winLoseTh);
           return;
         }
         if (index === 10) {
-          sums[index] =MoneyFormat( this.userTotal.waterTh) ;
+          sums[index] = MoneyFormat(this.userTotal.waterTh);
           return;
         }
       });
@@ -225,11 +234,15 @@ export default {
     getList() {
       let params = {
         startTime:
-          this.queryParams.dateRange &&this.queryParams.dateRange && this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange &&
+          this.queryParams.dateRange &&
+          this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[0]
             : "",
         endTime:
-          this.queryParams.dateRange &&this.queryParams.dateRange && this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange &&
+          this.queryParams.dateRange &&
+          this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[1]
             : "",
         pageNum: this.queryParams.pageNum,
