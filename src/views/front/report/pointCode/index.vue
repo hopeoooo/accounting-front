@@ -180,7 +180,7 @@
           </el-table-column>
           <el-table-column label="฿保险筹码增减" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceAddTh || "--" }}</span>
+              <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿洗码量" align="center" width="100px">
@@ -196,11 +196,6 @@
           <el-table-column label="฿保险输赢" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="฿保险筹码增减" align="center" width="150px">
-            <template slot-scope="scope">
-              <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="点码时间" align="center" width="180px">
