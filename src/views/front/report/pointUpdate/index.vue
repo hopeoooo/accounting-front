@@ -73,7 +73,7 @@
                 :class="
                   String(scope.row.sysChip).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.sysChip | MoneyFormat}}</span
+                >{{ scope.row.sysChip }}</span
               >
             </template>
           </el-table-column>
@@ -83,7 +83,7 @@
                 :class="
                   String(scope.row.personChip).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.personChip | MoneyFormat }}</span
+                >{{ scope.row.personChip }}</span
               >
             </template>
           </el-table-column>
@@ -103,7 +103,7 @@
                 :class="
                   String(scope.row.cashGap).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.cashGap |MoneyFormat }}</span
+                >{{ scope.row.cashGap }}</span
               >
             </template>
           </el-table-column>
@@ -113,7 +113,17 @@
                 :class="
                   String(scope.row.chipAdd).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipAdd |MoneyFormat }}</span
+                >{{ scope.row.chipAdd }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="$现金增减" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.cashAdd).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.cashAdd }}</span
               >
             </template>
           </el-table-column>
@@ -125,7 +135,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.sysInsurance |MoneyFormat }}</span
+                >{{ scope.row.sysInsurance }}</span
               >
             </template>
           </el-table-column>
@@ -137,7 +147,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.personInsurance |MoneyFormat }}</span
+                >{{ scope.row.personInsurance }}</span
               >
             </template>
           </el-table-column>
@@ -149,40 +159,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceGap |MoneyFormat }}</span
-              >
-            </template>
-          </el-table-column>
-          <el-table-column label="$洗码量" align="center">
-            <template slot-scope="scope">
-              <span
-                :class="
-                  String(scope.row.water).indexOf('->') == -1 ? '' : 'red'
-                "
-                >{{ scope.row.water |MoneyFormat }}</span
-              >
-            </template>
-          </el-table-column>
-
-          <el-table-column label="$输赢" align="center">
-            <template slot-scope="scope">
-              <span
-                :class="
-                  String(scope.row.chipWin).indexOf('->') == -1 ? '' : 'red'
-                "
-                >{{ scope.row.chipWin |MoneyFormat }}</span
-              >
-            </template>
-          </el-table-column>
-          <el-table-column label="$保险输赢" align="center">
-            <template slot-scope="scope">
-              <span
-                :class="
-                  String(scope.row.insuranceWin).indexOf('->') == -1
-                    ? ''
-                    : 'red'
-                "
-                >{{ scope.row.insuranceWin |MoneyFormat }}</span
+                >{{ scope.row.insuranceGap }}</span
               >
             </template>
           </el-table-column>
@@ -194,17 +171,51 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceAdd |MoneyFormat }}</span
+                >{{ scope.row.insuranceAdd }}</span
               >
             </template>
           </el-table-column>
+          <el-table-column label="$洗码量" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.water).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.water }}</span
+              >
+            </template>
+          </el-table-column>
+
+          <el-table-column label="$输赢" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.chipWin).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.chipWin }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="$保险输赢" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.insuranceWin).indexOf('->') == -1
+                    ? ''
+                    : 'red'
+                "
+                >{{ scope.row.insuranceWin }}</span
+              >
+            </template>
+          </el-table-column>
+
           <el-table-column label="฿系统点码数" align="center">
             <template slot-scope="scope">
               <span
                 :class="
                   String(scope.row.sysChipTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.sysChipTh |MoneyFormat }}</span
+                >{{ scope.row.sysChipTh }}</span
               >
             </template>
           </el-table-column>
@@ -216,7 +227,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.personChipTh |MoneyFormat }}</span
+                >{{ scope.row.personChipTh }}</span
               >
             </template>
           </el-table-column>
@@ -226,7 +237,7 @@
                 :class="
                   String(scope.row.chipGapTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipGapTh |MoneyFormat }}</span
+                >{{ scope.row.chipGapTh }}</span
               >
             </template>
           </el-table-column>
@@ -236,7 +247,7 @@
                 :class="
                   String(scope.row.cashGapTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.cashGapTh |MoneyFormat }}</span
+                >{{ scope.row.cashGapTh }}</span
               >
             </template>
           </el-table-column>
@@ -246,7 +257,17 @@
                 :class="
                   String(scope.row.chipAddTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipAddTh |MoneyFormat }}</span
+                >{{ scope.row.chipAddTh }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="฿现金增减" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.cashAddTh).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.cashAddTh }}</span
               >
             </template>
           </el-table-column>
@@ -258,7 +279,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.sysInsuranceTh |MoneyFormat }}</span
+                >{{ scope.row.sysInsuranceTh }}</span
               >
             </template>
           </el-table-column>
@@ -270,7 +291,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.personInsuranceTh |MoneyFormat }}</span
+                >{{ scope.row.personInsuranceTh }}</span
               >
             </template>
           </el-table-column>
@@ -282,40 +303,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceGapTh |MoneyFormat }}</span
-              >
-            </template>
-          </el-table-column>
-
-          <el-table-column label="฿洗码量" align="center">
-            <template slot-scope="scope">
-              <span
-                :class="
-                  String(scope.row.waterTh).indexOf('->') == -1 ? '' : 'red'
-                "
-                >{{ scope.row.waterTh |MoneyFormat }}</span
-              >
-            </template>
-          </el-table-column>
-          <el-table-column label="฿输赢" align="center">
-            <template slot-scope="scope">
-              <span
-                :class="
-                  String(scope.row.chipWinTh).indexOf('->') == -1 ? '' : 'red'
-                "
-                >{{ scope.row.chipWinTh |MoneyFormat }}</span
-              >
-            </template>
-          </el-table-column>
-          <el-table-column label="฿保险输赢" align="center">
-            <template slot-scope="scope">
-              <span
-                :class="
-                  String(scope.row.insuranceWinTh).indexOf('->') == -1
-                    ? ''
-                    : 'red'
-                "
-                >{{ scope.row.insuranceWinTh |MoneyFormat }}</span
+                >{{ scope.row.insuranceGapTh }}</span
               >
             </template>
           </el-table-column>
@@ -327,17 +315,50 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceAddTh |MoneyFormat }}</span
+                >{{ scope.row.insuranceAddTh }}</span
               >
             </template>
           </el-table-column>
+          <el-table-column label="฿洗码量" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.waterTh).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.waterTh }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="฿输赢" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.chipWinTh).indexOf('->') == -1 ? '' : 'red'
+                "
+                >{{ scope.row.chipWinTh }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="฿保险输赢" align="center">
+            <template slot-scope="scope">
+              <span
+                :class="
+                  String(scope.row.insuranceWinTh).indexOf('->') == -1
+                    ? ''
+                    : 'red'
+                "
+                >{{ scope.row.insuranceWinTh }}</span
+              >
+            </template>
+          </el-table-column>
+
           <el-table-column label="修改时间" align="center">
             <template slot-scope="scope">
               <span
                 :class="
                   String(scope.row.createTime).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.createTime |MoneyFormat }}</span
+                >{{ scope.row.createTime }}</span
               >
             </template>
           </el-table-column>
@@ -347,7 +368,7 @@
                 :class="
                   String(scope.row.remark).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.remark |MoneyFormat }}</span
+                >{{ scope.row.remark }}</span
               >
             </template>
           </el-table-column>
@@ -388,7 +409,7 @@
 import { listUpdatePorint } from "@/api/report/report";
 import { tableIdComboBoxInfo } from "@/api/sys/table";
 import { listTable } from "@/api/sys/table";
-import moment from "moment"
+import moment from "moment";
 // import Dialog from "./dialog.vue"
 export default {
   // 客户日报表
@@ -464,7 +485,7 @@ export default {
       let params = {
         tableId: this.queryParams.tableId,
         startTime:
-          this.queryParams.dateRange &&this.queryParams.dateRange.length > 0
+          this.queryParams.dateRange && this.queryParams.dateRange.length > 0
             ? this.queryParams.dateRange[0]
             : "",
         endTime:
