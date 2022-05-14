@@ -147,6 +147,7 @@
       @close="onDialogClose"
       :close-on-click-modal="false"
       append-to-body
+      :close-on-click-modal="false"
     >
       <el-form
         ref="form"
