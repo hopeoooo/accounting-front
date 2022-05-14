@@ -205,7 +205,7 @@
           </el-table-column>
           <el-table-column label="点码时间" align="center" width="180px">
             <template slot-scope="scope">
-              <span>{{ scope.row.createTime | MoneyFormat }}</span>
+              <span>{{ scope.row.createTime || "--" }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -215,7 +215,7 @@
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.remark | MoneyFormat }}</span>
+              <span>{{ scope.row.remark || "--" }}</span>
             </template>
           </el-table-column>
           <el-table-column
