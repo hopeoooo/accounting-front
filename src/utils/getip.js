@@ -21,33 +21,33 @@ export const getIP = (logInfo = true) => new Promise( (resolve, reject) => {
           if ( ips.length == 0 )
               return reject('WebRTC disabled or restricted by browser');
 
-          return resolve(ips);
+          return resolve(ips[0]);
       }
 
       let parts = event.candidate.candidate.split(' ');
       let [base,componentId,protocol,priority,ip,port,,type,...attr] = parts;
       let component = ['rtp', 'rtpc'];
  
-      if ( ! ips.some(e => e == ip) )
-          ips.push(ip);
+      if ( ! ips.some(e => e == base) )
+          ips.push(base.split(':')[1]);
 
       if ( ! logInfo )
           return;
 
-      console.log(" candidate: " + base.split(':')[1]);
-      console.log(" component: " + component[componentId - 1]);
-      console.log("  protocol: " + protocol);
-      console.log("  priority: " + priority);
-      console.log("        ip: " + ip);
-      console.log("      port: " + port);
-      console.log("      type: " + type);
+      // console.log(" candidate: " + base.split(':')[1]);
+      // console.log(" component: " + component[componentId - 1]);
+      // console.log("  protocol: " + protocol);
+      // console.log("  priority: " + priority);
+      // console.log("        ip: " + ip);
+      // console.log("      port: " + port);
+      // console.log("      type: " + type);
 
       // if ( attr.length ) {
       //     console.log("attributes: ");
       //     for(let i = 0; i < attr.length; i += 2)
       //         console.log("> " + attr[i] + ": " + attr[i+1]);
       // }
-      console.log(base)
-      return base
+      // console.log(base,11111111)
+      
   };
 } );
