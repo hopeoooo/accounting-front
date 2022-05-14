@@ -256,7 +256,7 @@
       append-to-body
       :close-on-click-modal="false"
       ref="dialogForm"
-      :close-on-click-modal="false"
+
     >
       <el-form
         ref="form"

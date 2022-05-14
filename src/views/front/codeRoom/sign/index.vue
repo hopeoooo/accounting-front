@@ -262,7 +262,7 @@
       append-to-
       :close-on-click-modal="false"
       v-if="open"
-      :close-on-click-modal="false"
+
     >
       <el-form
         ref="form"
