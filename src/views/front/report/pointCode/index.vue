@@ -69,104 +69,113 @@
           <el-table-column label="靴号" align="center" prop="bootNum" />
           <el-table-column label="$系统点码数" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.sysChip |MoneyFormat }}</span>
+              <span>{{ scope.row.sysChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$手动点码数" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.personChip |MoneyFormat }}</span>
+              <span>{{ scope.row.personChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$筹码差距" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipGap |MoneyFormat }}</span>
+              <span>{{ scope.row.chipGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$现金差距" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashGap |MoneyFormat }}</span>
+              <span>{{ scope.row.cashGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$筹码增减" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipAdd |MoneyFormat }}</span>
+              <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="$现金增减" align="center" width="100px">
+            <template slot-scope="scope">
+              <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险系统点码数" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.sysInsurance |MoneyFormat }}</span>
+              <span>{{ scope.row.sysInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险手动点码数" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.personInsurance |MoneyFormat }}</span>
+              <span>{{ scope.row.personInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险筹码差距" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceGap |MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceGap | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="$保险筹码增减" align="center" width="150px">
+            <template slot-scope="scope">
+              <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$洗码量" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.water |MoneyFormat }}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
           <el-table-column label="$输赢" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWin |MoneyFormat }}</span>
+              <span>{{ scope.row.chipWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="$保险输赢" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWin |MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码增减" align="center" width="150px">
-            <template slot-scope="scope">
-              <span>{{ scope.row.insuranceAdd |MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-
           <el-table-column label="฿系统点码数" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.sysChipTh |MoneyFormat }}</span>
+              <span>{{ scope.row.sysChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿手动点码数" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.personChipTh |MoneyFormat }}</span>
+              <span>{{ scope.row.personChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿筹码差距" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipGapTh |MoneyFormat }}</span>
+              <span>{{ scope.row.chipGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿现金差距" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashGapTh |MoneyFormat }}</span>
+              <span>{{ scope.row.cashGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿筹码增减" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipAddTh |MoneyFormat }}</span>
+              <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="฿现金增减" align="center" width="100px">
+            <template slot-scope="scope">
+              <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险系统点码数" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.sysInsuranceTh |MoneyFormat }}</span>
+              <span>{{ scope.row.sysInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险手动点码数" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.personInsuranceTh |MoneyFormat }}</span>
+              <span>{{ scope.row.personInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险筹码差距" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceGapTh |MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险筹码增减" align="center" width="150px">
@@ -176,27 +185,27 @@
           </el-table-column>
           <el-table-column label="฿洗码量" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh |MoneyFormat }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿输赢" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.chipWinTh |MoneyFormat }}</span>
+              <span>{{ scope.row.chipWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险输赢" align="center" width="100px">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceWinTh |MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="฿保险筹码增减" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{ scope.row.insuranceAddTh |MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column label="点码时间" align="center" width="180px">
             <template slot-scope="scope">
-              <span>{{ scope.row.createTime |MoneyFormat }}</span>
+              <span>{{ scope.row.createTime | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -206,7 +215,7 @@
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.remark |MoneyFormat }}</span>
+              <span>{{ scope.row.remark | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
