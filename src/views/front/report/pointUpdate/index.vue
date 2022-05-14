@@ -73,7 +73,7 @@
                 :class="
                   String(scope.row.sysChip).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.sysChip }}</span
+                >{{ scope.row.sysChip | MoneyFormat}}</span
               >
             </template>
           </el-table-column>
@@ -83,7 +83,7 @@
                 :class="
                   String(scope.row.personChip).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.personChip }}</span
+                >{{ scope.row.personChip | MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -103,7 +103,7 @@
                 :class="
                   String(scope.row.cashGap).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.cashGap || 0 }}</span
+                >{{ scope.row.cashGap |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -113,7 +113,7 @@
                 :class="
                   String(scope.row.chipAdd).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipAdd || 0 }}</span
+                >{{ scope.row.chipAdd |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -125,7 +125,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.sysInsurance || 0 }}</span
+                >{{ scope.row.sysInsurance |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -137,7 +137,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.personInsurance || 0 }}</span
+                >{{ scope.row.personInsurance |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -149,7 +149,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceGap || 0 }}</span
+                >{{ scope.row.insuranceGap |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -159,7 +159,7 @@
                 :class="
                   String(scope.row.water).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.water || 0 }}</span
+                >{{ scope.row.water |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -170,7 +170,7 @@
                 :class="
                   String(scope.row.chipWin).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipWin || 0 }}</span
+                >{{ scope.row.chipWin |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -182,7 +182,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceWin || 0 }}</span
+                >{{ scope.row.insuranceWin |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -194,7 +194,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceAdd || 0 }}</span
+                >{{ scope.row.insuranceAdd |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -204,7 +204,7 @@
                 :class="
                   String(scope.row.sysChipTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.sysChipTh || 0 }}</span
+                >{{ scope.row.sysChipTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -216,7 +216,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.personChipTh || 0 }}</span
+                >{{ scope.row.personChipTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -226,7 +226,7 @@
                 :class="
                   String(scope.row.chipGapTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipGapTh || 0 }}</span
+                >{{ scope.row.chipGapTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -236,7 +236,7 @@
                 :class="
                   String(scope.row.cashGapTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.cashGapTh || 0 }}</span
+                >{{ scope.row.cashGapTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -246,7 +246,7 @@
                 :class="
                   String(scope.row.chipAddTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipAddTh || 0 }}</span
+                >{{ scope.row.chipAddTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -258,7 +258,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.sysInsuranceTh || 0 }}</span
+                >{{ scope.row.sysInsuranceTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -270,7 +270,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.personInsuranceTh || "--" }}</span
+                >{{ scope.row.personInsuranceTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -282,7 +282,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceGapTh || "--" }}</span
+                >{{ scope.row.insuranceGapTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -293,7 +293,7 @@
                 :class="
                   String(scope.row.waterTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.waterTh || "--" }}</span
+                >{{ scope.row.waterTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -303,7 +303,7 @@
                 :class="
                   String(scope.row.chipWinTh).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.chipWinTh || "--" }}</span
+                >{{ scope.row.chipWinTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -315,7 +315,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceWinTh || "--" }}</span
+                >{{ scope.row.insuranceWinTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -327,7 +327,7 @@
                     ? ''
                     : 'red'
                 "
-                >{{ scope.row.insuranceAddTh || "--" }}</span
+                >{{ scope.row.insuranceAddTh |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -337,7 +337,7 @@
                 :class="
                   String(scope.row.createTime).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.createTime || "--" }}</span
+                >{{ scope.row.createTime |MoneyFormat }}</span
               >
             </template>
           </el-table-column>
@@ -347,7 +347,7 @@
                 :class="
                   String(scope.row.remark).indexOf('->') == -1 ? '' : 'red'
                 "
-                >{{ scope.row.remark || "--" }}</span
+                >{{ scope.row.remark |MoneyFormat }}</span
               >
             </template>
           </el-table-column>

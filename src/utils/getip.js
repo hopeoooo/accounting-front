@@ -27,7 +27,7 @@ export const getIP = (logInfo = true) => new Promise( (resolve, reject) => {
       let parts = event.candidate.candidate.split(' ');
       let [base,componentId,protocol,priority,ip,port,,type,...attr] = parts;
       let component = ['rtp', 'rtpc'];
-
+ 
       if ( ! ips.some(e => e == ip) )
           ips.push(ip);
 
@@ -42,12 +42,12 @@ export const getIP = (logInfo = true) => new Promise( (resolve, reject) => {
       console.log("      port: " + port);
       console.log("      type: " + type);
 
-      if ( attr.length ) {
-          console.log("attributes: ");
-          for(let i = 0; i < attr.length; i += 2)
-              console.log("> " + attr[i] + ": " + attr[i+1]);
-      }
-
-      return " candidate: " + base.split(':')[1]
+      // if ( attr.length ) {
+      //     console.log("attributes: ");
+      //     for(let i = 0; i < attr.length; i += 2)
+      //         console.log("> " + attr[i] + ": " + attr[i+1]);
+      // }
+      console.log(base)
+      return base
   };
 } );
