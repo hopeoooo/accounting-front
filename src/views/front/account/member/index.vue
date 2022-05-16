@@ -361,19 +361,21 @@
           <el-col :span="12">
             <el-form-item label="占股比例" prop="shareRatio">
               <el-input
+                style="width:180px"
                 v-model="form.shareRatio"
                 placeholder="请输入占股比例"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
+              />%
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="返点比例" prop="rebateRatio">
               <el-input
+                style="width:180px"
                 v-model="form.rebateRatio"
                 placeholder="请输入返点比例"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              />
+              />%
             </el-form-item>
           </el-col>
         </el-row>
