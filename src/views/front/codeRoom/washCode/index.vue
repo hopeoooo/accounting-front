@@ -80,7 +80,7 @@
           :summary-method="getSummaries1"
           empty-text="暂无数据"
           ref="washCodeList"
-          :highlight-current-row="false"
+          @sort-change="onSortChange"
         >
           <el-table-column
             fixed
@@ -121,7 +121,7 @@
           <el-table-column
             label="$未结算洗码量"
             align="center"
-            sortable
+            sortable="custom"
             key="water"
             prop="water"
           >
@@ -132,7 +132,7 @@
           <el-table-column
             label="$未结算洗码费"
             align="center"
-            sortable
+            sortable="custom"
             key="waterAmount"
             prop="waterAmount"
           >
@@ -143,7 +143,7 @@
           <el-table-column
             label="฿未结算洗码量"
             align="center"
-            sortable
+            sortable="custom"
             key="waterTh"
             prop="waterTh"
           >
@@ -154,7 +154,7 @@
           <el-table-column
             label="฿未结算洗码费"
             align="center"
-            sortable
+            sortable="custom"
             key="waterAmountTh"
             prop="waterAmountTh"
           >
@@ -261,14 +261,14 @@
           <el-table-column
             label="$未结算洗码量"
             align="center"
-            sortable
+            sortable="custom"
             key="water"
             prop="water"
           />
           <el-table-column
             label="$未结算洗码费"
             align="center"
-            sortable
+            sortable="custom"
             key="waterAmount"
             prop="waterAmount"
           >
@@ -279,14 +279,14 @@
           <el-table-column
             label="฿未结算洗码量"
             align="center"
-            sortable
+            sortable="custom"
             key="waterTh"
             prop="waterTh"
           />
           <el-table-column
             label="฿未结算洗码费"
             align="center"
-            sortable
+            sortable="custom"
             key="waterAmountTh"
             prop="waterAmountTh"
           >
@@ -485,7 +485,9 @@ export default {
         pageSize: 30,
         card: "",
         isAdmin: 0,
-        cardType: 0
+        cardType: 0,
+        orderByColumn: null,
+        isAsc: null
       },
       rules: {
         operationType: [
@@ -529,7 +531,9 @@ export default {
     getList() {
       let params = {
         pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize
+        pageSize: this.queryParams.pageSize,
+        isAsc: this.queryParams.isAsc,
+        orderByColumn: this.queryParams.orderByColumn
       };
 
       params["card"] = this.queryParams.card;
@@ -681,6 +685,13 @@ export default {
       return sums;
     },
 
+    // 排序改变时
+    onSortChange({ column, prop, order }) {
+      this.queryParams.isAsc = order;
+      this.queryParams.orderByColumn = prop;
+      this.getList();
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -712,6 +723,8 @@ export default {
       this.dateRange = [];
       this.queryParams.isAdmin = 0;
       this.queryParams.cardType = 0;
+            this.queryParams.isAsc = null;
+      this.queryParams.orderByColumn = null;
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -885,8 +898,6 @@ export default {
   }
 }
 
-
-
 .el-table–enable-row-hover .el-table__body tr:hover > td {
   background-color: rgba(0, 0, 0, 0) !important;
 }
@@ -897,11 +908,11 @@ export default {
 }
 
 .table-info-red td {
-  background: rgb(199, 135, 135)!important;
+  background: rgb(199, 135, 135) !important;
 }
 .el-table__row.table-info-red.hover-row td {
   // background-color: transparent !important;
-   background: rgb(199, 135, 135)!important;
+  background: rgb(199, 135, 135) !important;
   cursor: pointer;
 }
 

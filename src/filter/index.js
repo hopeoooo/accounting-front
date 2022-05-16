@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-10 15:56:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-16 13:24:47
+ * @LastEditTime: 2022-05-16 16:29:26
  * @Description: file content
  */
 // vue定义全局过滤器
@@ -43,13 +43,13 @@ const MoneyFormat = value => {
   //= 2表示数据有小数位
   if (value2Array.length === 2) {
     let floatPart = value2Array[1].toString(); // 拿到小数部分
-    console.log(floatPart);
+
     if (floatPart.length === 1) {
       // 小数只有1位,补0,
       return intPartFormat + "."+ floatPart + "0";
     } else {
       // 小数部分只截取两位
-      console.log(floatPart);
+
       return intPartFormat + "." + floatPart.slice(0, 2);
     }
   } else {
