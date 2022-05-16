@@ -88,6 +88,7 @@
           sum-text="小计"
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
+           ref="dataTable"
         >
           <el-table-column label="会员卡号" align="center" prop="card" />
           <el-table-column label="姓名" align="center" prop="name">
@@ -535,6 +536,7 @@ export default {
         isAsc: null,
         orderByColumn: null
       };
+      this.$refs.dataTable.clearSort()
       this.resetForm("queryForm");
       this.handleQuery();
     },

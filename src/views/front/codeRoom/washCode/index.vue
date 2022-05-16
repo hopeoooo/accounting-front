@@ -79,7 +79,7 @@
           show-summary
           :summary-method="getSummaries1"
           empty-text="暂无数据"
-          ref="washCodeList"
+          ref="dataTable"
           @sort-change="onSortChange"
         >
           <el-table-column
@@ -725,6 +725,7 @@ export default {
       this.queryParams.cardType = 0;
       this.queryParams.isAsc = null;
       this.queryParams.orderByColumn = null;
+      this.$refs.dataTable.clearSort()
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -754,7 +755,7 @@ export default {
       this.title = "结算洗码";
       if (this.cards.length > 0) {
         // 清空多选
-        this.$refs.washCodeList.clearSelection();
+        this.$refs.dataTable.clearSelection();
       }
     },
     /** 批量结算 */

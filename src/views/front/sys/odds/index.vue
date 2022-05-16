@@ -132,16 +132,13 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChip"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template>
+
               </el-input>
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -153,16 +150,13 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCash"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template>
+
               </el-input>
             </el-form-item>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -174,16 +168,12 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioChip"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-              >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template>
-              </el-input>
+              />
+
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -195,16 +185,13 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template></el-input
+             </el-input
               >
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -216,16 +203,13 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChipTh"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template>
+
               </el-input>
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -237,16 +221,13 @@
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCashTh"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template>
+
               </el-input>
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -258,16 +239,13 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioChipTh"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template>
+
               </el-input>
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -279,16 +257,13 @@
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCashTh"
-                style="witdh:200px"
+                style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-                <template slot="suffix">
-                  <span style="color:#000">
-                    %
-                  </span>
-                </template></el-input
+              </el-input
               >
             </el-form-item>
+              <span class="percentage-label">%</span>
           </div>
         </el-col>
       </el-row>
@@ -687,6 +662,15 @@ export default {
   &:hover {
     background: #bcbcbc;
     color: #000;
+  }
+}
+.listb {
+  display: flex;
+  margin-bottom: 25px;
+  .percentage-label {
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
   }
 }
 </style>

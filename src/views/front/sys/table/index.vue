@@ -340,16 +340,24 @@ export default {
     /** 查询角色列表 */
     getList() {
       this.loading = true;
-      listTable(this.queryParams).then(response => {
-        this.tableList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-      listTableTotal(this.queryParams).then(response => {
-        this.tableTotal = response.data;
+      listTable(this.queryParams)
+        .then(response => {
+          this.tableList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listTableTotal(this.queryParams)
+        .then(response => {
+          this.tableTotal = response.data;
 
-        this.loading = false;
-      });
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
     },
 
     /** 根据角色ID查询菜单树结构 */
