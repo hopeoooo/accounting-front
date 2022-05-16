@@ -192,11 +192,11 @@ export default {
           return;
         }
         if (index === 3) {
-          sums[index] = MoneyFormat(this.userTotal.winLose);
+          sums[index] = MoneyFormat(this.userTotal.insuranceWinLose);
           return;
         }
         if (index === 4) {
-          sums[index] = MoneyFormat(this.userTotal.insuranceWinLose);
+          sums[index] = MoneyFormat(this.userTotal.winLose);
           return;
         }
         if (index === 5) {

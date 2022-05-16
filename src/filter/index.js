@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-10 15:56:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-14 16:43:08
+ * @LastEditTime: 2022-05-16 13:24:47
  * @Description: file content
  */
 // vue定义全局过滤器
@@ -36,10 +36,10 @@ const MoneyFormat2 = value => {
 const MoneyFormat = value => {
   // debugger
   if (!value || value == 0 || value == "") return 0;
-  /* 原来用的是Number(value).toFixed(0)，这样取整时有问题，例如0.51取整之后为1，感谢Nils指正 */
-  let intPart = Math.floor(value); // 获取整数部分
-  let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); // 将整数部分逢三一断
+
   let value2Array = value.toString().split(".");
+  const intPart = value2Array[0]
+  const intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); // 将整数部分逢三一断
   //= 2表示数据有小数位
   if (value2Array.length === 2) {
     let floatPart = value2Array[1].toString(); // 拿到小数部分
