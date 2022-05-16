@@ -495,4 +495,9 @@ export default {
 .table-info-red td {
   background: rgb(199, 135, 135);
 }
+.el-table__row.table-info-red.hover-row td {
+  // background-color: transparent !important;
+   background: rgb(199, 135, 135)!important;
+  cursor: pointer;
+}
 </style>

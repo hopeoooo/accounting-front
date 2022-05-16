@@ -156,7 +156,7 @@
             prop="waterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
+              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -166,7 +166,7 @@
             prop="actualWaterAmountTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
+              <span>{{ scope.row.actualWaterAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -510,11 +510,11 @@ export default {
           return;
         }
         if (index === 5) {
-          sums[index] = MoneyFormat(this.userTotal.sumWaterAmount);
+          sums[index] = MoneyFormat(this.userTotal.actualWaterAmount);
           return;
         }
         if (index === 6) {
-          sums[index] = MoneyFormat(this.userTotal.actualWaterAmount);
+          sums[index] = MoneyFormat(this.userTotal.sumWaterTh);
           return;
         }
         if (index === 7) {

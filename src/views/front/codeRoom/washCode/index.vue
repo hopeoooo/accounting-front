@@ -80,6 +80,7 @@
           :summary-method="getSummaries1"
           empty-text="暂无数据"
           ref="washCodeList"
+          :highlight-current-row="false"
         >
           <el-table-column
             fixed
@@ -369,7 +370,7 @@
           <span>{{ form.water | MoneyFormat }}</span>
         </el-form-item>
         <el-form-item label="฿应结洗码量:" prop="water">
-          <span>{{ form.waterTh | MoneyFormat}}</span>
+          <span>{{ form.waterTh | MoneyFormat }}</span>
         </el-form-item>
         <el-form-item label="$应结洗码费:" prop="waterAmount">
           <span>{{ form.waterAmount | MoneyFormat }}</span>
@@ -884,9 +885,26 @@ export default {
   }
 }
 
-.table-info-red td {
-  background: rgb(199, 135, 135);
+
+
+.el-table–enable-row-hover .el-table__body tr:hover > td {
+  background-color: rgba(0, 0, 0, 0) !important;
 }
+
+.el-table__body .el-table__row.hover-row td {
+  // background-color: transparent !important;
+  cursor: pointer;
+}
+
+.table-info-red td {
+  background: rgb(199, 135, 135)!important;
+}
+.el-table__row.table-info-red.hover-row td {
+  // background-color: transparent !important;
+   background: rgb(199, 135, 135)!important;
+  cursor: pointer;
+}
+
 .summary-table {
   .el-table__header-wrapper,
   .el-table__body-wrapper {
