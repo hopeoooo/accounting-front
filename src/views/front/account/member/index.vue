@@ -644,7 +644,7 @@
             memlist.baccaratRollingRatioChip
               ? memlist.baccaratRollingRatioChip
               : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>百家乐洗码比例（฿筹码）</span
@@ -652,7 +652,7 @@
             memlist.baccaratRollingRatioChipTh
               ? memlist.baccaratRollingRatioChipTh
               : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>百家乐洗码比例（$现金）</span
@@ -660,7 +660,7 @@
             memlist.baccaratRollingRatioCash
               ? memlist.baccaratRollingRatioCash
               : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>百家乐洗码比例（฿现金）</span
@@ -668,13 +668,13 @@
             memlist.baccaratRollingRatioCashTh
               ? memlist.baccaratRollingRatioCashTh
               : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（$筹码）</span
           ><span>{{
             memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（฿筹码）</span
@@ -682,13 +682,13 @@
             memlist.dragonTigerRatioChipTh
               ? memlist.dragonTigerRatioChipTh
               : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（$现金）</span
           ><span>{{
             memlist.dragonTigerRatioCash ? memlist.dragonTigerRatioCash : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>龙虎洗码比例（฿现金）</span
@@ -696,7 +696,7 @@
             memlist.dragonTigerRatioCashTh
               ? memlist.dragonTigerRatioCashTh
               : "0"
-          }}</span>
+          }}%</span>
         </div>
         <div class="list">
           <span>是否抽水</span
