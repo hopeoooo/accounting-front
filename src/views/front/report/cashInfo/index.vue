@@ -37,9 +37,9 @@
               <el-option label="买码" :value="13"></el-option>
               <el-option label="注单修改" :value="8"></el-option>
               <el-option label="注单补录" :value="9"></el-option>
-              <el-option label="洗码结算" :value="10"></el-option>
-              <el-option label="汇入" :value="11"></el-option>
-              <el-option label="汇出" :value="12"></el-option>
+              <el-option label="洗码费结算为筹码" :value="10"></el-option>
+              <el-option label="汇入取筹码" :value="11"></el-option>
+              <el-option label="筹码汇出" :value="12"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="操作时间">
@@ -106,9 +106,9 @@
               <span v-if="scope.row.type == '13'">买码</span>
               <span v-if="scope.row.type == '8'">注单修改</span>
               <span v-if="scope.row.type == '9'">注单补录</span>
-              <span v-if="scope.row.type == '10'">洗码结算</span>
-              <span v-if="scope.row.type == '11'">汇入</span>
-              <span v-if="scope.row.type == '12'">汇出</span>
+              <span v-if="scope.row.type == '10'">洗码费结算为筹码</span>
+              <span v-if="scope.row.type == '11'">汇入取筹码</span>
+              <span v-if="scope.row.type == '12'">筹码汇出</span>
             </template>
           </el-table-column>
 

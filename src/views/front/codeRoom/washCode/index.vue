@@ -369,11 +369,11 @@
         <el-form-item label="$应结洗码量:" prop="water">
           <span>{{ form.water | MoneyFormat }}</span>
         </el-form-item>
-        <el-form-item label="฿应结洗码量:" prop="water">
-          <span>{{ form.waterTh | MoneyFormat }}</span>
-        </el-form-item>
         <el-form-item label="$应结洗码费:" prop="waterAmount">
           <span>{{ form.waterAmount | MoneyFormat }}</span>
+        </el-form-item>
+        <el-form-item label="฿应结洗码量:" prop="water">
+          <span>{{ form.waterTh | MoneyFormat }}</span>
         </el-form-item>
         <el-form-item label="฿应结洗码费:" prop="waterAmount">
           <span>{{ form.waterAmountTh | MoneyFormat }}</span>
@@ -723,7 +723,7 @@ export default {
       this.dateRange = [];
       this.queryParams.isAdmin = 0;
       this.queryParams.cardType = 0;
-            this.queryParams.isAsc = null;
+      this.queryParams.isAsc = null;
       this.queryParams.orderByColumn = null;
       this.resetForm("queryForm");
       this.handleQuery();
