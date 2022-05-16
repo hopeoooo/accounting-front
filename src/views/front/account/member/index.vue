@@ -1054,7 +1054,7 @@ export default {
       params["beginTime"] = createTime;
       params["endTime"] = endTime;
       console.log(params);
-      this.loading = true;
+      // this.loading = true;
       listMambers(params).then(response => {
         this.userList = response.list.rows;
         this.total = response.list.total;
