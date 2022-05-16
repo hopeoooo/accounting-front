@@ -571,7 +571,6 @@
               label="是否内部卡号"
               prop="isAdmin"
               label-width="110px"
-              v-if="openType == 'addChild'"
             >
               <el-select
                 v-model="form.isAdmin"

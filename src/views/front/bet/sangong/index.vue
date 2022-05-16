@@ -79,7 +79,7 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @change='DataChange' v-model="scope.row.card" placeholder=""  />
               </template>
           </el-table-column>
            <el-table-column label="输" align="center" key="lose" prop="lose"  >
