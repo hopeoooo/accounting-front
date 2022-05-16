@@ -53,6 +53,7 @@
           show-summary
           sum-text="小计"
           :summary-method="getSummaries1"
+          @sort-change="onSortChange"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -82,7 +83,7 @@
           <el-table-column
             label="$签单金额"
             align="center"
-            sortable
+            sortable="custom"
             key="signedAmount"
             prop="signedAmount"
           >
@@ -93,7 +94,7 @@
           <el-table-column
             label="฿签单金额"
             align="center"
-            sortable
+            sortable="custom"
             key="signedAmountTh"
             prop="signedAmountTh"
           >
@@ -185,7 +186,7 @@
           <el-table-column
             label="$签单金额"
             align="center"
-            sortable
+            sortable="custom"
             key="signedAmount"
             prop="signedAmount"
           >
@@ -196,7 +197,7 @@
           <el-table-column
             label="฿签单金额"
             align="center"
-            sortable
+            sortable="custom"
             key="signedAmountTh"
             prop="signedAmountTh"
           >
@@ -262,7 +263,6 @@
       append-to-
       :close-on-click-modal="false"
       v-if="open"
-
     >
       <el-form
         ref="form"
@@ -431,13 +431,15 @@ export default {
       },
       fromSearch: {
         card: "",
-        isAdmin: false
+        isAdmin: false,
       },
 
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 30
+        pageSize: 30,
+        orderByColumn: null,
+        isAsc: null
       }
     };
   },
@@ -583,6 +585,12 @@ export default {
       });
       return sums;
     },
+    // 排序改变时
+    onSortChange({ column, prop, order }) {
+      this.queryParams.isAsc = order;
+      this.queryParams.orderByColumn = prop;
+      this.getList();
+    },
 
     // 取消按钮
     cancel() {
@@ -610,6 +618,8 @@ export default {
       this.dateRange = [];
       this.fromSearch.isAdmin = 0;
       this.fromSearch.card = "";
+      this.queryParams.isAsc = null;
+      this.queryParams.orderByColumn = null;
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -767,7 +777,7 @@ export default {
 }
 .el-table__row.table-info-red.hover-row td {
   // background-color: transparent !important;
-   background: rgb(199, 135, 135)!important;
+  background: rgb(199, 135, 135) !important;
   cursor: pointer;
 }
 </style>

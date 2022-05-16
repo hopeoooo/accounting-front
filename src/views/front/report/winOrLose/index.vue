@@ -87,6 +87,7 @@
           show-summary
           sum-text="小计"
           :summary-method="getSummaries1"
+          @sort-change="onSortChange"
         >
           <el-table-column label="会员卡号" align="center" prop="card" />
           <el-table-column label="姓名" align="center" prop="name">
@@ -99,7 +100,7 @@
             align="center"
             key="betMoney"
             prop="betMoney"
-            sortable
+            sortable="custom"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney | MoneyFormat }}</span>
@@ -150,7 +151,7 @@
             align="center"
             key="betMoneyTh"
             prop="betMoneyTh"
-            sortable
+            sortable="custom"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoneyTh | MoneyFormat }}</span>
@@ -227,7 +228,7 @@
             align="center"
             key="betMoney"
             prop="betMoney"
-            sortable
+            sortable="custom"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney || 0 }}</span>
@@ -278,7 +279,7 @@
             align="center"
             key="betMoneyTh"
             prop="betMoneyTh"
-            sortable
+            sortable="custom"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoneyTh || 0 }}</span>
@@ -417,7 +418,9 @@ export default {
           .format("YYYY-MM-DD HH:mm:ss"),
         endDate: moment(new Date())
           .endOf("day")
-          .format("YYYY-MM-DD HH:mm:ss")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        isAsc: null,
+        orderByColumn: null
       }
     };
   },
@@ -443,7 +446,9 @@ export default {
         startTime: this.queryParams.startDate, //开始时间
         endTime: this.queryParams.endDate, //结束时间
         pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize
+        pageSize: this.queryParams.pageSize,
+        isAsc: this.queryParams.isAsc,
+        orderByColumn: this.queryParams.orderByColumn
       };
 
       this.loading = true;
@@ -526,7 +531,9 @@ export default {
           .format("YYYY-MM-DD HH:mm:ss"),
         endDate: moment(new Date())
           .endOf("day")
-          .format("YYYY-MM-DD HH:mm:ss")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        isAsc: null,
+        orderByColumn: null
       };
       this.resetForm("queryForm");
       this.handleQuery();
@@ -722,6 +729,12 @@ export default {
         }
       });
       return sums;
+    },
+    // 排序改变时
+    onSortChange({ column, prop, order }) {
+      this.queryParams.isAsc = order;
+      this.queryParams.orderByColumn = prop;
+      this.getList();
     }
   }
 };

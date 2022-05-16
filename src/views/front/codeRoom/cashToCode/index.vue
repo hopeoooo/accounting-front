@@ -54,6 +54,7 @@
           show-summary
           sum-text="小计"
           :summary-method="getSummaries1"
+          @sort-change="onSortChange"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -93,7 +94,7 @@
           <el-table-column
             label="$筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipAmount"
             prop="chipAmount"
           >
@@ -104,7 +105,7 @@
           <el-table-column
             label="฿筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipAmountTh"
             prop="chipAmountTh"
           >
@@ -197,7 +198,7 @@
           <el-table-column
             label="$筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipAmount"
             prop="chipAmount"
           >
@@ -208,7 +209,7 @@
           <el-table-column
             label="฿筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipAmountTh"
             prop="chipAmountTh"
           >
@@ -298,10 +299,14 @@
         :rules="rules"
         :show-message="true"
         label-width="120px"
-
       >
         <el-form-item label="卡号" prop="card">
-          <el-input v-model="form.card" placeholder=""  style="width:150px" :disabled="true" />
+          <el-input
+            v-model="form.card"
+            placeholder=""
+            style="width:150px"
+            :disabled="true"
+          />
         </el-form-item>
         <el-form-item
           label="$买入筹码金额"
@@ -311,7 +316,7 @@
           <el-input
             v-model="form.chipAmount"
             placeholder=""
-             style="width:150px"
+            style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -323,7 +328,7 @@
           <el-input
             v-model="form.chipAmountTh"
             placeholder=""
-             style="width:150px"
+            style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -335,7 +340,7 @@
           <el-input
             v-model="form.chipAmount"
             placeholder=""
-             style="width:150px"
+            style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -347,7 +352,7 @@
           <el-input
             v-model="form.chipAmountTh"
             placeholder=""
-             style="width:150px"
+            style="width:150px"
             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           />
         </el-form-item>
@@ -431,11 +436,13 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 30
+        pageSize: 30,
+        orderByColumn: null,
+        isAsc: null
       },
       fromSearch: {
         card: "",
-        isAdmin: false
+        isAdmin: false,
       }
     };
   },
@@ -504,20 +511,24 @@ export default {
       let params = Object.assign({}, this.fromSearch, this.queryParams);
       params["isAdmin"] = this.fromSearch.isAdmin == false ? 0 : 1;
       this.loading = true;
-      listCashChip(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
-      listCashChipTotal(params).then(response => {
-        this.userTotal = response.data;
+      listCashChip(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listCashChipTotal(params)
+        .then(response => {
+          this.userTotal = response.data;
 
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
     },
@@ -546,6 +557,7 @@ export default {
       });
       return sums;
     },
+    // 小计
     getSummaries1(param) {
       const { columns, data } = param;
       const sums = [];
@@ -574,9 +586,9 @@ export default {
           }, 0);
           sums[index] += "";
           // sums[index] = Number(sums[index]).toFixed(2);
-          if (index == 4|| index == 5) {
+          if (index == 4 || index == 5) {
             // 金额需要保留两位小数点
-             sums[index] = (Number(sums[index])).toFixed(2)
+            sums[index] = Number(sums[index]).toFixed(2);
             sums[index] = MoneyFormat(sums[index]);
           }
         } else {
@@ -584,6 +596,13 @@ export default {
         }
       });
       return sums;
+    },
+
+    // 排序改变时
+    onSortChange({ column, prop, order }) {
+      this.queryParams.isAsc = order;
+      this.queryParams.orderByColumn = prop;
+      this.getList();
     },
 
     // 取消按钮
@@ -614,6 +633,8 @@ export default {
       this.dateRange = [];
       this.fromSearch.isAdmin = 0;
       this.fromSearch.card = "";
+      this.queryParams.isAsc = null;
+      this.queryParams.orderByColumn = null;
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -775,7 +796,7 @@ export default {
 }
 .el-table__row.table-info-red.hover-row td {
   // background-color: transparent !important;
-   background: rgb(199, 135, 135)!important;
+  background: rgb(199, 135, 135) !important;
   cursor: pointer;
 }
 </style>

@@ -54,6 +54,7 @@
           show-summary
           sum-text="小计"
           :summary-method="getSummaries1"
+          @sort-change="onSortChange"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -83,7 +84,7 @@
           <el-table-column
             label="$已存筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipBalance"
             prop="chipBalance"
           >
@@ -94,7 +95,7 @@
           <el-table-column
             label="$已存现金余额"
             align="center"
-            sortable
+            sortable="custom"
             key="cashBalance"
             prop="cashBalance"
           >
@@ -105,7 +106,7 @@
           <el-table-column
             label="฿已存筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipBalanceTh"
             prop="chipBalanceTh"
           >
@@ -116,7 +117,7 @@
           <el-table-column
             label="฿已存现金余额"
             align="center"
-            sortable
+            sortable="custom"
             key="cashBalanceTh"
             prop="cashBalanceTh"
           >
@@ -127,7 +128,7 @@
           <!-- <el-table-column
             label="总余额"
             align="center"
-            sortable
+             sortable="custom"
             key="totalBalance"
             prop="totalBalance"
           >
@@ -222,7 +223,7 @@
           <el-table-column
             label="$已存筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipBalance"
             prop="chipBalance"
           >
@@ -233,7 +234,7 @@
           <el-table-column
             label="$已存现金余额"
             align="center"
-            sortable
+            sortable="custom"
             key="cashBalance"
             prop="cashBalance"
           >
@@ -244,7 +245,7 @@
           <el-table-column
             label="฿已存筹码余额"
             align="center"
-            sortable
+            sortable="custom"
             key="chipBalanceTh"
             prop="chipBalanceTh"
           >
@@ -255,7 +256,7 @@
           <el-table-column
             label="฿已存现金余额"
             align="center"
-            sortable
+            sortable="custom"
             key="cashBalanceTh"
             prop="cashBalanceTh"
           >
@@ -267,7 +268,7 @@
           <!-- <el-table-column
             label="总余额"
             align="center"
-            sortable
+             sortable="custom"
             key="totalBalance"
             prop="totalBalance"
           /> -->
@@ -590,7 +591,9 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 30
+        pageSize: 30,
+        isAsc: null,
+        orderByColumn: null
       },
       fromSearch: {
         card: "",
@@ -894,6 +897,13 @@ export default {
       return sums;
     },
 
+    // 排序改变时
+    onSortChange({ column, prop, order }) {
+      this.queryParams.isAsc = order;
+      this.queryParams.orderByColumn = prop;
+      this.getList();
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -922,6 +932,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
+      this.queryParams.isAsc = null;
+      this.queryParams.orderByColumn = null;
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -1074,7 +1086,7 @@ export default {
 }
 .el-table__row.table-info-red.hover-row td {
   // background-color: transparent !important;
-   background: rgb(199, 135, 135)!important;
+  background: rgb(199, 135, 135) !important;
   cursor: pointer;
 }
 
