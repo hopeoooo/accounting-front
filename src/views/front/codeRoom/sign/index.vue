@@ -54,6 +54,7 @@
           sum-text="小计"
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
+            ref="dataTable"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -620,6 +621,7 @@ export default {
       this.fromSearch.card = "";
       this.queryParams.isAsc = null;
       this.queryParams.orderByColumn = null;
+       this.$refs.dataTable.clearSort()
       this.resetForm("queryForm");
       this.handleQuery();
     },
