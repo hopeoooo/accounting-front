@@ -691,6 +691,7 @@ export default {
         player: "",
         bankerIns: "", //庄保险
         playerIns: "", //闲保险
+        tieIns: "", //和保险
         tie: "",
         playerPair: "",
         bankerPair: "",
