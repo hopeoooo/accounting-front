@@ -681,6 +681,8 @@ export default {
       initForm: {},
       // 原始的下注金额
       originalOption: {},
+      // 原始的开牌结果(排序后)
+      originalGameResult: "",
       // 开牌结果，用于表单
       gameResultList: [],
       // 下注金额
@@ -1180,13 +1182,18 @@ export default {
     getFormGameResult(c) {
       let arr1 = [];
       let arr = c.split("");
+      // 将排序后的开牌结果存起来。提交的时候对比差异
+      const sortGameResult = _.sortBy(arr)
+      this.originalGameResult = sortGameResult.join("")
       return arr;
     },
     // 开牌结果选择变化
     onGameResultChange(val) {
       console.log("开牌结果选择变化", val);
-      this.gameResultList = val;
-      this.form.gameResult = val.join("");
+      //
+      const newResult =  _.sortBy(val)
+      this.gameResultList = newResult;
+      this.form.gameResult = newResult.join("");
     },
     initOption(options) {
       // 百家乐：将下注金额带入表单，生成初始化的formOption，用于百家乐的表单里的下注金额数据绑定
@@ -1318,7 +1325,7 @@ export default {
           if (
             this.form.card == this.initForm.card &&
             this.form.type == this.initForm.type &&
-            this.form.gameResult == this.initForm.gameResult &&
+            this.form.gameResult == this.originalGameResult &&
             _.isEqualWith(this.originalOption, this.formOption,this.equalOption)
           ) {
             // 没有修改东西,不调接口
