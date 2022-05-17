@@ -229,10 +229,10 @@ export default {
         dateRange: [
           moment(new Date())
             .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
+            .format("YYYY-MM-DD"),
           moment(new Date())
             .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
+            .format("YYYY-MM-DD")
         ],
         pageSize: 30,
         pageNum: 1
@@ -331,10 +331,10 @@ export default {
         dateRange: [
           moment(new Date())
             .startOf("day")
-            .format("YYYY-MM-DD HH:mm:ss"),
+            .format("YYYY-MM-DD"),
           moment(new Date())
             .endOf("day")
-            .format("YYYY-MM-DD HH:mm:ss")
+            .format("YYYY-MM-DD")
         ],
         pageSize: this.queryParams.pageSize
       };
