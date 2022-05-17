@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
-      <div><h1>百家乐</h1>
+      <div class="table_box_box">
        <span>桌台编号</span>
-       <el-select v-model="tableId" @change="valChange(tableId)" placeholder="请选择">
-        <el-option
-          v-for="item in options"
-          :key="item.tableId"
-          :label="item.tableId"
-          :value="item.tableId">
-        </el-option>
-      </el-select>
-       </div>
+       <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.tableId"
+            :label="item.tableId"
+            :value="item.tableId">
+          </el-option>
+        </el-select>
+      </div>
 
-     <el-table v-loading="loading" class="betBox" height="800px" :data="betList"  border >
+     <el-table v-loading="loading" class="betBox" stripe="" height="920px" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
              <template slot-scope="scope">
@@ -140,7 +140,9 @@ export default {
 
 };
 </script>
+
 <style lang="scss" >
+
 .detailBox{
   border: 1px solid #bcbcbc;
   .list{
