@@ -3,11 +3,11 @@
     <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1400px" :before-close="handleClose" append-to-body v-if="isOpen" :close-on-click-modal="false"> 
        <el-row :gutter="20">
            <el-col :span="6" :xs="12">
-             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries" @cell-mouse-leave="handleSelectionChange">
+             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries" >
                  <el-table-column label="面值$" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
-                        <el-input v-model.number="scope.row.num" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                        <el-input v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
                 <el-table-column label="合计" align="center"   prop="total">
@@ -84,10 +84,10 @@
                   <div class="list">
                     <div>$总差距</div>
                     <div>
-                      {{(form.chipGap||'-')+(form.cashGap||'')}}
+                      {{form.totalGap||'-'}}
                     </div>
                      <div>
-                       <span v-if="!form.cashGap || !form.chipGap">{{form.cashGap !=0 && form.chipGap !=0 ?'-':'正确'}}</span>
+                       <span v-if="!form.totalGap">{{form.totalGap==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
@@ -140,11 +140,11 @@
               </el-form>
            </el-col>
            <el-col :span="6" :xs="12">
-             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata1"  border show-summary sum-text="小计" :summary-method="getSummaries1" @cell-mouse-leave="handleSelectionChange">
+             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata1"  border show-summary sum-text="小计" :summary-method="getSummaries1">
                  <el-table-column label="面值฿" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
-                        <el-input v-model.number="scope.row.num" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                        <el-input v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
                 <el-table-column label="合计" align="center"   prop="total">
@@ -221,10 +221,10 @@
                   <div class="list">
                     <div>฿总差距</div>
                     <div>
-                      {{(form.chipGapTh||'-')+(form.cashGapTh||'')}}
+                      {{form.totalGapTh||'-'}}
                     </div>
                      <div>
-                        <span v-if="!form.cashGapTh || !form.chipGapTh">{{form.cashGapTh!=0 && form.chipGapTh!=0?'-':'正确'}}</span>
+                       <span v-if="!form.totalGapTh">{{form.totalGapTh==0?'正确':'-'}}</span>
                        <span v-else style="color:red">错误</span>
                      </div>
                   </div>
@@ -506,6 +506,8 @@ export default {
               this.form['insuranceGapTh']=arr.insuranceGapTh
                this.form['cashReceiptTh']=arr.cashReceiptTh
               this.form['chipReceiptTh']=arr.chipReceiptTh
+              this.form['totalGap']=arr.totalGap
+              this.form['totalGapTh']=arr.totalGapTh
               this.$forceUpdate()
             });
           } else {
@@ -519,6 +521,8 @@ export default {
                this.form['cashGapTh']=arr.cashGapTh
               this.form['chipGapTh']=arr.chipGapTh
               this.form['insuranceGapTh']=arr.insuranceGapTh
+              this.form['totalGap']=arr.totalGap
+              this.form['totalGapTh']=arr.totalGapTh
               this.$forceUpdate()             
             });
           }

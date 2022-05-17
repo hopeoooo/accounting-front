@@ -157,7 +157,7 @@
                 <el-radio-button :label="9" class="red">大</el-radio-button>
                 <el-radio-button :label="6" class="blue">小</el-radio-button>
               </el-radio-group> -->
-              <el-checkbox-group v-model="checkboxGroup2" class="checked" :max="1">
+              <el-checkbox-group v-model="formLudan.checkboxGroup2" class="checked" :max="1">
                 <el-checkbox-button v-for="(e,key) in reData1" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
               </el-checkbox-group>
           </el-form-item>
