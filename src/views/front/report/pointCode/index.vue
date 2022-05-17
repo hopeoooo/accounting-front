@@ -397,6 +397,58 @@ export default {
       this.getList();
     },
     handleUpdate(row) {
+      if(row.chipAdd>0){
+        row['chipSub'] =0
+      }else if(row.chipAdd=0){
+        row['chipSub'] =0
+      }else{
+        row['chipSub'] = -row.chipAdd
+        row.chipAdd =0
+      }
+      if(row.cashAdd>0){
+        row['cashSub'] =0
+      }else if(row.cashAdd=0){
+        row['cashSub'] =0
+      }else{
+        row['cashSub'] = -row.cashAdd
+        row.cashAdd =0
+      }
+      if(row.insuranceAdd>0){
+        row['insuranceSub'] =0
+      }else if(row.insuranceAdd=0){
+        row['insuranceSub'] =0
+      }else{
+        row['insuranceSub'] = -row.insuranceAdd
+        row.insuranceAdd =0
+      }
+        if(row.chipAddTh>0){
+        row['chipSubTh'] =0
+      }else if(row.chipAddTh=0){
+        row['chipSubTh'] =0
+      }else{
+        row['chipSubTh'] = -row.chipAddTh
+        row.chipAddTh =0
+      }
+      if(row.cashAddTh>0){
+        row['cashSubTh'] =0
+      }else if(row.cashAddTh=0){
+        row['cashSubTh'] =0
+      }else{
+        row['cashSubTh'] = -row.cashAddTh
+        row.cashAddTh =0
+      }
+      if(row.insuranceAddTh>0){
+        row['insuranceSubTh'] =0
+      }else if(row.insuranceAddTh=0){
+        row['insuranceSubTh'] =0
+      }else{
+        row['insuranceSubTh'] = -row.insuranceAddTh
+        row.insuranceAddTh =0
+      }
+      row['totalGap']=row.chipGap+row.cashGap
+      row['totalGapTh']=row.chipGapTh+row.cashGapTh
+      row['insurance']=row.personInsurance
+      row['insuranceTh']=row.personInsuranceTh
       this.formData = row;
       this.open = true;
     },
