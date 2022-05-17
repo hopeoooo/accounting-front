@@ -15,7 +15,7 @@
             <el-select
               v-model="queryParams.type"
               placeholder=""
-              style="width: 120px"
+              style="width: 130px"
             >
               <el-option label="卡号查询" value="card"></el-option>
               <el-option label="姓名查询" value="name"></el-option>
