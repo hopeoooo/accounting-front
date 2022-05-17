@@ -131,13 +131,7 @@
           </el-form-item>
         </el-form>
 
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          show-summary
-          sum-text="小计"
-          :summary-method="getSummaries1"
-        >
+        <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             label="会员卡号"
@@ -287,163 +281,6 @@
           </el-table-column>
         </el-table>
 
-        <!-- 渲染总计 -->
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          class="table2"
-          show-summary
-          sum-text="总计"
-          :summary-method="getSummaries"
-        >
-          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column
-            label="会员卡号"
-            align="center"
-            key="card"
-            prop="card"
-          />
-          <el-table-column
-            label="台号"
-            align="center"
-            key="tableId"
-            prop="tableId"
-            width="80px"
-          />
-          <el-table-column
-            label="靴号"
-            align="center"
-            key="bootNum"
-            prop="bootNum"
-            width="60px"
-          />
-          <el-table-column
-            label="局号"
-            align="center"
-            key="gameNum"
-            prop="gameNum"
-            width="60px"
-          />
-          <el-table-column
-            label="游戏类型"
-            align="center"
-            key="gameId"
-            prop="gameId"
-            width="80px"
-          >
-            <template slot-scope="scope">
-              <span>{{ getGameName(scope.row.gameId) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="下注玩法"
-            align="center"
-            key="option"
-            prop="option"
-            :show-overflow-tooltip="true"
-          >
-            <template slot-scope="scope">
-              <!--百家乐、龙虎 -->
-              <span v-if="scope.row.gameId == 1 || scope.row.gameId == 2">{{
-                getPlayText(scope.row.option)
-              }}</span>
-              <span v-else>-</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="币种"
-            align="center"
-            key="type"
-            prop="type"
-            width="80px"
-          >
-            <template slot-scope="scope" class="wanfabox">
-              <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
-              <!-- <span v-if="scope.row.type == 0">$筹码</span>
-              <span v-if="scope.row.type == 1">$现金</span>
-              <span v-if="scope.row.type == 2">฿筹码</span>
-              <span v-if="scope.row.type == 3">฿现金</span> -->
-              <span>{{ typeMap[scope.row.type] }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="下注金额"
-            align="center"
-            key="betMoney"
-            prop="betMoney"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.betMoney | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="开牌结果"
-            align="center"
-            key="gameResult"
-            prop="gameResult"
-          >
-            <template slot-scope="scope">
-              <div>
-                <span
-                  v-for="(item, index) in scope.row.gameResult"
-                  :key="index"
-                  :class="getResultStyle(item)"
-                >
-                  {{ getGameResult2(item, index) }}
-                </span>
-              </div>
-              <!-- <span>{{ getGameResult(scope.row.gameResult) }}</span> -->
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="输赢"
-            align="center"
-            key="winLose"
-            prop="winLose"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.winLose | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="下注时间"
-            align="center"
-            key="createTime"
-            prop="createTime"
-            width="180px"
-          />
-          <el-table-column
-            label="操作员"
-            align="center"
-            key="createBy"
-            prop="createBy"
-          />
-
-          <el-table-column
-            fixed="right"
-            label="操作"
-            align="center"
-            width="150"
-            class-name="small-padding fixed-width"
-          >
-            <template slot-scope="scope" v-if="scope.row.userId !== 1">
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-tickets"
-                @click="handleEdit(scope.row)"
-                >编辑</el-button
-              >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-tickets"
-                @click="handleRepair(scope.row)"
-                >补录</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -462,6 +299,7 @@
       width="500px"
       append-to-body
       :close-on-click-modal="false"
+      @close="onDialogClose"
     >
       <el-form
         ref="form"
@@ -696,7 +534,6 @@
             <el-checkbox-group
               v-model="gameResultList"
               @change="onGameResultChange"
-              :min="openType == 'edit' ? 1 : 0"
             >
               <el-checkbox label="4">庄</el-checkbox>
               <el-checkbox label="1">闲</el-checkbox>
@@ -733,7 +570,7 @@ import {
   repairBetRecord
 } from "@/api/report/report";
 import moment from "moment";
-
+const _ = require("lodash");
 const betOptionList = {
   4: "庄",
   1: "闲",
@@ -840,9 +677,13 @@ export default {
       roleOptions: [],
       // 表单参数
       form: {},
+      //原始的表单数据，用于提交时对比
+      initForm: {},
+      // 原始的下注金额
+      originalOption: {},
       // 开牌结果，用于表单
       gameResultList: [],
-
+      // 下注金额
       formOption: {
         banker: "",
         player: "",
@@ -1025,7 +866,7 @@ export default {
         this.getNewOption(newVal);
       },
       deep: true,
-      immediate: false
+      immediate: true
     },
     longhuFormOption: {
       handler(newVal, oldVal) {
@@ -1034,7 +875,7 @@ export default {
         this.getNewLongHuOption(newVal);
       },
       deep: true,
-      immediate: false
+      immediate: true
     }
   },
   created() {
@@ -1049,6 +890,7 @@ export default {
      */
     setTimedata(Date) {
       if (Date) {
+        this.Datatype = null;
         for (let index = 0; index < this.TimeList.length; index++) {
           const element = this.TimeList[index];
           if (Date[0] == element.val[0] && Date[1] == element.val[1]) {
@@ -1119,79 +961,19 @@ export default {
       this.$delete(params, "pageSize");
     },
 
-    //总计规则
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "总计";
-          return;
-        }
-        if (index === 7) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.betMoney)
-            : "";
-          return;
-        }
-        if (index === 9) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.winLose)
-            : "";
-          return;
-        }
-      });
-      return sums;
-    },
-    // 小计规则
-    getSummaries1(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "小计";
-          return;
-        }
-        if (index != 7 && index != 9) {
-          sums[index] = "";
-          return;
-        }
-
-        const values = data.map(item => Number(item[column.property]));
-
-        if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            console.log(value);
-
-            if (!isNaN(value)) {
-              const pel = prev + curr; // 主要代码
-              return pel;
-            } else {
-              // return prev;
-              const pel = prev; // 主要代码
-              return pel;
-            }
-          }, 0);
-
-          // sums[index] += "";
-          // sums[index] = Number(sums[index]).toFixed(2);
-           sums[index] = MoneyFormat(sums[index]);
-        } else {
-          // sums[index] = 'N/A';
-        }
-      });
-      return sums;
-    },
-
     // 取消按钮
     cancel() {
       this.open = false;
       this.reset();
     },
+    onDialogClose() {
+      this.reset();
+    },
     // 表单重置
     reset() {
       this.form = {};
+      this.initForm = {};
+      this.originalOption = {};
       this.resetForm("form");
       this.openType = "";
       this.gameResultList = [];
@@ -1241,6 +1023,7 @@ export default {
       this.openGame = gameName;
       this.title = `${gameName}注单修改`;
       if (gameName == "百家乐") {
+        // 初始化下注金额和开牌结果
         this.initOption(row.option);
         this.gameResultList = this.getFormGameResult(row.gameResult);
       }
@@ -1251,6 +1034,8 @@ export default {
       if (gameName != "百家乐" || gameName != "龙虎") {
         this.form.betMoney = row.betMoney;
       }
+      // 复制一份原始的form，用于提交时对比差异
+      this.initForm = Object.assign({}, row);
     },
 
     /** 补录 */
@@ -1412,6 +1197,9 @@ export default {
         // {banker:20}
         this.formOption[key] = element.betMoney;
       }
+
+      // 复制一份下注金额.用于提交时对比差异
+      this.originalOption = Object.assign({}, this.formOption);
     },
     // 百家乐:生成新的百家乐的option,用于form提交
     getNewOption(formOption) {
@@ -1447,6 +1235,8 @@ export default {
         // {dragon:20}
         this.longhuFormOption[key] = element.betMoney;
       }
+      // 复制一份下注金额.用于提交时对比差异
+      this.originalOption = Object.assign({}, this.longhuFormOption);
     },
 
     //龙虎: 生成新的龙虎的option,用于form提交
@@ -1512,13 +1302,62 @@ export default {
       };
     },
 
+    // 对比下注金额的数据是否与原始数据相等
+    equalOption(originalOption,formOption) {
+      // 因为formOption的值类型是string,originalOption值类型是Number
+      if (originalOption == Number(formOption)) {
+        return true
+      }
+    },
+
     /** 提交按钮 */
     submitForm: function() {
       if (this.openType == "edit") {
-        //
+        /** 对比是否有修改 */
+        if (this.openGame == "百家乐") {
+          if (
+            this.form.card == this.initForm.card &&
+            this.form.type == this.initForm.type &&
+            this.form.gameResult == this.initForm.gameResult &&
+            _.isEqualWith(this.originalOption, this.formOption,this.equalOption)
+          ) {
+            // 没有修改东西,不调接口
+            this.$modal.msgError("本次未做任何修改");
+            return;
+          }
+        }
+        if (this.openGame == "龙虎") {
+          if (
+            this.form.card == this.initForm.card &&
+            this.form.type == this.initForm.type &&
+            this.form.gameResult == this.initForm.gameResult &&
+             _.isEqualWith(this.originalOption, this.longhuFormOption,this.equalOption)
+          ) {
+            // 没有修改东西,不调接口
+            this.$modal.msgError("本次未做任何修改");
+            return;
+          }
+        }
+        if (
+          this.openGame == "牛牛" ||
+          this.openGame == "三公" ||
+          this.openGame == "推筒子"
+        ) {
+          if (
+            this.form.card == this.initForm.card &&
+            this.form.type == this.initForm.type &&
+            this.form.gameResult == this.initForm.gameResult &&
+            this.form.betMoney == this.initForm.betMoney
+          ) {
+            // 没有修改东西,不调接口
+            this.$modal.msgError("本次未做任何修改");
+            return;
+          }
+        }
+        /** 是否有录入完整注单数据 */
         if (
           (this.openGame == "百家乐" || this.openGame == "龙虎") &&
-          (!this.form.card || !this.formBetMoney)
+          (!this.form.card || !this.formBetMoney || this.form.gameResult == "")
         ) {
           // 百家乐 、龙虎
           this.$modal.msgError("请录入完整注单数据");
@@ -1529,7 +1368,7 @@ export default {
           (this.openGame == "牛牛" ||
             this.openGame == "三公" ||
             this.openGame == "推筒子") &&
-          (!this.form.card || !this.form.betMoney)
+          (!this.form.card || !this.form.betMoney || this.form.gameResult == "")
         ) {
           // 、牛牛、三公、推筒子
           this.$modal.msgError("请录入完整注单数据");
@@ -1539,8 +1378,7 @@ export default {
         editBetRecord(this.form).then(response => {
           this.$modal.msgSuccess("注单修改成功");
           this.open = false;
-          this.formBetMoney = 0;
-          this.resetOption();
+          this.reset();
           this.getList();
         });
       } else {
@@ -1573,8 +1411,7 @@ export default {
         repairBetRecord(this.form).then(response => {
           this.$modal.msgSuccess("注单补录成功");
           this.open = false;
-          this.formBetMoney = 0;
-          this.resetOption();
+          this.reset();
           this.getList();
         });
       }
