@@ -227,14 +227,12 @@ export default {
       queryParams: {
         tableId: null,
         dateRange: [
-          moment()
-            .subtract(1, "days")
+          moment(new Date())
             .startOf("day")
-            .format("YYYY-MM-DD"),
-          moment()
-            .subtract(1, "days")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          moment(new Date())
             .endOf("day")
-            .format("YYYY-MM-DD")
+            .format("YYYY-MM-DD HH:mm:ss")
         ],
         pageSize: 30,
         pageNum: 1
@@ -331,14 +329,12 @@ export default {
         tableId: null,
         pageNum: 1,
         dateRange: [
-          moment()
-            .subtract(1, "days")
+          moment(new Date())
             .startOf("day")
-            .format("YYYY-MM-DD"),
-          moment()
-            .subtract(1, "days")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          moment(new Date())
             .endOf("day")
-            .format("YYYY-MM-DD")
+            .format("YYYY-MM-DD HH:mm:ss")
         ],
         pageSize: this.queryParams.pageSize
       };
