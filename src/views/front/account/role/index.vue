@@ -352,6 +352,12 @@ export default {
               this.$refs.menu.setChecked(v, true, false);
             });
           });
+          if (response.checkedKeys.length == this.treeLength) {
+            // 全选中
+            this.menuNodeAll = true
+          }else{
+             this.menuNodeAll = false
+          }
           this.loading = false;
         });
       });
