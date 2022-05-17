@@ -567,7 +567,7 @@ export default {
           sums[index] = "小计";
           return;
         }
-        if (index == 1 || index == 2 || index == 3 || index == 7) {
+        if (index == 1 || index == 2 || index == 3 || index == 6) {
           sums[index] = "";
           return;
         }
