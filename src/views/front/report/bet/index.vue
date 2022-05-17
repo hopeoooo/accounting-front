@@ -849,14 +849,14 @@ export default {
     rules() {
       if (this.openType == "edit") {
         return {
-          card: [{ required: true }],
-          type: [{ required: true }]
+          card: [{ required: true ,message:"卡号不能为空"}],
+          type: [{ required: true  ,message:"请选择币种"}]
         };
       } else {
         return {
-          card: [{ required: true }],
-          gameNum: [{ required: true }],
-          type: [{ required: true }]
+          card: [{ required: true ,message:"卡号不能为空"}],
+          gameNum: [{ required: true  ,message:"局号不能为空"}],
+          type: [{ required: true  ,message:"请选择币种"}]
         };
       }
     }
@@ -1468,7 +1468,7 @@ export default {
     .bet-form-item {
       width: 40%;
       height: 35px;
-      margin-bottom: 10px;
+      margin-bottom: 30px;
       .winlose-label {
         display: inline-block;
         width: 65px;

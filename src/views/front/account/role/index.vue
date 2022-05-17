@@ -135,6 +135,7 @@
                 :check-strictly="!form.menuCheckStrictly"
                 empty-text="加载中，请稍候"
                 :props="defaultProps"
+                @check-change = "onCheckChange"
               ></el-tree>
             </el-form-item>
           </el-col>
@@ -240,7 +241,8 @@ export default {
       },
       selectChangeAll: false,
       menuExpand: false,
-      menuNodeAll: false
+      menuNodeAll: false,
+      treeLength: 0
     };
   },
   watch: {
@@ -260,7 +262,20 @@ export default {
       getTree().then(response => {
         this.treelist = response.data;
         this.loading = false;
+        this.getTreeLength(response.data)
       });
+    },
+    /** 菜单权限的数量 */
+    getTreeLength(treeList) {
+      let length = 0;
+      for (let index = 0; index < treeList.length; index++) {
+        const element = treeList[index];
+        if (element.children) {
+          length += element.children.length;
+        }
+      }
+      // 加上父节点的数量
+      this.treeLength = length + treeList.length;
     },
 
     /** 查询角色列表 */
@@ -272,9 +287,20 @@ export default {
         this.loading = false;
       });
     },
+    onCheckChange(node,checked,hasChildChecked){
+      // console.log(node,checked,hasChildChecked);
+      this.form.menuIds = this.getMenuAllCheckedKeys();
+      if (this.form.menuIds.length == this.treeLength) {
+        // 全都选中
+        this.menuNodeAll = true;
+      }else{
+         this.menuNodeAll = false;
+      }
+    },
     // 节点点击
     handleNodeClick(data) {
       console.log(data);
+
     },
 
     // 取消按钮
@@ -326,6 +352,12 @@ export default {
               this.$refs.menu.setChecked(v, true, false);
             });
           });
+          if (response.checkedKeys.length == this.treeLength) {
+            // 全选中
+            this.menuNodeAll = true
+          }else{
+             this.menuNodeAll = false
+          }
           this.loading = false;
         });
       });
@@ -393,6 +425,8 @@ export default {
       // 半选中的菜单节点
       let halfCheckedKeys = this.$refs.menu.getHalfCheckedKeys();
       checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+      console.log(checkedKeys);
+
       return checkedKeys;
     }
   }
