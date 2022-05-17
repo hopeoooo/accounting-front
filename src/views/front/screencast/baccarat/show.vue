@@ -32,9 +32,10 @@
            <el-table-column label="闲对" align="center" key="card5" prop="card5"  ></el-table-column>
            <el-table-column label="庄保险" align="center" key="card6" prop="card6"  ></el-table-column>
            <el-table-column label="闲保险" align="center" key="card7" prop="card7"  ></el-table-column>
+           <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
             <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
-          <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
+          <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
           <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
              
          
