@@ -1232,6 +1232,7 @@ export default {
       this.form.option = newOption;
       // 计算下注金额
       this.formBetMoney = betAmount;
+      this.form.betMoney = betAmount;
     },
 
     initLongHuOption(options) {
@@ -1295,7 +1296,7 @@ export default {
         player: "",
         bankerIns: "", //庄保险
         playerIns: "", //闲保险
-        tierIns: "", //和保险
+        tieIns: "", //和保险
         tie: "",
         playerPair: "",
         bankerPair: "",
