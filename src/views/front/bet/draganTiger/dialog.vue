@@ -406,7 +406,9 @@ export default {
           insuranceAddTh:'',
           insuranceSubTh:'',
           type:'',
-          remark:''
+          remark:'',
+           aTotal:'',
+          aTotalTh:''
         }
          this.resetForm("form");
     },
