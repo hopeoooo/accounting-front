@@ -64,7 +64,7 @@
                   <div class="list">
                     <div>$筹码差距</div>
                     <div>
-                     {{form.chipGap || '-'}}
+                     {{form.chipGap ==0?'0':(form.chipGap||'-') }}
                     </div>
                     <div>
                        <span v-if="!form.chipGap">{{form.chipGap==0?'正确':'-'}}</span>
@@ -74,7 +74,7 @@
                   <div class="list">
                     <div>$现金差距</div>
                     <div>
-                      {{form.cashGap || '-'}}
+                      {{form.cashGap ==0?'0':(form.cashGap || '-')}}
                     </div>
                     <div>
                         <span v-if="!form.cashGap">{{form.cashGap==0?'正确':'-'}}</span>
@@ -84,7 +84,7 @@
                   <div class="list">
                     <div>$总差距</div>
                     <div>
-                      {{form.totalGap||'-'}}
+                      {{form.totalGap==0?'0':(form.totalGap||'-')}}
                     </div>
                      <div>
                        <span v-if="!form.totalGap">{{form.totalGap==0?'正确':'-'}}</span>
@@ -115,7 +115,7 @@
                    <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>$保险筹码差距</div>
                     <div>
-                      {{form.insuranceGap||'-'}}
+                       {{form.insuranceGap==0?'0':(form.insuranceGap||'-')}}
                     </div>
                      <div>
                        <span v-if="!form.insuranceGap">{{form.insuranceGap==0?'正确':'-'}}</span>
@@ -123,20 +123,20 @@
                        <!-- {{insuranceGap==0?'正确':'错误'}} -->
                        </div>
                   </div>
-                  <div class="list" v-if="title=='收码'">
+                  <!-- <div class="list" v-if="title=='收码'">
                     <div>$筹码收码</div>
                     <div>
-                      {{form.chipReceipt||"-"}}
+                      {{form.chipReceipt ==0?'0':(form.chipReceipt||'-') }}
                     </div>
                      <div>-</div>
                   </div>
                   <div class="list"  v-if="title=='收码'">
                     <div>$现金收码</div>
                     <div>
-                      {{form.cashReceipt||"-"}}
+                       {{form.cashReceipt ==0?'0':(form.cashReceipt||'-') }}
                     </div>
                      <div>-</div>
-                  </div>
+                  </div> -->
               </el-form>
            </el-col>
            <el-col :span="6" :xs="12">
@@ -201,7 +201,7 @@
                   <div class="list">
                     <div>฿筹码差距</div>
                     <div>
-                     {{form.chipGapTh || '-'}}
+                      {{form.chipGapTh ==0?'0':(form.chipGapTh||'-') }}
                     </div>
                     <div>
                        <span v-if="!form.chipGapTh">{{form.chipGapTh==0?'正确':'-'}}</span>
@@ -211,7 +211,7 @@
                   <div class="list">
                     <div>฿现金差距</div>
                     <div>
-                      {{form.cashGapTh || '-'}}
+                      {{form.cashGapTh ==0?'0':(form.cashGapTh||'-') }}
                     </div>
                     <div>
                         <span v-if="!form.cashGapTh">{{form.cashGapTh==0?'正确':'-'}}</span>
@@ -221,7 +221,7 @@
                   <div class="list">
                     <div>฿总差距</div>
                     <div>
-                      {{form.totalGapTh||'-'}}
+                       {{form.totalGapTh ==0?'0':(form.totalGapTh||'-') }}
                     </div>
                      <div>
                        <span v-if="!form.totalGapTh">{{form.totalGapTh==0?'正确':'-'}}</span>
@@ -252,7 +252,7 @@
                    <div class="list" v-if="form.gameId ==1 || form.gameId ==2">
                     <div>฿保险筹码差距</div>
                     <div>
-                      {{form.insuranceGapTh||'-'}}
+                      {{form.insuranceGapTh ==0?'0':(form.insuranceGapTh||'-') }}
                     </div>
                      <div>
                       <span v-if="!form.insuranceGapTh">{{form.insuranceGapTh==0?'正确':'-'}}</span>
@@ -262,14 +262,14 @@
                   <!-- <div class="list" v-if="title=='收码'">
                     <div>฿筹码收码</div>
                     <div>
-                      {{form.chipReceiptTh||"-"}}
+                      {{form.chipReceiptTh==0?'0':(form.chipReceiptTh||'-') }}
                     </div>
                      <div>-</div>
                   </div>
                   <div class="list"  v-if="title=='收码'">
                     <div>฿现金收码</div>
                     <div>
-                      {{form.cashReceiptTh||"-"}}
+                      {{form.cashReceiptTh==0?'0':(form.cashReceiptTh||'-') }}
                     </div>
                      <div>-</div>
                   </div> -->

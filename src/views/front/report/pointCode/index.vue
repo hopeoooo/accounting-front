@@ -399,7 +399,7 @@ export default {
     handleUpdate(row) {
       if(row.chipAdd>0){
         row['chipSub'] =0
-      }else if(row.chipAdd=0){
+      }else if(row.chipAdd==0){
         row['chipSub'] =0
       }else{
         row['chipSub'] = -row.chipAdd
@@ -407,7 +407,7 @@ export default {
       }
       if(row.cashAdd>0){
         row['cashSub'] =0
-      }else if(row.cashAdd=0){
+      }else if(row.cashAdd==0){
         row['cashSub'] =0
       }else{
         row['cashSub'] = -row.cashAdd
@@ -415,7 +415,7 @@ export default {
       }
       if(row.insuranceAdd>0){
         row['insuranceSub'] =0
-      }else if(row.insuranceAdd=0){
+      }else if(row.insuranceAdd==0){
         row['insuranceSub'] =0
       }else{
         row['insuranceSub'] = -row.insuranceAdd
@@ -423,7 +423,7 @@ export default {
       }
         if(row.chipAddTh>0){
         row['chipSubTh'] =0
-      }else if(row.chipAddTh=0){
+      }else if(row.chipAddTh==0){
         row['chipSubTh'] =0
       }else{
         row['chipSubTh'] = -row.chipAddTh
@@ -431,7 +431,7 @@ export default {
       }
       if(row.cashAddTh>0){
         row['cashSubTh'] =0
-      }else if(row.cashAddTh=0){
+      }else if(row.cashAddTh==0){
         row['cashSubTh'] =0
       }else{
         row['cashSubTh'] = -row.cashAddTh
