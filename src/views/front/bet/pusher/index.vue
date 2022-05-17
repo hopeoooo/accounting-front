@@ -8,13 +8,13 @@
             <h1>当前操作员</h1>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
-              <!-- <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button> -->
+              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
               <!-- <el-button class="loginout" type="primary" plain @click="betRecord">下注记录</el-button> -->
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="8" :xs="24">
+      <el-col :span="12" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
@@ -35,13 +35,13 @@
          
       </el-col>
        <!--按钮-->
-      <el-col :span="4" :xs="24">
+      <!-- <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
               <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
-              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <!-- <el-button type="primary" plain @click="betRecord">下注记录</el-button> -->
+              <el-button type="primary" plain @click="roadChange">路珠修改</el-button>
+              <el-button type="primary" plain @click="betRecord">下注记录</el-button>
           </el-card>
-      </el-col>
+      </el-col> -->
        <!--操作-->
       <el-col :span="8" :xs="24">
           <el-card class="box-card-box-list" style="text-align:center">
@@ -589,110 +589,110 @@ export default {
       }
     }
   }
-  .ludanbox{
-    position: relative;
-      .ludanbg{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #919191;
-        font-size: 0;
-        box-sizing: border-box;
-        position: relative;
-        .list{
-          flex-basis: 1/12*100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          border-right: #919191 1px solid;
-          font-size: 0;
-          box-sizing: border-box;
-          &:last-child{
-            border: 0;
-            // border-left: #919191 1px solid;
-          }
-          .list_p{
-            flex-basis: 1/6*100%;
-            width: 100%;
-            height: 0;
-            padding-bottom: 100%;
-            box-sizing: border-box;
-            border-bottom: #919191 1px solid;
-            &:last-child{
-              border: 0;
-              // border-top: #919191 1px solid;
-            }
-            position: relative;
-            i{
-            position: absolute;
-            font-size: 16px;
-            color: #919191;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-style: normal;
-            }
-          }
-        }
-      }
-      .ludan{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-         display: flex;
-        justify-content: flex-start;
-        align-items: center;
-         .list2{
-          flex-basis: 1/12*100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          // justify-content: center;
-          align-items: center;
-          font-size: 0;
-          box-sizing: border-box;
-          .list_p{
-            flex-basis: 1/6*100%;
-            width: 100%;
-            box-sizing: border-box;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            border: 0;
-            border-radius: 0;
-            background: none;
-            i{
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            font-size: 16px;
-            color: #919191;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-style: normal;
-            }
-            .type1{
-              background: url("../../../../assets/images/ludan/z1.webp") center no-repeat;
-              background-size: 100%;
-            }
-            .type2{
-              background: url("../../../../assets/images/ludan/x1.webp") center no-repeat;
-              background-size: 100%;
-            }
-            .type3{
-              background: url("../../../../assets/images/ludan/h.webp") center no-repeat;
-              background-size: 100%;
-            }
+  // .ludanbox{
+  //   position: relative;
+  //     .ludanbg{
+  //       width: 100%;
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+  //       border: 1px solid #919191;
+  //       font-size: 0;
+  //       box-sizing: border-box;
+  //       position: relative;
+  //       .list{
+  //         flex-basis: 1/12*100%;
+  //         display: flex;
+  //         flex-direction: column;
+  //         justify-content: center;
+  //         align-items: center;
+  //         border-right: #919191 1px solid;
+  //         font-size: 0;
+  //         box-sizing: border-box;
+  //         &:last-child{
+  //           border: 0;
+  //           // border-left: #919191 1px solid;
+  //         }
+  //         .list_p{
+  //           flex-basis: 1/6*100%;
+  //           width: 100%;
+  //           height: 0;
+  //           padding-bottom: 100%;
+  //           box-sizing: border-box;
+  //           border-bottom: #919191 1px solid;
+  //           &:last-child{
+  //             border: 0;
+  //             // border-top: #919191 1px solid;
+  //           }
+  //           position: relative;
+  //           i{
+  //           position: absolute;
+  //           font-size: 16px;
+  //           color: #919191;
+  //           top: 50%;
+  //           left: 50%;
+  //           transform: translate(-50%, -50%);
+  //           font-style: normal;
+  //           }
+  //         }
+  //       }
+  //     }
+  //     .ludan{
+  //       position: absolute;
+  //       width: 100%;
+  //       height: 100%;
+  //       top: 0;
+  //       left: 0;
+  //        display: flex;
+  //       justify-content: flex-start;
+  //       align-items: center;
+  //        .list2{
+  //         flex-basis: 1/12*100%;
+  //         height: 100%;
+  //         display: flex;
+  //         flex-direction: column;
+  //         // justify-content: center;
+  //         align-items: center;
+  //         font-size: 0;
+  //         box-sizing: border-box;
+  //         .list_p{
+  //           flex-basis: 1/6*100%;
+  //           width: 100%;
+  //           box-sizing: border-box;
+  //           position: relative;
+  //           margin: 0;
+  //           padding: 0;
+  //           border: 0;
+  //           border-radius: 0;
+  //           background: none;
+  //           i{
+  //           position: absolute;
+  //           width: 80%;
+  //           height: 80%;
+  //           font-size: 16px;
+  //           color: #919191;
+  //           top: 50%;
+  //           left: 50%;
+  //           transform: translate(-50%, -50%);
+  //           font-style: normal;
+  //           }
+  //           .type1{
+  //             background: url("../../../../assets/images/ludan/z1.webp") center no-repeat;
+  //             background-size: 100%;
+  //           }
+  //           .type2{
+  //             background: url("../../../../assets/images/ludan/x1.webp") center no-repeat;
+  //             background-size: 100%;
+  //           }
+  //           .type3{
+  //             background: url("../../../../assets/images/ludan/h.webp") center no-repeat;
+  //             background-size: 100%;
+  //           }
            
-          }
-         }
-      }
-  }
+  //         }
+  //        }
+  //     }
+  // }
   
 
 }

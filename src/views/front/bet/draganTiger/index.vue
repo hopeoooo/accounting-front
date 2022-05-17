@@ -8,10 +8,11 @@
             <h1>当前操作员</h1>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
+            <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="6" :xs="24">
+      <el-col :span="10" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
               <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
@@ -45,13 +46,11 @@
           </el-card>
       </el-col>
        <!--按钮-->
-      <el-col :span="4" :xs="24">
+      <!-- <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
               <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
-              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <!-- <el-button type="primary" plain @click="betRecord">下注记录</el-button> -->
           </el-card>
-      </el-col>
+      </el-col> -->
        <!--路单展示-->
       <el-col :span="10" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
@@ -745,6 +744,7 @@ export default {
         justify-content: center;
         align-items: center;
         border: 1px solid #919191;
+        border-right: 0;
         font-size: 0;
         box-sizing: border-box;
         position: relative;
@@ -758,7 +758,7 @@ export default {
           font-size: 0;
           box-sizing: border-box;
           &:last-child{
-            border: 0;
+            // border: 0;
             // border-left: #919191 1px solid;
           }
           .list_p{

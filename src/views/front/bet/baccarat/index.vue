@@ -893,6 +893,7 @@ export default {
         justify-content: center;
         align-items: center;
         border: 1px solid #919191;
+        border-right: 0;
         font-size: 0;
         box-sizing: border-box;
         position: relative;
@@ -906,7 +907,7 @@ export default {
           font-size: 0;
           box-sizing: border-box;
           &:last-child{
-            border: 0;
+            // border: 0;
             // border-left: #919191 1px solid;
           }
           .list_p{
