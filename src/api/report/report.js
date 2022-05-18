@@ -133,7 +133,7 @@ export function listPorint(query) {
 export function editPorint(query) {
   return request({
     url: '/sys/porint/edit',
-    method: 'get',
+    method: 'post',
     params: query
   })
 }
@@ -141,7 +141,7 @@ export function editPorint(query) {
 export function reckonPorint(query) {
   return request({
     url: '/sys/porint/reckon',
-    method: 'get',
+    method: 'post',
     params: query
   })
 }

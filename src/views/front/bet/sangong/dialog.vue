@@ -472,7 +472,8 @@ export default {
       this.form['chip']=this.chip
       this.form['cashTh']=this.cashTh
       this.form['chipTh']=this.chipTh
-
+      this.form['info']=JSON.stringify(this.Listdata)
+      this.form['infoTh']=JSON.stringify(this.Listdata1)
     },
     count(){
       console.log(this.form)

@@ -474,7 +474,8 @@ export default {
       this.form['chip']=this.chip
       this.form['cashTh']=this.cashTh
       this.form['chipTh']=this.chipTh
-
+      this.form['info']=JSON.stringify(this.Listdata)
+      this.form['infoTh']=JSON.stringify(this.Listdata1)
     },
     count(){
       console.log(this.form)
@@ -485,17 +486,17 @@ export default {
             baccaratReckon(this.form).then(res => {
               this.$modal.msgSuccess("收码计算差距成功");
               let arr =res.data
-             this.form['cashGap']=arr.cashGap
+              this.form['cashGap']=arr.cashGap
               this.form['chipGap']=arr.chipGap
               this.form['insuranceGap']=arr.insuranceGap
-               this.form['cashReceipt']=arr.cashReceipt
+              this.form['cashReceipt']=arr.cashReceipt
               this.form['chipReceipt']=arr.chipReceipt
-               this.form['cashGapTh']=arr.cashGapTh
+              this.form['cashGapTh']=arr.cashGapTh
               this.form['chipGapTh']=arr.chipGapTh
               this.form['insuranceGapTh']=arr.insuranceGapTh
-               this.form['cashReceiptTh']=arr.cashReceiptTh
+              this.form['cashReceiptTh']=arr.cashReceiptTh
               this.form['chipReceiptTh']=arr.chipReceiptTh
-                 this.form['totalGap']=arr.totalGap
+              this.form['totalGap']=arr.totalGap
               this.form['totalGapTh']=arr.totalGapTh
               this.$forceUpdate()
             });
@@ -503,14 +504,14 @@ export default {
             this.form['type']=0
             baccaratReckon(this.form).then(res => {
               this.$modal.msgSuccess("点码计算差距成功");
-               let arr =res.data
-               this.form['cashGap']=arr.cashGap
+              let arr =res.data
+              this.form['cashGap']=arr.cashGap
               this.form['chipGap']=arr.chipGap
               this.form['insuranceGap']=arr.insuranceGap
               this.form['cashGapTh']=arr.cashGapTh
               this.form['chipGapTh']=arr.chipGapTh
               this.form['insuranceGapTh']=arr.insuranceGapTh
-                 this.form['totalGap']=arr.totalGap
+              this.form['totalGap']=arr.totalGap
               this.form['totalGapTh']=arr.totalGapTh
               this.$forceUpdate()
             });

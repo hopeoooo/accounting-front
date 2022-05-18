@@ -314,6 +314,7 @@ export default {
       aTotalTh:'',
       cashTh:'',
       chipTh:'',
+      
       Listdata:[
         {value:1000000,val:'100万',num:'',total:''},
         {value:500000,val:'50万',num:'',total:''},
@@ -427,7 +428,9 @@ export default {
          this.resetForm("form");
     },
     getForm(){
-    
+     this.Listdata=JSON.parse(this.formData.info)
+      this.Listdata1=JSON.parse(this.formData.infoTh)
+     
       this.$forceUpdate()
       console.log(this.form)   
     },
@@ -497,11 +500,12 @@ export default {
       this.form['chip']=this.chip
       this.form['cashTh']=this.cashTh
       this.form['chipTh']=this.chipTh
-
+      this.form['info']=this.Listdata.toString()
+      this.form['infoTh']=this.Listdata1.toString()
     },
     count(){
       console.log(this.form)
-     
+
           
             this.form['type']=0
             reckonPorint(this.form).then(res => {
