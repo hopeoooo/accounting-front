@@ -98,7 +98,7 @@
 
         <el-row :gutter="0">
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item label="描述" prop="remark">
               <el-input
                 type="textarea"
                 :rows="7"
