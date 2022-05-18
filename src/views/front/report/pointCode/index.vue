@@ -449,7 +449,8 @@ export default {
       row['totalGapTh']=row.chipGapTh+row.cashGapTh
       row['insurance']=row.personInsurance
       row['insuranceTh']=row.personInsuranceTh
-      this.formData = row;
+      // this.formData = row;
+      this.formData = Object.assign({},row)
       this.open = true;
     },
     /**
