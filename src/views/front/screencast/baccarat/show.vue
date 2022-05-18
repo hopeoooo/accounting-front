@@ -43,7 +43,7 @@
      </el-table>
 
       <!-- 全屏 -->
-    <el-dialog title="" :visible.sync="openLUdan" width="100%" class="quanping_dialog" append-to-body :close-on-click-modal="false">
+    <el-dialog title="" :visible.sync="openLUdan" width="100%" top="0" class="quanping_dialog" append-to-body :close-on-click-modal="false">
           <div class="table_box_box">
        <span>桌台编号</span>   
        <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
@@ -56,7 +56,7 @@
         </el-select>
       </div>
 
-     <el-table v-loading="loading" class="betBox" stripe="" height="100vh" :data="betList"  border >
+     <el-table v-loading="loading" class="betBox" stripe="" height="93.6vh" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px">
              <template slot-scope="scope">
@@ -442,6 +442,20 @@ export default {
         }
       }
       }
+    }
+  }
+  .quanping_dialog{
+    .el-dialog{
+      margin-top: 0 !important;
+      .el-dialog__body{
+        padding-top: 0;
+      }
+      .el-dialog__header{
+        padding: 0;
+        .el-dialog__headerbtn{
+          top: 10px;
+        }
+        }
     }
   }
 </style>
