@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" oncontextmenu = "return false">
     <el-row :gutter="20">
 
       <!--切换账号-->
@@ -1045,7 +1045,7 @@ export default {
               line-height: 60px;
               font-size: 20px;
               border-radius: 6px;
-              margin: 0 10px;
+              margin: 0 5px;
               display: flex;
               align-items: center;
               justify-content: center;
