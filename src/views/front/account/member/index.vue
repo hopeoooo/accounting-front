@@ -201,7 +201,7 @@
             style="text-align:left;"
             class-name="operation-column small-padding fixed-width"
           >
-            <template slot-scope="scope" v-if="scope.row.userId !== 1">
+            <template slot-scope="scope" >
               <el-button
                 size="mini"
                 type="text"
@@ -634,11 +634,11 @@
         </div>
         <div class="list">
           <span>占股比例</span
-          ><span>{{ memlist.shareRatio ? memlist.shareRatio : "0" }}</span>
+          ><span>{{ memlist.shareRatio ? memlist.shareRatio : "0" }}%</span>
         </div>
         <div class="list">
           <span>返点比例</span
-          ><span>{{ memlist.rebateRatio ? memlist.rebateRatio : "0" }}</span>
+          ><span>{{ memlist.rebateRatio ? memlist.rebateRatio : "0" }}%</span>
         </div>
         <div class="list">
           <span>百家乐洗码比例（$筹码）</span
