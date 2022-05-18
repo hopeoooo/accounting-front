@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
       <div class="table_box_box">
-       <span>桌台编号</span>
+       <span>桌台编号</span>   
        <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -10,6 +10,7 @@
             :value="item.tableId">
           </el-option>
         </el-select>
+        <el-button class="loginout" type="primary" plain @click="screencast">全屏</el-button>
       </div>
 
      <el-table v-loading="loading" class="betBox" stripe="" height="920px" :data="betList"  border >
@@ -34,12 +35,54 @@
            <el-table-column label="闲保险" align="center" key="card7" prop="card7"  ></el-table-column>
            <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
-            <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
+          <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
           <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
           <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
              
          
-        </el-table>
+     </el-table>
+
+      <!-- 路单结果修改 -->
+    <el-dialog title="" :visible.sync="openLUdan" width="100%" class="quanping_dialog" append-to-body>
+          <div class="table_box_box">
+       <span>桌台编号</span>   
+       <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.tableId"
+            :label="item.tableId"
+            :value="item.tableId">
+          </el-option>
+        </el-select>
+      </div>
+
+     <el-table v-loading="loading" class="betBox" stripe="" height="100vh" :data="betList"  border >
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
+          <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px">
+             <template slot-scope="scope">
+                <span v-if="scope.row.type==0">$现金</span>
+                <span v-else-if="scope.row.type==1">$筹码</span>
+                <span v-else-if="scope.row.type==2">฿现金</span>
+                <span v-else-if="scope.row.type==3">฿筹码</span>
+                <span v-else>-</span>
+              </template>
+          </el-table-column>
+          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
+           <el-table-column label="庄" align="center" key="card1" prop="card1"  ></el-table-column>
+           <el-table-column label="闲" align="center" key="card2" prop="card2"  ></el-table-column>
+           <el-table-column label="和" align="center" key="card3" prop="card3"  ></el-table-column>
+           <el-table-column label="庄对" align="center" key="card4" prop="card4"  ></el-table-column>
+           <el-table-column label="闲对" align="center" key="card5" prop="card5"  ></el-table-column>
+           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  ></el-table-column>
+           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  ></el-table-column>
+           <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
+           <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
+          <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
+          <el-table-column label="赔码数" align="center"   prop="payout"  />
+             
+         
+          </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -54,6 +97,7 @@ export default {
       // 遮罩层
       loading: true,
       isVisibles:false,
+      openLUdan:false,
       options:'',
       timer:'',
       tableId:'',
@@ -108,6 +152,9 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
+    screencast(){
+      this.openLUdan=true
+    },
     // 轮循
 
 
@@ -313,22 +360,29 @@ export default {
 
 }
 .betBox {
+  font-size: 20px;
+  font-weight:bold ;
   .el-input--medium .el-input__inner{
-    line-height: 25px;
-    height: 25px;
+    line-height: 35px;
+    height: 35px;
+  }
+   .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
+       font-size: 22px;
   }
   .el-table__header-wrapper{
+   
     thead{
       th{
-        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(10){
+      
+        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
           background: red;
           color: #fff;
         }
-        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(11){
+        &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12){
           background: blue;
           color: #fff;
         }
-        &:nth-child(5){
+        &:nth-child(5), &:nth-child(10){
           background: green;
           color: #fff;
         }

@@ -5,7 +5,7 @@
       <!--切换账号-->
       <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-            <h1>当前操作员</h1>
+            <div class="h1">当前操作员</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
@@ -14,27 +14,28 @@
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="10" :xs="24">
+      <el-col :span="13" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
             <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
-              <li style="font-size:20px">$累计：{{tableInfo.total || 0}}</li>
-              <li style="font-size:20px">฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li style="color: blueviolet;">$累计：{{tableInfo.total || 0}}</li>
+              <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
             </ul>
             <ul>
             
               <li>$筹码：{{tableInfo.chip || 0}}</li>
               <li>$现金：{{tableInfo.cash || 0}}</li>
-            </ul>
-            <ul>
-             
-              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
+               <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
               <li>฿现金：{{tableInfo.cashTh || 0}}</li>
-             </ul>
-          </el-card>
-          <el-card class="box-card-box" style="text-align:center">
+            </ul>
+            <!-- <ul>
+             
+             
+             </ul> -->
+          <!-- </el-card>
+          <el-card class="box-card-box" style="text-align:center"> -->
              <ul>
               <li>$庄：{{baccaratSum.sumZ || 0}}</li>
               <li>$庄对：{{baccaratSum.sumZd || 0}}</li>
@@ -63,7 +64,7 @@
       </el-col>
      
        <!--路单展示-->
-      <el-col :span="10" :xs="24">
+      <el-col :span="7" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
             <div class="ludanbox">
               <div class="ludanbg">
@@ -122,8 +123,8 @@
                <el-col :span="6" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
                   <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
-                  <el-button type="primary" @click="ponintCode">点码</el-button>
-                  <el-button type="primary" @click="getCode">收码</el-button>
+                  <el-button type="warning" @click="ponintCode">点码</el-button>
+                  <el-button type="danger" @click="getCode">收码</el-button>
                </el-col>
             </el-row>
           </el-card>
@@ -169,10 +170,10 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox" height="500px" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox_bjl" height="650px" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="320px">
+          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="350px">
                <template slot-scope="scope">
                   <el-radio-group  @change='DataChange' v-model.number="scope.row.type">
                    <el-radio :label="0">$筹码</el-radio>
@@ -182,7 +183,7 @@
                   </el-radio-group>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
+          <el-table-column label="卡号" align="center" key="card" prop="card"  width="150px">
                <template slot-scope="scope">
                   <el-input @change='DataChange' v-model="scope.row.card" placeholder=""  />
               </template>
@@ -860,10 +861,15 @@ export default {
 }
 .box-card-box{
   margin-bottom: 15px;
-  font-size: 18px;  .el-card__body{
+  font-size: 18px;  
+  .el-card__body{
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 10px;
+    .h1{
+      font-size: 24px;
+      line-height: 40px;
+    }
     button{
       width: 80%;
       height: 80px;
@@ -881,7 +887,9 @@ export default {
         display: inline-block;
         min-width:100px;
         margin: 0 8px;
-        line-height: 39px;
+        line-height: 37px;
+        font-size: 18px;
+        // font-weight: bold;
       }
     }
   }
@@ -1021,6 +1029,7 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 5px 20px;
     .el-row{
       .el-col{
         height: 100px;
@@ -1030,6 +1039,17 @@ export default {
         flex-wrap:wrap;
         &.control {
           justify-content:  flex-start;
+           button{
+              min-width: 80px;
+              height: 60px;
+              line-height: 60px;
+              font-size: 20px;
+              border-radius: 6px;
+              margin: 0 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
         }
       }
     }
@@ -1037,6 +1057,7 @@ export default {
       display: flex;
       text-align: left;
       flex-wrap: wrap;
+      font-size: 18px;
       span{
         flex-basis: 50%;
         line-height: 50px;
@@ -1053,9 +1074,10 @@ export default {
     .checked{
       display: flex;
       .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 80px;
-        height: 40px;
-        line-height: 40px;
+        min-width: 100px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 20px;
         background: #919191;
         border-radius: 6px;
         color: #999;
@@ -1088,7 +1110,7 @@ export default {
       .is-active,.is-checked{
          .el-checkbox-button__inner,.el-radio-button__inner{
           opacity: 1;
-           font-size: 20px;
+           font-size: 24px;
            font-weight: bold;
            color: #fff;
         }
@@ -1097,14 +1119,29 @@ export default {
   }
 
 }
-.betBox {
-  .el-table__row .el-table__cell .cell .el-radio-group .el-radio{margin-right: 10px;}
+.betBox_bjl {
+  .el-table__row .el-table__cell .cell .el-radio-group .el-radio{
+    margin-right: 10px;
+    .el-radio__label{
+      font-size: 18px;
+    }
+  }
+    .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
+       font-size: 22px;
+  }
   .el-input--medium .el-input__inner{
     line-height: 25px;
     height: 25px;
     border: 0;
     text-align: center;
     background: none;
+  }
+  .el-input--medium{
+    font-size: 20px;
+    font-weight: bold;
+    .el-input__inner{
+      padding: 0;
+    }
   }
   .el-table__header-wrapper{
     thead{
