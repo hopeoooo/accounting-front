@@ -8,4 +8,3 @@
 const VUE_APP_BASE_API = {
     baseUrl: "http://searchaccount.kk88815.net",
 };
-
