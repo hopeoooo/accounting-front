@@ -42,8 +42,8 @@
          
      </el-table>
 
-      <!-- 路单结果修改 -->
-    <el-dialog title="" :visible.sync="openLUdan" width="100%" class="quanping_dialog" append-to-body>
+      <!-- 全屏 -->
+    <el-dialog title="" :visible.sync="openLUdan" width="100%" class="quanping_dialog" append-to-body :close-on-click-modal="false">
           <div class="table_box_box">
        <span>桌台编号</span>   
        <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
