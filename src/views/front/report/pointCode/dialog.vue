@@ -430,7 +430,7 @@ export default {
     getForm(){
      this.Listdata=JSON.parse(this.formData.info)
       this.Listdata1=JSON.parse(this.formData.infoTh)
-     
+      this.handleSelectionChange()
       this.$forceUpdate()
       console.log(this.form)   
     },
