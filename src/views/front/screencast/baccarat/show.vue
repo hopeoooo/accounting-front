@@ -192,261 +192,263 @@ export default {
 .bjl_show{
 
 
-.detailBox{
-  border: 1px solid #bcbcbc;
-  .list{
-    border-bottom: 1px solid #bcbcbc;
-    span{
-      display: inline-block;
-      text-align: center;
-      width: 49%;
-      &:nth-child(1){
-        border-right: 1px solid #bcbcbc;
-        width: 50%;
+    .detailBox{
+      border: 1px solid #bcbcbc;
+      .list{
+        border-bottom: 1px solid #bcbcbc;
+        span{
+          display: inline-block;
+          text-align: center;
+          width: 49%;
+          &:nth-child(1){
+            border-right: 1px solid #bcbcbc;
+            width: 50%;
+          }
+        }
       }
     }
-  }
-}
-.el-table.table2 {
-  .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
-}
-.box-card-box{
-  margin-bottom: 15px;
-  font-size: 18px;  .el-card__body{
-    display: flex;
-    flex-direction: column;
-    button{
-      width: 80%;
-      height: 80px;
-      margin: 10px auto;
+    .el-table.table2 {
+      .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
     }
-    .loginout{
-      height: 60px;
-    }
-    ul{
-      padding: 0;
-     text-align: left;
-      li{
-        list-style: none;
-        display: inline-block;
-        min-width: 100px;
-        margin: 0 10px;
-        line-height: 45px;
-      }
-    }
-  }
-  .ludanbox{
-    position: relative;
-      .ludanbg{
-        width: 100%;
+    .box-card-box{
+      margin-bottom: 15px;
+      font-size: 18px;  .el-card__body{
         display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #919191;
-        font-size: 0;
-        box-sizing: border-box;
+        flex-direction: column;
+        button{
+          width: 80%;
+          height: 80px;
+          margin: 10px auto;
+        }
+        .loginout{
+          height: 60px;
+        }
+        ul{
+          padding: 0;
+        text-align: left;
+          li{
+            list-style: none;
+            display: inline-block;
+            min-width: 100px;
+            margin: 0 10px;
+            line-height: 45px;
+          }
+        }
+      }
+      .ludanbox{
         position: relative;
-        .list{
-          flex-basis: 1/12*100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          border-right: #919191 1px solid;
-          font-size: 0;
-          box-sizing: border-box;
-          &:last-child{
-            border: 0;
-            // border-left: #919191 1px solid;
-          }
-          .list_p{
-            flex-basis: 1/6*100%;
+          .ludanbg{
             width: 100%;
-            height: 0;
-            padding-bottom: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #919191;
+            font-size: 0;
             box-sizing: border-box;
-            border-bottom: #919191 1px solid;
-            &:last-child{
-              border: 0;
-              // border-top: #919191 1px solid;
-            }
             position: relative;
-            i{
-            position: absolute;
-            font-size: 16px;
-            color: #919191;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-style: normal;
+            .list{
+              flex-basis: 1/12*100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              border-right: #919191 1px solid;
+              font-size: 0;
+              box-sizing: border-box;
+              &:last-child{
+                border: 0;
+                // border-left: #919191 1px solid;
+              }
+              .list_p{
+                flex-basis: 1/6*100%;
+                width: 100%;
+                height: 0;
+                padding-bottom: 100%;
+                box-sizing: border-box;
+                border-bottom: #919191 1px solid;
+                &:last-child{
+                  border: 0;
+                  // border-top: #919191 1px solid;
+                }
+                position: relative;
+                i{
+                position: absolute;
+                font-size: 16px;
+                color: #919191;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-style: normal;
+                }
+              }
+            }
+          }
+        
+      }
+      
+
+    }
+    .box-card-box-list{
+      .el-card__body{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .el-row{
+          .el-col{
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap:wrap;
+            &.control {
+              justify-content:  flex-start;
+            }
+          }
+        }
+    
+        .btn{
+          padding: 10px 30px;
+          background: #919191;
+          border-radius: 6px;
+          color: #fff;
+          cursor: pointer;
+        }
+
+        .checked{
+          display: flex;
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            min-width: 80px;
+            height: 40px;
+            line-height: 40px;
+            background: #919191;
+            border-radius: 6px;
+            color: #fff;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .red{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              background: red;
+              opacity: .6;
+            }
+          }
+          .blue{
+            // background: blue;
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              background: blue;
+              opacity: .6;
+            }
+          }
+          .green{
+            // background: green;
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              background: green;
+              opacity: .6;
+            }
+          }
+          .is-active,.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              opacity: 1;
+              font-size: 20px;
+              border: 0;
+              font-weight: bold;
             }
           }
         }
       }
-    
-  }
-  
 
-}
-.box-card-box-list{
-  .el-card__body{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    .el-row{
-      .el-col{
-        height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap:wrap;
-        &.control {
-          justify-content:  flex-start;
-        }
-      }
     }
- 
-    .btn{
-      padding: 10px 30px;
-      background: #919191;
-      border-radius: 6px;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .checked{
-      display: flex;
-      .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 80px;
-        height: 40px;
-        line-height: 40px;
-        background: #919191;
-        border-radius: 6px;
-        color: #fff;
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .betBox {
+      font-size: 20px;
+      font-weight:bold ;
+      .el-input--medium .el-input__inner{
+        line-height: 35px;
+        height: 35px;
       }
-
-      .red{
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: red;
-           opacity: .6;
-        }
+      .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
+          font-size: 22px;
       }
-      .blue{
-        // background: blue;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: blue;
-           opacity: .6;
-        }
-      }
-      .green{
-        // background: green;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: green;
-           opacity: .6;
-        }
-      }
-      .is-active,.is-checked{
-         .el-checkbox-button__inner,.el-radio-button__inner{
-           opacity: 1;
-           font-size: 20px;
-           border: 0;
-           font-weight: bold;
-        }
-      }
-    }
-  }
-
-}
-.betBox {
-  font-size: 20px;
-  font-weight:bold ;
-  .el-input--medium .el-input__inner{
-    line-height: 35px;
-    height: 35px;
-  }
-   .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
-       font-size: 22px;
-  }
-  .el-table__header-wrapper{
-   
-    thead{
-      th{
+      .el-table__header-wrapper{
       
-        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
-          background: red;
-          color: #fff;
-        }
-        &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12){
-          background: blue;
-          color: #fff;
-        }
-        &:nth-child(5), &:nth-child(10){
-          background: green;
-          color: #fff;
+        thead{
+          th{
+          
+            &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
+              background: red;
+              color: #fff;
+            }
+            &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12){
+              background: blue;
+              color: #fff;
+            }
+            &:nth-child(5), &:nth-child(10){
+              background: green;
+              color: #fff;
+            }
+          }
         }
       }
     }
-  }
-}
 
-.table-info-red td,.table-info-red1 td{
-  // background: rgb(199, 135, 135);
-}
-.ludanBox_dialog{
-    .el-form-item{
-      .el-radio-group,.el-checkbox-group{
-        display:  flex;
-        justify-content: center;
-        width: 100%;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 80px;
-        height: 40px;
-        line-height: 40px;
-        background: #919191;
-        border-radius: 6px;
-        color: #fff;
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .red{
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: red;
-           opacity: .6;
-        }
-      }
-      .blue{
-        // background: blue;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: blue;
-           opacity: .6;
-        }
-      }
-      .green{
-        // background: green;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: green;
-           opacity: .6;
-        }
-      }
-      .is-active,.is-checked{
-         .el-checkbox-button__inner,.el-radio-button__inner{
-           opacity: 1;
-           font-size: 20px;
-           border: 0;
-           font-weight: bold;
-        }
-      }
-      }
+    .table-info-red td,.table-info-red1 td{
+      // background: rgb(199, 135, 135);
     }
-  }
-  .quanping_dialog{
+    .ludanBox_dialog{
+        .el-form-item{
+          .el-radio-group,.el-checkbox-group{
+            display:  flex;
+            justify-content: center;
+            width: 100%;
+            .el-checkbox-button__inner,.el-radio-button__inner{
+            min-width: 80px;
+            height: 40px;
+            line-height: 40px;
+            background: #919191;
+            border-radius: 6px;
+            color: #fff;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .red{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              background: red;
+              opacity: .6;
+            }
+          }
+          .blue{
+            // background: blue;
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              background: blue;
+              opacity: .6;
+            }
+          }
+          .green{
+            // background: green;
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              background: green;
+              opacity: .6;
+            }
+          }
+          .is-active,.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              opacity: 1;
+              font-size: 20px;
+              border: 0;
+              font-weight: bold;
+            }
+          }
+          }
+        }
+      }
+ 
+}  
+ .quanping_dialog{
     .el-dialog{
       margin-top: 0 !important;
       .el-dialog__body{
@@ -459,6 +461,36 @@ export default {
         }
         }
     }
+      .betBox {
+      font-size: 22px;
+      font-weight:bold ;
+      .el-input--medium .el-input__inner{
+        line-height: 35px;
+        height: 35px;
+      }
+      .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
+          font-size: 22px;
+      }
+      .el-table__header-wrapper{
+      
+        thead{
+          th{
+          
+            &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
+              background: red;
+              color: #fff;
+            }
+            &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12){
+              background: blue;
+              color: #fff;
+            }
+            &:nth-child(5), &:nth-child(10){
+              background: green;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
   }
-}  
 </style>

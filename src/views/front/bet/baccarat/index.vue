@@ -102,17 +102,17 @@
                     <span>฿现金:{{baccaratSum.sumCashTh || 0}}</span>
                   </div>
                </el-col>
-              <el-col :span="14" :xs="24">
-                  <el-radio-group v-model="radio1" class="checked">
+              <el-col :span="14" :xs="24" class="choose">
+                  <el-radio-group v-model="radio1" class="checked checked1">
                       <el-radio-button :label="4" class="red">庄</el-radio-button>
                       <el-radio-button :label="1" class="blue">闲</el-radio-button>
                       <el-radio-button :label="7" class="green">和</el-radio-button>
                     </el-radio-group>
 
-                  <el-checkbox-group v-model="checkboxGroup1" class="checked">
+                  <el-checkbox-group v-model="checkboxGroup1" class="checked checked2">
                     <el-checkbox-button v-for="(e,key) in reData" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
-                  <el-checkbox-group v-model="checkboxGroup2" class="checked" :max="1">
+                  <el-checkbox-group v-model="checkboxGroup2" class="checked checked3" :max="1">
                     <el-checkbox-button v-for="(e,key) in reData1" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
                   <!-- <el-radio-group v-model="radio2" class="checked">
@@ -1038,15 +1038,18 @@ export default {
         align-items: center;
         justify-content: flex-start;
         flex-wrap:wrap;
+        &.choose{
+          padding-right: 50px;
+        }
         &.control {
-          justify-content:  flex-start;
+          justify-content:  space-around;
            button{
-              min-width: 80px;
+             padding: 0;
+              flex-basis: 20%;
               height: 60px;
               line-height: 60px;
               font-size: 20px;
               border-radius: 6px;
-              margin: 0 5px;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -1074,15 +1077,26 @@ export default {
 
     .checked{
       display: flex;
+      justify-content: space-around;
+      &.checked1{
+        flex-basis: 3/7*100%;
+        .el-radio-button{
+          flex-basis: 30%;
+        }
+      }
+      &.checked2,&.checked3{
+        flex-basis: 2/7*100%;
+         .el-checkbox-button{
+          flex-basis: 45%;
+        }
+      }
       .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 100px;
+       
         height: 60px;
         line-height: 60px;
         font-size: 20px;
-        background: #919191;
         border-radius: 6px;
         color: #999;
-        margin: 0 10px;
         display: flex;
         align-items: center;
         justify-content: center;
