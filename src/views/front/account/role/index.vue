@@ -271,6 +271,13 @@ export default {
       for (let index = 0; index < treeList.length; index++) {
         const element = treeList[index];
         if (element.children) {
+          const secondChildren = element.children
+          for (let index = 0; index < secondChildren.length; index++) {
+            const item = secondChildren[index];
+            if (item.children) {
+              length += item.children.length;
+            }
+          }
           length += element.children.length;
         }
       }
