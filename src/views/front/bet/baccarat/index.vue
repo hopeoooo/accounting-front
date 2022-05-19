@@ -173,7 +173,7 @@
      <el-table v-loading="loading" class="betBox_bjl" height="650px" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="350px">
+          <el-table-column label="选择币种" align="center"  key="type" prop="type" width="350px">
                <template slot-scope="scope">
                   <el-radio-group  @change='DataChange' v-model.number="scope.row.type">
                    <el-radio :label="0">$筹码</el-radio>
@@ -239,7 +239,7 @@
               </template>
           </el-table-column>
           <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
-          <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
+          <el-table-column label="赔码数" align="center"   prop="payout" />
              
          
         </el-table>
