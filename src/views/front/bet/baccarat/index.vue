@@ -47,6 +47,8 @@
               <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
               <li>$大：{{baccaratSum.sumBig || 0}}</li>
               <li>$小：{{baccaratSum.sumSmall || 0}}</li>
+               <li>$两张牌：{{baccaratSum.sumA || 0}}</li>
+              <li>$三张牌：{{baccaratSum.sumB || 0}}</li>
              </ul>
              <ul>
               <li>฿庄：{{baccaratSum.sumZTh || 0}}</li>
@@ -59,7 +61,15 @@
               <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
                <li>฿大：{{baccaratSum.sumBigTh || 0}}</li>
               <li>฿小：{{baccaratSum.sumSmallTh || 0}}</li>
+               <li>$两张牌：{{baccaratSum.sumATh || 0}}</li>
+              <li>$三张牌：{{baccaratSum.sumBTh || 0}}</li>
              </ul>
+              <ul>
+                <li>$筹码:{{baccaratSum.sumChip || 0}}</li>
+                <li>$现金:{{baccaratSum.sumCash || 0}}</li>
+                  <li>฿筹码:{{baccaratSum.sumChipTh || 0}}</li>
+                <li>฿现金:{{baccaratSum.sumCashTh || 0}}</li>
+              </ul>
           </el-card>
       </el-col>
      
@@ -94,15 +104,15 @@
        <el-col :span="24" :xs="24">
           <el-card class="box-card-box-list" style="text-align:center">
             <el-row :gutter="0" style="width:100%">
-               <el-col :span="4" :xs="12">
-                  <div class="f1">
+               <!-- <el-col :span="4" :xs="12"> -->
+                  <!-- <div class="f1">
                     <span>$筹码:{{baccaratSum.sumChip || 0}}</span>
                     <span>$现金:{{baccaratSum.sumCash || 0}}</span>
                      <span>฿筹码:{{baccaratSum.sumChipTh || 0}}</span>
                     <span>฿现金:{{baccaratSum.sumCashTh || 0}}</span>
-                  </div>
-               </el-col>
-              <el-col :span="14" :xs="24" class="choose">
+                  </div> -->
+               <!-- </el-col> -->
+              <el-col :span="17" :xs="24" class="choose">
                   <el-radio-group v-model="radio1" class="checked checked1">
                       <el-radio-button :label="4" class="red">庄</el-radio-button>
                       <el-radio-button :label="1" class="blue">闲</el-radio-button>
@@ -115,12 +125,15 @@
                   <el-checkbox-group v-model="checkboxGroup2" class="checked checked3" :max="1">
                     <el-checkbox-button v-for="(e,key) in reData1" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
+                  <el-checkbox-group v-model="checkboxGroup3" class="checked checked4" :max="1">
+                    <el-checkbox-button v-for="(e,key) in reData2" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
+                  </el-checkbox-group>
                   <!-- <el-radio-group v-model="radio2" class="checked">
                     <el-radio-button :label="9" class="red">大</el-radio-button>
                     <el-radio-button :label="6" class="blue">小</el-radio-button>
                   </el-radio-group> -->
                </el-col>
-               <el-col :span="6" :xs="24" class="control">  
+               <el-col :span="7" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
                   <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
                   <el-button type="warning" @click="ponintCode">点码</el-button>
@@ -154,15 +167,15 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="" prop=""  >
-              <!-- <el-radio-group v-model="formLudan.radio2">
-                <el-radio-button :label="9" class="red">大</el-radio-button>
-                <el-radio-button :label="6" class="blue">小</el-radio-button>
-              </el-radio-group> -->
               <el-checkbox-group v-model="formLudan.checkboxGroup2" class="checked" :max="1">
                 <el-checkbox-button v-for="(e,key) in reData1" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
               </el-checkbox-group>
           </el-form-item>
-
+           <el-form-item label="" prop=""  >
+               <el-checkbox-group v-model="formLudan.checkboxGroup3" class="checked" :max="1">
+                  <el-checkbox-button v-for="(e,key) in reData2" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
+                </el-checkbox-group>
+          </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitLudan">确 定</el-button>
@@ -226,6 +239,16 @@
            <el-table-column label="和保险" align="center" key="card10" prop="card10"  >
                <template slot-scope="scope">
                   <el-input @change='DataChange' v-model.number="scope.row.card10" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="两张牌" align="center" key="card11" prop="card11"  >
+               <template slot-scope="scope">
+                  <el-input @change='DataChange' v-model.number="scope.row.card11" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+           <el-table-column label="三张牌" align="center" key="card12" prop="card12"  >
+               <template slot-scope="scope">
+                  <el-input @change='DataChange' v-model.number="scope.row.card12" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  >
@@ -306,6 +329,7 @@ export default {
         radio1:'',
         checkboxGroup1:[],
          checkboxGroup2:[],
+         checkboxGroup3:[], 
         // radio2:'',
       },
       defaultProps: {
@@ -328,6 +352,7 @@ export default {
       rulesLudan:{},
       checkboxGroup1:[],
         checkboxGroup2:[],
+      checkboxGroup3:[],  
       radio1:'',
       // radio2:'',
       reData:[
@@ -337,6 +362,10 @@ export default {
        reData1:[
         {id:9,name:'大',color:'red'},
         {id:6,name:'小',color:'blue'},
+      ],
+       reData2:[
+        {id:'a',name:'两张牌',color:'red'},
+        {id:'b',name:'三张牌',color:'blue'},
       ],
       // userName:'',
       tableInfo:'', //桌台信息
@@ -500,7 +529,7 @@ export default {
       
       let param ={}
       let str =''
-      str= this.radio1.toString()+this.checkboxGroup1.join('')+this.checkboxGroup2.join('')
+      str= this.radio1.toString()+this.checkboxGroup1.join('')+this.checkboxGroup2.join('')+this.checkboxGroup3.join('')
       //  str= this.radio1.toString()+this.checkboxGroup1.join('')+this.radio2.toString()
       param['gameResult']=str
       let arr=[]
@@ -520,6 +549,8 @@ export default {
               "9":o.card8,
               "6":o.card9,
               "2":o.card10,
+              "a":o.card11,
+              "b":o.card12,
             }
       })
       
@@ -574,6 +605,8 @@ export default {
       this.sumdata.sumHbx = newData['2']
       this.sumdata.sumBig = newData['9']
       this.sumdata.sumSmall = newData['6']
+      this.sumdata.sumA = newData['a']
+      this.sumdata.sumB = newData['b']
 
         const  newDataTh = this.sumArr(arrTh)     
       this.sumdata.sumZTh = newDataTh['4']
@@ -586,11 +619,13 @@ export default {
        this.sumdata.sumHbxTh = newDataTh['2']
       this.sumdata.sumBigTh = newDataTh['9']
       this.sumdata.sumSmallTh = newDataTh['6']
+      this.sumdata.sumATh = newDataTh['a']
+      this.sumdata.sumBTh = newDataTh['b']
       console.log(arrMJ,arrTh)
-      this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']
-      this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']
-       this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']
-      this.sumdata.sumCashTh = newCashTh['4']+newCashTh['1']+newCashTh['7']+newCashTh['8']+newCashTh['5']+newCashTh['9']+newCashTh['6']
+      this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']+newChip['a']+newChip['b']
+      this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']+newCash['a']+newCash['b']
+       this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']+newChipTh['a']+newChipTh['b']
+      this.sumdata.sumCashTh = newCashTh['4']+newCashTh['1']+newCashTh['7']+newCashTh['8']+newCashTh['5']+newCashTh['9']+newCashTh['6']+newCashTh['a']+newCashTh['b']
      this.setBaccaratSum(this.sumdata)
       baccaratOpen({'json':param}).then(res => {
           this.subData= res.data
@@ -625,6 +660,7 @@ export default {
           this.radio1 =''
           this.checkboxGroup1 =[]
           this.checkboxGroup2 =[]
+          this.checkboxGroup3 =[]
           this.sumdata={ }
           this.setBaccaratList(this.betList)
           this.setBaccaratSum(this.sumdata)
@@ -645,7 +681,7 @@ export default {
           Object.keys(p).forEach(k=>p[k]+=c[k]?c[k]:0)
 
           return p
-        }, {'1': 0,'2': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0})
+        }, {'1': 0,'2': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0,'a':0,'b':0})
       }
       
     },
@@ -733,6 +769,7 @@ export default {
         radio1:'',
         checkboxGroup1:[],
         checkboxGroup2:[],
+        checkboxGroup3:[],
         // radio2:'',
       },
       this.resetForm("form");
@@ -803,19 +840,20 @@ export default {
         }else if(e==8){
           this.formLudan.checkboxGroup1.push(8)
         }else if(e==9){
-        //  this.formLudan.radio2 = 9
         this.formLudan.checkboxGroup2.push(9)
         }else if(e==6){
-          // this.formLudan.radio2 = 6
           this.formLudan.checkboxGroup2.push(6)
+        }else if(e=='a'){
+        this.formLudan.checkboxGroup3.push('a')
+        }else if(e=='b'){
+          this.formLudan.checkboxGroup3.push('b')
         }
       })
       
     },
       submitLudan(){
       let str =''
-      // str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.radio2.toString()
-      str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.checkboxGroup2.join('')
+      str= this.formLudan.radio1.toString()+this.formLudan.checkboxGroup1.join('')+this.formLudan.checkboxGroup2.join('')+this.formLudan.checkboxGroup3.join('')
       
       let param ={}
       param['id']= this.formLudan.id
@@ -883,12 +921,16 @@ export default {
       padding: 0;
       margin: 0;
      text-align: left;
+     border-top:1px solid #cbcbcb ;
+     &:nth-child(1){
+       border: 0;
+     }
       li{
         list-style: none;
         display: inline-block;
         min-width:100px;
         margin: 0 8px;
-        line-height: 37px;
+        line-height: 32px;
         font-size: 18px;
         // font-weight: bold;
       }
@@ -1079,16 +1121,19 @@ export default {
       display: flex;
       justify-content: space-around;
       &.checked1{
-        flex-basis: 3/7*100%;
+        flex-basis: 3/10*100%;
         .el-radio-button{
           flex-basis: 30%;
         }
       }
-      &.checked2,&.checked3{
-        flex-basis: 2/7*100%;
+      &.checked2,&.checked3,&.checked4{
+        flex-basis: 2/10*100%;
          .el-checkbox-button{
           flex-basis: 45%;
         }
+      }
+      &.checked4{
+        flex-basis: 3/10*100%;
       }
       .el-checkbox-button__inner,.el-radio-button__inner{
        
@@ -1161,11 +1206,11 @@ export default {
   .el-table__header-wrapper{
     thead{
       th{
-        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
+        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11),&:nth-child(13){
           background: red;
           color: #fff;
         }
-        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12){
+        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12),&:nth-child(14){
           background: blue;
           color: #fff;
         }
@@ -1207,6 +1252,8 @@ export default {
 }
 .table-info-red td,.table-info-red1 td{
   // background: rgb(199, 135, 135);
+}
+
 }
 .ludanBox_dialog{
     .el-form-item{
@@ -1260,6 +1307,4 @@ export default {
       }
     }
   }
-}
-
 </style>
