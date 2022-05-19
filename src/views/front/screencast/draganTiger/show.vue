@@ -39,7 +39,7 @@
 
 <script>
 import { baccaratGet} from "@/api/bet/baccarat";
-import {listTable} from "@/api/sys/table";
+import {tableIdComboBoxInfo} from "@/api/sys/table";
 export default {
   name: "ScreencastdraganTiger",
   data() {
@@ -111,7 +111,7 @@ export default {
     /** 查询角色列表 */
     getList() {
       this.loading = true;
-      listTable(this.queryParams).then(response => {
+      tableIdComboBoxInfo(this.queryParams).then(response => {
         this.options = response.rows;
         this.loading = false;
       });

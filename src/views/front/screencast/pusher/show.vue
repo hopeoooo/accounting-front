@@ -38,7 +38,7 @@
 
 <script>
 import { pusherGet} from "@/api/bet/pusher";
-import {listTable} from "@/api/sys/table";
+import {tableIdComboBoxInfo} from "@/api/sys/table";
 export default {
   name: "Screencastpusher",
   data() {
@@ -110,7 +110,7 @@ export default {
     /** 查询角色列表 */
     getList() {
       this.loading = true;
-      listTable(this.queryParams).then(response => {
+      tableIdComboBoxInfo(this.queryParams).then(response => {
         this.options = response.rows;
         this.loading = false;
       });
