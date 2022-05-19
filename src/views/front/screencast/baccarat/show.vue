@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container bjl_show">
       <div class="table_box_box">
        <span>桌台编号</span>   
        <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
@@ -189,6 +189,8 @@ export default {
 </script>
 
 <style lang="scss" >
+.bjl_show{
+
 
 .detailBox{
   border: 1px solid #bcbcbc;
@@ -458,4 +460,5 @@ export default {
         }
     }
   }
+}  
 </style>

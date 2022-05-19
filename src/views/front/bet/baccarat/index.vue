@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container" oncontextmenu = "return false">
+  <div class="app-container game_bjl" oncontextmenu = "return false">
     <el-row :gutter="20">
 
       <!--切换账号-->
@@ -841,7 +841,8 @@ export default {
 };
 </script>
 <style lang="scss" >
-.detailBox{
+.game_bjl{
+  .detailBox{
   border: 1px solid #bcbcbc;
   .list{
     border-bottom: 1px solid #bcbcbc;
@@ -1245,4 +1246,6 @@ export default {
       }
     }
   }
+}
+
 </style>
