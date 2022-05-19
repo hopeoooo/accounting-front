@@ -15,17 +15,17 @@
 
      <el-table v-loading="loading" class="betBox" stripe="" height="920px" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px">
-             <template slot-scope="scope">
-                <span v-if="scope.row.type==0">$现金</span>
-                <span v-else-if="scope.row.type==1">$筹码</span>
-                <span v-else-if="scope.row.type==2">฿现金</span>
-                <span v-else-if="scope.row.type==3">฿筹码</span>
-                <span v-else>-</span>
+          <el-table-column label="选择币种" align="center" key="type" prop="type" width="120px" class="name">
+             <template slot-scope="scope" >
+                <span style="font-size: 20px;" v-if="scope.row.type==1">$现金</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==0">$筹码</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿现金</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿筹码</span>
+                <span style="font-size: 20px;" v-else>-</span>
                 <!-- {{scope.row.type==0?'现金':(scope.row.type==1?'筹码':'-')}} -->
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
+          <el-table-column label="卡号" align="center" key="card" prop="card"  width="185px"></el-table-column>
            <el-table-column label="庄" align="center" key="card1" prop="card1"  ></el-table-column>
            <el-table-column label="闲" align="center" key="card2" prop="card2"  ></el-table-column>
            <el-table-column label="和" align="center" key="card3" prop="card3"  ></el-table-column>
@@ -58,13 +58,13 @@
 
      <el-table v-loading="loading" class="betBox" stripe="" height="93.6vh" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px">
-             <template slot-scope="scope">
-                <span v-if="scope.row.type==0">$现金</span>
-                <span v-else-if="scope.row.type==1">$筹码</span>
-                <span v-else-if="scope.row.type==2">฿现金</span>
-                <span v-else-if="scope.row.type==3">฿筹码</span>
-                <span v-else>-</span>
+          <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px" >
+             <template slot-scope="scope" style="font-size: 20px;">
+                <span style="font-size: 20px;" v-if="scope.row.type==1">$现金</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==0">$筹码</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿现金</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿筹码</span>
+                <span style="font-size: 20px;" v-else>-</span>
               </template>
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
@@ -362,8 +362,9 @@ export default {
 
     }
     .betBox {
-      font-size: 20px;
+      font-size: 25px;
       font-weight:bold ;
+     
       .el-input--medium .el-input__inner{
         line-height: 35px;
         height: 35px;
@@ -462,8 +463,9 @@ export default {
         }
     }
       .betBox {
-      font-size: 22px;
-      font-weight:bold ;
+        font-size: 25px;
+        font-weight:bold ;
+       
       .el-input--medium .el-input__inner{
         line-height: 35px;
         height: 35px;
