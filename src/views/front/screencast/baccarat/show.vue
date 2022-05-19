@@ -15,7 +15,7 @@
 
      <el-table v-loading="loading" class="betBox" stripe="" height="920px" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="155px">
+          <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px">
              <template slot-scope="scope">
                 <span v-if="scope.row.type==0">$现金</span>
                 <span v-else-if="scope.row.type==1">$筹码</span>
@@ -37,7 +37,7 @@
            <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
           <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
           <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
-          <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
+          <el-table-column label="赔码数" align="center"   prop="payout"  />
              
          
      </el-table>
