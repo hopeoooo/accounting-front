@@ -487,7 +487,7 @@
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="两张牌:" label-width="60px">
+                <el-form-item label="幸运6:" label-width="60px">
                   <el-input
                     v-model="formOption.two"
                     placeholder=""
@@ -532,13 +532,13 @@
                   />
                 </el-form-item>
 
-                <el-form-item label="三张牌:" label-width="60px">
+                <!-- <el-form-item label="三张牌:" label-width="60px">
                   <el-input
                     v-model="formOption.three"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
-                </el-form-item>
+                </el-form-item> -->
               </div>
             </div>
           </div>
@@ -557,6 +557,8 @@
               <el-checkbox label="5">闲对</el-checkbox>
               <el-checkbox label="9">大</el-checkbox>
               <el-checkbox label="6">小</el-checkbox>
+              <el-checkbox label="a">幸运6(2张牌)</el-checkbox>
+              <el-checkbox label="b">幸运6(3张牌)</el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
@@ -586,6 +588,8 @@ import {
 } from "@/api/report/report";
 import moment from "moment";
 const _ = require("lodash");
+
+// 开牌结果映射
 const betOptionList = {
   4: "庄",
   1: "闲",
@@ -597,8 +601,8 @@ const betOptionList = {
   2: "和保险", //和保险
   9: "大",
   6: "小",
-  a: "两张牌",
-  b: "三张牌",
+  a: "幸运6（2张牌)",//幸运6(2张牌)
+  b: "幸运6（3张牌)",//幸运6(3张牌)
   龙: "龙",
   虎: "虎",
   和: "和",
@@ -606,6 +610,28 @@ const betOptionList = {
   赢: "赢",
   "-": "-"
 };
+
+// 下注玩法映射
+const playTextMap = {
+  4: "庄",
+  1: "闲",
+  7: "和",
+  8: "庄对",
+  5: "闲对",
+  3: "庄保险", //庄保险
+  0: "闲保险", //闲保险
+  2: "和保险", //和保险
+  9: "大",
+  6: "小",
+  a: "幸运6",//幸运6
+  龙: "龙",
+  虎: "虎",
+  和: "和",
+  输: "输",
+  赢: "赢",
+  "-": "-"
+};
+
 
 // 百家乐
 const optionMap = {
@@ -619,8 +645,8 @@ const optionMap = {
   tieIns: "2", //和保险
   big: "9",
   small: "6",
-  two: "a",
-  three: "b",
+  two: "a",//幸运6(两张牌)
+  three: "b",//幸运6(三张牌)
   4: "banker",
   1: "player",
   7: "tie",
@@ -718,8 +744,8 @@ export default {
         bankerPair: "",
         big: "",
         small: "",
-        two: "",
-        three: ""
+        two: "",//幸运6
+
       },
       longhuFormOption: {
         dragon: "",
@@ -1157,7 +1183,7 @@ export default {
       for (let index = 0; index < option.length; index++) {
         const element = option[index];
         const { betOption, betMoney } = element;
-        const betName = betOptionList[betOption];
+        const betName = playTextMap[betOption];
         if (betName) {
           const item = `${betName}:${betMoney}`;
           result.push(item);

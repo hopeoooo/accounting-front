@@ -83,9 +83,9 @@
               </div>
               <div class="list">
                 <el-form-item
-                  label="两张牌: 1赔"
+                  label="幸运6(2张牌): 1赔"
                   prop="baccaratTwo"
-                  label-width="100px"
+                  label-width="150px"
                 >
                   <el-input
                     v-model="oddsList.baccaratTwo"
@@ -96,9 +96,9 @@
               </div>
               <div class="list">
                 <el-form-item
-                  label="三张牌: 1赔"
+                  label="幸运6(3张牌): 1赔"
                   prop="baccaratThere"
-                  label-width="100px"
+                  label-width="150px"
                 >
                   <el-input
                     v-model="oddsList.baccaratThere"
