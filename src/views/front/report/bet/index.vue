@@ -262,7 +262,7 @@
             width="150"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope" >
+            <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
@@ -487,6 +487,13 @@
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
+                <el-form-item label="两张牌:" label-width="60px">
+                  <el-input
+                    v-model="formOption.two"
+                    placeholder=""
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
               </div>
               <div class="amount-left-box">
                 <el-form-item label="庄保险:" label-width="60px">
@@ -520,6 +527,14 @@
                 <el-form-item label="小:" label-width="60px">
                   <el-input
                     v-model="formOption.small"
+                    placeholder=""
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+
+                <el-form-item label="三张牌:" label-width="60px">
+                  <el-input
+                    v-model="formOption.three"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
@@ -582,6 +597,8 @@ const betOptionList = {
   2: "和保险", //和保险
   9: "大",
   6: "小",
+  a: "两张牌",
+  b: "三张牌",
   龙: "龙",
   虎: "虎",
   和: "和",
@@ -602,6 +619,8 @@ const optionMap = {
   tieIns: "2", //和保险
   big: "9",
   small: "6",
+  two: "a",
+  three: "b",
   4: "banker",
   1: "player",
   7: "tie",
@@ -611,7 +630,9 @@ const optionMap = {
   0: "playerIns", //闲保险
   2: "tieIns", //和保险
   9: "big",
-  6: "small"
+  6: "small",
+  a: "two",
+  b: "three"
 };
 // 龙虎
 const longhuOptionMap = {
@@ -696,7 +717,9 @@ export default {
         playerPair: "",
         bankerPair: "",
         big: "",
-        small: ""
+        small: "",
+        two: "",
+        three: ""
       },
       longhuFormOption: {
         dragon: "",
@@ -849,14 +872,14 @@ export default {
     rules() {
       if (this.openType == "edit") {
         return {
-          card: [{ required: true ,message:"卡号不能为空"}],
-          type: [{ required: true  ,message:"请选择币种"}]
+          card: [{ required: true, message: "卡号不能为空" }],
+          type: [{ required: true, message: "请选择币种" }]
         };
       } else {
         return {
-          card: [{ required: true ,message:"卡号不能为空"}],
-          gameNum: [{ required: true  ,message:"局号不能为空"}],
-          type: [{ required: true  ,message:"请选择币种"}]
+          card: [{ required: true, message: "卡号不能为空" }],
+          gameNum: [{ required: true, message: "局号不能为空" }],
+          type: [{ required: true, message: "请选择币种" }]
         };
       }
     }
@@ -1184,15 +1207,15 @@ export default {
       let arr1 = [];
       let arr = c.split("");
       // 将排序后的开牌结果存起来。提交的时候对比差异
-      const sortGameResult = _.sortBy(arr)
-      this.originalGameResult = sortGameResult.join("")
+      const sortGameResult = _.sortBy(arr);
+      this.originalGameResult = sortGameResult.join("");
       return arr;
     },
     // 开牌结果选择变化
     onGameResultChange(val) {
       console.log("开牌结果选择变化", val);
       //
-      const newResult =  _.sortBy(val)
+      const newResult = _.sortBy(val);
       this.gameResultList = newResult;
       this.form.gameResult = newResult.join("");
     },
@@ -1301,7 +1324,9 @@ export default {
         playerPair: "",
         bankerPair: "",
         big: "",
-        small: ""
+        small: "",
+        two: "",
+        three: ""
       };
       // 重置龙虎option
       this.longhuFormOption = {
@@ -1312,10 +1337,10 @@ export default {
     },
 
     // 对比下注金额的数据是否与原始数据相等
-    equalOption(originalOption,formOption) {
+    equalOption(originalOption, formOption) {
       // 因为formOption的值类型是string,originalOption值类型是Number
       if (originalOption == Number(formOption)) {
-        return true
+        return true;
       }
     },
 
@@ -1328,7 +1353,11 @@ export default {
             this.form.card == this.initForm.card &&
             this.form.type == this.initForm.type &&
             this.form.gameResult == this.originalGameResult &&
-            _.isEqualWith(this.originalOption, this.formOption,this.equalOption)
+            _.isEqualWith(
+              this.originalOption,
+              this.formOption,
+              this.equalOption
+            )
           ) {
             // 没有修改东西,不调接口
             this.$modal.msgError("本次未做任何修改");
@@ -1340,7 +1369,11 @@ export default {
             this.form.card == this.initForm.card &&
             this.form.type == this.initForm.type &&
             this.form.gameResult == this.initForm.gameResult &&
-             _.isEqualWith(this.originalOption, this.longhuFormOption,this.equalOption)
+            _.isEqualWith(
+              this.originalOption,
+              this.longhuFormOption,
+              this.equalOption
+            )
           ) {
             // 没有修改东西,不调接口
             this.$modal.msgError("本次未做任何修改");

@@ -3,7 +3,7 @@
     <el-form ref="form" :model="oddsList" :rules="rules" label-width="80px">
       <div class="title">赔率设置</div>
       <el-row :gutter="20">
-        <el-col :span="12" :xs="24">
+        <el-col :span="16" :xs="24">
           <div class="odds-container">
             <div style="height:60px;">
               <span>百家乐</span>
@@ -81,10 +81,36 @@
                   />
                 </el-form-item>
               </div>
+              <div class="list">
+                <el-form-item
+                  label="两张牌: 1赔"
+                  prop="baccaratTwo"
+                  label-width="100px"
+                >
+                  <el-input
+                    v-model="oddsList.baccaratTwo"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
+              <div class="list">
+                <el-form-item
+                  label="三张牌: 1赔"
+                  prop="baccaratThere"
+                  label-width="100px"
+                >
+                  <el-input
+                    v-model="oddsList.baccaratThere"
+                    style="width: 80px"
+                    oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
+                  />
+                </el-form-item>
+              </div>
             </div>
           </div>
         </el-col>
-        <el-col :span="12" :xs="24">
+        <el-col :span="8" :xs="24">
           <div class="odds-container">
             <div style="height:60px;">
               <span>龙虎</span>
@@ -135,10 +161,9 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-
               </el-input>
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -153,7 +178,6 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-
               </el-input>
             </el-form-item>
             <span class="percentage-label">%</span>
@@ -171,9 +195,8 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
-
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -188,10 +211,9 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-             </el-input
-              >
+              </el-input>
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -206,10 +228,9 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-
               </el-input>
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -224,10 +245,9 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-
               </el-input>
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -242,10 +262,9 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-
               </el-input>
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
         <el-col :span="6" :xs="12">
@@ -260,10 +279,9 @@
                 style="witdh:100px"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               >
-              </el-input
-              >
+              </el-input>
             </el-form-item>
-              <span class="percentage-label">%</span>
+            <span class="percentage-label">%</span>
           </div>
         </el-col>
       </el-row>
@@ -391,6 +409,20 @@ export default {
           }
         ],
         baccaratSmall: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          }
+        ],
+        baccaratTwo: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: "blur"
+          }
+        ],
+        baccaratThere: [
           {
             required: true,
             message: "不能为空",
