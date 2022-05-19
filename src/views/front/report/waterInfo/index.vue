@@ -27,7 +27,7 @@
               >过滤内部卡号</el-checkbox
             >
           </el-form-item>
-          <el-form-item label="结算日期">
+          <el-form-item label="结算时间">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -171,13 +171,13 @@
           </el-table-column>
 
           <el-table-column
-            label="截止日期"
+            label="截止时间"
             align="center"
             key="deadline"
             prop="deadline"
           />
           <el-table-column
-            label="结算日期"
+            label="结算时间"
             align="center"
             key="createTime"
             prop="createTime"
@@ -293,13 +293,13 @@
           </el-table-column>
 
           <el-table-column
-            label="截止日期"
+            label="截止时间"
             align="center"
             key="deadline"
             prop="deadline"
           />
           <el-table-column
-            label="结算日期"
+            label="结算时间"
             align="center"
             key="createTime"
             prop="createTime"
@@ -580,8 +580,8 @@ export default {
           "฿结算洗码量",
           "฿应结算洗码费",
           "฿实际结算洗码费",
-          "截止日期",
-          "结算日期",
+          "截止时间",
+          "结算时间",
           "操作员",
           "操作备注"
         ];
