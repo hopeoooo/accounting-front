@@ -307,7 +307,7 @@ export default {
           };
           if(!e.card && !isDialog){
             isDialog =true
-            this.$modal.msgError("请检查考号是否漏填");
+            this.$modal.msgError("请检查卡号是否漏填");
           }
         }
       })
