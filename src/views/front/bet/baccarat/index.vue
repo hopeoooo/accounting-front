@@ -3,7 +3,7 @@
     <el-row :gutter="20">
 
       <!--切换账号-->
-      <el-col :span="4" :xs="24">
+      <el-col :span="3" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
             <div class="h1">当前操作员</div>
             <div >{{userName}}</div>
@@ -14,7 +14,7 @@
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="13" :xs="24">
+      <el-col :span="14" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
             <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
@@ -22,13 +22,17 @@
               <li>局号：{{tableInfo.gameNum || 0}}</li>
               <li style="color: blueviolet;">$累计：{{tableInfo.total || 0}}</li>
               <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
+
             </ul>
             <ul>
             
               <li>$筹码：{{tableInfo.chip || 0}}</li>
               <li>$现金：{{tableInfo.cash || 0}}</li>
-               <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
+               <li>$保险：{{tableInfo.totalInsuranceTh || 0}}</li>
+              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
               <li>฿现金：{{tableInfo.cashTh || 0}}</li>
+              <li>฿保险：{{tableInfo.totalInsurance || 0}}</li>
+             
             </ul>
             <!-- <ul>
              
@@ -39,12 +43,9 @@
              <ul>
               <li>$庄：{{baccaratSum.sumZ || 0}}</li>
               <li>$庄对：{{baccaratSum.sumZd || 0}}</li>
-              <li>$庄保险：{{baccaratSum.sumZbx || 0}}</li>
               <li>$和：{{baccaratSum.sumH || 0}}</li>
-              <li>$和保险：{{baccaratSum.sumHbx || 0}}</li>
               <li>$闲：{{baccaratSum.sumX || 0}}</li>
               <li>$闲对：{{baccaratSum.sumXd || 0}}</li>
-              <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
               <li>$大：{{baccaratSum.sumBig || 0}}</li>
               <li>$小：{{baccaratSum.sumSmall || 0}}</li>
                <li>$幸运6：{{baccaratSum.sumA || 0}}</li>
@@ -52,15 +53,20 @@
              <ul>
               <li>฿庄：{{baccaratSum.sumZTh || 0}}</li>
               <li>฿庄对：{{baccaratSum.sumZdTh || 0}}</li>
-              <li>฿庄保险：{{baccaratSum.sumZbxTh || 0}}</li>
               <li>฿和：{{baccaratSum.sumHTh || 0}}</li>
-              <li>$和保险：{{baccaratSum.sumHbxTh || 0}}</li>
               <li>฿闲：{{baccaratSum.sumXTh || 0}}</li>
               <li>฿闲对：{{baccaratSum.sumXdTh || 0}}</li>
-              <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
-               <li>฿大：{{baccaratSum.sumBigTh || 0}}</li>
+              <li>฿大：{{baccaratSum.sumBigTh || 0}}</li>
               <li>฿小：{{baccaratSum.sumSmallTh || 0}}</li>
-               <li>$幸运6：{{baccaratSum.sumATh || 0}}</li>
+              <li>$幸运6：{{baccaratSum.sumATh || 0}}</li>
+             </ul>
+             <ul>
+                <li>$庄保险：{{baccaratSum.sumZbx || 0}}</li>
+                <li>$和保险：{{baccaratSum.sumHbx || 0}}</li>
+                <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
+                <li>฿庄保险：{{baccaratSum.sumZbxTh || 0}}</li>
+                <li>$和保险：{{baccaratSum.sumHbxTh || 0}}</li>
+                <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
              </ul>
               <ul>
                 <li>$筹码:{{baccaratSum.sumChip || 0}}</li>
@@ -126,10 +132,6 @@
                   <el-checkbox-group v-model="checkboxGroup3" class="checked checked4" :max="1">
                     <el-checkbox-button v-for="(e,key) in reData2" :label="e.id" :class="e.color" :key="key">{{e.name}}</el-checkbox-button>
                   </el-checkbox-group>
-                  <!-- <el-radio-group v-model="radio2" class="checked">
-                    <el-radio-button :label="9" class="red">大</el-radio-button>
-                    <el-radio-button :label="6" class="blue">小</el-radio-button>
-                  </el-radio-group> -->
                </el-col>
                <el-col :span="7" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
@@ -596,12 +598,10 @@ export default {
       this.sumdata.sumH = newData['7']
       this.sumdata.sumZd = newData['8']
       this.sumdata.sumXd = newData['5']
-      this.sumdata.sumZbx = newData['3']
-      this.sumdata.sumXbx = newData['0']
-      this.sumdata.sumHbx = newData['2']
+   
       this.sumdata.sumBig = newData['9']
       this.sumdata.sumSmall = newData['6']
-      this.sumdata.sumA = newData['a']
+      this.sumdata.sumA = newData['a']     
 
         const  newDataTh = this.sumArr(arrTh)     
       this.sumdata.sumZTh = newDataTh['4']
@@ -609,13 +609,32 @@ export default {
       this.sumdata.sumHTh = newDataTh['7']
       this.sumdata.sumZdTh = newDataTh['8']
       this.sumdata.sumXdTh = newDataTh['5']
-      this.sumdata.sumZbxTh = newDataTh['3']
-      this.sumdata.sumXbxTh = newDataTh['0']
-       this.sumdata.sumHbxTh = newDataTh['2']
+     
       this.sumdata.sumBigTh = newDataTh['9']
       this.sumdata.sumSmallTh = newDataTh['6']
       this.sumdata.sumATh = newDataTh['a']
-      console.log(arrMJ,arrTh)
+      if(this.radio1 =='4'){
+        this.sumdata.sumZbx = -newData['3']
+        this.sumdata.sumXbx = newData['0']
+        this.sumdata.sumHbx = newData['2']
+        this.sumdata.sumZbxTh = -newDataTh['3']
+        this.sumdata.sumXbxTh = newDataTh['0']
+        this.sumdata.sumHbxTh = newDataTh['2']
+      }else if(this.radio1 =='1'){
+        this.sumdata.sumZbx = newData['3']
+        this.sumdata.sumXbx = -newData['0']
+        this.sumdata.sumHbx = newData['2']
+        this.sumdata.sumZbxTh = newDataTh['3']
+        this.sumdata.sumXbxTh = -newDataTh['0']
+        this.sumdata.sumHbxTh = newDataTh['2']
+      }else if(this.radio1 =='7'){
+        this.sumdata.sumZbx = 0
+        this.sumdata.sumXbx = 0
+        this.sumdata.sumHbx = -newData['2']
+        this.sumdata.sumZbxTh = 0
+        this.sumdata.sumXbxTh = 0
+        this.sumdata.sumHbxTh = -newDataTh['2']
+      }
       this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']+newChip['a']
       this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']+newCash['a']
        this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']+newChipTh['a']
