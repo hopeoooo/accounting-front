@@ -36,7 +36,7 @@
            <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
           <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
-          <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
+          <el-table-column label="幸运6" align="center" key="card11" prop="card11"  ></el-table-column>
           <el-table-column label="赔码数" align="center"   prop="payout"  />
              
          
@@ -78,6 +78,7 @@
            <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
            <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
           <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
+          <el-table-column label="幸运6" align="center" key="card11" prop="card11"  ></el-table-column>
           <el-table-column label="赔码数" align="center"   prop="payout"  />
              
          
@@ -380,7 +381,7 @@ export default {
               background: red;
               color: #fff;
             }
-            &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12){
+            &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12),&:nth-child(13){
               background: blue;
               color: #fff;
             }

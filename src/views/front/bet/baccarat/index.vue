@@ -47,8 +47,7 @@
               <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
               <li>$大：{{baccaratSum.sumBig || 0}}</li>
               <li>$小：{{baccaratSum.sumSmall || 0}}</li>
-               <li>$两张牌：{{baccaratSum.sumA || 0}}</li>
-              <li>$三张牌：{{baccaratSum.sumB || 0}}</li>
+               <li>$幸运6：{{baccaratSum.sumA || 0}}</li>
              </ul>
              <ul>
               <li>฿庄：{{baccaratSum.sumZTh || 0}}</li>
@@ -61,8 +60,7 @@
               <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
                <li>฿大：{{baccaratSum.sumBigTh || 0}}</li>
               <li>฿小：{{baccaratSum.sumSmallTh || 0}}</li>
-               <li>$两张牌：{{baccaratSum.sumATh || 0}}</li>
-              <li>$三张牌：{{baccaratSum.sumBTh || 0}}</li>
+               <li>$幸运6：{{baccaratSum.sumATh || 0}}</li>
              </ul>
               <ul>
                 <li>$筹码:{{baccaratSum.sumChip || 0}}</li>
@@ -241,16 +239,7 @@
                   <el-input @change='DataChange' v-model.number="scope.row.card10" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="两张牌" align="center" key="card11" prop="card11"  >
-               <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card11" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
-           <el-table-column label="三张牌" align="center" key="card12" prop="card12"  >
-               <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card12" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
-              </template>
-          </el-table-column>
+         
            <el-table-column label="大" align="center" key="card8" prop="card8"  >
                <template slot-scope="scope">
                   <el-input @change='DataChange' v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -259,6 +248,11 @@
             <el-table-column label="小" align="center" key="card9" prop="card9"  >
                <template slot-scope="scope">
                   <el-input @change='DataChange' v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+              </template>
+          </el-table-column>
+            <el-table-column label="幸运6" align="center" key="card11" prop="card11"  >
+               <template slot-scope="scope">
+                  <el-input @change='DataChange' v-model.number="scope.row.card11" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
           <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
@@ -395,6 +389,8 @@ export default {
           sumHbxTh:'',
           sumBigTh:'',
           sumSmallTh:'',
+          sumATh:'',
+          sumA:'',
           sumChipTh:'',
           sumCashTh:'',
       }
@@ -495,7 +491,7 @@ export default {
 
     },
     status_change: function (row) {  
-      if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9){
+      if(row.row.card1|| row.row.card2 || row.row.card3|| row.row.card4 || row.row.card5|| row.row.card6|| row.row.card7 || row.row.card8|| row.row.card9|| row.row.card10|| row.row.card11){
           if (!row.row.type && row.row.type !=0) {
             return 'table-info-bj-red'
           }
@@ -606,7 +602,6 @@ export default {
       this.sumdata.sumBig = newData['9']
       this.sumdata.sumSmall = newData['6']
       this.sumdata.sumA = newData['a']
-      this.sumdata.sumB = newData['b']
 
         const  newDataTh = this.sumArr(arrTh)     
       this.sumdata.sumZTh = newDataTh['4']
@@ -620,12 +615,11 @@ export default {
       this.sumdata.sumBigTh = newDataTh['9']
       this.sumdata.sumSmallTh = newDataTh['6']
       this.sumdata.sumATh = newDataTh['a']
-      this.sumdata.sumBTh = newDataTh['b']
       console.log(arrMJ,arrTh)
-      this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']+newChip['a']+newChip['b']
-      this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']+newCash['a']+newCash['b']
-       this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']+newChipTh['a']+newChipTh['b']
-      this.sumdata.sumCashTh = newCashTh['4']+newCashTh['1']+newCashTh['7']+newCashTh['8']+newCashTh['5']+newCashTh['9']+newCashTh['6']+newCashTh['a']+newCashTh['b']
+      this.sumdata.sumChip = newChip['4']+newChip['1']+newChip['7']+newChip['8']+newChip['5']+newChip['9']+newChip['6']+newChip['a']
+      this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']+newCash['a']
+       this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']+newChipTh['a']
+      this.sumdata.sumCashTh = newCashTh['4']+newCashTh['1']+newCashTh['7']+newCashTh['8']+newCashTh['5']+newCashTh['9']+newCashTh['6']+newCashTh['a']
      this.setBaccaratSum(this.sumdata)
       baccaratOpen({'json':param}).then(res => {
           this.subData= res.data
@@ -681,7 +675,7 @@ export default {
           Object.keys(p).forEach(k=>p[k]+=c[k]?c[k]:0)
 
           return p
-        }, {'1': 0,'2': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0,'a':0,'b':0})
+        }, {'1': 0,'2': 0, '4': 0, '7':0,'8':0,'5':0,'9':0,'6':0,'3':0,'0':0,'a':0})
       }
       
     },
@@ -1206,11 +1200,11 @@ export default {
   .el-table__header-wrapper{
     thead{
       th{
-        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11),&:nth-child(13){
+        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
           background: red;
           color: #fff;
         }
-        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12),&:nth-child(14){
+        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12),&:nth-child(13){
           background: blue;
           color: #fff;
         }
