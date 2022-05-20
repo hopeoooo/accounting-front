@@ -414,27 +414,34 @@ export default {
     },
      /** 提交按钮 */
     submitForm: function() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.title == "收码") {
-            this.form['type']=1
-            dragantigerEdit(this.form).then(response => {
-              this.$modal.msgSuccess("收码修改成功");
-              this.isOpen= !this.isOpen
-              this.$emit('getOpen',this.isOpen)
-              this.reset()
-            });
-          } else {
-            this.form['type']=0
-            dragantigerEdit(this.form).then(response => {
-              this.$modal.msgSuccess("点码修改成功");
-               this.isOpen= !this.isOpen
-              this.$emit('getOpen',this.isOpen)
-              this.reset()
-            });
+      this.$confirm('是否确定修改？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+         customClass:'dialog_tips'
+      }).then(() => {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            if (this.title == "收码") {
+              this.form['type']=1
+              dragantigerEdit(this.form).then(response => {
+                this.$modal.msgSuccess("收码修改成功");
+                this.isOpen= !this.isOpen
+                this.$emit('getOpen',this.isOpen)
+                this.reset()
+              });
+            } else {
+              this.form['type']=0
+              dragantigerEdit(this.form).then(response => {
+                this.$modal.msgSuccess("点码修改成功");
+                this.isOpen= !this.isOpen
+                this.$emit('getOpen',this.isOpen)
+                this.reset()
+              });
+            }
           }
-        }
-      });
+        });
+      })  
     },
       // 取消按钮
     handleClose() {

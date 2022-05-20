@@ -12,7 +12,7 @@
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="14" :xs="24">
+      <el-col :span="11" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
               <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
@@ -50,7 +50,7 @@
           </el-card>
       </el-col> -->
        <!--路单展示-->
-      <el-col :span="7" :xs="24">
+      <el-col :span="10" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
             <div class="ludanbox">
               <div class="ludanbg">
@@ -336,7 +336,8 @@ export default {
       this.$confirm('确定切换账号吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         this.$store.dispatch('user/LogOut').then(() => {
           location.href = '/index';
@@ -476,7 +477,8 @@ export default {
        this.$confirm('是否确定录入？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         dragantigerInput({'json':this.subData}).then(res=>{
           this.loading = false;
@@ -634,7 +636,7 @@ export default {
   
     //获取数组
     getszdata(){
-      this.szdata =[...Array(73).keys()]
+      this.szdata =[...Array(109).keys()]
       this.szdata.shift()
       this.szdata = this.spArr(this.szdata,6)
     },
@@ -916,12 +918,22 @@ export default {
             background: red;
             opacity: .6;
           }
+           &.is-active,&.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              border: 4px solid blue;
+            }
+         }
         }
         .blue{
           // background: blue;
           .el-checkbox-button__inner,.el-radio-button__inner{
             background: blue;
             opacity: .6;
+          }
+           &.is-active,&.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              border: 4px solid red;
+            }
           }
         }
         .green{
@@ -930,6 +942,11 @@ export default {
             background: green;
             opacity: .6;
           }
+           &.is-active,&.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              border: 4px solid rgb(255, 0, 225);
+            }
+         }
         }
         .is-active,.is-checked{
           .el-checkbox-button__inner,.el-radio-button__inner{
@@ -1069,5 +1086,22 @@ export default {
       }
       }
     }
+}
+.dialog_tips{
+  .el-message-box__content{
+      font-size: 24px;
+  }
+  .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
+}  
+.el-message-box__btns{
+  button{
+    font-size: 20px;
+    padding: 15px 25px;
+  }
 }
 </style>

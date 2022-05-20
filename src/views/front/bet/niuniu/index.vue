@@ -241,7 +241,8 @@ export default {
       this.$confirm('确定切换账号吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         this.$store.dispatch('user/LogOut').then(() => {
           location.href = '/index';
@@ -362,17 +363,18 @@ export default {
        this.$confirm('是否确定录入？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         niuniuInput({'json':this.subData}).then(res=>{
           this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1,type:0})),
-           this.betList = this.betList.map(o=>{
-                return {
-                  "type":o.type,
-                  "card":o.card,
-                  "id":o.id,
-                }
+          this.betList = this.betList.map(o=>{
+            return {
+              "type":o.type,
+              "card":o.card,
+              "id":o.id,
+            }
           })
           this.radio1 =''
           this.sumdata={
@@ -928,4 +930,21 @@ export default {
       }
     }
 }
+.dialog_tips{
+  .el-message-box__content{
+      font-size: 24px;
+  }
+  .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
+}  
+ .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
 </style>

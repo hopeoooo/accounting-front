@@ -242,7 +242,8 @@ export default {
       this.$confirm('确定切换账号吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+         type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         this.$store.dispatch('user/LogOut').then(() => {
           location.href = '/index';
@@ -363,7 +364,8 @@ export default {
        this.$confirm('是否确定录入？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+         type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         pusherInput({'json':this.subData}).then(res=>{
           this.loading = false;
@@ -929,4 +931,21 @@ export default {
       }
     }
 }
+.dialog_tips{
+  .el-message-box__content{
+      font-size: 24px;
+  }
+  .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
+}  
+ .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
 </style>

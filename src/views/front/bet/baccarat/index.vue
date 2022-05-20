@@ -3,18 +3,18 @@
     <el-row :gutter="20">
 
       <!--切换账号-->
-      <el-col :span="3" :xs="24">
-          <el-card class="box-card-box" style="text-align:center">
+      <el-col :span="24" :xs="24">
+          <el-card class="box-card-box1" style="text-align:center">
             <div class="h1">当前操作员</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <!-- <el-button class="loginout" type="primary" plain @click="betRecord">下注记录</el-button> -->
+              <el-button class="loginout" type="danger" plain @click="betRecord">下注记录</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="14" :xs="24">
+      <el-col :span="18" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
             <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
@@ -78,7 +78,7 @@
       </el-col>
      
        <!--路单展示-->
-      <el-col :span="7" :xs="24">
+      <el-col :span="6" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
             <div class="ludanbox">
               <div class="ludanbg">
@@ -183,6 +183,141 @@
       </div>
     </el-dialog>
 
+    <!-- 下注记录 -->
+    <el-dialog title="注单记录" :visible.sync="isRecord" width="1400px" class="zhudanBox_dialog" append-to-body v-if="isRecord">
+      <el-table v-loading="loading" :data="userList">
+          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
+          <el-table-column
+            label="会员卡号"
+            align="center"
+            key="card"
+            prop="card"
+          />
+          <el-table-column
+            label="台号"
+            align="center"
+            key="tableId"
+            prop="tableId"
+            width="80px"
+          />
+          <el-table-column
+            label="靴号"
+            align="center"
+            key="bootNum"
+            prop="bootNum"
+            width="60px"
+          />
+          <el-table-column
+            label="局号"
+            align="center"
+            key="gameNum"
+            prop="gameNum"
+            width="60px"
+          />
+          <el-table-column
+            label="游戏类型"
+            align="center"
+            key="gameId"
+            prop="gameId"
+            width="80px"
+          >
+            <template slot-scope="scope">
+              <span>{{ getGameName(scope.row.gameId) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="下注玩法"
+            align="center"
+            key="option"
+            prop="option"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <!--百家乐、龙虎 -->
+              <span v-if="scope.row.gameId == 1 || scope.row.gameId == 2">{{
+                getPlayText(scope.row.option)
+              }}</span>
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="币种"
+            align="center"
+            key="type"
+            prop="type"
+            width="80px"
+          >
+            <template slot-scope="scope" class="wanfabox">
+              <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
+              <!-- <span v-if="scope.row.type == 0">$筹码</span>
+              <span v-if="scope.row.type == 1">$现金</span>
+              <span v-if="scope.row.type == 2">฿筹码</span>
+              <span v-if="scope.row.type == 3">฿现金</span> -->
+              <span>{{ typeMap[scope.row.type] }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="下注金额"
+            align="center"
+            key="betMoney"
+            prop="betMoney"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.betMoney | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="开牌结果"
+            align="center"
+            key="gameResult"
+            prop="gameResult"
+          >
+            <template slot-scope="scope">
+              <div>
+                <span
+                  v-for="(item, index) in scope.row.gameResult"
+                  :key="index"
+                  :class="getResultStyle(item)"
+                >
+                  {{ getGameResult2(item, index) }}
+                </span>
+              </div>
+              <!-- <span>{{ getGameResult(scope.row.gameResult) }}</span> -->
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="输赢"
+            align="center"
+            key="winLose"
+            prop="winLose"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="下注时间"
+            align="center"
+            key="createTime"
+            prop="createTime"
+            width="180px"
+          />
+          <el-table-column
+            label="操作员"
+            align="center"
+            key="createBy"
+            prop="createBy"
+          />
+        </el-table>
+
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getListRecord"
+        />
+    </el-dialog>
      <el-table v-loading="loading" class="betBox_bjl" height="650px" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
@@ -272,9 +407,89 @@
 </template>
 
 <script>
-import { baccaratInfo,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratSave} from "@/api/bet/baccarat";
+import { baccaratInfo,baccaratList,baccaratRecord,baccaratOpen,baccaratUpdate,baccaratInput,baccaratSave} from "@/api/bet/baccarat";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
+// 开牌结果映射
+const betOptionList = {
+  4: "庄",
+  1: "闲",
+  7: "和",
+  8: "庄对",
+  5: "闲对",
+  3: "庄保险", //庄保险
+  0: "闲保险", //闲保险
+  2: "和保险", //和保险
+  9: "大",
+  6: "小",
+  a: "幸运6（2张牌)",//幸运6(2张牌)
+  b: "幸运6（3张牌)",//幸运6(3张牌)
+  龙: "龙",
+  虎: "虎",
+  和: "和",
+  输: "输",
+  赢: "赢",
+  "-": "-"
+};
+
+// 下注玩法映射
+const playTextMap = {
+  4: "庄",
+  1: "闲",
+  7: "和",
+  8: "庄对",
+  5: "闲对",
+  3: "庄保险", //庄保险
+  0: "闲保险", //闲保险
+  2: "和保险", //和保险
+  9: "大",
+  6: "小",
+  a: "幸运6",//幸运6
+  龙: "龙",
+  虎: "虎",
+  和: "和",
+  输: "输",
+  赢: "赢",
+  "-": "-"
+};
+
+
+// 百家乐
+const optionMap = {
+  banker: "4",
+  player: "1",
+  tie: "7",
+  bankerPair: "8",
+  playerPair: "5",
+  bankerIns: "3", //庄保险
+  playerIns: "0", //闲保险
+  tieIns: "2", //和保险
+  big: "9",
+  small: "6",
+  two: "a",//幸运6(两张牌)
+  three: "b",//幸运6(三张牌)
+  4: "banker",
+  1: "player",
+  7: "tie",
+  8: "bankerPair",
+  5: "playerPair",
+  3: "bankerIns", //庄保险
+  0: "playerIns", //闲保险
+  2: "tieIns", //和保险
+  9: "big",
+  6: "small",
+  a: "two",
+  b: "three"
+};
+// 龙虎
+const longhuOptionMap = {
+  dragon: "龙",
+  tiger: "虎",
+  tie: "和", //和
+  龙: "dragon",
+  虎: "tiger",
+  和: "tie"
+};
 export default {
   name: "Baccarat",
   data() {
@@ -284,6 +499,7 @@ export default {
       // 遮罩层
       loading: true,
       isVisibles:false,
+      isRecord:false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -328,6 +544,40 @@ export default {
          checkboxGroup3:[], 
         // radio2:'',
       },
+       // 游戏类型列表
+      Gameoptions: [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: 1,
+          label: "百家乐"
+        },
+        {
+          value: 2,
+          label: "龙虎"
+        },
+        {
+          value: 3,
+          label: "牛牛"
+        },
+        {
+          value: 4,
+          label: "三公"
+        },
+        {
+          value: 5,
+          label: "推筒子"
+        }
+      ],
+        typeMap: {
+        0: "$筹码",
+        1: "$现金",
+        2: "฿筹码",
+        3: "฿现金"
+      },
+      
       defaultProps: {
         children: "children",
         label: "label"
@@ -337,8 +587,6 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 30,
-        card:'',
-        isAdmin:false,
       },
       basedata:{
 
@@ -414,17 +662,92 @@ export default {
     userName(){
       return this.$store.state.user.name
     },
-     ...mapState("game", [ "baccaratList",'baccaratSum']),
+     ...mapState("game", [ "baccaratList",'baccaratSum']), 
   },
   methods: {
     ...mapMutations('game',["setBaccaratList","setBaccaratSum"]),
     screencast(){
       this.isSend = !this.isSend
       this. getSend()
+      localStorage.setItem('BjType',this.isSend)
     },
   
     roadChange(){},
-    betRecord(){},
+    betRecord(){
+      this.isRecord= true
+      this.getListRecord();
+    },
+    // 注单记录
+    getListRecord() {
+      this.loading = true;
+      baccaratRecord(this.queryParams)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+    },
+    getGameName(gameId) {
+      if (gameId) {
+        //通过gameId 得到游戏名称 gameName
+        const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+        // console.log("通过gameId 得到游戏名称 gameName", game, gameId);
+
+        return game.label;
+      } else {
+        return "百家乐";
+      }
+    },
+     // 生成下注玩法
+    getPlayText(option = []) {
+      if (!option || option.length == 0) {
+        return "-";
+      }
+      let playText = "";
+      let result = [];
+      for (let index = 0; index < option.length; index++) {
+        const element = option[index];
+        const { betOption, betMoney } = element;
+        const betName = playTextMap[betOption];
+        if (betName) {
+          const item = `${betName}:${betMoney}`;
+          result.push(item);
+        }
+      }
+      playText = result.join(" / ");
+      return playText;
+    },
+    // 生成开牌结果(用于表格渲染)
+    getGameResult2(result, index) {
+      if (index == 0) {
+        return betOptionList[result];
+      } else {
+        return `/ ${betOptionList[result]}`;
+      }
+    },
+    //开牌结果样式
+    getResultStyle(option) {
+      if (option == 4 || option == "龙") {
+        // 龙/庄（红色）
+        return "result-long-banker";
+      }
+      if (option == 1 || option == "虎") {
+        // 虎/闲（蓝色）
+        return "result-hu-player";
+      }
+      if (option == 7) {
+        // 和（绿色）
+        return "result-tie";
+      }
+      return "";
+    },
+    
+
+
+
     openData(data){
       this.open = data
         // if(this.title=='点码')
@@ -440,6 +763,12 @@ export default {
         this.setBaccaratList(this.betList),
         this.setBaccaratSum(this.sumdata),
       );
+       if(localStorage.getItem("BjType") != null){
+          this.isSend = localStorage.getItem('BjType')
+        }
+         if(localStorage.getItem("BjList") != null){
+           this.setBaccaratList(JSON.parse(localStorage.getItem('BjList')))
+        }
     },
     //赛果列表
     getResult(){
@@ -477,7 +806,8 @@ export default {
       this.$confirm('确定切换账号吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass:'dialog_tips'
       }).then(() => {
         this.$store.dispatch('user/LogOut').then(() => {
           location.href = '/index';
@@ -658,7 +988,8 @@ export default {
        this.$confirm('是否确定录入？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+         customClass:'dialog_tips'
       }).then(() => {
         baccaratInput({'json':this.subData}).then(res=>{
           this.loading = false;
@@ -675,6 +1006,8 @@ export default {
           this.checkboxGroup2 =[]
           this.checkboxGroup3 =[]
           this.sumdata={ }
+          console.log(this.betList)
+          localStorage.setItem('BjList',JSON.stringify(this.betList))
           this.setBaccaratList(this.betList)
           this.setBaccaratSum(this.sumdata)
           let that=this
@@ -893,6 +1226,7 @@ export default {
 </script>
 <style lang="scss" >
 .game_bjl{
+  padding: 5px 20px 20px;
   .detailBox{
   border: 1px solid #bcbcbc;
   .list{
@@ -912,7 +1246,7 @@ export default {
   .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
 }
 .box-card-box{
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 18px;  
   .el-card__body{
     display: flex;
@@ -1080,15 +1414,56 @@ export default {
   
 
 }
+.box-card-box1{
+  margin-bottom: 10px;
+  font-size: 18px;  
+  .el-card__body{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 20px;
+    .h1{
+      font-size: 22px;
+      line-height: 40px;
+      margin-right: 20px;
+    }
+    button{
+      width: 150px;
+      height: 60px;
+      margin-left: 30px;
+    }
+    .loginout{
+      height: 40px;
+    }
+    ul{
+      padding: 0;
+      margin: 0;
+     text-align: left;
+     border-top:1px solid #cbcbcb ;
+     &:nth-child(1){
+       border: 0;
+     }
+      li{
+        list-style: none;
+        display: inline-block;
+        min-width:100px;
+        margin: 0 8px;
+        line-height: 32px;
+        font-size: 18px;
+        // font-weight: bold;
+      }
+    }
+  }
+}
 .box-card-box-list{
+  margin-bottom: 10px;
   .el-card__body{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 5px 20px;
+    padding: 10px 20px;
     .el-row{
       .el-col{
-        height: 100px;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -1165,6 +1540,11 @@ export default {
            background: red;
            opacity: .6;
         }
+         &.is-active,&.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              border: 4px solid blue;
+            }
+         }
       }
       .blue{
         // background: blue;
@@ -1172,6 +1552,11 @@ export default {
            background: blue;
            opacity: .6;
         }
+         &.is-active,&.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              border: 4px solid red;
+            }
+         }
       }
       .green{
         // background: green;
@@ -1179,6 +1564,11 @@ export default {
            background: green;
            opacity: .6;
         }
+         &.is-active,&.is-checked{
+            .el-checkbox-button__inner,.el-radio-button__inner{
+              border: 4px solid rgb(255, 0, 225);
+            }
+         }
       }
       .is-active,.is-checked{
          .el-checkbox-button__inner,.el-radio-button__inner{
@@ -1275,18 +1665,18 @@ export default {
         justify-content: center;
         width: 100%;
         .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 80px;
-        height: 40px;
-        line-height: 40px;
-        background: #919191;
-        border-radius: 6px;
-        color: #999;
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-      }
+          min-width: 100px;
+          height: 50px;
+          line-height: 50px;
+          background: #919191;
+          border-radius: 6px;
+          color: #999;
+          margin: 0 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+        }
 
       .red{
         .el-checkbox-button__inner,.el-radio-button__inner{
@@ -1312,12 +1702,38 @@ export default {
          .el-checkbox-button__inner,.el-radio-button__inner{
            opacity: 1;
            font-size: 20px;
-           border: 0;
            font-weight: bold;
            color: #fff;
+           box-sizing: border-box;
         }
       }
       }
     }
   }
+.dialog_tips{
+  .el-message-box__content{
+      font-size: 24px;
+  }
+  .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
+}  
+ .el-message-box__btns{
+    button{
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  }
+  .result-long-banker {
+  color: red;
+}
+.result-hu-player {
+  color: blue;
+}
+.result-tie {
+  color: green;
+}
 </style>

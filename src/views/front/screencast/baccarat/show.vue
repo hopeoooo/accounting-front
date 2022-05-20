@@ -483,7 +483,7 @@ export default {
               background: red;
               color: #fff;
             }
-            &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12){
+            &:nth-child(4), &:nth-child(7), &:nth-child(9),&:nth-child(12),&:nth-child(13){
               background: blue;
               color: #fff;
             }

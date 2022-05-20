@@ -8,6 +8,14 @@ export function baccaratEdit(data) {
     params: data
   })
 }
+// 注单记录
+export function baccaratRecord(data) {
+  return request({
+    url: '/bet/baccarat/record',
+    method: 'post',
+    params: data
+  })
+}
 // 点码||收码 计算差距
 export function baccaratReckon(data) {
   return request({
