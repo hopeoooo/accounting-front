@@ -145,26 +145,24 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model="scope.row.card" placeholder=""  />
+                  <el-input @input='DataChange' v-model="scope.row.card" placeholder=""  />
               </template>
           </el-table-column>
            <el-table-column label="龙" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="虎" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="和" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-          
-          <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
           <el-table-column label="赔码数" align="center"   prop="payout" />
              
          

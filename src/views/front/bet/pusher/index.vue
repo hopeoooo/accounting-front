@@ -71,7 +71,7 @@
 
      <el-table v-loading="loading" stripe class="betBox" height="500px" :data="ttzList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" fixed key="type" prop="type" width="360px">
+          <el-table-column label="选择币种" align="center" key="type" prop="type" width="360px">
                <template slot-scope="scope">
                   <el-radio-group @change='DataChange' v-model.number="scope.row.type">
                    <el-radio :label="0">$筹码</el-radio>
@@ -83,30 +83,21 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model="scope.row.card" placeholder="" />
+                  <el-input @input='DataChange' v-model="scope.row.card" placeholder="" />
               </template>
           </el-table-column>
            <el-table-column label="输" align="center" key="lose" prop="lose"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' :disabled="scope.row.win?scope.row.win !='':false" v-model.number="scope.row.lose" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' :disabled="scope.row.win?scope.row.win !='':false" v-model.number="scope.row.lose" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="赢" align="center" key="win" prop="win"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' :disabled="scope.row.lose?scope.row.lose !='':false" v-model.number="scope.row.win" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' :disabled="scope.row.lose?scope.row.lose !='':false" v-model.number="scope.row.win" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <!-- <el-table-column label="选择结果" align="center" key="type1" prop="type1" width="240px">
-               <template slot-scope="scope">
-                <el-radio-group @change='DataChange' v-model.number="scope.row.type1" class="pusherResult">
-                  <el-radio-button label="输" class="red">输</el-radio-button>
-                  <el-radio-button label="赢" class="green">赢</el-radio-button>
-              </el-radio-group>
-              </template>
-          </el-table-column> -->
-          
-          <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" />
-          <el-table-column label="赔码数" align="center"   prop="payout"  fixed="right"/>
+         
+          <el-table-column label="赔码数" align="center"   prop="payout"  />
              
          
         </el-table>
