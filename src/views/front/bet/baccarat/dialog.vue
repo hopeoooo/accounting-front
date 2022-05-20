@@ -8,7 +8,7 @@
                  <el-table-column label="面值$" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
-                        <el-input v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
+                        <el-input ref="input" id="input" @keyup.enter.native="handelTab(scope.row.id,$event)" v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
                 <el-table-column label="合计" align="center"   prop="total">
@@ -138,7 +138,7 @@
                  <el-table-column label="面值฿" align="center" key="val" prop="val"  />
                 <el-table-column label="数量" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
-                        <el-input v-model.number="scope.row.num" placeholder=""  @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
+                         <el-input ref="input" id="input1" @keyup.enter.native="handelTab1(scope.row.id,$event)" v-model.number="scope.row.num" placeholder=""  @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
                 <el-table-column label="合计" align="center"   prop="total">
@@ -302,34 +302,34 @@ export default {
       cashTh:'',
       chipTh:'',
       Listdata:[
-        {value:1000000,val:'100万',num:'',total:''},
-        {value:500000,val:'50万',num:'',total:''},
-        {value:50000,val:'5万',num:'',total:''},
-        {value:10000,val:'1万',num:'',total:''},
-        {value:5000,val:'5000',num:'',total:''},
-        {value:1000,val:'1000',num:'',total:''},
-        {value:500,val:'500',num:'',total:''},
-        {value:100,val:'100',num:'',total:''},
-        {value:50,val:'50',num:'',total:''},
-        {value:10,val:'10',num:'',total:''},
-        {value:5,val:'5',num:'',total:''},
-        {value:1,val:'1',num:'',total:''},
-        {value:1,val:'现金',num:'',total:''},
+        {id:1,value:1000000,val:'100万',num:'',total:''},
+        {id:2,value:500000,val:'50万',num:'',total:''},
+        {id:3,value:50000,val:'5万',num:'',total:''},
+        {id:4,value:10000,val:'1万',num:'',total:''},
+        {id:5,value:5000,val:'5000',num:'',total:''},
+        {id:6,value:1000,val:'1000',num:'',total:''},
+        {id:7,value:500,val:'500',num:'',total:''},
+        {id:8,value:100,val:'100',num:'',total:''},
+        {id:9,value:50,val:'50',num:'',total:''},
+        {id:10,value:10,val:'10',num:'',total:''},
+        {id:11,value:5,val:'5',num:'',total:''},
+        {id:12,value:1,val:'1',num:'',total:''},
+        {id:13,value:1,val:'现金',num:'',total:''},
         ],
       Listdata1:[
-        {value:1000000,val:'100万',num:'',total:''},
-        {value:500000,val:'50万',num:'',total:''},
-        {value:50000,val:'5万',num:'',total:''},
-        {value:10000,val:'1万',num:'',total:''},
-        {value:5000,val:'5000',num:'',total:''},
-        {value:1000,val:'1000',num:'',total:''},
-        {value:500,val:'500',num:'',total:''},
-        {value:100,val:'100',num:'',total:''},
-        {value:50,val:'50',num:'',total:''},
-        {value:10,val:'10',num:'',total:''},
-        {value:5,val:'5',num:'',total:''},
-        {value:1,val:'1',num:'',total:''},
-        {value:1,val:'现金',num:'',total:''},
+         {id:1,value:1000000,val:'100万',num:'',total:''},
+        {id:2,value:500000,val:'50万',num:'',total:''},
+        {id:3,value:50000,val:'5万',num:'',total:''},
+        {id:4,value:10000,val:'1万',num:'',total:''},
+        {id:5,value:5000,val:'5000',num:'',total:''},
+        {id:6,value:1000,val:'1000',num:'',total:''},
+        {id:7,value:500,val:'500',num:'',total:''},
+        {id:8,value:100,val:'100',num:'',total:''},
+        {id:9,value:50,val:'50',num:'',total:''},
+        {id:10,value:10,val:'10',num:'',total:''},
+        {id:11,value:5,val:'5',num:'',total:''},
+        {id:12,value:1,val:'1',num:'',total:''},
+        {id:13,value:1,val:'现金',num:'',total:''},
       ]  
     };
   },
@@ -342,37 +342,57 @@ export default {
       }
     },
   methods: {
+    handelTab(i) {
+      let inputs = document.querySelectorAll('#input')
+      for (let j = 0; j < inputs.length; j++) {
+          if(i<(inputs.length)){ 
+                    inputs[i].focus();
+                }else if(i==(inputs.length)){ 
+                    inputs[0].focus();break;                 
+                }
+      }
+    },
+    handelTab1(i) {
+      let inputs = document.querySelectorAll('#input1')
+      for (let j = 0; j < inputs.length; j++) {
+          if(i<(inputs.length)){ 
+                    inputs[i].focus();
+                }else if(i==(inputs.length)){ 
+                    inputs[0].focus();break;                 
+                }
+      }
+    },
     reset(){
        this.Listdata=[
-          {value:1000000,val:'100万',num:'',total:''},
-          {value:500000,val:'50万',num:'',total:''},
-          {value:50000,val:'5万',num:'',total:''},
-          {value:10000,val:'1万',num:'',total:''},
-          {value:5000,val:'5000',num:'',total:''},
-          {value:1000,val:'1000',num:'',total:''},
-          {value:500,val:'500',num:'',total:''},
-          {value:100,val:'100',num:'',total:''},
-          {value:50,val:'50',num:'',total:''},
-          {value:10,val:'10',num:'',total:''},
-          {value:5,val:'5',num:'',total:''},
-          {value:1,val:'1',num:'',total:''},
-          {value:1,val:'现金',num:'',total:''},
+        {id:1,value:1000000,val:'100万',num:'',total:''},
+        {id:2,value:500000,val:'50万',num:'',total:''},
+        {id:3,value:50000,val:'5万',num:'',total:''},
+        {id:4,value:10000,val:'1万',num:'',total:''},
+        {id:5,value:5000,val:'5000',num:'',total:''},
+        {id:6,value:1000,val:'1000',num:'',total:''},
+        {id:7,value:500,val:'500',num:'',total:''},
+        {id:8,value:100,val:'100',num:'',total:''},
+        {id:9,value:50,val:'50',num:'',total:''},
+        {id:10,value:10,val:'10',num:'',total:''},
+        {id:11,value:5,val:'5',num:'',total:''},
+        {id:12,value:1,val:'1',num:'',total:''},
+        {id:13,value:1,val:'现金',num:'',total:''},
         ],
-        this.Listdata1=[
-          {value:1000000,val:'100万',num:'',total:''},
-          {value:500000,val:'50万',num:'',total:''},
-          {value:50000,val:'5万',num:'',total:''},
-          {value:10000,val:'1万',num:'',total:''},
-          {value:5000,val:'5000',num:'',total:''},
-          {value:1000,val:'1000',num:'',total:''},
-          {value:500,val:'500',num:'',total:''},
-          {value:100,val:'100',num:'',total:''},
-          {value:50,val:'50',num:'',total:''},
-          {value:10,val:'10',num:'',total:''},
-          {value:5,val:'5',num:'',total:''},
-          {value:1,val:'1',num:'',total:''},
-          {value:1,val:'现金',num:'',total:''},
-        ],
+      this.Listdata1=[
+         {id:1,value:1000000,val:'100万',num:'',total:''},
+        {id:2,value:500000,val:'50万',num:'',total:''},
+        {id:3,value:50000,val:'5万',num:'',total:''},
+        {id:4,value:10000,val:'1万',num:'',total:''},
+        {id:5,value:5000,val:'5000',num:'',total:''},
+        {id:6,value:1000,val:'1000',num:'',total:''},
+        {id:7,value:500,val:'500',num:'',total:''},
+        {id:8,value:100,val:'100',num:'',total:''},
+        {id:9,value:50,val:'50',num:'',total:''},
+        {id:10,value:10,val:'10',num:'',total:''},
+        {id:11,value:5,val:'5',num:'',total:''},
+        {id:12,value:1,val:'1',num:'',total:''},
+        {id:13,value:1,val:'现金',num:'',total:''},
+      ] ,
         this.form ={
           chip:'',
           cash:'',
