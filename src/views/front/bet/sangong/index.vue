@@ -1,11 +1,11 @@
 <template>
-  <div class="app-container">
+  <div class="app-container game_sg">
     <el-row :gutter="20">
 
       <!--切换账号-->
-      <el-col :span="4" :xs="24">
+      <el-col :span="3" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-            <h1>当前操作员</h1>
+           <div class="h1">当前操作员</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
               <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
@@ -14,14 +14,14 @@
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="12" :xs="24">
+      <el-col :span="13" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
-               <li style="font-size:20px">$累计：{{tableInfo.total || 0}}</li>
-               <li style="font-size:20px">฿累计：{{tableInfo.totalTh || 0}}</li>
+                <li style="color: blueviolet;">$累计：{{tableInfo.total || 0}}</li>
+              <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
              </ul>
              <ul>
               <li>$筹码：{{tableInfo.chip || 0}}</li>
@@ -55,11 +55,11 @@
                   </div>
                </el-col>
          
-               <el-col :span="24" :xs="24" class="control1">  
+               <el-col :span="24" :xs="24" class="control">  
                   <el-button type="primary" @click="startBet">开牌</el-button>
                   <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
-                  <el-button type="primary" @click="ponintCode">点码</el-button>
-                  <el-button type="primary" @click="getCode">收码</el-button>
+                  <el-button type="warning" @click="ponintCode">点码</el-button>
+                  <el-button type="danger" @click="getCode">收码</el-button>
                </el-col>
             </el-row>
           </el-card>
@@ -542,296 +542,347 @@ export default {
 };
 </script>
 <style lang="scss" >
-.detailBox{
-  border: 1px solid #bcbcbc;
-  .list{
-    border-bottom: 1px solid #bcbcbc;
-    span{
-      display: inline-block;
-      text-align: center;
-      width: 49%;
-      &:nth-child(1){
-        border-right: 1px solid #bcbcbc;
-        width: 50%;
-      }
-    }
-  }
-}
-.el-table.table2 {
-  .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
-}
-.box-card-box{
-  margin-bottom: 15px;
-  font-size: 18px;  .el-card__body{
-    display: flex;
-    flex-direction: column;
-    button{
-      width: 80%;
-      height: 80px;
-      margin: 10px auto;
-    }
-    .loginout{
-      height: 60px;
-    }
-   ul{
-      padding: 0;
-      margin: 10px 0;
-     text-align: left;
-      li{
-        list-style: none;
+.game_sg{
+  .detailBox{
+    border: 1px solid #bcbcbc;
+    .list{
+      border-bottom: 1px solid #bcbcbc;
+      span{
         display: inline-block;
-        min-width: 100px;
-        margin: 0 10px;
-        line-height: 39px;
-      }
-    }
-  }
-  // .ludanbox{
-  //   position: relative;
-  //     .ludanbg{
-  //       width: 100%;
-  //       display: flex;
-  //       justify-content: center;
-  //       align-items: center;
-  //       border: 1px solid #919191;
-  //       font-size: 0;
-  //       box-sizing: border-box;
-  //       position: relative;
-  //       .list{
-  //         flex-basis: 1/12*100%;
-  //         display: flex;
-  //         flex-direction: column;
-  //         justify-content: center;
-  //         align-items: center;
-  //         border-right: #919191 1px solid;
-  //         font-size: 0;
-  //         box-sizing: border-box;
-  //         &:last-child{
-  //           border: 0;
-  //           // border-left: #919191 1px solid;
-  //         }
-  //         .list_p{
-  //           flex-basis: 1/6*100%;
-  //           width: 100%;
-  //           height: 0;
-  //           padding-bottom: 100%;
-  //           box-sizing: border-box;
-  //           border-bottom: #919191 1px solid;
-  //           &:last-child{
-  //             border: 0;
-  //             // border-top: #919191 1px solid;
-  //           }
-  //           position: relative;
-  //           i{
-  //           position: absolute;
-  //           font-size: 16px;
-  //           color: #919191;
-  //           top: 50%;
-  //           left: 50%;
-  //           transform: translate(-50%, -50%);
-  //           font-style: normal;
-  //           }
-  //         }
-  //       }
-  //     }
-  //     .ludan{
-  //       position: absolute;
-  //       width: 100%;
-  //       height: 100%;
-  //       top: 0;
-  //       left: 0;
-  //        display: flex;
-  //       justify-content: flex-start;
-  //       align-items: center;
-  //        .list2{
-  //         flex-basis: 1/12*100%;
-  //         height: 100%;
-  //         display: flex;
-  //         flex-direction: column;
-  //         // justify-content: center;
-  //         align-items: center;
-  //         font-size: 0;
-  //         box-sizing: border-box;
-  //         .list_p{
-  //           flex-basis: 1/6*100%;
-  //           width: 100%;
-  //           box-sizing: border-box;
-  //           position: relative;
-  //           margin: 0;
-  //           padding: 0;
-  //           border: 0;
-  //           border-radius: 0;
-  //           background: none;
-  //           i{
-  //           position: absolute;
-  //           width: 80%;
-  //           height: 80%;
-  //           font-size: 16px;
-  //           color: #919191;
-  //           top: 50%;
-  //           left: 50%;
-  //           transform: translate(-50%, -50%);
-  //           font-style: normal;
-  //           }
-  //           .type1{
-  //             background: url("../../../../assets/images/ludan/z1.webp") center no-repeat;
-  //             background-size: 100%;
-  //           }
-  //           .type2{
-  //             background: url("../../../../assets/images/ludan/x1.webp") center no-repeat;
-  //             background-size: 100%;
-  //           }
-  //           .type3{
-  //             background: url("../../../../assets/images/ludan/h.webp") center no-repeat;
-  //             background-size: 100%;
-  //           }
-           
-  //         }
-  //        }
-  //     }
-  // }
-  
-
-}
-.box-card-box-list{
-  .el-card__body{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    .el-row{
-      .el-col{
-        height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap:wrap;
-        &.control1 {
-          justify-content:  space-around;
+        text-align: center;
+        width: 49%;
+        &:nth-child(1){
+          border-right: 1px solid #bcbcbc;
+          width: 50%;
         }
       }
     }
-    .f2{
+  }
+  .el-table.table2 {
+    .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
+  }
+  .box-card-box{
+    margin-bottom: 15px;
+    font-size: 18px;  .el-card__body{
+      display: flex;
+      flex-direction: column;
+      min-height: 256px;
+      button{
+        width: 80%;
+        height: 80px;
+        margin: 10px auto;
+      }
+      .loginout{
+        height: 60px;
+      }
+      .h1{
+        font-size: 24px;
+        line-height: 40px;
+      }
+      ul{
+        padding: 0;
+        margin: 0;
+      text-align: left;
+        li{
+          list-style: none;
+          display: inline-block;
+          min-width:100px;
+          margin: 0 10px;
+          line-height: 39px;
+        }
+      }
+    }
+    .ludanbox{
+      position: relative;
+        .ludanbg{
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid #919191;
+          border-right: 0;
+          font-size: 0;
+          box-sizing: border-box;
+          position: relative;
+          .list{
+            flex-basis: 1/12*100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-right: #919191 1px solid;
+            font-size: 0;
+            box-sizing: border-box;
+            &:last-child{
+              // border: 0;
+              // border-left: #919191 1px solid;
+            }
+            .list_p{
+              flex-basis: 1/6*100%;
+              width: 100%;
+              height: 0;
+              padding-bottom: 100%;
+              box-sizing: border-box;
+              border-bottom: #919191 1px solid;
+              &:last-child{
+                border: 0;
+                // border-top: #919191 1px solid;
+              }
+              position: relative;
+              i{
+              position: absolute;
+              font-size: 16px;
+              color: #919191;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              font-style: normal;
+              }
+            }
+          }
+        }
+        .ludan{
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .list2{
+            flex-basis: 1/12*100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            // justify-content: center;
+            align-items: center;
+            font-size: 0;
+            box-sizing: border-box;
+            .list_p{
+              flex-basis: 1/6*100%;
+              width: 100%;
+              box-sizing: border-box;
+              position: relative;
+              margin: 0;
+              padding: 0;
+              border: 0;
+              border-radius: 0;
+              background: none;
+              i{
+              position: absolute;
+              width: 80%;
+              height: 80%;
+              font-size: 16px;
+              color: #919191;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              font-style: normal;
+              }
+              .type1{
+                background: url("../../../../assets/images/ludan/l.webp") center no-repeat;
+                background-size: 100%;
+              }
+              .type2{
+                background: url("../../../../assets/images/ludan/hu.webp") center no-repeat;
+                background-size: 100%;
+              }
+              .type3{
+                background: url("../../../../assets/images/ludan/h.webp") center no-repeat;
+                background-size: 100%;
+              }
+            
+            }
+          }
+        }
+    }
+    
+
+  }
+  .box-card-box-list{
+    .el-card__body{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 5px 20px;
+      min-height: 256px;
+      .el-row{
+        .el-col{
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-wrap:wrap;
+          &.control {
+            justify-content:  space-around;
+            button{
+              padding: 0;
+                flex-basis: 20%;
+                height: 60px;
+                line-height: 60px;
+                font-size: 20px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+          }
+        }
+      }
+      .f2{
       display: flex;
       justify-content: space-around;
       width: 100%;
       span{
         line-height: 50px;
+        font-size: 18px;
       }
     }
-    .btn{
-      padding: 10px 30px;
-      background: #919191;
-      border-radius: 6px;
-      color: #fff;
-      cursor: pointer;
-    }
-
- 
-  }
-
-}
-.betBox {
-     .niuniuResult{
-      display: flex;
-      justify-content: space-around;
-      .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 80px;
-        height: 40px;
-        line-height: 40px;
+      .f1{
+        display: flex;
+        text-align: left;
+        flex-wrap: wrap;
+        span{
+          flex-basis: 50%;
+          line-height: 50px;
+          font-size: 18px
+        }
+      }
+      .btn{
+        padding: 10px 30px;
         background: #919191;
         border-radius: 6px;
         color: #fff;
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        cursor: pointer;
       }
 
-      .red{
+      .checked{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-basis: 9/10*100%;
+        .el-radio-button{
+            flex-basis: 25%;
+          }
         .el-checkbox-button__inner,.el-radio-button__inner{
-           background: red;
-           opacity: .6;
+            height: 60px;
+          line-height: 60px;
+          font-size: 20px;
+          border-radius: 6px;
+          color: #999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-      }
-      .blue{
-        // background: blue;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: blue;
-           opacity: .6;
+
+        .red{
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            background: red;
+            opacity: .6;
+          }
         }
-      }
-      .green{
-        // background: green;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: green;
-           opacity: .6;
+        .blue{
+          // background: blue;
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            background: blue;
+            opacity: .6;
+          }
         }
-      }
-      .is-active,.is-checked{
-         .el-checkbox-button__inner,.el-radio-button__inner{
-           opacity: 1;
-           font-size: 20px;
-           border: 0;
-           font-weight: bold;
+        .green{
+          // background: green;
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            background: green;
+            opacity: .6;
+          }
+        }
+        .is-active,.is-checked{
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            opacity: 1;
+            font-size: 24px;
+            border: 0;
+            font-weight: bold;
+            color: #fff;
+          }
         }
       }
     }
-.el-input--medium .el-input__inner{
-    line-height: 25px;
-    height: 25px;
-    border: 0;
-    text-align: center;
-    background: none;
+
   }
-  .el-table__header-wrapper{
-    thead{
-      th{
-        &:nth-child(3){
-          background: red;
-          color: #fff;
-        }
-        // &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(11){
-        //   background: blue;
-        //   color: #fff;
-        // }
-        &:nth-child(4){
-          background: green;
-          color: #fff;
+  .betBox {
+    .el-table__row .el-table__cell .cell .el-radio-group .el-radio{
+      margin-right: 10px;
+      .el-radio__label{
+        font-size: 18px;
+      }
+    }
+        .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
+        font-size: 22px;
+    }
+    .el-input--medium .el-input__inner{
+      line-height: 25px;
+      height: 25px;
+      border: 0;
+      text-align: center;
+      background: none;
+    }
+    .el-input--medium{
+      font-size: 20px;
+      font-weight: bold;
+      .el-input__inner{
+        padding: 0;
+      }
+    }
+    .el-table__header-wrapper{
+      thead{
+        th{
+          &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(10){
+            background: red;
+            color: #fff;
+          }
+          &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(11){
+            background: blue;
+            color: #fff;
+          }
+          &:nth-child(5){
+            background: green;
+            color: #fff;
+          }
         }
       }
     }
   }
-}
-.table-info-lh-red td:nth-child(1){
-  position: relative;
-  &::after{
-    content: '请选择币种';
-     position: absolute;
-    bottom: -5px;
-    width: 100%;
-    text-align: center;
-    left: 0px;
-    color: red;
-    font-size: 12px;
-    z-index: 1;
+  .table-info-lh-red td:nth-child(1){
+    position: relative;
+    &::after{
+      content: '请选择币种';
+      position: absolute;
+      bottom: -5px;
+      width: 100%;
+      text-align: center;
+      left: 0px;
+      color: red;
+      font-size: 12px;
+      z-index: 1;
+    }
   }
-}
-.table-info-lh-red1 td:nth-child(2){
-  position: relative;
-  &::after{
-    content: '请填写卡号';
-    position: absolute;
-    bottom: -5px;
-    width: 100%;
-    text-align: center;
-    left: 0px;
-    color: red;
-    font-size: 12px;
-    z-index: 1;
+  .table-info-lh-red1 td:nth-child(2){
+    position: relative;
+    &::after{
+      content: '请填写卡号';
+      position: absolute;
+      bottom: -5px;
+      width: 100%;
+      text-align: center;
+      left: 0px;
+      color: red;
+      font-size: 12px;
+      z-index: 1;
+    }
   }
-}
-.table-info-red td,.table-info-red1 td{
-  // background: rgb(199, 135, 135);
+  .table-info-red td,.table-info-red1 td{
+    // background: rgb(199, 135, 135);
+  }
 }
 .ludanBox_dialog{
     .el-form-item{
@@ -845,7 +896,7 @@ export default {
         line-height: 40px;
         background: #919191;
         border-radius: 6px;
-        color: #fff;
+        color: #999;
         margin: 0 10px;
         display: flex;
         align-items: center;
@@ -875,12 +926,13 @@ export default {
       .is-active,.is-checked{
          .el-checkbox-button__inner,.el-radio-button__inner{
            opacity: 1;
-           font-size: 20px;
+           font-size: 22px;
            border: 0;
            font-weight: bold;
+           color: #fff;
         }
       }
       }
     }
-  }
+}
 </style>
