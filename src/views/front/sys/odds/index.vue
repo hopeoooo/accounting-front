@@ -439,7 +439,7 @@ export default {
         tigerWin: [
           {
             required: true,
-            message: "百家乐洗码比例（筹码）不能为空",
+            message: "不能为空",
             trigger: "blur"
           }
         ],
