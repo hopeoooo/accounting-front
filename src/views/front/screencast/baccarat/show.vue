@@ -147,7 +147,7 @@ export default {
 		   	this.getTableInfo(this.tableId) //调用接口的方法
 		  	
 		 }, 1)
-	}, 3000);
+	}, 1000);
   },
   destroyed(){
     clearInterval(this.timer)
