@@ -196,58 +196,58 @@
           </el-table-column>
           <el-table-column label="卡号" align="center" key="card" prop="card"  width="150px">
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model="scope.row.card" placeholder=""  />
+                  <el-input @input='DataChange' v-model="scope.row.card" placeholder=""  />
               </template>
           </el-table-column>
            <el-table-column label="庄" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="和" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄对" align="center" key="card4" prop="card4"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲对" align="center" key="card5" prop="card5"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="庄保险" align="center" key="card6" prop="card6"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="闲保险" align="center" key="card7" prop="card7"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
            <el-table-column label="和保险" align="center" key="card10" prop="card10"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card10" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card10" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
          
            <el-table-column label="大" align="center" key="card8" prop="card8"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
             <el-table-column label="小" align="center" key="card9" prop="card9"  >
                <template slot-scope="scope">
-                  <el-input @change='DataChange' v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                  <el-input @input='DataChange' v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
             <el-table-column label="幸运6" align="center" key="card11" prop="card11"  >
