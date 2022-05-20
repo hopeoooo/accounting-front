@@ -647,7 +647,7 @@ export default {
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
         const time_str = this.$getCurrentTime();
-        export_json_to_excel(tHeader, data, `点码明细列表-${time_str}`);
+        export_json_to_excel(tHeader, data, `点码修改记录列表-${time_str}`);
       });
     },
     /**
