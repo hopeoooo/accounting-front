@@ -10,7 +10,7 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item label="会员卡号" prop="card"  label-width="100">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -30,7 +30,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="游戏类型" prop="gameId">
+          <el-form-item label="游戏类型" prop="gameId"  label-width="100">
             <el-select v-model="queryParams.gameId" placeholder="请选择">
               <el-option
                 v-for="item in Gameoptions"
@@ -42,7 +42,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="币种类型" prop="type">
+          <el-form-item label="币种类型" prop="type"  label-width="100">
             <el-select v-model="queryParams.type" placeholder="请选择">
               <el-option
                 v-for="item in typeOptions"
@@ -77,7 +77,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="下注时间">
+          <el-form-item label="下注时间" label-width="100">
             <el-date-picker
               v-model="dateRange"
               style="width: 400px"
@@ -165,7 +165,7 @@
             align="center"
             key="gameId"
             prop="gameId"
-            width="80px"
+
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -217,6 +217,7 @@
             align="center"
             key="gameResult"
             prop="gameResult"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <div>
@@ -544,7 +545,7 @@
           </div>
 
           <!-- 开牌结果 -->
-          <div class="game-result-box">
+          <!-- <div class="game-result-box">
             <div class="box-label">开牌结果</div>
             <el-checkbox-group
               v-model="gameResultList"
@@ -560,6 +561,43 @@
               <el-checkbox label="a">幸运6(2张牌)</el-checkbox>
               <el-checkbox label="b">幸运6(3张牌)</el-checkbox>
             </el-checkbox-group>
+          </div> -->
+          <div class="game-result-box">
+            <div class="box-label">开牌结果</div>
+            <div class="result-box">
+              <el-radio-group
+                v-model="checkedFormResult1"
+                class="result-item-box result1-box"
+              >
+                <el-radio :label="4">庄</el-radio>
+                <el-radio :label="1">闲</el-radio>
+                <el-radio :label="7">和</el-radio>
+              </el-radio-group>
+              <el-checkbox-group
+                v-model="checkedFormResult2"
+                class="result-item-box"
+              >
+                <el-checkbox label="8">庄对</el-checkbox>
+                <el-checkbox label="5">闲对</el-checkbox>
+              </el-checkbox-group>
+              <el-checkbox-group
+                v-model="checkedFormResult3"
+                @change="onGameResultChange3"
+                class="result-item-box"
+              >
+                <el-checkbox label="9">大</el-checkbox>
+                <el-checkbox label="6">小</el-checkbox>
+              </el-checkbox-group>
+
+              <el-checkbox-group
+                v-model="checkedFormResult4"
+                @change="onGameResultChange4"
+                class="result-item-box"
+              >
+                <el-checkbox label="a">幸运6(2张牌)</el-checkbox>
+                <el-checkbox label="b">幸运6(3张牌)</el-checkbox>
+              </el-checkbox-group>
+            </div>
           </div>
         </div>
       </el-form>
@@ -601,8 +639,8 @@ const betOptionList = {
   2: "和保险", //和保险
   9: "大",
   6: "小",
-  a: "幸运6（2张牌)",//幸运6(2张牌)
-  b: "幸运6（3张牌)",//幸运6(3张牌)
+  a: "幸运6（2张牌)", //幸运6(2张牌)
+  b: "幸运6（3张牌)", //幸运6(3张牌)
   龙: "龙",
   虎: "虎",
   和: "和",
@@ -623,7 +661,7 @@ const playTextMap = {
   2: "和保险", //和保险
   9: "大",
   6: "小",
-  a: "幸运6",//幸运6
+  a: "幸运6", //幸运6
   龙: "龙",
   虎: "虎",
   和: "和",
@@ -631,7 +669,6 @@ const playTextMap = {
   赢: "赢",
   "-": "-"
 };
-
 
 // 百家乐
 const optionMap = {
@@ -645,8 +682,8 @@ const optionMap = {
   tieIns: "2", //和保险
   big: "9",
   small: "6",
-  two: "a",//幸运6(两张牌)
-  three: "b",//幸运6(三张牌)
+  two: "a", //幸运6(两张牌)
+  three: "b", //幸运6(三张牌)
   4: "banker",
   1: "player",
   7: "tie",
@@ -669,6 +706,11 @@ const longhuOptionMap = {
   虎: "tiger",
   和: "tie"
 };
+const gameResult1 = ["4", "1", "7"]; //庄闲和
+const gameResult2 = ["8", "5"]; //庄对、闲对
+const gameResult3 = ["9", "6"]; //大小
+const gameResult4 = ["a", "b"]; // 幸运6(2张牌)/幸运6(3张牌)
+
 export default {
   // 注单记录
   name: "Bet",
@@ -732,7 +774,7 @@ export default {
       originalGameResult: "",
       // 开牌结果，用于表单
       gameResultList: [],
-      // 下注金额
+      // 百家可下注金额
       formOption: {
         banker: "",
         player: "",
@@ -744,9 +786,14 @@ export default {
         bankerPair: "",
         big: "",
         small: "",
-        two: "",//幸运6
-
+        two: "" //幸运6
       },
+      checkedFormResult1: "", //庄闲和 (单选)
+      checkedFormResult2: [], //选中 庄对、闲对
+      checkedFormResult3: [], //选中 大小
+      checkedFormResult4: [], //选中 幸运6(2张牌)、幸运6(3张牌)
+
+      // 龙虎下注金额
       longhuFormOption: {
         dragon: "",
         tiger: "",
@@ -908,6 +955,18 @@ export default {
           type: [{ required: true, message: "请选择币种" }]
         };
       }
+    },
+    //选中的开牌结果
+    checkedFormResult() {
+      const results = [
+        this.checkedFormResult1,
+        ...this.checkedFormResult2,
+        ...this.checkedFormResult3,
+        ...this.checkedFormResult4
+      ];
+      // 进行排序，以便与原始数据originalGameResult进行对比
+      const newResults = _.sortBy(results);
+      return newResults.join("");
     }
   },
   watch: {
@@ -928,6 +987,9 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    checkedFormResult(newVal, oldVal) {
+      this.form.gameResult = newVal;
     }
   },
   created() {
@@ -1031,6 +1093,7 @@ export default {
       this.gameResultList = [];
       this.formBetMoney = null;
       this.resetOption();
+      this.resetGameResult();
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -1077,7 +1140,7 @@ export default {
       if (gameName == "百家乐") {
         // 初始化下注金额和开牌结果
         this.initOption(row.option);
-        this.gameResultList = this.getFormGameResult(row.gameResult);
+        this.getFormGameResult(row.gameResult);
       }
       if (gameName == "龙虎") {
         this.initLongHuOption(row.option);
@@ -1229,7 +1292,7 @@ export default {
     },
 
     // 弹窗里的开牌结果
-    getFormGameResult(c) {
+    getFormGameResult1(c) {
       let arr1 = [];
       let arr = c.split("");
       // 将排序后的开牌结果存起来。提交的时候对比差异
@@ -1237,26 +1300,78 @@ export default {
       this.originalGameResult = sortGameResult.join("");
       return arr;
     },
-    // 开牌结果选择变化
-    onGameResultChange(val) {
-      console.log("开牌结果选择变化", val);
-      //
-      const newResult = _.sortBy(val);
-      this.gameResultList = newResult;
-      this.form.gameResult = newResult.join("");
-    },
-    initOption(options) {
-      // 百家乐：将下注金额带入表单，生成初始化的formOption，用于百家乐的表单里的下注金额数据绑定
-      for (let index = 0; index < options.length; index++) {
-        const element = options[index];
-        // betOption数字4变成英文banker : 4->banker ,对应formOption里的banker
-        const key = optionMap[element.betOption];
-        // {banker:20}
-        this.formOption[key] = element.betMoney;
-      }
+    getFormGameResult(val) {
+      let arr = val.split("");
+      // 将排序后的开牌结果存到originalGameResult。提交的时候对比差异
+      const results = _.sortBy(arr);
+      this.originalGameResult = results.join("");
 
-      // 复制一份下注金额.用于提交时对比差异
-      this.originalOption = Object.assign({}, this.formOption);
+      // 包含庄闲和的值
+      const includeResult1 = _.filter(results, function(item) {
+        return gameResult1.indexOf(item) > -1;
+      });
+      console.log("包含庄闲和的值", includeResult1);
+      this.checkedFormResult1 = includeResult1[0]
+        ? Number(includeResult1[0])
+        : "";
+
+      // 包含庄对/闲对的值
+      const includeResult2 = _.filter(results, function(item) {
+        return gameResult2.indexOf(item) > -1;
+      });
+      console.log("包含庄对/闲对的值", includeResult2);
+      this.checkedFormResult2 = includeResult2;
+
+      // 包含大/小的值
+      const includeResult3 = _.filter(results, function(item) {
+        return gameResult3.indexOf(item) > -1;
+      });
+      console.log("包含大/小的值", includeResult3);
+      this.checkedFormResult3 = includeResult3;
+
+      // 包含两张牌/三张牌的值
+      const includeResult4 = _.filter(results, function(item) {
+        return gameResult4.indexOf(item) > -1;
+      });
+      console.log("包含两张牌/三张牌的值", includeResult4);
+      this.checkedFormResult4 = includeResult4;
+    },
+
+    onGameResultChange3(val) {
+      console.log("大小选择变化", val);
+      if (val.length == 2) {
+        // 大小只能二选一. 选择后面选中的值
+        this.checkedFormResult3 = [...val[1]];
+      } else {
+        this.checkedFormResult3 = val;
+      }
+    },
+    onGameResultChange4(val) {
+      console.log("幸运6选择变化", val);
+      if (val.length == 2) {
+        // 幸运6 两张牌/三张牌只能二选一. 选择后面选中的值
+        this.checkedFormResult4 = [...val[1]];
+      } else {
+        this.checkedFormResult4 = val;
+      }
+    },
+
+    initOption(options) {
+      if (options) {
+        // 百家乐：将下注金额带入表单，生成初始化的formOption，用于百家乐的表单里的下注金额数据绑定
+        for (let index = 0; index < options.length; index++) {
+          const element = options[index];
+          // betOption数字4变成英文banker : 4->banker ,对应formOption里的banker
+          const key = optionMap[element.betOption];
+          // {banker:20}
+          this.formOption[key] = element.betMoney;
+        }
+
+        // 复制一份下注金额.用于提交时对比差异
+        this.originalOption = Object.assign({}, this.formOption);
+      } else {
+        this.resetOption();
+      }
     },
     // 百家乐:生成新的百家乐的option,用于form提交
     getNewOption(formOption) {
@@ -1338,8 +1453,10 @@ export default {
         };
       }
     },
+
+    /**重置下注金额option */
     resetOption() {
-      // 重置百家乐option
+      //  重置百家乐option
       this.formOption = {
         banker: "",
         player: "",
@@ -1370,10 +1487,18 @@ export default {
       }
     },
 
+    /**重置百家乐开牌结果 */
+    resetGameResult() {
+      this.checkedFormResult1 = "";
+      this.checkedFormResult2 = [];
+      this.checkedFormResult3 = [];
+      this.checkedFormResult4 = [];
+    },
+
     /** 提交按钮 */
     submitForm: function() {
       if (this.openType == "edit") {
-        /** 对比是否有修改 */
+        /** 1.对比是否有修改 */
         if (this.openGame == "百家乐") {
           if (
             this.form.card == this.initForm.card &&
@@ -1422,7 +1547,7 @@ export default {
             return;
           }
         }
-        /** 是否有录入完整注单数据 */
+        /** 2. 是否有录入完整注单数据 */
         if (
           (this.openGame == "百家乐" || this.openGame == "龙虎") &&
           (!this.form.card || !this.formBetMoney || this.form.gameResult == "")
@@ -1442,6 +1567,12 @@ export default {
           this.$modal.msgError("请录入完整注单数据");
           return;
         }
+
+        /** 3.百家乐 庄闲和必选一*/
+        if (this.openGame == "百家乐" && !this.checkedFormResult1) {
+          this.$modal.msgError("请选择庄/闲/和");
+          return;
+        }
         // 注单修改
         editBetRecord(this.form).then(response => {
           this.$modal.msgSuccess("注单修改成功");
@@ -1451,6 +1582,8 @@ export default {
         });
       } else {
         // 补录
+
+        /**1.百家乐 龙虎  是否录入完整注单数据*/
         if (
           (this.openGame == "百家乐" || this.openGame == "龙虎") &&
           (!this.form.card ||
@@ -1462,6 +1595,13 @@ export default {
           this.$modal.msgError("请录入完整注单数据");
           return;
         }
+        /** 2.百家乐 庄闲和必选一*/
+        if (this.openGame == "百家乐" && !this.checkedFormResult1) {
+          this.$modal.msgError("请选择庄/闲/和");
+          return;
+        }
+
+        /**3.牛牛 三公 推筒子 是否录入完整注单数据*/
         if (
           (this.openGame == "牛牛" ||
             this.openGame == "三公" ||
@@ -1584,6 +1724,44 @@ export default {
         margin-right: 4px;
       }
     }
+    .result-box {
+      display: flex;
+      flex-wrap: wrap;
+      .result-item-box {
+        display: flex;
+        height: 20px;
+        margin-right: 20px;
+        .el-radio {
+          height: 20px;
+          top: 4px;
+        }
+      }
+      .result1-box {
+        .el-radio__inner {
+          border-radius: 2px;
+        }
+
+        .el-radio__input.is-checked .el-radio__inner::after {
+          box-sizing: content-box;
+          content: "";
+          border: 1px solid #ffffff;
+          border-left: 0;
+          border-top: 0;
+          height: 7px;
+          left: 4px;
+          position: absolute;
+          top: 1px;
+          width: 3px;
+          transition: transform 0.15s ease-in 0.05s,
+            -webkit-transform 0.15s ease-in 0.05s;
+
+          transform-origin: center;
+          transform: rotate(45deg) scaleY(1);
+          border-radius: 0;
+          background-color: transparent;
+        }
+      }
+    }
   }
 
   .bet-time {
@@ -1626,5 +1804,16 @@ export default {
 }
 .result-tie {
   color: green;
+}
+.el-form-item__label{
+  font-size: 16px;
+}
+.el-table .cell{
+  font-size: 16px;
+}
+.el-table__cell {
+  .el-button{
+    font-size: 16px;
+  }
 }
 </style>
