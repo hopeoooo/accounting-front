@@ -1805,15 +1805,15 @@ export default {
 .result-tie {
   color: green;
 }
-.el-form-item__label{
-  font-size: 16px;
-}
-.el-table .cell{
-  font-size: 16px;
-}
-.el-table__cell {
-  .el-button{
-    font-size: 16px;
-  }
-}
+// .el-form-item__label{
+//   font-size: 16px;
+// }
+// .el-table .cell{
+//   font-size: 16px;
+// }
+// .el-table__cell {
+//   .el-button{
+//     font-size: 16px;
+//   }
+// }
 </style>
