@@ -184,7 +184,7 @@
     </el-dialog>
 
     <!-- 下注记录 -->
-    <el-dialog title="注单记录" :visible.sync="isRecord" width="1400px" class="zhudanBox_dialog" append-to-body v-if="isRecord">
+    <el-dialog title="注单记录" :visible.sync="isRecord" width="1500px" class="zhudanBox_dialog" append-to-body v-if="isRecord">
       <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -219,7 +219,7 @@
             align="center"
             key="gameId"
             prop="gameId"
-            width="80px"
+            width="100px"
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
