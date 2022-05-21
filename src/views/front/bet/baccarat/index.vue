@@ -16,7 +16,7 @@
        <!--桌台信息-->
       <el-col :span="18" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
-            <ul>
+            <ul style="background-color: #ececec;">
               <li>台号：{{tableInfo.tableId || 0}}</li>
               <li>靴号：{{tableInfo.bootNum || 0}}</li>
               <li>局号：{{tableInfo.gameNum || 0}}</li>
@@ -24,7 +24,7 @@
               <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
 
             </ul>
-            <ul>
+            <ul style="background-color: #ececec;">
             
               <li>$筹码：{{tableInfo.chip || 0}}</li>
               <li>$现金：{{tableInfo.cash || 0}}</li>
@@ -318,7 +318,7 @@
           @pagination="getListRecord"
         />
     </el-dialog>
-     <el-table v-loading="loading" class="betBox_bjl" height="650px" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox_bjl" height="650px" style="font-size: 20px;font-weight: bold;" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center"  key="type" prop="type" width="350px">
