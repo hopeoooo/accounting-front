@@ -318,7 +318,7 @@
           @pagination="getListRecord"
         />
     </el-dialog>
-     <el-table v-loading="loading" class="betBox_bjl" height="650px" style="font-size: 20px;font-weight: bold;" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" class="betBox_bjl" height="650px" style="font-size: 20px;" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column label="选择币种" align="center"  key="type" prop="type" width="350px">
