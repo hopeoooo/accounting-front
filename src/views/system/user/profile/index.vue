@@ -1,3 +1,10 @@
+<!--
+ * @Author:
+ * @Date: 2022-05-11 17:03:06
+ * @LastEditors:
+ * @LastEditTime: 2022-05-21 16:51:37
+ * @Description: file content
+-->
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -5,7 +12,8 @@
       <el-col :span="12" :xs="24">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>个人信息</span>
+            <!-- <span>个人信息</span> -->
+            <span>{{$t("persino-info")}}</span>
           </div>
           <div>
             <div class="text-center">
