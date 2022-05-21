@@ -1216,6 +1216,7 @@ export default {
           const that =this
           setTimeout(function () {
             that.getResult();
+            that.getTableInfo()
           },1000)
 
       })
