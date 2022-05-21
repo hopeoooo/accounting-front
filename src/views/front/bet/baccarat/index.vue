@@ -28,10 +28,10 @@
             
               <li>$筹码：{{tableInfo.chip || 0}}</li>
               <li>$现金：{{tableInfo.cash || 0}}</li>
-               <li>$保险：{{tableInfo.totalInsuranceTh || 0}}</li>
+               <li>$保险：{{tableInfo.totalInsurance || 0}}</li>
               <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
               <li>฿现金：{{tableInfo.cashTh || 0}}</li>
-              <li>฿保险：{{tableInfo.totalInsurance || 0}}</li>
+              <li>฿保险：{{tableInfo.totalInsuranceTh || 0}}</li>
              
             </ul>
             <!-- <ul>
@@ -586,7 +586,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 30,
+        pageSize: 10,
       },
       basedata:{
 
