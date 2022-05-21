@@ -769,7 +769,11 @@ export default {
     //获取本地存储
     getStatus(){
         if(localStorage.getItem("BjType") != null){
-          this.isSend = localStorage.getItem('BjType')
+          if(localStorage.getItem('BjType')=="true"){
+            this.isSend =true
+          }else{
+            this.isSend =false
+          }
         }
          if(localStorage.getItem("BjList") != null){
            this.setBaccaratList(JSON.parse(localStorage.getItem('BjList')))
@@ -839,7 +843,7 @@ export default {
     },
     getSend(){
       if(this.isSend == true){
-        baccaratSave({'json':this.betList}).then(res => {
+        baccaratSave({'json':this.baccaratList}).then(res => {
           this.loading = false;
         })
       }else{

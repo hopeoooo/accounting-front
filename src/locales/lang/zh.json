@@ -1,3 +1,15 @@
 {
-  "persino-info":"个人信息"
+  "persino-info":"个人信息",
+  "bet":{
+    "user":"当前操作员",
+    "changeAccount":"切换账号",
+    "noScreen":"未投屏",
+    "onScreen":"已投屏",
+    "betRecord":"下注记录",
+    "taiHao":"台号",
+    "xueHao":"靴号",
+    "juHao":"局号"
+  }
+    
+  
 }
