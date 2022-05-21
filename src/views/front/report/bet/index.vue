@@ -10,7 +10,7 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item label="会员卡号" prop="card"  label-width="100">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -30,7 +30,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="游戏类型" prop="gameId">
+          <el-form-item label="游戏类型" prop="gameId"  label-width="100">
             <el-select v-model="queryParams.gameId" placeholder="请选择">
               <el-option
                 v-for="item in Gameoptions"
@@ -42,7 +42,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="币种类型" prop="type">
+          <el-form-item label="币种类型" prop="type"  label-width="100">
             <el-select v-model="queryParams.type" placeholder="请选择">
               <el-option
                 v-for="item in typeOptions"
@@ -77,7 +77,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="下注时间">
+          <el-form-item label="下注时间" label-width="100">
             <el-date-picker
               v-model="dateRange"
               style="width: 400px"
@@ -165,7 +165,7 @@
             align="center"
             key="gameId"
             prop="gameId"
-            width="80px"
+
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -217,6 +217,7 @@
             align="center"
             key="gameResult"
             prop="gameResult"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <div>
@@ -1803,5 +1804,16 @@ export default {
 }
 .result-tie {
   color: green;
+}
+.el-form-item__label{
+  font-size: 16px;
+}
+.el-table .cell{
+  font-size: 16px;
+}
+.el-table__cell {
+  .el-button{
+    font-size: 16px;
+  }
 }
 </style>
