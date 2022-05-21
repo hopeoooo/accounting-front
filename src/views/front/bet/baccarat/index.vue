@@ -58,14 +58,14 @@
               <li>฿闲对：{{baccaratSum.sumXdTh || 0}}</li>
               <li>฿大：{{baccaratSum.sumBigTh || 0}}</li>
               <li>฿小：{{baccaratSum.sumSmallTh || 0}}</li>
-              <li>$幸运6：{{baccaratSum.sumATh || 0}}</li>
+              <li>฿幸运6：{{baccaratSum.sumATh || 0}}</li>
              </ul>
              <ul>
                 <li>$庄保险：{{baccaratSum.sumZbx || 0}}</li>
                 <li>$和保险：{{baccaratSum.sumHbx || 0}}</li>
                 <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
                 <li>฿庄保险：{{baccaratSum.sumZbxTh || 0}}</li>
-                <li>$和保险：{{baccaratSum.sumHbxTh || 0}}</li>
+                <li>฿和保险：{{baccaratSum.sumHbxTh || 0}}</li>
                 <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
              </ul>
               <ul>
@@ -657,6 +657,7 @@ export default {
     this.getszdata();
     this.getTableInfo()
     this.getResult()
+    this.getStatus()
   },
   computed:{
     userName(){
@@ -763,7 +764,11 @@ export default {
         this.setBaccaratList(this.betList),
         this.setBaccaratSum(this.sumdata),
       );
-       if(localStorage.getItem("BjType") != null){
+     
+    },
+    //获取本地存储
+    getStatus(){
+        if(localStorage.getItem("BjType") != null){
           this.isSend = localStorage.getItem('BjType')
         }
          if(localStorage.getItem("BjList") != null){
@@ -854,7 +859,6 @@ export default {
         this.$modal.msgError("请选择开奖结果");
         return
       }
-      
       let param ={}
       let str =''
       str= this.radio1.toString()+this.checkboxGroup1.join('')+this.checkboxGroup2.join('')+this.checkboxGroup3.join('')
@@ -862,7 +866,7 @@ export default {
       param['gameResult']=str
       let arr=[]
       let arr1=[]
-
+      this.betList = this.baccaratList
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
@@ -899,7 +903,6 @@ export default {
           }
         }
       })
-      //  console.log(this.betList,2)
       arr.forEach(e=>{
         Object.keys(e).forEach(i=>{
           if(this.isEmpty(e[i])) {
@@ -969,7 +972,9 @@ export default {
       this.sumdata.sumCash = newCash['4']+newCash['1']+newCash['7']+newCash['8']+newCash['5']+newCash['9']+newCash['6']+newCash['a']
        this.sumdata.sumChipTh = newChipTh['4']+newChipTh['1']+newChipTh['7']+newChipTh['8']+newChipTh['5']+newChipTh['9']+newChipTh['6']+newChipTh['a']
       this.sumdata.sumCashTh = newCashTh['4']+newCashTh['1']+newCashTh['7']+newCashTh['8']+newCashTh['5']+newCashTh['9']+newCashTh['6']+newCashTh['a']
-     this.setBaccaratSum(this.sumdata)
+  
+    this.setBaccaratSum(this.sumdata)
+
       baccaratOpen({'json':param}).then(res => {
           this.subData= res.data
           let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1,type:0}))
@@ -978,6 +983,7 @@ export default {
           })
           this.betList = arr2
           this.setBaccaratList(this.betList)
+          
           this. getSend()
           this.iskaipai = false
           this.loading = false;
@@ -1735,5 +1741,35 @@ export default {
 }
 .result-tie {
   color: green;
+}
+.zhudanBox_dialog{
+  .el-table{
+    font-size: 20px;
+    .el-table__header-wrapper{
+      th{
+        font-size: 20px;
+      }
+    }
+  }
+ .el-pagination span:not([class*=suffix]), .el-pagination button{
+   font-size: 18px;
+    height: 40px;
+    line-height:40px;
+    min-width: 40px;
+ }
+ .el-pagination__sizes .el-input .el-input__inner{
+   font-size: 18px;
+ }
+ .el-pager li{
+   font-size: 18px;
+    line-height:40px;
+    height: 40px;
+ }
+ .el-pagination.is-background .btn-prev, .el-pagination.is-background .btn-next, .el-pagination.is-background .el-pager li{
+   min-width: 40px;
+ }
+ .el-input--medium{
+   font-size: 18px;
+ }
 }
 </style>
