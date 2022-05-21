@@ -7,7 +7,7 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from "@/utils/ruoyi";
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
-
+import i18n, { languageMap } from '@/locales/index.js'
 let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
@@ -33,6 +33,8 @@ service.defaults.timeout = 10000;
 
 // request拦截器
 service.interceptors.request.use(config => {
+  // 给每个请求加请求头加上当前语言
+  config.headers.language = languageMap[i18n.locale]
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交

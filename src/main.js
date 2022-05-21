@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-05-04 22:06:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-05 22:18:29
+ * @LastEditTime: 2022-05-21 16:30:50
  * @Description: file content
  */
 import Vue from 'vue'
@@ -20,7 +20,7 @@ import router from './router'
 import directive from './directive' // directive
 import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
-
+import i18n from '@/locales'
 import './assets/icons' // icon
 import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
@@ -98,5 +98,6 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })
