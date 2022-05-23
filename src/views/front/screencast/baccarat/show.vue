@@ -1,8 +1,8 @@
 <template>
   <div class="app-container bjl_show">
       <div class="table_box_box">
-       <span>桌台编号</span>   
-       <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
+       <span>{{$t('T-No')}}</span>   
+       <el-select v-model="tableId" @change="valChange(tableId)" style="width:150px"  :placeholder="$t('bet.choose')">
           <el-option
             v-for="item in options"
             :key="item.tableId"
@@ -10,43 +10,43 @@
             :value="item.tableId">
           </el-option>
         </el-select>
-        <el-button class="loginout" type="primary" plain @click="screencast">全屏</el-button>
+        <el-button class="loginout" type="primary" plain @click="screencast">{{$t('bet.fullScreen')}}</el-button>
       </div>
 
      <el-table v-loading="loading" class="betBox" stripe="" height="920px" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" key="type" prop="type" width="120px" class="name">
+          <el-table-column :label="$t('bet.chooseStyle')" align="center" key="type" prop="type" width="120px" class="name">
              <template slot-scope="scope" >
-                <span style="font-size: 20px;" v-if="scope.row.type==1">$现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==0">$筹码</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿筹码</span>
+                <span style="font-size: 20px;" v-if="scope.row.type==1">${{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==0">${{$t('bet.chip')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿{{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿{{$t('bet.chip')}}</span>
                 <span style="font-size: 20px;" v-else>-</span>
-                <!-- {{scope.row.type==0?'现金':(scope.row.type==1?'筹码':'-')}} -->
+                <!-- {{scope.row.type==0?'{{$t('bet.cash')}}':(scope.row.type==1?'{{$t('bet.chip')}}':'-')}} -->
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="185px"></el-table-column>
-           <el-table-column label="庄" align="center" key="card1" prop="card1"  ></el-table-column>
-           <el-table-column label="闲" align="center" key="card2" prop="card2"  ></el-table-column>
-           <el-table-column label="和" align="center" key="card3" prop="card3"  ></el-table-column>
-           <el-table-column label="庄对" align="center" key="card4" prop="card4"  ></el-table-column>
-           <el-table-column label="闲对" align="center" key="card5" prop="card5"  ></el-table-column>
-           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  ></el-table-column>
-           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  ></el-table-column>
-           <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
-           <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
-          <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
-          <el-table-column label="幸运6" align="center" key="card11" prop="card11"  ></el-table-column>
-          <el-table-column label="赔码数" align="center"   prop="payout"  />
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="185px"></el-table-column>
+           <el-table-column :label="$t('bet.z')" align="center" key="card1" prop="card1"  ></el-table-column>
+           <el-table-column :label="$t('bet.x')" align="center" key="card2" prop="card2"  ></el-table-column>
+           <el-table-column :label="$t('bet.h')" align="center" key="card3" prop="card3"  ></el-table-column>
+           <el-table-column :label="$t('bet.zd')" align="center" key="card4" prop="card4"  ></el-table-column>
+           <el-table-column :label="$t('bet.xd')" align="center" key="card5" prop="card5"  ></el-table-column>
+           <el-table-column :label="$t('bet.zIns')" align="center" key="card6" prop="card6"  ></el-table-column>
+           <el-table-column :label="$t('bet.xIns')" align="center" key="card7" prop="card7"  ></el-table-column>
+           <el-table-column :label="$t('bet.tIns')" align="center" key="card10" prop="card10"  ></el-table-column>
+           <el-table-column :label="$t('bet.big')" align="center" key="card8" prop="card8"  ></el-table-column>
+          <el-table-column :label="$t('bet.small')" align="center" key="card9" prop="card9"  ></el-table-column>
+          <el-table-column :label="$t('bet.lucky')" align="center" key="card11" prop="card11"  ></el-table-column>
+          <el-table-column :label="$t('bet.payOut')" align="center"   prop="payout"  />
              
          
      </el-table>
 
-      <!-- 全屏 -->
+      <!-- {{$t('bet.fullScreen')}} -->
     <el-dialog title="" :visible.sync="openLUdan" width="100%" top="0" class="quanping_dialog" append-to-body :close-on-click-modal="false">
           <div class="table_box_box">
-       <span>桌台编号</span>   
-       <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  placeholder="请选择">
+       <span>{{$t('T-No')}}</span>   
+       <el-select v-model="tableId" @change="valChange(tableId)" style="width:100px"  :placeholder="$t('bet.choose')">
           <el-option
             v-for="item in options"
             :key="item.tableId"
@@ -58,28 +58,28 @@
 
      <el-table v-loading="loading" class="betBox" stripe="" height="93.6vh" :data="betList"  border >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center" key="type" prop="type" width="155px" >
+          <el-table-column :label="$t('bet.chooseStyle')" align="center" key="type" prop="type" width="155px" >
              <template slot-scope="scope" style="font-size: 20px;">
-                <span style="font-size: 20px;" v-if="scope.row.type==1">$现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==0">$筹码</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿筹码</span>
+                <span style="font-size: 20px;" v-if="scope.row.type==1">${{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==0">${{$t('bet.chip')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿{{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿{{$t('bet.chip')}}</span>
                 <span style="font-size: 20px;" v-else>-</span>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
-           <el-table-column label="庄" align="center" key="card1" prop="card1"  ></el-table-column>
-           <el-table-column label="闲" align="center" key="card2" prop="card2"  ></el-table-column>
-           <el-table-column label="和" align="center" key="card3" prop="card3"  ></el-table-column>
-           <el-table-column label="庄对" align="center" key="card4" prop="card4"  ></el-table-column>
-           <el-table-column label="闲对" align="center" key="card5" prop="card5"  ></el-table-column>
-           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  ></el-table-column>
-           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  ></el-table-column>
-           <el-table-column label="和保险" align="center" key="card10" prop="card10"  ></el-table-column>
-           <el-table-column label="大" align="center" key="card8" prop="card8"  ></el-table-column>
-          <el-table-column label="小" align="center" key="card9" prop="card9"  ></el-table-column>
-          <el-table-column label="幸运6" align="center" key="card11" prop="card11"  ></el-table-column>
-          <el-table-column label="赔码数" align="center"   prop="payout"  />
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="200px"></el-table-column>
+           <el-table-column :label="$t('bet.z')" align="center" key="card1" prop="card1"  ></el-table-column>
+           <el-table-column :label="$t('bet.x')" align="center" key="card2" prop="card2"  ></el-table-column>
+           <el-table-column :label="$t('bet.h')" align="center" key="card3" prop="card3"  ></el-table-column>
+           <el-table-column :label="$t('bet.zd')" align="center" key="card4" prop="card4"  ></el-table-column>
+           <el-table-column :label="$t('bet.xd')" align="center" key="card5" prop="card5"  ></el-table-column>
+           <el-table-column :label="$t('bet.zIns')" align="center" key="card6" prop="card6"  ></el-table-column>
+           <el-table-column :label="$t('bet.xIns')" align="center" key="card7" prop="card7"  ></el-table-column>
+           <el-table-column :label="$t('bet.tIns')" align="center" key="card10" prop="card10"  ></el-table-column>
+           <el-table-column :label="$t('bet.big')" align="center" key="card8" prop="card8"  ></el-table-column>
+          <el-table-column :label="$t('bet.small')" align="center" key="card9" prop="card9"  ></el-table-column>
+          <el-table-column :label="$t('bet.lucky')" align="center" key="card11" prop="card11"  ></el-table-column>
+          <el-table-column :label="$t('bet.payOut')" align="center"   prop="payout"  />
              
          
           </el-table>

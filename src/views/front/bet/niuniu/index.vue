@@ -71,32 +71,32 @@
 
      <el-table v-loading="loading" stripe class="betBox" height="500px" :data="nnList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center"  key="type" prop="type" width="350px">
+          <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="360px">
                <template slot-scope="scope">
                   <el-radio-group @change='DataChange' v-model.number="scope.row.type">
-                    <el-radio :label="0">$筹码</el-radio>
-                    <el-radio :label="1">$现金</el-radio>
-                    <el-radio :label="2">฿筹码</el-radio>
-                    <el-radio :label="3">฿现金</el-radio>
+                    <el-radio :label="0">${{$t('bet.chip')}}</el-radio>
+                    <el-radio :label="1">${{$t('bet.cash')}}</el-radio>
+                    <el-radio :label="2">฿{{$t('bet.chip')}}</el-radio>
+                    <el-radio :label="3">฿{{$t('bet.cash')}}</el-radio>
                   </el-radio-group>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model="scope.row.card" placeholder="" />
               </template>
           </el-table-column>
-           <el-table-column label="输" align="center" key="lose" prop="lose"  >
+           <el-table-column :label="$t('Loss')" align="center" key="lose" prop="lose"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' :disabled="scope.row.win?scope.row.win !='':false" v-model.number="scope.row.lose" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="赢" align="center" key="win" prop="win"  >
+           <el-table-column :label="$t('Win')" align="center" key="win" prop="win"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' :disabled="scope.row.lose?scope.row.lose !='':false" v-model.number="scope.row.win" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-          <el-table-column label="赔码数" align="center"   prop="payout" />
+          <el-table-column :label="$t('bet.payOut')" align="center"   prop="payout" />
              
          
         </el-table>
@@ -238,9 +238,9 @@ export default {
     },
     // 退出登录
     async logout() {
-      this.$confirm('确定切换账号吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('bet.getCode'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
@@ -308,11 +308,11 @@ export default {
           if(!e.type && e.type!=0 && !isDialog){
             
              isDialog =true
-             this.$modal.msgError("请检查币种是否漏勾选");
+             this.$modal.msgError(this.$t('bet.isChoose'));
           };
           if(!e.card && !isDialog){
             isDialog =true
-            this.$modal.msgError("请检查卡号是否漏填");
+            this.$modal.msgError(this.$t('bet.ishas'));
           }
         }
       })
@@ -360,9 +360,9 @@ export default {
     },
     //录入
     updataBet(){
-       this.$confirm('是否确定录入？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+       this.$confirm(this.$t('bet.sureAdd'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
@@ -422,7 +422,7 @@ export default {
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '合计';
+            sums[index] = this.$t('bet.heji');
             return;
           }
            if (index === 6) {
@@ -441,7 +441,7 @@ export default {
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '小计';
+            sums[index] = this.$t('bet.xiaoji');
             return;
           }
            if (index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 7) {
@@ -499,13 +499,13 @@ export default {
     ponintCode() {
       console.log(1)
        this.open = true;
-      this.title = "点码";
+      this.title = this.$t('bet.ponintCode');
     },
 
     /** 收码 */
     getCode() {
       this.open = true;
-      this.title = "收码";
+      this.title = this.$t('bet.getCode');
     },
 
 
@@ -877,6 +877,34 @@ export default {
   }
   .table-info-red td,.table-info-red1 td{
     // background: rgb(199, 135, 135);
+  }
+}
+.app_zh .game_nn .table-info-bj-red1 td:nth-child(2){
+  position: relative;
+  &::after{
+    content: '请填写卡号';
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -5px;
+    left: 0px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
+  }
+}
+.app_en .game_nn .table-info-bj-red1 td:nth-child(2){
+  position: relative;
+  &::after{
+    content: 'Enter card number';
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -5px;
+    left: 0px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
   }
 }
 .ludanBox_dialog{

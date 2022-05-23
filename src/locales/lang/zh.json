@@ -70,7 +70,12 @@
     "sucGet":"收码修改成功",
     "sucPoint":"点码修改成功",
     "sucGetCount":"收码计算差距成功",
-    "sucPointCount":"点码计算差距成功"
+    "sucPointCount":"点码计算差距成功",
+    "chooseStyle":"选择币种",
+    "wan":"万",
+    "T-money": "和钱",
+    "fullScreen":"全屏",
+    "choose":"请选择"
   },  
   "Card-search": "卡号查询",
   "Name-search": "姓名查询",

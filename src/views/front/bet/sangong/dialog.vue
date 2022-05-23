@@ -4,17 +4,17 @@
       
          <el-row :gutter="20">
            <el-col :span="6" :xs="12">
-             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata"  border show-summary sum-text="小计" :summary-method="getSummaries">
-                 <el-table-column label="面值$" align="center" key="val" prop="val"  />
-                <el-table-column label="数量" align="center" key="num" prop="num" >
+             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata"  border show-summary :sum-text="$t('bet.xiaoji')" :summary-method="getSummaries">
+                 <el-table-column :label="$t('bet.face')+'$'" align="center" key="val" prop="val"  />
+                <el-table-column :label="$t('bet.vol')" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
                         <el-input ref="input" id="input" @keyup.enter.native="handelTab(scope.row.id,$event)" v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
-                <el-table-column label="合计" align="center"   prop="total">
+                <el-table-column :label="$t('bet.heji')" align="center"   prop="total">
                    <template slot-scope="scope">
-                     <span v-if="scope.row.val=='现金'">{{scope.row.num || 0}}</span>
-                       <span v-else>{{(scope.row.num||0)*(scope.row.value>5000?scope.row.value/10000:scope.row.value)}}{{scope.row.value>5000?'万':''}}</span>
+                     <span v-if="scope.row.val==$t('bet.cash')">{{scope.row.num || 0}}</span>
+                       <span v-else>{{(scope.row.num||0)*(scope.row.value>5000?scope.row.value/10000:scope.row.value)}}{{scope.row.value>5000?$t('bet.wan'):''}}</span>
                     </template>
                 </el-table-column>
 
@@ -23,108 +23,108 @@
            <el-col :span="6" :xs="12">
               <el-form ref="form" class="gameDialog" :model="form" :rules="rules" label-width="0px">
                   <div class="list">
-                    <div>类型</div>
-                    <div>金额</div>
-                    <div>状态</div>
+                    <div>{{$t('bet.type')}}</div>
+                    <div>{{$t('bet.account')}}</div>
+                    <div>{{$t('bet.status')}}</div>
                   </div>
                   <div class="list">
-                    <div>$筹码增</div>
+                    <div>${{$t('bet.chipIncrease')}}</div>
                     <div>
                       <el-input v-model.number="form.chipAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>$筹码减</div>
+                    <div>${{$t('bet.chipReduce')}}</div>
                     <div>
                       <el-input v-model.number="form.chipSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>$现金增</div>
+                    <div>${{$t('bet.cashIncrease')}}</div>
                     <div>
                       <el-input v-model.number="form.cashAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>$现金减</div>
+                    <div>${{$t('bet.cashReduce')}}</div>
                     <div>
                       <el-input v-model.number="form.cashSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                   <div class="list">
-                    <div>$筹码差距</div>
+                    <div>${{$t('bet.chipgap')}}</div>
                     <div>
                      {{form.chipGap ==0?'0':(form.chipGap||'-') }}
                     </div>
                     <div>
-                       <span v-if="!form.chipGap">{{form.chipGap==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                       <span v-if="!form.chipGap">{{form.chipGap==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                     </div>
                   </div>
                   <div class="list">
-                    <div>$现金差距</div>
+                    <div>${{$t('bet.cashGap')}}</div>
                     <div>
                        {{form.cashGap ==0?'0':(form.cashGap || '-')}}
                     </div>
                     <div>
-                        <span v-if="!form.cashGap">{{form.cashGap==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                        <span v-if="!form.cashGap">{{form.cashGap==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                        </div>
                   </div>
                   <div class="list">
-                    <div>$总差距</div>
+                    <div>${{$t('bet.totGap')}}</div>
                     <div>
                       {{form.totalGap==0?'0':(form.totalGap||'-')}}
                     </div>
                      <div>
-                       <span v-if="!form.totalGap">{{form.totalGap==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                       <span v-if="!form.totalGap">{{form.totalGap==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                      </div>
                   </div>
                   <!-- <div class="list">
-                    <div>$保险筹码</div>
+                    <div>${{$t('bet.insChip')}}</div>
                     <div>
                       <el-input v-model.number="form.insurance" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>$保险筹码增</div>
+                    <div>${{$t('bet.insChipAdd')}}</div>
                     <div>
                       <el-input v-model.number="form.insuranceAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>$保险筹码减</div>
+                    <div>${{$t('bet.insChipSub')}}</div>
                     <div>
                       <el-input v-model.number="form.insuranceSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>$保险筹码差距</div>
+                    <div>${{$t('bet.insGap')}}</div>
                     <div>
                       {{form.insuranceGap==0?'0':(form.insuranceGap||'-')}}
                     </div>
                      <div>
-                       <span v-if="!form.insuranceGap">{{form.insuranceGap==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                       <span v-if="!form.insuranceGap">{{form.insuranceGap==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                        </div>
                   </div> -->
-                  <div class="list" v-if="title=='收码'">
-                    <div>$筹码收码</div>
+                  <div class="list" v-if="title==$t('bet.getCode')">
+                    <div>${{$t('bet.chipGet')}}</div>
                     <div>
                       {{form.chipReceipt==0?'0':(form.chipReceipt||'-') }}
                     </div>
                      <div>-</div>
                   </div>
-                  <div class="list"  v-if="title=='收码'">
-                    <div>$现金收码</div>
+                  <div class="list"  v-if="title==$t('bet.getCode')">
+                    <div>${{$t('bet.cashGet')}}</div>
                     <div>
                       {{form.cashReceipt==0?'0':(form.cashReceipt||'-') }}
                     </div>
@@ -133,17 +133,17 @@
               </el-form>
            </el-col>
            <el-col :span="6" :xs="12">
-             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata1"  border show-summary sum-text="小计" :summary-method="getSummaries1">
-                 <el-table-column label="面值฿" align="center" key="val" prop="val"  />
-                <el-table-column label="数量" align="center" key="num" prop="num" >
+             <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata1"  border show-summary :sum-text="$t('bet.xiaoji')" :summary-method="getSummaries1">
+                 <el-table-column :label="$t('bet.face')+'฿'" align="center" key="val" prop="val"  />
+                <el-table-column :label="$t('bet.vol')" align="center" key="num" prop="num" >
                       <template slot-scope="scope">
                          <el-input ref="input" id="input1" @keyup.enter.native="handelTab1(scope.row.id,$event)" v-model.number="scope.row.num" placeholder=""  @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
-                <el-table-column label="合计" align="center"   prop="total">
+                <el-table-column :label="$t('bet.heji')" align="center"   prop="total">
                    <template slot-scope="scope">
-                     <span v-if="scope.row.val=='现金'">{{scope.row.num || 0}}</span>
-                       <span v-else>{{(scope.row.num||0)*(scope.row.value>5000?scope.row.value/10000:scope.row.value)}}{{scope.row.value>5000?'万':''}}</span>
+                     <span v-if="scope.row.val==$t('bet.cash')">{{scope.row.num || 0}}</span>
+                       <span v-else>{{(scope.row.num||0)*(scope.row.value>5000?scope.row.value/10000:scope.row.value)}}{{scope.row.value>5000?$t('bet.wan'):''}}</span>
                     </template>
                 </el-table-column>
 
@@ -152,108 +152,108 @@
            <el-col :span="6" :xs="12">
               <el-form ref="form" class="gameDialog" :model="form" :rules="rules" label-width="0px">
                   <div class="list">
-                    <div>类型</div>
-                    <div>金额</div>
-                    <div>状态</div>
+                    <div>{{$t('bet.type')}}</div>
+                    <div>{{$t('bet.account')}}</div>
+                    <div>{{$t('bet.status')}}</div>
                   </div>
                   <div class="list">
-                    <div>฿筹码增</div>
+                    <div>฿{{$t('bet.chipIncrease')}}</div>
                     <div>
                       <el-input v-model.number="form.chipAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿筹码减</div>
+                    <div>฿{{$t('bet.chipReduce')}}</div>
                     <div>
                       <el-input v-model.number="form.chipSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿现金增</div>
+                    <div>฿{{$t('bet.cashIncrease')}}</div>
                     <div>
                       <el-input v-model.number="form.cashAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿现金减</div>
+                    <div>฿{{$t('bet.cashReduce')}}</div>
                     <div>
                       <el-input v-model.number="form.cashSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                   <div class="list">
-                    <div>฿筹码差距</div>
+                    <div>฿{{$t('bet.chipgap')}}</div>
                     <div>
                      {{form.chipGapTh ==0?'0':(form.chipGapTh||'-') }}
                     </div>
                     <div>
-                       <span v-if="!form.chipGapTh">{{form.chipGapTh==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                       <span v-if="!form.chipGapTh">{{form.chipGapTh==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                     </div>
                   </div>
                   <div class="list">
-                    <div>฿现金差距</div>
+                    <div>฿{{$t('bet.cashGap')}}</div>
                     <div>
                        {{form.cashGapTh ==0?'0':(form.cashGapTh||'-') }}
                     </div>
                     <div>
-                        <span v-if="!form.cashGapTh">{{form.cashGapTh==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                        <span v-if="!form.cashGapTh">{{form.cashGapTh==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                        </div>
                   </div>
                   <div class="list">
-                    <div>฿总差距</div>
+                    <div>฿{{$t('bet.totGap')}}</div>
                     <div>
                        {{form.totalGapTh ==0?'0':(form.totalGapTh||'-') }}
                     </div>
                      <div>
-                       <span v-if="!form.totalGapTh">{{form.totalGapTh==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                       <span v-if="!form.totalGapTh">{{form.totalGapTh==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                      </div>
                   </div>
                   <!-- <div class="list">
-                    <div>฿保险筹码</div>
+                    <div>฿{{$t('bet.insChip')}}</div>
                     <div>
                       <el-input v-model.number="form.insuranceTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿保险筹码增</div>
+                    <div>฿{{$t('bet.insChipAdd')}}</div>
                     <div>
                       <el-input v-model.number="form.insuranceAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿保险筹码减</div>
+                    <div>฿{{$t('bet.insChipSub')}}</div>
                     <div>
                       <el-input v-model.number="form.insuranceSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿保险筹码差距</div>
+                    <div>฿{{$t('bet.insGap')}}</div>
                     <div>
                       {{form.insuranceGapTh ==0?'0':(form.insuranceGapTh||'-') }}
                     </div>
                      <div>
-                      <span v-if="!form.insuranceGapTh">{{form.insuranceGapTh==0?'正确':'-'}}</span>
-                       <span v-else style="color:red">错误</span>
+                      <span v-if="!form.insuranceGapTh">{{form.insuranceGapTh==0?$t('bet.correct'):'-'}}</span>
+                       <span v-else style="color:red">{{$t('bet.incorrect')}}</span>
                        </div>
                   </div> -->
-                  <div class="list" v-if="title=='收码'">
-                    <div>฿筹码收码</div>
+                  <div class="list" v-if="title==$t('bet.getCode')">
+                    <div>฿{{$t('bet.chipGet')}}</div>
                     <div>
                       {{form.chipReceiptTh==0?'0':(form.chipReceiptTh||'-') }}
                     </div>
                      <div>-</div>
                   </div>
-                  <div class="list"  v-if="title=='收码'">
-                    <div>฿现金收码</div>
+                  <div class="list"  v-if="title==$t('bet.getCode')">
+                    <div>฿{{$t('bet.cashGet')}}</div>
                     <div>
                       {{form.cashReceiptTh==0?'0':(form.cashReceiptTh||'-') }}
                     </div>
@@ -263,10 +263,10 @@
            </el-col>
            <el-col :span="24" :xs="24">
              <div class="remark">
-                <span>增减码修改备注：</span>
+                <span>{{$t('bet.remark')}}</span>
                <el-input
                   type="text"
-                  placeholder="请输入内容"
+                  :placeholder="$t('Please-enter-content')"
                   v-model="form.remark">
                 </el-input>
              </div>
@@ -275,8 +275,8 @@
            </el-col>
         </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确定修改</el-button>
-        <el-button @click="count">计算差距</el-button>
+        <el-button type="primary" @click="submitForm">{{$t('bet.conChange')}}</el-button>
+        <el-button @click="count">{{$t('bet.calculateGap')}}</el-button>
       </div>
     </el-dialog>
 </template>
@@ -300,10 +300,10 @@ export default {
       cashTh:'',
       chipTh:'',
       Listdata:[
-        {id:1,value:1000000,val:'100万',num:'',total:''},
-        {id:2,value:500000,val:'50万',num:'',total:''},
-        {id:3,value:50000,val:'5万',num:'',total:''},
-        {id:4,value:10000,val:'1万',num:'',total:''},
+        {id:1,value:1000000,val:100+this.$t('bet.wan'),num:'',total:''},
+        {id:2,value:500000,val:50+this.$t('bet.wan'),num:'',total:''},
+        {id:3,value:50000,val:5+this.$t('bet.wan'),num:'',total:''},
+        {id:4,value:10000,val:1+this.$t('bet.wan'),num:'',total:''},
         {id:5,value:5000,val:'5000',num:'',total:''},
         {id:6,value:1000,val:'1000',num:'',total:''},
         {id:7,value:500,val:'500',num:'',total:''},
@@ -312,13 +312,13 @@ export default {
         {id:10,value:10,val:'10',num:'',total:''},
         {id:11,value:5,val:'5',num:'',total:''},
         {id:12,value:1,val:'1',num:'',total:''},
-        {id:13,value:1,val:'现金',num:'',total:''},
+        {id:13,value:1,val:this.$t('bet.cash'),num:'',total:''},
         ],
       Listdata1:[
-         {id:1,value:1000000,val:'100万',num:'',total:''},
-        {id:2,value:500000,val:'50万',num:'',total:''},
-        {id:3,value:50000,val:'5万',num:'',total:''},
-        {id:4,value:10000,val:'1万',num:'',total:''},
+         {id:1,value:1000000,val:100+this.$t('bet.wan'),num:'',total:''},
+        {id:2,value:500000,val:50+this.$t('bet.wan'),num:'',total:''},
+        {id:3,value:50000,val:5+this.$t('bet.wan'),num:'',total:''},
+        {id:4,value:10000,val:1+this.$t('bet.wan'),num:'',total:''},
         {id:5,value:5000,val:'5000',num:'',total:''},
         {id:6,value:1000,val:'1000',num:'',total:''},
         {id:7,value:500,val:'500',num:'',total:''},
@@ -327,7 +327,7 @@ export default {
         {id:10,value:10,val:'10',num:'',total:''},
         {id:11,value:5,val:'5',num:'',total:''},
         {id:12,value:1,val:'1',num:'',total:''},
-        {id:13,value:1,val:'现金',num:'',total:''},
+        {id:13,value:1,val:this.$t('bet.cash'),num:'',total:''},
       ] 
     };
   },
@@ -362,10 +362,10 @@ export default {
     },
     reset(){
        this.Listdata=[
-        {id:1,value:1000000,val:'100万',num:'',total:''},
-        {id:2,value:500000,val:'50万',num:'',total:''},
-        {id:3,value:50000,val:'5万',num:'',total:''},
-        {id:4,value:10000,val:'1万',num:'',total:''},
+        {id:1,value:1000000,val:100+this.$t('bet.wan'),num:'',total:''},
+        {id:2,value:500000,val:50+this.$t('bet.wan'),num:'',total:''},
+        {id:3,value:50000,val:5+this.$t('bet.wan'),num:'',total:''},
+        {id:4,value:10000,val:1+this.$t('bet.wan'),num:'',total:''},
         {id:5,value:5000,val:'5000',num:'',total:''},
         {id:6,value:1000,val:'1000',num:'',total:''},
         {id:7,value:500,val:'500',num:'',total:''},
@@ -374,13 +374,13 @@ export default {
         {id:10,value:10,val:'10',num:'',total:''},
         {id:11,value:5,val:'5',num:'',total:''},
         {id:12,value:1,val:'1',num:'',total:''},
-        {id:13,value:1,val:'现金',num:'',total:''},
+        {id:13,value:1,val:this.$t('bet.cash'),num:'',total:''},
         ],
       this.Listdata1=[
-         {id:1,value:1000000,val:'100万',num:'',total:''},
-        {id:2,value:500000,val:'50万',num:'',total:''},
-        {id:3,value:50000,val:'5万',num:'',total:''},
-        {id:4,value:10000,val:'1万',num:'',total:''},
+         {id:1,value:1000000,val:100+this.$t('bet.wan'),num:'',total:''},
+        {id:2,value:500000,val:50+this.$t('bet.wan'),num:'',total:''},
+        {id:3,value:50000,val:5+this.$t('bet.wan'),num:'',total:''},
+        {id:4,value:10000,val:1+this.$t('bet.wan'),num:'',total:''},
         {id:5,value:5000,val:'5000',num:'',total:''},
         {id:6,value:1000,val:'1000',num:'',total:''},
         {id:7,value:500,val:'500',num:'',total:''},
@@ -389,7 +389,7 @@ export default {
         {id:10,value:10,val:'10',num:'',total:''},
         {id:11,value:5,val:'5',num:'',total:''},
         {id:12,value:1,val:'1',num:'',total:''},
-        {id:13,value:1,val:'现金',num:'',total:''},
+        {id:13,value:1,val:this.$t('bet.cash'),num:'',total:''},
       ] ,
         this.form ={
           chip:'',
@@ -419,18 +419,18 @@ export default {
     },
      /** 提交按钮 */
     submitForm: function() {
-      this.$confirm('是否确定修改？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('bet.ismodiffy'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
          customClass:'dialog_tips'
       }).then(() => {
         this.$refs["form"].validate(valid => {
           if (valid) {
-            if (this.title == "收码") {
+            if (this.title == this.$t('bet.getCode')) {
               this.form['type']=1
               sangongEdit(this.form).then(response => {
-                this.$modal.msgSuccess("收码修改成功");
+                this.$modal.msgSuccess(this.$t('bet.sucGet'));
                 this.isOpen= !this.isOpen
                 this.$emit('getOpen',this.isOpen)
                 this.reset()
@@ -438,7 +438,7 @@ export default {
             } else {
               this.form['type']=0
               sangongEdit(this.form).then(response => {
-                this.$modal.msgSuccess("点码修改成功");
+                this.$modal.msgSuccess(this.$t('bet.sucPoint'));
                 this.isOpen= !this.isOpen
                 this.$emit('getOpen',this.isOpen)
                 this.reset()
@@ -460,7 +460,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = '合计';
+          sums[index] = this.$t('bet.heji');
           return;
         }
           if (index === 2) {
@@ -475,7 +475,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = '合计';
+          sums[index] = this.$t('bet.heji');
           return;
         }
           if (index === 2) {
@@ -505,11 +505,11 @@ export default {
     count(){
       console.log(this.form)
      
-          if (this.title == "收码") {
+          if (this.title == this.$t('bet.getCode')) {
             this.form['type']=1
             console.log(typeof(this.form.type))
             sangongReckon(this.form).then(res => {
-              this.$modal.msgSuccess("收码计算差距成功");
+              this.$modal.msgSuccess(this.$t('bet.sucGetCount'));
               let arr =res.data
               this.form['cashGap']=arr.cashGap
               this.form['chipGap']=arr.chipGap
@@ -528,7 +528,7 @@ export default {
           } else {
             this.form['type']=0
             sangongReckon(this.form).then(res => {
-              this.$modal.msgSuccess("点码计算差距成功");
+              this.$modal.msgSuccess(this.$t('bet.sucPointCount'));
                let arr =res.data
               this.form['cashGap']=arr.cashGap
               this.form['chipGap']=arr.chipGap

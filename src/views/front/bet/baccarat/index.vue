@@ -10,7 +10,7 @@
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <el-button class="loginout" type="danger" plain @click="betRecord">下注记录</el-button>
+              <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
@@ -178,87 +178,87 @@
           </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitLudan">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitLudan">{{$t('bet.sure')}}</el-button>
+        <el-button @click="cancel">{{$t('bet.cancel')}}</el-button>
       </div>
     </el-dialog>
 
      <el-table v-loading="loading" class="betBox_bjl" height="650px" style="font-size: 20px;" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center"  key="type" prop="type" width="350px">
+          <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="360px">
                <template slot-scope="scope">
                   <el-radio-group  @change='DataChange' v-model.number="scope.row.type">
-                   <el-radio :label="0">$筹码</el-radio>
-                    <el-radio :label="1">$现金</el-radio>
-                    <el-radio :label="2">฿筹码</el-radio>
-                    <el-radio :label="3">฿现金</el-radio>
+                   <el-radio :label="0">${{$t('bet.chip')}}</el-radio>
+                    <el-radio :label="1">${{$t('bet.cash')}}</el-radio>
+                    <el-radio :label="2">฿{{$t('bet.chip')}}</el-radio>
+                    <el-radio :label="3">฿{{$t('bet.cash')}}</el-radio>
                   </el-radio-group>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="150px">
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="150px">
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model="scope.row.card" placeholder=""  />
               </template>
           </el-table-column>
-           <el-table-column label="庄" align="center" key="card1" prop="card1"  >
+           <el-table-column :label="$t('bet.z')" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="闲" align="center" key="card2" prop="card2"  >
+           <el-table-column :label="$t('bet.x')" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="和" align="center" key="card3" prop="card3"  >
+           <el-table-column :label="$t('bet.h')" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="庄对" align="center" key="card4" prop="card4"  >
+           <el-table-column :label="$t('bet.zd')" align="center" key="card4" prop="card4"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card4" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="闲对" align="center" key="card5" prop="card5"  >
+           <el-table-column :label="$t('bet.xd')" align="center" key="card5" prop="card5"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card5" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="庄保险" align="center" key="card6" prop="card6"  >
+           <el-table-column :label="$t('bet.zIns')" align="center" key="card6" prop="card6"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card6" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="闲保险" align="center" key="card7" prop="card7"  >
+           <el-table-column :label="$t('bet.xIns')" align="center" key="card7" prop="card7"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card7" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="和保险" align="center" key="card10" prop="card10"  >
+           <el-table-column :label="$t('bet.tIns')" align="center" key="card10" prop="card10"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card10" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
          
-           <el-table-column label="大" align="center" key="card8" prop="card8"  >
+           <el-table-column :label="$t('bet.big')" align="center" key="card8" prop="card8"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card8" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-            <el-table-column label="小" align="center" key="card9" prop="card9"  >
+            <el-table-column :label="$t('bet.small')" align="center" key="card9" prop="card9"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card9" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-            <el-table-column label="幸运6" align="center" key="card11" prop="card11"  >
+            <el-table-column :label="$t('bet.lucky')" align="center" width="110px" key="card11" prop="card11"  >
                <template slot-scope="scope">
                   <el-input @change='DataChange' v-model.number="scope.row.card11" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
           <!-- <el-table-column label="现有筹码" align="center" key="chip" prop="chip"  fixed="right" /> -->
-          <el-table-column label="赔码数" align="center"   prop="payout" />
+          <el-table-column :label="$t('bet.payOut')" align="center" width="110px"   prop="payout" />
              
          
         </el-table>
@@ -345,18 +345,18 @@ export default {
       checkboxGroup3:[],  
       radio1:'',
       // radio2:'',
-      reData:[
-        {id:8,name:'庄对',color:'red'},
-        {id:5,name:'闲对',color:'blue'},
-      ],
-       reData1:[
-        {id:9,name:'大',color:'red'},
-        {id:6,name:'小',color:'blue'},
-      ],
-       reData2:[
-        {id:'a',name:'两张牌',color:'red'},
-        {id:'b',name:'三张牌',color:'blue'},
-      ],
+      // reData:[
+      //   {id:8,name:this.$t('bet.zd'),color:'red'},
+      //   {id:5,name:this.$t('bet.xd'),color:'blue'},
+      // ],
+      //  reData1:[
+      //   {id:9,name:this.$t('bet.big'),color:'red'},
+      //   {id:6,name:this.$t('bet.small'),color:'blue'},
+      // ],
+      //  reData2:[
+      //   {id:'a',name:this.$t('bet.two'),color:'red'},
+      //   {id:'b',name:this.$t('bet.three'),color:'blue'},
+      // ],
       // userName:'',
       tableInfo:'', //桌台信息
       iskaipai:true,
@@ -406,6 +406,25 @@ export default {
     this.getStatus()
   },
   computed:{
+   
+       reData1(){
+        return [
+            {id:9,name:this.$t('bet.big'),color:'red'},
+            {id:6,name:this.$t('bet.small'),color:'blue'},
+          ]
+      },
+       reData2(){
+        return [
+            {id:'a',name:this.$t('bet.two'),color:'red'},
+            {id:'b',name:this.$t('bet.three'),color:'blue'},
+          ]
+       },
+      reData(){
+        return [
+        {id:8,name:this.$t('bet.zd'),color:'red'},
+        {id:5,name:this.$t('bet.xd'),color:'blue'},
+        ]
+      },
     userName(){
       return this.$store.state.user.name
     },
@@ -494,9 +513,9 @@ export default {
     },
     // 退出登录
     async logout() {
-      this.$confirm('确定切换账号吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('bet.getCode'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
@@ -542,7 +561,7 @@ export default {
     startBet(){
       console.log(this.iskaipai)
       if(this.radio1 ==''){
-        this.$modal.msgError("请选择开奖结果");
+        this.$modal.msgError(this.$t('bet.chooseResult'));
         return
       }
       let param ={}
@@ -579,12 +598,12 @@ export default {
           if(!e.type && e.type!=0 && !isDialog){
             
              isDialog =true
-             this.$modal.msgError("请检查币种是否漏勾选");
+             this.$modal.msgError(this.$t('bet.isChoose'));
              return
           };
           if(!e.card && !isDialog){
             isDialog =true
-            this.$modal.msgError("请检查卡号是否漏填");
+            this.$modal.msgError(this.$t('bet.ishas'));
             return
           }
         }
@@ -677,9 +696,9 @@ export default {
     },
     //录入
     updataBet(){
-       this.$confirm('是否确定录入？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+       this.$confirm(this.$t('bet.sureAdd'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
          customClass:'dialog_tips'
       }).then(() => {
@@ -738,7 +757,7 @@ export default {
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '合计';
+            sums[index] = this.$t('bet.heji');
             return;
           }
            if (index === 6) {
@@ -757,7 +776,7 @@ export default {
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '小计';
+            sums[index] = this.$t('bet.xiaoji');
             return;
           }
            if (index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 7) {
@@ -829,13 +848,13 @@ export default {
     ponintCode() {
       console.log(1)
        this.open = true;
-      this.title = "点码";
+      this.title = this.$t('bet.ponintCode');
     },
 
     /** 收码 */
     getCode() {
       this.open = true;
-      this.title = "收码";
+      this.title = this.$t('bet.getCode');
     },
 
 
@@ -897,7 +916,7 @@ export default {
       param['id']= this.formLudan.id
       param['gameResult'] = str
       baccaratUpdate(param).then(res=>{
-         this.$modal.msgSuccess("路单图修改成功");
+         this.$modal.msgSuccess(this.$t('bet.tips1'));
           this.openLUdan = false;
           const that =this
           setTimeout(function () {
@@ -921,421 +940,518 @@ export default {
 .game_bjl{
   padding: 5px 20px 20px;
   .detailBox{
-  border: 1px solid #bcbcbc;
-  .list{
-    border-bottom: 1px solid #bcbcbc;
-    span{
-      display: inline-block;
-      text-align: center;
-      width: 49%;
-      &:nth-child(1){
-        border-right: 1px solid #bcbcbc;
-        width: 50%;
-      }
-    }
-  }
-}
-.el-table.table2 {
-  .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
-}
-.box-card-box{
-  margin-bottom: 10px;
-  font-size: 18px;  
-  .el-card__body{
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    .h1{
-      font-size: 24px;
-      line-height: 40px;
-    }
-    button{
-      width: 80%;
-      height: 80px;
-      margin: 10px auto;
-    }
-    .loginout{
-      height: 60px;
-    }
-    ul{
-      padding: 0;
-      margin: 0;
-     text-align: left;
-     border-top:1px solid #cbcbcb ;
-     &:nth-child(1){
-       border: 0;
-     }
-      li{
-        list-style: none;
+    border: 1px solid #bcbcbc;
+    .list{
+      border-bottom: 1px solid #bcbcbc;
+      span{
         display: inline-block;
-        min-width:100px;
-        margin: 0 8px;
-        line-height: 32px;
-        font-size: 18px;
-        // font-weight: bold;
+        text-align: center;
+        width: 49%;
+        &:nth-child(1){
+          border-right: 1px solid #bcbcbc;
+          width: 50%;
+        }
       }
     }
   }
-  .ludanbox{
-    position: relative;
-      .ludanbg{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #919191;
-        border-right: 0;
-        font-size: 0;
-        box-sizing: border-box;
-        position: relative;
-        .list{
-          flex-basis: 1/12*100%;
+  .el-table.table2 {
+    .el-table__header-wrapper,.el-table__body-wrapper{display: none;}
+  }
+  .box-card-box{
+    margin-bottom: 10px;
+    font-size: 18px;  
+    .el-card__body{
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      .h1{
+        font-size: 24px;
+        line-height: 40px;
+      }
+      button{
+        width: 80%;
+        height: 80px;
+        margin: 10px auto;
+      }
+      .loginout{
+        height: 60px;
+      }
+      ul{
+        padding: 0;
+        margin: 0;
+      text-align: left;
+      border-top:1px solid #cbcbcb ;
+      &:nth-child(1){
+        border: 0;
+      }
+        li{
+          list-style: none;
+          display: inline-block;
+          min-width:100px;
+          margin: 0 8px;
+          line-height: 32px;
+          font-size: 18px;
+          // font-weight: bold;
+        }
+      }
+    }
+    .ludanbox{
+      position: relative;
+        .ludanbg{
+          width: 100%;
           display: flex;
-          flex-direction: column;
           justify-content: center;
           align-items: center;
-          border-right: #919191 1px solid;
+          border: 1px solid #919191;
+          border-right: 0;
           font-size: 0;
           box-sizing: border-box;
-          &:last-child{
-            // border: 0;
-            // border-left: #919191 1px solid;
-          }
-          .list_p{
-            flex-basis: 1/6*100%;
-            width: 100%;
-            height: 0;
-            padding-bottom: 100%;
+          position: relative;
+          .list{
+            flex-basis: 1/12*100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-right: #919191 1px solid;
+            font-size: 0;
             box-sizing: border-box;
-            border-bottom: #919191 1px solid;
             &:last-child{
-              border: 0;
-              // border-top: #919191 1px solid;
+              // border: 0;
+              // border-left: #919191 1px solid;
             }
-            position: relative;
-            i{
-            position: absolute;
-            font-size: 16px;
-            color: #919191;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-style: normal;
+            .list_p{
+              flex-basis: 1/6*100%;
+              width: 100%;
+              height: 0;
+              padding-bottom: 100%;
+              box-sizing: border-box;
+              border-bottom: #919191 1px solid;
+              &:last-child{
+                border: 0;
+                // border-top: #919191 1px solid;
+              }
+              position: relative;
+              i{
+              position: absolute;
+              font-size: 16px;
+              color: #919191;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              font-style: normal;
+              }
             }
           }
         }
-      }
-      .ludan{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-         display: flex;
-        justify-content: flex-start;
-        align-items: center;
-         .list2{
-          flex-basis: 1/12*100%;
+        .ludan{
+          position: absolute;
+          width: 100%;
           height: 100%;
+          top: 0;
+          left: 0;
           display: flex;
-          flex-direction: column;
-          // justify-content: center;
+          justify-content: flex-start;
           align-items: center;
-          font-size: 0;
-          box-sizing: border-box;
-          .list_p{
-            flex-basis: 1/6*100%;
-            width: 100%;
+          .list2{
+            flex-basis: 1/12*100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            // justify-content: center;
+            align-items: center;
+            font-size: 0;
             box-sizing: border-box;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            border: 0;
-            border-radius: 0;
-            background: none;
-            i{
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            font-size: 16px;
-            color: #919191;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-style: normal;
-            }
-            .type1{
-              background: url("../../../../assets/images/ludan/x1.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type2{
-              background: url("../../../../assets/images/ludan/x2.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type3{
-              background: url("../../../../assets/images/ludan/x3.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type4{
-              background: url("../../../../assets/images/ludan/x4.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type5{
-              background: url("../../../../assets/images/ludan/z1.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type6{
-              background: url("../../../../assets/images/ludan/z2.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type7{
-              background: url("../../../../assets/images/ludan/z3.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type8{
-              background: url("../../../../assets/images/ludan/z4.svg") center no-repeat;
-              background-size: 100%;
-            }
-            .type9{
-              background: url("../../../../assets/images/ludan/h.svg") center no-repeat;
-              background-size: 100%;
+            .list_p{
+              flex-basis: 1/6*100%;
+              width: 100%;
+              box-sizing: border-box;
+              position: relative;
+              margin: 0;
+              padding: 0;
+              border: 0;
+              border-radius: 0;
+              background: none;
+              i{
+              position: absolute;
+              width: 80%;
+              height: 80%;
+              font-size: 16px;
+              color: #919191;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              font-style: normal;
+              }
+              .type1{
+                background: url("../../../../assets/images/ludan/x1.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type2{
+                background: url("../../../../assets/images/ludan/x2.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type3{
+                background: url("../../../../assets/images/ludan/x3.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type4{
+                background: url("../../../../assets/images/ludan/x4.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type5{
+                background: url("../../../../assets/images/ludan/z1.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type6{
+                background: url("../../../../assets/images/ludan/z2.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type7{
+                background: url("../../../../assets/images/ludan/z3.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type8{
+                background: url("../../../../assets/images/ludan/z4.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type9{
+                background: url("../../../../assets/images/ludan/h.svg") center no-repeat;
+                background-size: 100%;
+              }
             }
           }
-         }
-      }
-  }
-  
+        }
+    }
+    
 
-}
-.box-card-box1{
-  margin-bottom: 10px;
-  font-size: 18px;  
-  .el-card__body{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 10px 20px;
-    .h1{
-      font-size: 22px;
-      line-height: 40px;
-      margin-right: 20px;
-    }
-    button{
-      width: 150px;
-      height: 60px;
-      margin-left: 30px;
-    }
-    .loginout{
-      height: 40px;
-    }
-    ul{
-      padding: 0;
-      margin: 0;
-     text-align: left;
-     border-top:1px solid #cbcbcb ;
-     &:nth-child(1){
-       border: 0;
-     }
-      li{
-        list-style: none;
-        display: inline-block;
-        min-width:100px;
-        margin: 0 8px;
-        line-height: 32px;
-        font-size: 18px;
-        // font-weight: bold;
-      }
-    }
   }
-}
-.box-card-box-list{
-  margin-bottom: 10px;
-  .el-card__body{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px 20px;
-    .el-row{
-      .el-col{
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap:wrap;
-        &.choose{
-          padding-right: 50px;
-        }
-        &.control {
-          justify-content:  space-around;
-           button{
-             padding: 0;
-              flex-basis: 20%;
-              height: 60px;
-              line-height: 60px;
-              font-size: 20px;
-              border-radius: 6px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-        }
-      }
-    }
-    .f1{
+  .box-card-box1{
+    margin-bottom: 10px;
+    font-size: 18px;  
+    .el-card__body{
       display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 10px 20px;
+      .h1{
+        font-size: 22px;
+        line-height: 40px;
+        margin-right: 20px;
+      }
+      button{
+        width: 150px;
+        height: 60px;
+        margin-left: 30px;
+      }
+      .loginout{
+        height: 40px;
+      }
+      ul{
+        padding: 0;
+        margin: 0;
       text-align: left;
-      flex-wrap: wrap;
-      font-size: 18px;
-      span{
-        flex-basis: 50%;
-        line-height: 50px;
+      border-top:1px solid #cbcbcb ;
+      &:nth-child(1){
+        border: 0;
+      }
+        li{
+          list-style: none;
+          display: inline-block;
+          min-width:100px;
+          margin: 0 8px;
+          line-height: 32px;
+          font-size: 18px;
+          // font-weight: bold;
+        }
       }
     }
-    .btn{
-      padding: 10px 30px;
-      background: #919191;
-      border-radius: 6px;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .checked{
+  }
+  .box-card-box-list{
+    margin-bottom: 10px;
+    .el-card__body{
       display: flex;
       justify-content: space-around;
-      &.checked1{
-        flex-basis: 3/10*100%;
-        .el-radio-button{
-          flex-basis: 30%;
+      align-items: center;
+      padding: 10px 20px;
+      .el-row{
+        .el-col{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-wrap:wrap;
+          &.choose{
+            padding-right: 50px;
+          }
+          &.control {
+            justify-content:  space-around;
+            button{
+              padding: 0;
+                flex-basis: 20%;
+                height: 60px;
+                line-height: 60px;
+                font-size: 20px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+          }
         }
       }
-      &.checked2,&.checked3,&.checked4{
-        flex-basis: 2/10*100%;
-         .el-checkbox-button{
-          flex-basis: 45%;
-        }
-      }
-      &.checked4{
-        flex-basis: 3/10*100%;
-      }
-      .el-checkbox-button__inner,.el-radio-button__inner{
-       
-        height: 60px;
-        line-height: 60px;
-        font-size: 20px;
-        border-radius: 6px;
-        color: #999;
+      .f1{
         display: flex;
-        align-items: center;
-        justify-content: center;
+        text-align: left;
+        flex-wrap: wrap;
+        font-size: 18px;
+        span{
+          flex-basis: 50%;
+          line-height: 50px;
+        }
+      }
+      .btn{
+        padding: 10px 30px;
+        background: #919191;
+        border-radius: 6px;
+        color: #fff;
+        cursor: pointer;
       }
 
-      .red{
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: red;
-           opacity: .6;
+      .checked{
+        display: flex;
+        justify-content: space-around;
+        &.checked1{
+          flex-basis: 3/10*100%;
+          .el-radio-button{
+            flex-basis: 30%;
+          }
         }
-         &.is-active,&.is-checked{
-            .el-checkbox-button__inner,.el-radio-button__inner{
-              border: 4px solid blue;
-            }
-         }
-      }
-      .blue{
-        // background: blue;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: blue;
-           opacity: .6;
+        &.checked2,&.checked3,&.checked4{
+          flex-basis: 2/10*100%;
+          .el-checkbox-button{
+            flex-basis: 45%;
+          }
         }
-         &.is-active,&.is-checked{
-            .el-checkbox-button__inner,.el-radio-button__inner{
-              border: 4px solid red;
-            }
-         }
-      }
-      .green{
-        // background: green;
-        .el-checkbox-button__inner,.el-radio-button__inner{
-           background: green;
-           opacity: .6;
+        &.checked4{
+          flex-basis: 3/10*100%;
         }
-         &.is-active,&.is-checked{
-            .el-checkbox-button__inner,.el-radio-button__inner{
-              border: 4px solid rgb(255, 0, 225);
-            }
-         }
-      }
-      .is-active,.is-checked{
-         .el-checkbox-button__inner,.el-radio-button__inner{
-          opacity: 1;
-           font-size: 24px;
-           font-weight: bold;
-           color: #fff;
+        .el-checkbox-button__inner,.el-radio-button__inner{
+        
+          height: 60px;
+          line-height: 60px;
+          font-size: 20px;
+          border-radius: 6px;
+          color: #999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .red{
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            background: red;
+            opacity: .6;
+          }
+          &.is-active,&.is-checked{
+              .el-checkbox-button__inner,.el-radio-button__inner{
+                border: 4px solid blue;
+              }
+          }
+        }
+        .blue{
+          // background: blue;
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            background: blue;
+            opacity: .6;
+          }
+          &.is-active,&.is-checked{
+              .el-checkbox-button__inner,.el-radio-button__inner{
+                border: 4px solid red;
+              }
+          }
+        }
+        .green{
+          // background: green;
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            background: green;
+            opacity: .6;
+          }
+          &.is-active,&.is-checked{
+              .el-checkbox-button__inner,.el-radio-button__inner{
+                border: 4px solid rgb(255, 0, 225);
+              }
+          }
+        }
+        .is-active,.is-checked{
+          .el-checkbox-button__inner,.el-radio-button__inner{
+            opacity: 1;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+          }
         }
       }
     }
+
+  }
+  .betBox_bjl {
+    
+    .el-table__row .el-table__cell .cell .el-radio-group .el-radio{
+      margin-right: 10px;
+      .el-radio__label{
+        font-size: 18px;
+      }
+    }
+      .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
+        font-size: 22px;
+    }
+    .el-input--medium .el-input__inner{
+      line-height: 25px;
+      height: 25px;
+      border: 0;
+      text-align: center;
+      background: none;
+    }
+    .el-input--medium{
+      font-size: 20px;
+      font-weight: bold;
+      .el-input__inner{
+        padding: 0;
+      }
+    }
+    .el-table__header-wrapper{
+      thead{
+        th{
+          &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
+            background: red;
+            color: #fff;
+          }
+          &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12){
+            background: blue;
+            color: #fff;
+          }
+          &:nth-child(5),&:nth-child(10){
+            background: green;
+            color: #fff;
+          }
+          &:nth-child(13){
+          background:#ffc833;
+          color: #fff;}
+        }
+      }
+    }
+  }
+  .table-info-bj-red td:nth-child(1){
+    position: relative;
+    &::after{
+      content: '请选择币种';
+      position: absolute;
+      bottom: -5px;
+      width: 100%;
+      text-align: center;
+      left: 0px;
+      color: red;
+      font-size: 12px;
+      z-index: 1;
+    }
+  }
+  .table-info-bj-red1 td:nth-child(2){
+    position: relative;
+    &::after{
+      content: '请填写卡号';
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      bottom: -5px;
+      left: 0px;
+      color: red;
+      font-size: 12px;
+      z-index: 1;
+    }
+  }
+  .table-info-red td,.table-info-red1 td{
+    // background: rgb(199, 135, 135);
   }
 
 }
-.betBox_bjl {
-  .el-table__row .el-table__cell .cell .el-radio-group .el-radio{
-    margin-right: 10px;
-    .el-radio__label{
-      font-size: 18px;
-    }
-  }
-    .el-table__header-wrapper th,  .el-table__fixed-header-wrapper th{
-       font-size: 22px;
-  }
-  .el-input--medium .el-input__inner{
-    line-height: 25px;
-    height: 25px;
-    border: 0;
-    text-align: center;
-    background: none;
-  }
-  .el-input--medium{
-    font-size: 20px;
-    font-weight: bold;
-    .el-input__inner{
-      padding: 0;
-    }
-  }
-  .el-table__header-wrapper{
-    thead{
-      th{
-        &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(11){
-          background: red;
-          color: #fff;
-        }
-        &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(12){
-          background: blue;
-          color: #fff;
-        }
-        &:nth-child(5),&:nth-child(10){
-          background: green;
-          color: #fff;
-        }
-        &:nth-child(13){
-        background:#ffc833;
-        color: #fff;}
-      }
-    }
-  }
+
+.app_zh .game_bjl .box-card-box .ludanbox .ludan .list2 .list_p {
+  .type1{
+                background: url("../../../../assets/images/ludan/x1.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type2{
+                background: url("../../../../assets/images/ludan/x2.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type3{
+                background: url("../../../../assets/images/ludan/x3.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type4{
+                background: url("../../../../assets/images/ludan/x4.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type5{
+                background: url("../../../../assets/images/ludan/z1.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type6{
+                background: url("../../../../assets/images/ludan/z2.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type7{
+                background: url("../../../../assets/images/ludan/z3.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type8{
+                background: url("../../../../assets/images/ludan/z4.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type9{
+                background: url("../../../../assets/images/ludan/h.svg") center no-repeat;
+                background-size: 100%;
+              }
 }
-.table-info-bj-red td:nth-child(1){
-  position: relative;
-  &::after{
-    content: '请选择币种';
-    position: absolute;
-    bottom: -5px;
-    width: 100%;
-    text-align: center;
-    left: 0px;
-    color: red;
-    font-size: 12px;
-    z-index: 1;
-  }
+.app_en .game_bjl .box-card-box .ludanbox .ludan .list2 .list_p {
+  .type1{
+                background: url("../../../../assets/images/ludan/x1_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type2{
+                background: url("../../../../assets/images/ludan/x2_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type3{
+                background: url("../../../../assets/images/ludan/x3_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type4{
+                background: url("../../../../assets/images/ludan/x4_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type5{
+                background: url("../../../../assets/images/ludan/z1_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type6{
+                background: url("../../../../assets/images/ludan/z2_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type7{
+                background: url("../../../../assets/images/ludan/z3_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type8{
+                background: url("../../../../assets/images/ludan/z4_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type9{
+                background: url("../../../../assets/images/ludan/h_en.svg") center no-repeat;
+                background-size: 100%;
+              }
 }
-.table-info-bj-red1 td:nth-child(2){
+.app_zh .game_bjl .table-info-bj-red1 td:nth-child(2){
   position: relative;
   &::after{
     content: '请填写卡号';
@@ -1349,10 +1465,19 @@ export default {
     z-index: 1;
   }
 }
-.table-info-red td,.table-info-red1 td{
-  // background: rgb(199, 135, 135);
-}
-
+.app_en .game_bjl .table-info-bj-red1 td:nth-child(2){
+  position: relative;
+  &::after{
+    content: 'Enter card number';
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -5px;
+    left: 0px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
+  }
 }
 .ludanBox_dialog{
     .el-form-item{

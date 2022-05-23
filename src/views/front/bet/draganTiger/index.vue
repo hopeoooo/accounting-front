@@ -3,17 +3,17 @@
     <el-row :gutter="20">
 
       <!--切换账号-->
-      <el-col :span="3" :xs="24">
-          <el-card class="box-card-box" style="text-align:center">
+      <el-col :span="24" :xs="24">
+          <el-card class="box-card-box1" style="text-align:center">
             <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-             <el-button class="loginout" type="danger" plain @click="betRecord">下注记录</el-button>
+             <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
-      <el-col :span="11" :xs="24">
+      <el-col :span="12" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
               <ul>
               <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
@@ -33,13 +33,13 @@
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>$龙：{{lhSum.sumL || 0}}</li>
-              <li>$虎：{{lhSum.sumHu || 0}}</li>
+              <li>${{$t('D')}}：{{lhSum.sumL || 0}}</li>
+              <li>${{$t('TYG')}}：{{lhSum.sumHu || 0}}</li>
               <li>${{$t('bet.h')}}:{{lhSum.sumH || 0}}</li>
              </ul> 
              <ul>
-              <li>฿龙：{{lhSum.sumLTh || 0}}</li>
-              <li>฿虎：{{lhSum.sumHuTh || 0}}</li>
+              <li>฿{{$t('D')}}：{{lhSum.sumLTh || 0}}</li>
+              <li>฿{{$t('TYG')}}：{{lhSum.sumHuTh || 0}}</li>
               <li>฿{{$t('bet.h')}}:{{lhSum.sumHTh || 0}}</li>
              </ul> 
           </el-card>
@@ -51,7 +51,7 @@
           </el-card>
       </el-col> -->
        <!--路单展示-->
-      <el-col :span="10" :xs="24">
+      <el-col :span="12" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
             <div class="ludanbox">
               <div class="ludanbg">
@@ -91,8 +91,8 @@
                </el-col>
               <el-col :span="9" :xs="24" class="choose">
                   <el-radio-group v-model="radio1" class="checked">
-                      <el-radio-button label="龙" class="red">龙</el-radio-button>
-                      <el-radio-button label="虎" class="blue">虎</el-radio-button>
+                      <el-radio-button label="龙" class="red">{{$t('D')}}</el-radio-button>
+                      <el-radio-button label="虎" class="blue">{{$t('TYG')}}</el-radio-button>
                       <el-radio-button label="和" class="green">{{$t('bet.h')}}</el-radio-button>
                     </el-radio-group>
 
@@ -109,7 +109,7 @@
     </el-row>
 
     <!-- 路单结果修改 -->
-    <el-dialog title="路单修改" :visible.sync="openLUdan" width="600px" class="ludanBox_dialog" append-to-body>
+    <el-dialog :title="$t('bet.ludan')" :visible.sync="openLUdan" width="600px" class="ludanBox_dialog" append-to-body>
        <el-form ref="form" :model="formLudan" :rules="rulesLudan" label-width="0">
           <el-form-item label="" prop="">
              <div class="head" style="display:flex;width:100%;justify-content: space-around;">
@@ -120,51 +120,51 @@
           </el-form-item>
           <el-form-item label="" prop="">
               <el-radio-group v-model="formLudan.radio1" >
-                  <el-radio-button label="龙" class="red">龙</el-radio-button>
-                  <el-radio-button label="虎" class="blue">虎</el-radio-button>
-                  <el-radio-button label="和" class="green">{{$t('bet.h')}}</el-radio-button>
+                  <el-radio-button :label="$t('D')" class="red">{{$t('D')}}</el-radio-button>
+                  <el-radio-button :label="$t('TYG')" class="blue">{{$t('TYG')}}</el-radio-button>
+                  <el-radio-button :label="$t('bet.h')" class="green">{{$t('bet.h')}}</el-radio-button>
               </el-radio-group>
             </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitLudan">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitLudan">{{$t('bet.sure')}}</el-button>
+        <el-button @click="cancel">{{$t('bet.cancel')}}</el-button>
       </div>
     </el-dialog>
 
      <el-table v-loading="loading" stripe class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column label="选择币种" align="center"  key="type" prop="type" width="350px">
+          <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="360px">
                <template slot-scope="scope">
                   <el-radio-group @change='DataChange' v-model.number="scope.row.type">
-                    <el-radio :label="0">$筹码</el-radio>
-                    <el-radio :label="1">$现金</el-radio>
-                    <el-radio :label="2">฿筹码</el-radio>
-                    <el-radio :label="3">฿现金</el-radio>
+                    <el-radio :label="0">${{$t('bet.chip')}}</el-radio>
+                    <el-radio :label="1">${{$t('bet.cash')}}</el-radio>
+                    <el-radio :label="2">฿{{$t('bet.chip')}}</el-radio>
+                    <el-radio :label="3">฿{{$t('bet.cash')}}</el-radio>
               </el-radio-group>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px">
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="200px">
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model="scope.row.card" placeholder=""  />
               </template>
           </el-table-column>
-           <el-table-column label="龙" align="center" key="card1" prop="card1"  >
+           <el-table-column :label="$t('D')" align="center" key="card1" prop="card1"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card1" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="虎" align="center" key="card2" prop="card2"  >
+           <el-table-column :label="$t('TYG')" align="center" key="card2" prop="card2"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card2" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-           <el-table-column label="和" align="center" key="card3" prop="card3"  >
+           <el-table-column :label="$t('bet.h')" align="center" key="card3" prop="card3"  >
                <template slot-scope="scope">
                   <el-input @input='DataChange' v-model.number="scope.row.card3" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
               </template>
           </el-table-column>
-          <el-table-column label="赔码数" align="center"   prop="payout" />
+          <el-table-column :label="$t('bet.payOut')" align="center"   prop="payout" />
              
          
         </el-table>
@@ -355,9 +355,9 @@ export default {
     },
     // 退出登录
     async logout() {
-      this.$confirm('确定切换账号吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('bet.getCode'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
@@ -403,7 +403,7 @@ export default {
     startBet(){
       console.log(this.iskaipai)
       if(this.radio1 ==''){
-        this.$modal.msgError("请选择开奖结果");
+        this.$modal.msgError(this.$t('bet.chooseResult'));
         return
       }
       
@@ -431,12 +431,12 @@ export default {
           if(!e.type && e.type!=0 && !isDialog){
             
              isDialog =true
-             this.$modal.msgError("请检查币种是否漏勾选");
+             this.$modal.msgError(this.$t('bet.isChoose'));
              return
           };
           if(!e.card && !isDialog){
             isDialog =true
-            this.$modal.msgError("请检查卡号是否漏填");
+            this.$modal.msgError(this.$t('bet.ishas'));
             return
           }
         }
@@ -496,9 +496,9 @@ export default {
     },
     //录入
     updataBet(){
-       this.$confirm('是否确定录入？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+       this.$confirm(this.$t('bet.sureAdd'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
@@ -559,7 +559,7 @@ export default {
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '合计';
+            sums[index] = this.$t('bet.heji');
             return;
           }
            if (index === 6) {
@@ -578,7 +578,7 @@ export default {
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '小计';
+            sums[index] = this.$t('bet.xiaoji');
             return;
           }
            if (index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 7) {
@@ -646,20 +646,20 @@ export default {
     ponintCode() {
       console.log(1)
        this.open = true;
-      this.title = "点码";
+      this.title = this.$t('bet.ponintCode');
     },
 
     /** 收码 */
     getCode() {
       this.open = true;
-      this.title = "收码";
+      this.title = this.$t('bet.getCode');
     },
 
 
   
     //获取数组
     getszdata(){
-      this.szdata =[...Array(109).keys()]
+      this.szdata =[...Array(121).keys()]
       this.szdata.shift()
       this.szdata = this.spArr(this.szdata,6)
     },
@@ -693,7 +693,7 @@ export default {
       param['id']= this.formLudan.id
       param['gameResult'] = str
       dragantigerUpdate(param).then(res=>{
-         this.$modal.msgSuccess("路单图修改成功");
+         this.$modal.msgSuccess(this.$t('bet.tips1'));
           this.openLUdan = false;
           const that =this
           setTimeout(function () {
@@ -870,6 +870,47 @@ export default {
     
 
   }
+  .box-card-box1{
+  margin-bottom: 10px;
+  font-size: 18px;  
+  .el-card__body{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 20px;
+    .h1{
+      font-size: 22px;
+      line-height: 40px;
+      margin-right: 20px;
+    }
+    button{
+      width: 150px;
+      height: 60px;
+      margin-left: 30px;
+    }
+    .loginout{
+      height: 40px;
+    }
+    ul{
+      padding: 0;
+      margin: 0;
+     text-align: left;
+     border-top:1px solid #cbcbcb ;
+     &:nth-child(1){
+       border: 0;
+     }
+      li{
+        list-style: none;
+        display: inline-block;
+        min-width:100px;
+        margin: 0 8px;
+        line-height: 32px;
+        font-size: 18px;
+        // font-weight: bold;
+      }
+    }
+  }
+}
   .box-card-box-list{
     .el-card__body{
       display: flex;
@@ -1057,6 +1098,62 @@ export default {
   }
   .table-info-red td,.table-info-red1 td{
     // background: rgb(199, 135, 135);
+  }
+}
+.app_zh .game_bjl .box-card-box .ludanbox .ludan .list2 .list_p {
+  .type1{
+                background: url("../../../../assets/images/ludan/l.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type2{
+                background: url("../../../../assets/images/ludan/hu.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type3{
+                background: url("../../../../assets/images/ludan/h.svg") center no-repeat;
+                background-size: 100%;
+              }
+}
+.app_en .game_bjl .box-card-box .ludanbox .ludan .list2 .list_p {
+  .type1{
+                background: url("../../../../assets/images/ludan/l_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type2{
+                background: url("../../../../assets/images/ludan/hu_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+              .type3{
+                background: url("../../../../assets/images/ludan/h_en.svg") center no-repeat;
+                background-size: 100%;
+              }
+}
+.app_zh .game_lh .table-info-bj-red1 td:nth-child(2){
+  position: relative;
+  &::after{
+    content: '请填写卡号';
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -5px;
+    left: 0px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
+  }
+}
+.app_en .game_lh .table-info-bj-red1 td:nth-child(2){
+  position: relative;
+  &::after{
+    content: 'Enter card number';
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -5px;
+    left: 0px;
+    color: red;
+    font-size: 12px;
+    z-index: 1;
   }
 }
 .ludanBox_dialog{

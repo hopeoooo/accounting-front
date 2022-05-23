@@ -1,12 +1,20 @@
 <template>
-  <div id="app">
+  <div id="app" :class="currentLanguage=='en'?'app_en':'app_zh'">
     <router-view />
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 export default  {
   name:  'App',
+  data(){
+     return {
+    };
+  },
+  computed: {
+    ...mapState("app",['currentLanguage'])
+  },
     metaInfo() {
         return {
             title: this.$store.state.settings.dynamicTitle && this.$store.state.settings.title,

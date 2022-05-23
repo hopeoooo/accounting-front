@@ -1,8 +1,8 @@
 <template>
   <div class="app-container sg_show">
       <div>
-       <span>桌台编号</span>
-       <el-select v-model="tableId" @change="valChange(tableId)"  style="width:100px" placeholder="请选择">
+       <span>{{$t('T-No')}}</span>
+       <el-select v-model="tableId" @change="valChange(tableId)"  style="width:150px" :placeholder="$t('bet.choose')">
         <el-option
           v-for="item in options"
           :key="item.tableId"
@@ -10,29 +10,29 @@
           :value="item.tableId">
         </el-option>
       </el-select>
-      <el-button class="loginout" type="primary" plain @click="screencast">全屏</el-button>
+      <el-button class="loginout" type="primary" plain @click="screencast">{{$t('bet.fullScreen')}}</el-button>
        </div>
 
      <el-table v-loading="loading" class="betBox" height="920px" :data="betList"  border >
-          <el-table-column label="选择币种" align="center"  key="type" prop="type" width="155px">
+          <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="155px">
               <template slot-scope="scope">
-                <span style="font-size: 20px;" v-if="scope.row.type==1">$现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==0">$筹码</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿筹码</span>
+                <span style="font-size: 20px;" v-if="scope.row.type==1">${{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==0">${{$t('bet.chip')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿{{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿{{$t('bet.chip')}}</span>
                 <span style="font-size: 20px;" v-else>-</span>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
-          <el-table-column label="输" align="center" key="lose" prop="lose"  ></el-table-column>
-          <el-table-column label="赢" align="center" key="win" prop="win"  ></el-table-column>
-          <el-table-column label="赔码数" align="center"   prop="payout" />   
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="200px"></el-table-column>
+          <el-table-column :label="$t('Loss')" align="center" key="lose" prop="lose"  ></el-table-column>
+          <el-table-column :label="$t('Win')" align="center" key="win" prop="win"  ></el-table-column>
+          <el-table-column :label="$t('bet.payOut')" align="center"   prop="payout" />   
       </el-table>
-        <!-- 全屏 -->
+        <!-- {{$t('bet.fullScreen')}} -->
     <el-dialog title="" :visible.sync="openLUdan" width="100%" top="0" class="quanping_dialog" append-to-body :close-on-click-modal="false">
          <div>
-       <span>桌台编号</span>
-       <el-select v-model="tableId" @change="valChange(tableId)"  style="width:100px" placeholder="请选择">
+       <span>{{$t('T-No')}}</span>
+       <el-select v-model="tableId" @change="valChange(tableId)"  style="width:150px" :placeholder="$t('bet.choose')">
         <el-option
           v-for="item in options"
           :key="item.tableId"
@@ -44,19 +44,19 @@
        </div>
 
      <el-table v-loading="loading" class="betBox" height="920px" :data="betList"  border >
-          <el-table-column label="选择币种" align="center"  key="type" prop="type" width="155px">
+          <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="155px">
               <template slot-scope="scope">
-                <span style="font-size: 20px;" v-if="scope.row.type==1">$现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==0">$筹码</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿现金</span>
-                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿筹码</span>
+                <span style="font-size: 20px;" v-if="scope.row.type==1">${{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==0">${{$t('bet.chip')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==3">฿{{$t('bet.cash')}}</span>
+                <span style="font-size: 20px;" v-else-if="scope.row.type==2">฿{{$t('bet.chip')}}</span>
                 <span style="font-size: 20px;" v-else>-</span>
               </template>
           </el-table-column>
-          <el-table-column label="卡号" align="center" key="card" prop="card"  width="200px"></el-table-column>
-          <el-table-column label="输" align="center" key="lose" prop="lose"  ></el-table-column>
-          <el-table-column label="赢" align="center" key="win" prop="win"  ></el-table-column>
-          <el-table-column label="赔码数" align="center"   prop="payout" />   
+          <el-table-column :label="$t('Card-number')" align="center" key="card" prop="card"  width="200px"></el-table-column>
+          <el-table-column :label="$t('Loss')" align="center" key="lose" prop="lose"  ></el-table-column>
+          <el-table-column :label="$t('Win')" align="center" key="win" prop="win"  ></el-table-column>
+          <el-table-column :label="$t('bet.payOut')" align="center"   prop="payout" />   
       </el-table>
     </el-dialog>  
   </div>
