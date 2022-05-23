@@ -334,7 +334,6 @@ export default {
     };
   },
   created() {
-    console.log(this.isOpen)
   },
   watch: {
       open (val) {
