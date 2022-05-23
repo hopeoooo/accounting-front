@@ -9,6 +9,7 @@
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+             <el-button class="loginout" type="danger" plain @click="betRecord">下注记录</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
@@ -170,7 +171,7 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <Dialog :title='title' :open='open' @getOpen='openData'/>
-    
+    <BetRecord :record='record' @getRecord='recordData'/>
 
    
   </div>
@@ -180,6 +181,7 @@
 import { dragantigerInfo,dragantigerList,dragantigerOpen,dragantigerUpdate,dragantigerInput,dragantigerSave} from "@/api/bet/draganTiger";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
+import BetRecord from "./dialogBet.vue"
 export default {
   name: "DraganTiger",
   data() {
@@ -189,6 +191,7 @@ export default {
       // 遮罩层
       loading: true,
       isVisibles:false,
+      record:false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -271,7 +274,7 @@ export default {
      
     };
   },
-  components:{Dialog},
+  components:{Dialog,BetRecord},
   watch: {
     // 根据名称筛选部门树
 
@@ -296,7 +299,9 @@ export default {
     },
   
     roadChange(){},
-    betRecord(){},
+    betRecord(){
+      this.record = true
+    },
     openData(data){
       this.open = data
       //  if(this.title=='点码')
@@ -828,15 +833,15 @@ export default {
               font-style: normal;
               }
               .type1{
-                background: url("../../../../assets/images/ludan/l.webp") center no-repeat;
+                background: url("../../../../assets/images/ludan/l.svg") center no-repeat;
                 background-size: 100%;
               }
               .type2{
-                background: url("../../../../assets/images/ludan/hu.webp") center no-repeat;
+                background: url("../../../../assets/images/ludan/hu.svg") center no-repeat;
                 background-size: 100%;
               }
               .type3{
-                background: url("../../../../assets/images/ludan/h.webp") center no-repeat;
+                background: url("../../../../assets/images/ludan/h.svg") center no-repeat;
                 background-size: 100%;
               }
             
