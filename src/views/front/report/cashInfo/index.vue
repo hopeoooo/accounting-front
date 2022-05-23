@@ -27,16 +27,16 @@
             <!-- 操作类型: 1:存码,2:取码,3:下注赢,4:下注输,5:签单,6:还单,7:换现,13:买码,8:注单修改,9:注单补录,10:洗码结算,11:汇入,12:汇出 -->
             <el-select v-model="queryParams.type" placeholder="全部">
               <el-option label="全部" :value="null"></el-option>
-              <!-- <el-option label="存码" :value="1"></el-option> -->
-              <!-- <el-option label="取码" :value="2"></el-option> -->
+              <el-option label="存码" :value="1"></el-option>
+              <el-option label="取码" :value="2"></el-option>
               <el-option label="下注赢" :value="3"></el-option>
               <el-option label="下注输" :value="4"></el-option>
               <el-option label="签单" :value="5"></el-option>
               <el-option label="还单" :value="6"></el-option>
               <el-option label="换现" :value="7"></el-option>
               <el-option label="买码" :value="13"></el-option>
-              <!-- <el-option label="注单修改" :value="8"></el-option> -->
-              <!-- <el-option label="注单补录" :value="9"></el-option> -->
+              <el-option label="注单修改" :value="8"></el-option>
+              <el-option label="注单补录" :value="9"></el-option>
               <el-option label="洗码费结算为筹码" :value="10"></el-option>
               <el-option label="汇入取筹码" :value="11"></el-option>
               <el-option label="筹码汇出" :value="12"></el-option>
