@@ -1582,7 +1582,10 @@ export default {
           this.$modal.msgSuccess("注单修改成功");
           this.open = false;
           this.reset();
-          this.getList();
+          setTimeout(() => {
+             this.getList();
+          }, 500);
+
         });
       } else {
         // 补录
