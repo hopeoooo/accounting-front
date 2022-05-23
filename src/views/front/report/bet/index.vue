@@ -10,7 +10,7 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card"  label-width="100">
+          <el-form-item label="会员卡号" prop="card" label-width="100">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -30,7 +30,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="游戏类型" prop="gameId"  label-width="100">
+          <el-form-item label="游戏类型" prop="gameId" label-width="100">
             <el-select v-model="queryParams.gameId" placeholder="请选择">
               <el-option
                 v-for="item in Gameoptions"
@@ -42,7 +42,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="币种类型" prop="type"  label-width="100">
+          <el-form-item label="币种类型" prop="type" label-width="100">
             <el-select v-model="queryParams.type" placeholder="请选择">
               <el-option
                 v-for="item in typeOptions"
@@ -165,7 +165,6 @@
             align="center"
             key="gameId"
             prop="gameId"
-
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -379,7 +378,7 @@
         <div class="bet-time">下注时间: {{ form.createTime }}</div>
 
         <!-- 龙虎 -->
-        <div v-if="openGame == '龙虎'" class="longhu-box">
+        <div v-if="openGameId == 2" class="longhu-box">
           <!-- 下注金额 -->
           <div class="longhu-amount-box">
             <div class="box-label"><i class="start-symbol">*</i>下注金额</div>
@@ -423,7 +422,7 @@
         <div
           class="niuniu-box"
           v-if="
-            openGame == '牛牛' || openGame == '三公' || openGame == '推筒子'
+            openGameId == 3 || openGameId == 4 || openGameId == 5
           "
         >
           <el-form-item label="下注金额:" label-width="80px">
@@ -447,7 +446,7 @@
         </div>
 
         <!-- 百家乐 -->
-        <div v-if="openGame == '百家乐'" class="bjl-box">
+        <div v-if="openGameId == 1" class="bjl-box">
           <!-- 下注金额 -->
           <div class="bet-amount-box">
             <div class="box-label">下注金额</div>
@@ -746,6 +745,7 @@ export default {
       openType: "",
       // 弹窗游戏
       openGame: "",
+      openGameId: "",
       detailOpen: false,
       // 部门名称
       deptName: undefined,
@@ -1136,6 +1136,7 @@ export default {
       this.openType = "edit";
       const gameName = this.getGameName(row.gameId);
       this.openGame = gameName;
+      this.openGameId = row.gameId;
       this.title = `${gameName}注单修改`;
       if (gameName == "百家乐") {
         // 初始化下注金额和开牌结果
@@ -1168,6 +1169,7 @@ export default {
       this.openType = "repair";
       const gameName = this.getGameName(row.gameId);
       this.openGame = gameName;
+      this.openGameId = row.gameId;
       this.title = `${gameName}注单补录`;
     },
     /** 导出按钮操作 */
@@ -1499,7 +1501,8 @@ export default {
     submitForm: function() {
       if (this.openType == "edit") {
         /** 1.对比是否有修改 */
-        if (this.openGame == "百家乐") {
+        // 百家乐
+        if (this.openGameId == 1) {
           if (
             this.form.card == this.initForm.card &&
             this.form.type == this.initForm.type &&
@@ -1515,7 +1518,8 @@ export default {
             return;
           }
         }
-        if (this.openGame == "龙虎") {
+        // 龙虎
+        if (this.openGameId == 2) {
           if (
             this.form.card == this.initForm.card &&
             this.form.type == this.initForm.type &&
@@ -1532,9 +1536,9 @@ export default {
           }
         }
         if (
-          this.openGame == "牛牛" ||
-          this.openGame == "三公" ||
-          this.openGame == "推筒子"
+          this.openGameId == 3 ||
+          this.openGameId == 4 ||
+          this.openGameId == 5
         ) {
           if (
             this.form.card == this.initForm.card &&
@@ -1549,7 +1553,7 @@ export default {
         }
         /** 2. 是否有录入完整注单数据 */
         if (
-          (this.openGame == "百家乐" || this.openGame == "龙虎") &&
+          (this.openGameId == 1 || this.openGameId == 2) &&
           (!this.form.card || !this.formBetMoney || this.form.gameResult == "")
         ) {
           // 百家乐 、龙虎
@@ -1558,9 +1562,9 @@ export default {
         }
 
         if (
-          (this.openGame == "牛牛" ||
-            this.openGame == "三公" ||
-            this.openGame == "推筒子") &&
+          (this.openGameId == 3 ||
+            this.openGameId == 4 ||
+            this.openGameId == 5) &&
           (!this.form.card || !this.form.betMoney || this.form.gameResult == "")
         ) {
           // 、牛牛、三公、推筒子
@@ -1569,7 +1573,7 @@ export default {
         }
 
         /** 3.百家乐 庄闲和必选一*/
-        if (this.openGame == "百家乐" && !this.checkedFormResult1) {
+        if (this.openGameId == 1 && !this.checkedFormResult1) {
           this.$modal.msgError("请选择庄/闲/和");
           return;
         }
@@ -1578,14 +1582,17 @@ export default {
           this.$modal.msgSuccess("注单修改成功");
           this.open = false;
           this.reset();
-          this.getList();
+          setTimeout(() => {
+             this.getList();
+          }, 500);
+
         });
       } else {
         // 补录
 
         /**1.百家乐 龙虎  是否录入完整注单数据*/
         if (
-          (this.openGame == "百家乐" || this.openGame == "龙虎") &&
+          (this.openGameId == 1 || this.openGameId == 2) &&
           (!this.form.card ||
             !this.form.gameNum ||
             !this.formBetMoney ||
@@ -1596,16 +1603,16 @@ export default {
           return;
         }
         /** 2.百家乐 庄闲和必选一*/
-        if (this.openGame == "百家乐" && !this.checkedFormResult1) {
+        if (this.openGameId == 1 && !this.checkedFormResult1) {
           this.$modal.msgError("请选择庄/闲/和");
           return;
         }
 
         /**3.牛牛 三公 推筒子 是否录入完整注单数据*/
         if (
-          (this.openGame == "牛牛" ||
-            this.openGame == "三公" ||
-            this.openGame == "推筒子") &&
+          (this.openGameId == 3 ||
+            this.openGameId == 4 ||
+            this.openGameId == 5) &&
           (!this.form.card ||
             !this.form.gameNum ||
             !this.form.betMoney ||
