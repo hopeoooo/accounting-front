@@ -5,10 +5,10 @@
       <!--切换账号-->
       <el-col :span="3" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-            <div class="h1">当前操作员</div>
+            <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
-            <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
-            <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+            <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
+            <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
              <el-button class="loginout" type="danger" plain @click="betRecord">下注记录</el-button>
           </el-card>
       </el-col>
@@ -16,38 +16,38 @@
       <el-col :span="11" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
               <ul>
-              <li>台号：{{tableInfo.tableId || 0}}</li>
-              <li>靴号：{{tableInfo.bootNum || 0}}</li>
-              <li>局号：{{tableInfo.gameNum || 0}}</li>
-                <li style="color: blueviolet;">$累计：{{tableInfo.total || 0}}</li>
-              <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
+              <li>{{$t('bet.xueHao')}}：{{tableInfo.bootNum || 0}}</li>
+              <li>{{$t('bet.juHao')}}：{{tableInfo.gameNum || 0}}</li>
+                <li style="color: blueviolet;">${{$t('bet.leiji')}}：{{tableInfo.total || 0}}</li>
+              <li style="color: red;">฿{{$t('bet.leiji')}}：{{tableInfo.totalTh || 0}}</li>
              </ul>
              <ul>
              
-              <li>$筹码：{{tableInfo.chip || 0}}</li>
-              <li>$现金：{{tableInfo.cash || 0}}</li>
+              <li>${{$t('bet.chip')}}:{{tableInfo.chip || 0}}</li>
+              <li>${{$t('bet.cash')}}:{{tableInfo.cash || 0}}</li>
             
-              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
-              <li>฿现金：{{tableInfo.cashTh || 0}}</li>
+              <li>฿{{$t('bet.chip')}}:{{tableInfo.chipTh || 0}}</li>
+              <li>฿{{$t('bet.cash')}}:{{tableInfo.cashTh || 0}}</li>
              </ul>
           </el-card>
           <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>$龙：{{lhSum.sumL || 0}}</li>
               <li>$虎：{{lhSum.sumHu || 0}}</li>
-              <li>$和：{{lhSum.sumH || 0}}</li>
+              <li>${{$t('bet.h')}}:{{lhSum.sumH || 0}}</li>
              </ul> 
              <ul>
               <li>฿龙：{{lhSum.sumLTh || 0}}</li>
               <li>฿虎：{{lhSum.sumHuTh || 0}}</li>
-              <li>฿和：{{lhSum.sumHTh || 0}}</li>
+              <li>฿{{$t('bet.h')}}:{{lhSum.sumHTh || 0}}</li>
              </ul> 
           </el-card>
       </el-col>
        <!--按钮-->
       <!-- <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-              <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+              <el-button type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
           </el-card>
       </el-col> -->
        <!--路单展示-->
@@ -67,7 +67,7 @@
                     <i>{{c}}</i>
                   </div> -->
                   <el-tooltip class="item list_p" v-for="(c,key) in e" :key="key" 
-                    effect="light" :content="'局号'+c.gameNum" placement="top">
+                    effect="light" :content="$t('bet.juHao')+c.gameNum" placement="top">
                     <el-button @click="changeChip(c)"><i :class="getclass(c.gameResult)"></i></el-button>
                   </el-tooltip>
                 </div>
@@ -83,25 +83,25 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="5" :xs="12">
                   <div class="f1">
-                    <span>$筹码:{{lhSum.sumChip || 0}}</span>
-                    <span>$现金:{{lhSum.sumCash || 0}}</span>
-                     <span>฿筹码:{{lhSum.sumChipTh || 0}}</span>
-                    <span>฿现金:{{lhSum.sumCashTh || 0}}</span>
+                    <span>${{$t('bet.chip')}}:{{lhSum.sumChip || 0}}</span>
+                    <span>${{$t('bet.cash')}}:{{lhSum.sumCash || 0}}</span>
+                     <span>฿{{$t('bet.chip')}}:{{lhSum.sumChipTh || 0}}</span>
+                    <span>฿{{$t('bet.cash')}}:{{lhSum.sumCashTh || 0}}</span>
                   </div>
                </el-col>
               <el-col :span="9" :xs="24" class="choose">
                   <el-radio-group v-model="radio1" class="checked">
                       <el-radio-button label="龙" class="red">龙</el-radio-button>
                       <el-radio-button label="虎" class="blue">虎</el-radio-button>
-                      <el-radio-button label="和" class="green">和</el-radio-button>
+                      <el-radio-button label="和" class="green">{{$t('bet.h')}}</el-radio-button>
                     </el-radio-group>
 
                </el-col>
                <el-col :span="10" :xs="24" class="control">  
-                  <el-button type="primary" @click="startBet">开牌</el-button>
-                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
-                  <el-button type="warning" @click="ponintCode">点码</el-button>
-                  <el-button type="danger" @click="getCode">收码</el-button>
+                  <el-button type="primary" @click="startBet">{{$t('bet.open')}}</el-button>
+                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">{{$t('bet.input')}}</el-button>
+                  <el-button type="warning" @click="ponintCode">{{$t('bet.ponintCode')}}</el-button>
+                  <el-button type="danger" @click="getCode">{{$t('bet.getCode')}}</el-button>
                </el-col>
             </el-row>
           </el-card>
@@ -113,16 +113,16 @@
        <el-form ref="form" :model="formLudan" :rules="rulesLudan" label-width="0">
           <el-form-item label="" prop="">
              <div class="head" style="display:flex;width:100%;justify-content: space-around;">
-               <div>台号：{{formLudan.tableId}}</div>
-               <div>靴号：{{formLudan.bootNum}}</div>
-               <div>局号：{{formLudan.gameNum}}</div> 
+               <div>{{$t('bet.taiHao')}}：{{formLudan.tableId}}</div>
+               <div>{{$t('bet.xueHao')}}：{{formLudan.bootNum}}</div>
+               <div>{{$t('bet.juHao')}}：{{formLudan.gameNum}}</div> 
              </div>
           </el-form-item>
           <el-form-item label="" prop="">
               <el-radio-group v-model="formLudan.radio1" >
                   <el-radio-button label="龙" class="red">龙</el-radio-button>
                   <el-radio-button label="虎" class="blue">虎</el-radio-button>
-                  <el-radio-button label="和" class="green">和</el-radio-button>
+                  <el-radio-button label="和" class="green">{{$t('bet.h')}}</el-radio-button>
               </el-radio-group>
             </el-form-item>
       </el-form>
@@ -296,11 +296,25 @@ export default {
     screencast(){
       this.isSend = !this.isSend
       this. getSend()
+      localStorage.setItem('LhType',this.isSend)
     },
   
     roadChange(){},
     betRecord(){
       this.record = true
+    },
+    //获取本地存储
+    getStatus(){
+        if(localStorage.getItem("LhType") != null){
+          if(localStorage.getItem('LhType')=="true"){
+            this.isSend =true
+          }else{
+            this.isSend =false
+          }
+        }
+         if(localStorage.getItem("LhList") != null){
+           this.setBaccaratList(JSON.parse(localStorage.getItem('LhList')))
+        }
     },
     openData(data){
       this.open = data
@@ -317,6 +331,9 @@ export default {
         this.setLhList(this.betList),
         this.setLhSum(this.sumdata),
       );
+    },
+     recordData(data){
+      this.record = data
     },
     //赛果列表
     getResult(){
@@ -369,7 +386,7 @@ export default {
     },
     getSend(){
       if(this.isSend == true){
-        dragantigerSave({'json':this.betList}).then(res => {
+        dragantigerSave({'json':this.lhList}).then(res => {
           this.loading = false;
         })
       }else{
@@ -503,6 +520,7 @@ export default {
             sumChip:'',
             sumCash:'',
           }
+          localStorage.setItem('LhList',JSON.stringify(this.betList))
           this.setLhList(this.betList)
           this.setLhSum(this.sumdata)
           let that=this
@@ -993,11 +1011,11 @@ export default {
     .el-table__header-wrapper{
       thead{
         th{
-          &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(10){
+          &:nth-child(3){
             background: red;
             color: #fff;
           }
-          &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(11){
+          &:nth-child(4){
             background: blue;
             color: #fff;
           }

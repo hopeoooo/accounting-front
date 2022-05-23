@@ -5,10 +5,10 @@
       <!--切换账号-->
       <el-col :span="24" :xs="24">
           <el-card class="box-card-box1" style="text-align:center">
-            <div class="h1">当前操作员</div>
+            <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
-            <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
-             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+            <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
+             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
               <el-button class="loginout" type="danger" plain @click="betRecord">下注记录</el-button>
           </el-card>
@@ -17,21 +17,21 @@
       <el-col :span="18" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
             <ul style="background-color: #ececec;">
-              <li>台号：{{tableInfo.tableId || 0}}</li>
-              <li>靴号：{{tableInfo.bootNum || 0}}</li>
-              <li>局号：{{tableInfo.gameNum || 0}}</li>
-              <li style="color: blueviolet;">$累计：{{tableInfo.total || 0}}</li>
-              <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
+              <li>{{$t('bet.xueHao')}}：{{tableInfo.bootNum || 0}}</li>
+              <li>{{$t('bet.juHao')}}：{{tableInfo.gameNum || 0}}</li>
+              <li style="color: blueviolet;">${{$t('bet.leiji')}}：{{tableInfo.total || 0}}</li>
+              <li style="color: red;">฿{{$t('bet.leiji')}}：{{tableInfo.totalTh || 0}}</li>
 
             </ul>
             <ul style="background-color: #ececec;">
             
-              <li>$筹码：{{tableInfo.chip || 0}}</li>
-              <li>$现金：{{tableInfo.cash || 0}}</li>
-               <li>$保险：{{tableInfo.totalInsurance || 0}}</li>
-              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
-              <li>฿现金：{{tableInfo.cashTh || 0}}</li>
-              <li>฿保险：{{tableInfo.totalInsuranceTh || 0}}</li>
+              <li>${{$t('bet.chip')}}:{{tableInfo.chip || 0}}</li>
+              <li>${{$t('bet.cash')}}:{{tableInfo.cash || 0}}</li>
+               <li>${{$t('bet.ins')}}:{{tableInfo.totalInsurance || 0}}</li>
+              <li>฿{{$t('bet.chip')}}:{{tableInfo.chipTh || 0}}</li>
+              <li>฿{{$t('bet.cash')}}:{{tableInfo.cashTh || 0}}</li>
+              <li>฿{{$t('bet.ins')}}:{{tableInfo.totalInsuranceTh || 0}}</li>
              
             </ul>
             <!-- <ul>
@@ -41,38 +41,38 @@
           <!-- </el-card>
           <el-card class="box-card-box" style="text-align:center"> -->
              <ul>
-              <li>$庄：{{baccaratSum.sumZ || 0}}</li>
-              <li>$庄对：{{baccaratSum.sumZd || 0}}</li>
-              <li>$和：{{baccaratSum.sumH || 0}}</li>
-              <li>$闲：{{baccaratSum.sumX || 0}}</li>
-              <li>$闲对：{{baccaratSum.sumXd || 0}}</li>
-              <li>$大：{{baccaratSum.sumBig || 0}}</li>
-              <li>$小：{{baccaratSum.sumSmall || 0}}</li>
-               <li>$幸运6：{{baccaratSum.sumA || 0}}</li>
+              <li>${{$t('bet.z')}}:{{baccaratSum.sumZ || 0}}</li>
+              <li>${{$t('bet.zd')}}:{{baccaratSum.sumZd || 0}}</li>
+              <li>${{$t('bet.h')}}:{{baccaratSum.sumH || 0}}</li>
+              <li>${{$t('bet.x')}}:{{baccaratSum.sumX || 0}}</li>
+              <li>${{$t('bet.xd')}}:{{baccaratSum.sumXd || 0}}</li>
+              <li>${{$t('bet.big')}}:{{baccaratSum.sumBig || 0}}</li>
+              <li>${{$t('bet.small')}}:{{baccaratSum.sumSmall || 0}}</li>
+               <li>${{$t('bet.lucky')}}:{{baccaratSum.sumA || 0}}</li>
              </ul>
              <ul>
-              <li>฿庄：{{baccaratSum.sumZTh || 0}}</li>
-              <li>฿庄对：{{baccaratSum.sumZdTh || 0}}</li>
-              <li>฿和：{{baccaratSum.sumHTh || 0}}</li>
-              <li>฿闲：{{baccaratSum.sumXTh || 0}}</li>
-              <li>฿闲对：{{baccaratSum.sumXdTh || 0}}</li>
-              <li>฿大：{{baccaratSum.sumBigTh || 0}}</li>
-              <li>฿小：{{baccaratSum.sumSmallTh || 0}}</li>
-              <li>฿幸运6：{{baccaratSum.sumATh || 0}}</li>
+              <li>฿{{$t('bet.z')}}:{{baccaratSum.sumZTh || 0}}</li>
+              <li>฿{{$t('bet.zd')}}:{{baccaratSum.sumZdTh || 0}}</li>
+              <li>฿{{$t('bet.h')}}:{{baccaratSum.sumHTh || 0}}</li>
+              <li>฿{{$t('bet.x')}}:{{baccaratSum.sumXTh || 0}}</li>
+              <li>฿{{$t('bet.xd')}}:{{baccaratSum.sumXdTh || 0}}</li>
+              <li>฿{{$t('bet.big')}}:{{baccaratSum.sumBigTh || 0}}</li>
+              <li>฿{{$t('bet.small')}}:{{baccaratSum.sumSmallTh || 0}}</li>
+              <li>฿{{$t('bet.lucky')}}:{{baccaratSum.sumATh || 0}}</li>
              </ul>
              <ul>
-                <li>$庄保险：{{baccaratSum.sumZbx || 0}}</li>
-                <li>$和保险：{{baccaratSum.sumHbx || 0}}</li>
-                <li>$闲保险：{{baccaratSum.sumXbx || 0}}</li>
-                <li>฿庄保险：{{baccaratSum.sumZbxTh || 0}}</li>
-                <li>฿和保险：{{baccaratSum.sumHbxTh || 0}}</li>
-                <li>฿闲保险：{{baccaratSum.sumXbxTh || 0}}</li>
+                <li>${{$t('bet.zIns')}}:{{baccaratSum.sumZbx || 0}}</li>
+                <li>${{$t('bet.tIns')}}:{{baccaratSum.sumHbx || 0}}</li>
+                <li>${{$t('bet.xIns')}}:{{baccaratSum.sumXbx || 0}}</li>
+                <li>฿{{$t('bet.zIns')}}:{{baccaratSum.sumZbxTh || 0}}</li>
+                <li>฿{{$t('bet.tIns')}}:{{baccaratSum.sumHbxTh || 0}}</li>
+                <li>฿{{$t('bet.xIns')}}:{{baccaratSum.sumXbxTh || 0}}</li>
              </ul>
               <ul>
-                <li>$筹码:{{baccaratSum.sumChip || 0}}</li>
-                <li>$现金:{{baccaratSum.sumCash || 0}}</li>
-                  <li>฿筹码:{{baccaratSum.sumChipTh || 0}}</li>
-                <li>฿现金:{{baccaratSum.sumCashTh || 0}}</li>
+                <li>${{$t('bet.chip')}}:{{baccaratSum.sumChip || 0}}</li>
+                <li>${{$t('bet.cash')}}:{{baccaratSum.sumCash || 0}}</li>
+                  <li>฿{{$t('bet.chip')}}:{{baccaratSum.sumChipTh || 0}}</li>
+                <li>฿{{$t('bet.cash')}}:{{baccaratSum.sumCashTh || 0}}</li>
               </ul>
           </el-card>
       </el-col>
@@ -94,7 +94,7 @@
                     <i>{{c}}</i>
                   </div> -->
                   <el-tooltip class="item list_p" v-for="(c,key) in e" :key="key" 
-                    effect="light" :content="'局号'+c.gameNum" placement="top">
+                    effect="light" :content="$t('bet.juHao')+c.gameNum" placement="top">
                     <el-button @click="changeChip(c)"><i :class="getclass(c.gameResult)"></i></el-button>
                   </el-tooltip>
                 </div>
@@ -110,17 +110,17 @@
             <el-row :gutter="0" style="width:100%">
                <!-- <el-col :span="4" :xs="12"> -->
                   <!-- <div class="f1">
-                    <span>$筹码:{{baccaratSum.sumChip || 0}}</span>
-                    <span>$现金:{{baccaratSum.sumCash || 0}}</span>
-                     <span>฿筹码:{{baccaratSum.sumChipTh || 0}}</span>
-                    <span>฿现金:{{baccaratSum.sumCashTh || 0}}</span>
+                    <span>${{$t('bet.chip')}}:{{baccaratSum.sumChip || 0}}</span>
+                    <span>${{$t('bet.cash')}}:{{baccaratSum.sumCash || 0}}</span>
+                     <span>฿{{$t('bet.chip')}}:{{baccaratSum.sumChipTh || 0}}</span>
+                    <span>฿{{$t('bet.cash')}}:{{baccaratSum.sumCashTh || 0}}</span>
                   </div> -->
                <!-- </el-col> -->
               <el-col :span="17" :xs="24" class="choose">
                   <el-radio-group v-model="radio1" class="checked checked1">
-                      <el-radio-button :label="4" class="red">庄</el-radio-button>
-                      <el-radio-button :label="1" class="blue">闲</el-radio-button>
-                      <el-radio-button :label="7" class="green">和</el-radio-button>
+                      <el-radio-button :label="4" class="red">{{$t('bet.z')}}</el-radio-button>
+                      <el-radio-button :label="1" class="blue">{{$t('bet.x')}}</el-radio-button>
+                      <el-radio-button :label="7" class="green">{{$t('bet.h')}}</el-radio-button>
                     </el-radio-group>
 
                   <el-checkbox-group v-model="checkboxGroup1" class="checked checked2">
@@ -134,10 +134,10 @@
                   </el-checkbox-group>
                </el-col>
                <el-col :span="7" :xs="24" class="control">  
-                  <el-button type="primary" @click="startBet">开牌</el-button>
-                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
-                  <el-button type="warning" @click="ponintCode">点码</el-button>
-                  <el-button type="danger" @click="getCode">收码</el-button>
+                  <el-button type="primary" @click="startBet">{{$t('bet.open')}}</el-button>
+                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">{{$t('bet.input')}}</el-button>
+                  <el-button type="warning" @click="ponintCode">{{$t('bet.ponintCode')}}</el-button>
+                  <el-button type="danger" @click="getCode">{{$t('bet.getCode')}}</el-button>
                </el-col>
             </el-row>
           </el-card>
@@ -145,20 +145,20 @@
     </el-row>
 
     <!-- 路单结果修改 -->
-    <el-dialog title="路单修改" :visible.sync="openLUdan" width="600px" class="ludanBox_dialog" append-to-body>
+    <el-dialog :title="$t('bet.ludan')" :visible.sync="openLUdan" width="600px" class="ludanBox_dialog" append-to-body>
        <el-form ref="form" :model="formLudan" :rules="rulesLudan" label-width="0">
           <el-form-item label="" prop="">
              <div class="head" style="display:flex;width:100%;justify-content: space-around;">
-               <div>台号：{{formLudan.tableId}}</div>
-               <div>靴号：{{formLudan.bootNum}}</div>
-               <div>局号：{{formLudan.gameNum}}</div> 
+               <div>{{$t('bet.taiHao')}}：{{formLudan.tableId}}</div>
+               <div>{{$t('bet.xueHao')}}：{{formLudan.bootNum}}</div>
+               <div>{{$t('bet.juHao')}}：{{formLudan.gameNum}}</div> 
              </div>
           </el-form-item>
           <el-form-item label="" prop="">
               <el-radio-group v-model="formLudan.radio1" >
-                 <el-radio-button :label="4" class="red">庄</el-radio-button>
-                  <el-radio-button :label="1" class="blue">闲</el-radio-button>
-                  <el-radio-button :label="7" class="green">和</el-radio-button>
+                 <el-radio-button :label="4" class="red">{{$t('bet.z')}}</el-radio-button>
+                  <el-radio-button :label="1" class="blue">{{$t('bet.x')}}</el-radio-button>
+                  <el-radio-button :label="7" class="green">{{$t('bet.h')}}</el-radio-button>
               </el-radio-group>
             </el-form-item>
           <el-form-item>

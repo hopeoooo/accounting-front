@@ -5,10 +5,10 @@
       <!--切换账号-->
       <el-col :span="3" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-            <div class="h1">当前操作员</div>
+            <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
-            <el-button class="loginout" type="info" @click.native="logout">切换账号</el-button>
-              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+            <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
+              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
               <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
               <!-- <el-button class="loginout" type="primary" plain @click="betRecord">下注记录</el-button> -->
           </el-card>
@@ -17,19 +17,19 @@
       <el-col :span="13" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
-              <li>台号：{{tableInfo.tableId || 0}}</li>
-              <li>靴号：{{tableInfo.bootNum || 0}}</li>
-              <li>局号：{{tableInfo.gameNum || 0}}</li>
-                <li style="color: blueviolet;">$累计：{{tableInfo.total || 0}}</li>
-              <li style="color: red;">฿累计：{{tableInfo.totalTh || 0}}</li>
+              <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
+              <li>{{$t('bet.xueHao')}}：{{tableInfo.bootNum || 0}}</li>
+              <li>{{$t('bet.juHao')}}：{{tableInfo.gameNum || 0}}</li>
+                <li style="color: blueviolet;">${{$t('bet.leiji')}}：{{tableInfo.total || 0}}</li>
+              <li style="color: red;">฿{{$t('bet.leiji')}}：{{tableInfo.totalTh || 0}}</li>
              </ul>
              <ul>
-              <li>$筹码：{{tableInfo.chip || 0}}</li>
-              <li>$现金：{{tableInfo.cash || 0}}</li>
+              <li>${{$t('bet.chip')}}:{{tableInfo.chip || 0}}</li>
+              <li>${{$t('bet.cash')}}:{{tableInfo.cash || 0}}</li>
              </ul>
               <ul>
-              <li>฿筹码：{{tableInfo.chipTh || 0}}</li>
-              <li>฿现金：{{tableInfo.cashTh || 0}}</li>
+              <li>฿{{$t('bet.chip')}}:{{tableInfo.chipTh || 0}}</li>
+              <li>฿{{$t('bet.cash')}}:{{tableInfo.cashTh || 0}}</li>
              </ul>
           </el-card>
          
@@ -37,7 +37,7 @@
        <!--按钮-->
       <!-- <el-col :span="4" :xs="24">
           <el-card class="box-card-box" style="text-align:center">
-              <el-button type="primary" plain @click="screencast">{{isSend?'已投屏':'未投屏'}}</el-button>
+              <el-button type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
               <el-button type="primary" plain @click="roadChange">路珠修改</el-button>
               <el-button type="primary" plain @click="betRecord">下注记录</el-button>
           </el-card>
@@ -48,18 +48,18 @@
             <el-row :gutter="0" style="width:100%">
                <el-col :span="24" :xs="24">
                   <div class="f2">
-                     <span>$筹码:{{ttzSum.sumChip || 0}}</span>
-                    <span>$现金:{{ttzSum.sumCash || 0}}</span>
-                     <span>฿筹码:{{ttzSum.sumChipTh || 0}}</span>
-                    <span>฿现金:{{ttzSum.sumCashTh || 0}}</span>
+                     <span>${{$t('bet.chip')}}:{{ttzSum.sumChip || 0}}</span>
+                    <span>${{$t('bet.cash')}}:{{ttzSum.sumCash || 0}}</span>
+                     <span>฿{{$t('bet.chip')}}:{{ttzSum.sumChipTh || 0}}</span>
+                    <span>฿{{$t('bet.cash')}}:{{ttzSum.sumCashTh || 0}}</span>
                   </div>
                </el-col>
          
                <el-col :span="24" :xs="24" class="control">  
-                  <el-button type="primary" @click="startBet">开牌</el-button>
-                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">录入</el-button>
-                  <el-button type="warning" @click="ponintCode">点码</el-button>
-                  <el-button type="danger" @click="getCode">收码</el-button>
+                  <el-button type="primary" @click="startBet">{{$t('bet.open')}}</el-button>
+                  <el-button type="primary" @click="updataBet" :disabled="iskaipai">{{$t('bet.input')}}</el-button>
+                  <el-button type="warning" @click="ponintCode">{{$t('bet.ponintCode')}}</el-button>
+                  <el-button type="danger" @click="getCode">{{$t('bet.getCode')}}</el-button>
                </el-col>
             </el-row>
           </el-card>
