@@ -284,6 +284,7 @@ export default {
     this.getszdata();
     this.getTableInfo()
     this.getResult()
+    this.getStatus()
   },
   computed:{
     userName(){
@@ -313,7 +314,7 @@ export default {
           }
         }
          if(localStorage.getItem("LhList") != null){
-           this.setBaccaratList(JSON.parse(localStorage.getItem('LhList')))
+           this.setLhList(JSON.parse(localStorage.getItem('LhList')))
         }
     },
     openData(data){
@@ -821,7 +822,7 @@ export default {
           justify-content: flex-start;
           align-items: center;
           .list2{
-            flex-basis: 1/12*100%;
+            flex-basis: 1/20*100%;
             height: 100%;
             display: flex;
             flex-direction: column;

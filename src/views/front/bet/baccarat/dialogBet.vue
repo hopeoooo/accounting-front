@@ -2,7 +2,7 @@
    
     <!-- 下注记录 -->
     <el-dialog :title="$t('bet.betRecord')" :visible.sync="isRecord" width="1700px" :before-close="handleClose" class="zhudanBox_dialog" append-to-body>
-      <el-table v-loading="loading" :data="userList">
+      <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -227,41 +227,7 @@ export default {
       form: {},
       isRecord:this.record,
       rules:{},
-      loading:false,
-       // 游戏类型列表
-      // Gameoptions: [
-      //   {
-      //     value: "",
-      //     label: "全部"
-      //   },
-      //   {
-      //     value: 1,
-      //     label: "百家乐"
-      //   },
-      //   {
-      //     value: 2,
-      //     label: "龙虎"
-      //   },
-      //   {
-      //     value: 3,
-      //     label: "牛牛"
-      //   },
-      //   {
-      //     value: 4,
-      //     label: "三公"
-      //   },
-      //   {
-      //     value: 5,
-      //     label: "推筒子"
-      //   }
-      // ],
-      //   typeMap: {
-      //   0: "$筹码",
-      //   1: "$现金",
-      //   2: "฿筹码",
-      //   3: "฿现金"
-      // },
-      
+      loading:false, 
       defaultProps: {
         children: "children",
         label: "label"
@@ -277,9 +243,6 @@ export default {
     };
   },
   created() {
-
-    console.log(this.isRecord)
-    this.getListRecord()
   },
   computed: {
     // 游戏类型列表
@@ -422,6 +385,8 @@ export default {
   watch: {
       record (val) {
         this.isRecord = val
+        if(val ==true)
+        this.getListRecord()
       }
     },
   methods: {

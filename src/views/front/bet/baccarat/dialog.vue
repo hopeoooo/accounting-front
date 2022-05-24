@@ -284,7 +284,7 @@
 
 <script>
 import { baccaratReckon,baccaratEdit} from "@/api/bet/baccarat";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Dialog",
   props:['title','open'],
@@ -333,11 +333,18 @@ export default {
       ]  
     };
   },
+  computed:{
+    ...mapState("app",['currentLanguage']),
+  },
+
   created() {
   },
   watch: {
       open (val) {
         this.isOpen = val
+      },
+      currentLanguage(val){
+        this.reset()
       }
     },
   methods: {

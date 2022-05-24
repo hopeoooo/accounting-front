@@ -298,7 +298,7 @@
 
 <script>
 import { dragantigerReckon,dragantigerEdit} from "@/api/bet/draganTiger";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Dialog",
   props:['title','open'],
@@ -349,9 +349,15 @@ export default {
   created() {
     console.log(this.isOpen)
   },
+   computed:{
+    ...mapState("app",['currentLanguage']),
+  },
   watch: {
       open (val) {
         this.isOpen = val
+      },
+       currentLanguage(val){
+        this.reset()
       }
     },
   methods: {

@@ -8,6 +8,14 @@ export function dragantigerEdit(data) {
     params: data
   })
 }
+// 注单记录
+export function dragontigerRecord(data) {
+  return request({
+    url: '/bet/dragontiger/record',
+    method: 'post',
+    params: data
+  })
+}
 // 点码||收码 计算差距
 export function dragantigerReckon(data) {
   return request({
