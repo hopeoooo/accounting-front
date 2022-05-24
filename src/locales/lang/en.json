@@ -63,7 +63,7 @@
     "insGap":"Ins Chip Gap",
     "chipGet":"Chip collection",
     "cashGet":"Cash collection",
-    "remark":"Comments on changes to increase/reduce chip:",
+    "remark":"Addition/subtraction code modification remarks:",
     "conChange":"Confirmation of changes",
     "calculateGap":"Calculate the gap",
     "ismodiffy":"Are you sure modify?",

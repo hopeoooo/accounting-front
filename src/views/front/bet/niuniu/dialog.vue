@@ -1,6 +1,6 @@
 <template>
    <!-- 点收码 -->
-    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1400px" :before-close="handleClose" append-to-body v-if="isOpen" :close-on-click-modal="false"> 
+    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1600px" :before-close="handleClose" append-to-body v-if="isOpen" :close-on-click-modal="false"> 
       
          <el-row :gutter="20">
            <el-col :span="6" :xs="12">
@@ -562,12 +562,19 @@ export default {
         }
     border-bottom:1px solid #DCDFE6 ;
         border-right: 1px solid #DCDFE6 ;
+
     .list{
       display: flex;
       justify-content: center;
       align-items: center;
       &>div{
-        flex-basis: 1/3*100%;
+        &:nth-child(1){
+          flex-basis: 40%;
+        }
+        &:nth-child(2){
+          flex-basis: 35%;
+        }
+        flex-basis: 25%;
         border-top:1px solid #DCDFE6 ;
         border-left: 1px solid #DCDFE6 ;
         height: 45px;
@@ -602,7 +609,7 @@ export default {
     align-items: center;
     margin: 15px 0;
     span{
-      flex-basis: 150px;
+      min-width: 150px;
     }
   }
   .dialog-footer{

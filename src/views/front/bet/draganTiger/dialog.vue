@@ -1,6 +1,6 @@
 <template>
    <!-- 点收码 -->
-    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1400px" :before-close="handleClose" append-to-body v-if="isOpen" :close-on-click-modal="false"> 
+    <el-dialog class="dialogBox" :title="title" :visible.sync="isOpen" width="1600px" :before-close="handleClose" append-to-body v-if="isOpen" :close-on-click-modal="false"> 
        <el-row :gutter="20">
            <el-col :span="6" :xs="12">
              <el-table v-loading="loading" stripe class="bbetbox"  height="auto" :data="Listdata"  border show-summary :sum-text="$t('bet.xiaoji')" :summary-method="getSummaries" >
@@ -585,9 +585,9 @@ export default {
           flex-basis: 40%;
         }
         &:nth-child(2){
-          flex-basis: 40%;
+          flex-basis: 35%;
         }
-        flex-basis: 20%;
+        flex-basis: 25%;
         border-top:1px solid #DCDFE6 ;
         border-left: 1px solid #DCDFE6 ;
         height: 45px;
@@ -622,7 +622,7 @@ export default {
     align-items: center;
     margin: 15px 0;
     span{
-      flex-basis: 150px;
+       min-width: 150px;
     }
   }
   .dialog-footer{
