@@ -34,6 +34,8 @@
 import { mapState, mapMutations } from "vuex";
 import { languagesConfig, langMap } from "@/locales/index";
 import { setLanguage } from "@/utils/locale";
+import store from '../../store'
+import router from '../../router'
 export default {
   /**语言选择 */
   name: "LanguageSelect",
@@ -51,12 +53,23 @@ export default {
     console.log(this.$i18n.locale);
 
   },
+  watch:{
+    currentLanguage(val){
+      this.changeRouter()
+    }
+  },
   methods: {
     /**选择语言 */
     onLanguageChange(val) {
       //   console.log("选择语言", val);
       setLanguage(val);
       //   this.$t.locale = val;
+    },
+
+    // 路由切换
+    changeRouter(){
+       store.dispatch('GenerateRoutes')
+      
     }
   }
 };
