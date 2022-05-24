@@ -80,7 +80,7 @@
           </el-col>
         </el-row>
 
-        <el-table v-loading="loading" :data="userList">
+        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -370,10 +370,10 @@ export default {
                 result = "下注输";
                 break;
               case 5:
-                result = "签单";
+                result =this.$t("Signing");
                 break;
               case 6:
-                result = "还单";
+                result = this.$t("Returns");
                 break;
               case 7:
                 result = "换现";

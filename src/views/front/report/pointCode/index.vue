@@ -64,7 +64,7 @@
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="userList">
+        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
           <el-table-column :label="$t('Station-number')" fixed align="center" prop="tableId" />
           <el-table-column :label="$t('Boot-number')" align="center" prop="bootNum" />
           <el-table-column :label="'$' + $t('system-chip-counts')" align="center" width="100px">

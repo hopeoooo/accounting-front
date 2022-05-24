@@ -72,13 +72,13 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="是否可汇出"
+             :label="$t('is-remit')"
             align="center"
             key="isOut"
             prop="isOut"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isOut == 0 ? this.$t("No") : this.$t("Yes")}}</span>
+              <span>{{ scope.row.isOut == 0 ? $t("No") : $t("Yes")}}</span>
             </template>
           </el-table-column>
           <el-table-column

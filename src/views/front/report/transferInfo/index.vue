@@ -84,6 +84,7 @@
           show-summary
           :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column

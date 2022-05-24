@@ -44,7 +44,7 @@
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="userList">
+        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
           <el-table-column :label="$t('Sort-by')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.$index + 1 }}</span>

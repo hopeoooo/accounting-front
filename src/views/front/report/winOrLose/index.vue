@@ -95,6 +95,7 @@
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
           ref="dataTable"
+          :empty-text="$t('no-data')"
         >
           <el-table-column
             :label="$t('Membership-Card-Number')"

@@ -56,6 +56,7 @@
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
           ref="dataTable"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -376,7 +377,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
         <el-button type="primary" @click="submitForm">{{$t("Confirm")}}</el-button>
-        <el-button @click="cancel">{{$t("Cancellation")}}</el-button>
+        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -480,7 +481,7 @@ export default {
     chipAmountValitor(rule, value, callback) {
       if (!this.form.chipAmount && !this.form.chipAmountTh) {
         const errMsg =
-          this.openType == "buy" ? "请输入购买筹码金额" : "请输入换现金额";
+          this.openType == "buy" ? this.$t('Please-enter-the-amount-of-chip-purchased') : this.$t('Please-enter-the-amount-of-cash-you-would-like-to-exchange');
         callback(new Error(errMsg));
       } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
         callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
@@ -497,7 +498,7 @@ export default {
     chipAmountThValitor(rule, value, callback) {
       if (!this.form.chipAmount && !this.form.chipAmountTh) {
         const errMsg =
-          this.openType == "buy" ? "请输入购买筹码金额" : "请输入换现金额";
+          this.openType == "buy" ? this.$t('Please-enter-the-amount-of-chip-purchased') : this.$t('Please-enter-the-amount-of-cash-you-would-like-to-exchange');
         callback(new Error(errMsg));
       } else if (this.form.chipAmountTh && this.form.chipAmountTh <= 0) {
         callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
@@ -655,7 +656,7 @@ export default {
       this.open = true;
       this.openType = "buy";
 
-      this.title = "买码";
+      this.title = this.$t("Buy-codes");
     },
 
     /** 换现 */
@@ -668,7 +669,7 @@ export default {
       this.open = true;
       this.openType = "exchange";
 
-      this.title = "换现";
+      this.title = this.$t("Cash-Out");
     },
     /** 导出按钮操作 */
     handleExport() {

@@ -41,6 +41,7 @@
           show-summary
           :sum-text="$t('Tot')"
           :summary-method="getSummaries"
+          :empty-text="$t('no-data')"
         >
           <el-table-column
             :label="$t('Station-number')"

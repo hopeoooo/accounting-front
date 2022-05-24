@@ -56,6 +56,7 @@
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
           ref="dataTable"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -465,7 +466,6 @@
           <div style="display:flex">
             <el-form-item
              :label="'฿'+$t('Chip-withdrawal')"
-
               prop="chipAmountTh"
               :show-message="false"
             >

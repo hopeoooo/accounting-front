@@ -154,7 +154,7 @@
             prop="isAdmin"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isAdmin == 0 ? this.$t("No") : this.$t("Yes")}}</span>
+              <span>{{ scope.row.isAdmin == 0 ? $t("No") : $t("Yes")}}</span>
             </template>
           </el-table-column>
           <el-table-column label="性别" align="center" key="sex" prop="sex">
@@ -531,7 +531,7 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="是否可汇出" prop="isOut">
+            <el-form-item    :label="$t('is-remit')"   prop="isOut">
               <el-select
                 v-model="form.isOut"
                 placeholder=""

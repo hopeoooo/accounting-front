@@ -49,6 +49,7 @@
           show-summary
           :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
+          :empty-text="$t('no-data')"
         >
           <el-table-column
             :label="$t('Membership-Card-Number')"

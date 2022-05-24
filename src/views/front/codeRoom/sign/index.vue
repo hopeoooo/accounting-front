@@ -11,14 +11,16 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="fromSearch.card"
               placeholder=""
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="fromSearch.isAdmin">{{$t("Filter-internal-card")}}</el-checkbox>
+            <el-checkbox v-model="fromSearch.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -26,11 +28,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -42,7 +44,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
@@ -54,35 +56,36 @@
           sum-text="小计"
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
-            ref="dataTable"
+          ref="dataTable"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-             :label="$t('Membership-Card-Number')"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-             :label="$t('Staus')"
+            :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
+              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
+              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$签单金额"
+            :label="'$' + $t('Signed-amount')"
             align="center"
             sortable="custom"
             key="signedAmount"
@@ -93,7 +96,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿签单金额"
+            :label="'฿' + $t('Signed-amount')"
             align="center"
             sortable="custom"
             key="signedAmountTh"
@@ -105,7 +108,7 @@
           </el-table-column>
 
           <el-table-column
-               :label="$t('Remarks')"
+            :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -121,32 +124,32 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-             :label="$t('Opr')"
+            :label="$t('Opr')"
             align="center"
             width="260"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope"  >
+            <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >{{$t("Signing")}}</el-button
+                >{{ $t("Signing") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >{{$t("Returns")}}</el-button
+                >{{ $t("Returns") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >{{$t('Breakdown')}}</el-button
+                >{{ $t("Breakdown") }}</el-button
               >
             </template>
           </el-table-column>
@@ -161,31 +164,31 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-             :label="$t('Membership-Card-Number')"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-             :label="$t('Staus')"
+            :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
+              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
+              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$签单金额"
+            :label="'$' + $t('Signed-amount')"
             align="center"
             sortable="custom"
             key="signedAmount"
@@ -196,7 +199,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿签单金额"
+            :label="'฿' + $t('Signed-amount')"
             align="center"
             sortable="custom"
             key="signedAmountTh"
@@ -207,7 +210,7 @@
             </template>
           </el-table-column>
           <el-table-column
-               :label="$t('Remarks')"
+            :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -216,32 +219,32 @@
           />
           <el-table-column
             fixed="right"
-             :label="$t('Opr')"
+            :label="$t('Opr')"
             align="center"
             width="260"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope"  >
+            <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >{{$t("Signing")}}</el-button
+                >{{ $t("Signing") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >{{$t("Returns")}}</el-button
+                >{{ $t("Returns") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >{{$t('Breakdown')}}</el-button
+                >{{ $t("Breakdown") }}</el-button
               >
             </template>
           </el-table-column>
@@ -272,7 +275,7 @@
         :show-message="true"
         label-width="100px"
       >
-        <el-form-item  :label="$t('Card-number')"  prop="card">
+        <el-form-item :label="$t('Card-number')" prop="card">
           <el-input
             v-model="form.card"
             placeholder=""
@@ -281,7 +284,11 @@
           />
         </el-form-item>
         <!-- 签单 -->
-        <el-form-item label="$签单金额" prop="amount" v-if="openType == 'sign'">
+        <el-form-item
+          :label="'$' + $t('Signed-amount')"
+          prop="amount"
+          v-if="openType == 'sign'"
+        >
           <el-input
             v-model="form.amount"
             placeholder=""
@@ -290,7 +297,7 @@
           />
         </el-form-item>
         <el-form-item
-          label="฿签单金额"
+          :label="'฿' + $t('Signed-amount')"
           prop="amountTh"
           v-if="openType == 'sign'"
         >
@@ -304,14 +311,14 @@
 
         <!-- 还单 -->
         <div style="display:flex" v-if="openType == 'back'">
-          <el-form-item label="$签单金额" prop="signedAmount">
+          <el-form-item :label="'$' + $t('Signed-amount')" prop="signedAmount">
             <el-input
               v-model="form.signedAmount"
               placeholder=""
               :disabled="true"
             />
           </el-form-item>
-          <el-form-item label="$还单金额" prop="amount">
+          <el-form-item :label="'$' + $t('Return-amount')" prop="amount">
             <el-input
               v-model="form.amount"
               placeholder=""
@@ -322,14 +329,17 @@
         </div>
 
         <div style="display:flex" v-if="openType == 'back'">
-          <el-form-item label="฿签单金额" prop="signedAmountTh">
+          <el-form-item
+            :label="'฿' + $t('Signed-amount')"
+            prop="signedAmountTh"
+          >
             <el-input
               v-model="form.signedAmountTh"
               placeholder=""
               :disabled="true"
             />
           </el-form-item>
-          <el-form-item label="฿还单金额" prop="amountTh">
+          <el-form-item :label="'฿' + $t('Return-amount')" prop="amountTh">
             <el-input
               v-model="form.amountTh"
               placeholder=""
@@ -339,7 +349,7 @@
           </el-form-item>
         </div>
 
-        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
+        <el-form-item :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"
@@ -360,9 +370,9 @@
               form.signedAmount == 0 &&
               form.signedAmountTh == 0
           "
-          >{{$t("Confirm")}}</el-button
+          >{{ $t("Confirm") }}</el-button
         >
-        <el-button @click="cancel">{{$t("Cancellation")}}</el-button>
+        <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -432,7 +442,7 @@ export default {
       },
       fromSearch: {
         card: "",
-        isAdmin: false,
+        isAdmin: false
       },
 
       // 查询参数
@@ -475,7 +485,7 @@ export default {
       if (this.openType == "sign") {
         // 签单的校验规则
         if (!this.form.amount && !this.form.amountTh) {
-          callback(new Error("请输入签单金额"));
+          callback(new Error(this.$t("Please-enter-the-amount-of-your-order")));
         } else if (value && value <= 0) {
           callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else {
@@ -485,11 +495,13 @@ export default {
         // 还单的校验规则
         const field = fieldMap[rule.field];
         if (!this.form.amount && !this.form.amountTh) {
-          callback(new Error("请输入还单金额"));
+          callback(
+            new Error(this.$t("Please-enter-the-amount-of-the-return-order"))
+          );
         } else if (value && value <= 0) {
           callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else if (value && value > this.form[field]) {
-          callback(new Error("请输入正确的金额"));
+          callback(new Error(this.$t("Please-enter-the-correct-amount")));
         } else {
           callback();
         }
@@ -553,7 +565,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-           sums[index] = this.$t("Subtotal");
+          sums[index] = this.$t("Subtotal");
           return;
         }
         if (index === 1 || index === 2 || index === 5) {
@@ -621,7 +633,7 @@ export default {
       this.fromSearch.card = "";
       this.queryParams.isAsc = null;
       this.queryParams.orderByColumn = null;
-       this.$refs.dataTable.clearSort()
+      this.$refs.dataTable.clearSort();
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -636,7 +648,7 @@ export default {
       };
       this.open = true;
       this.openType = "sign";
-      this.title = "签单";
+      this.title = this.$t("Signing");
     },
 
     /** 还单 */
@@ -649,7 +661,7 @@ export default {
       };
       this.open = true;
       this.openType = "back";
-      this.title = "还单";
+      this.title = this.$t("Returns");
     },
     // 明细
     handleDetail(card) {
@@ -690,7 +702,9 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "status") {
-            return v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
+            return v["status"] == 0
+              ? this.$t("Normal")
+              : this.$t("Deactivated");
           } else {
             return v[j];
           }

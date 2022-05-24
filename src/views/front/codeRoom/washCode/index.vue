@@ -119,7 +119,7 @@
             prop="isSettlement"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isSettlement == 0 ? this.$t("No") : this.$t("Yes")}}</span>
+              <span>{{ scope.row.isSettlement == 0 ? $t("No") : $t("Yes")}}</span>
             </template>
           </el-table-column>
 
@@ -410,7 +410,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
         <el-button type="primary" @click="submitForm">{{$t("Confirmed")}}</el-button>
-        <el-button @click="cancel">{{$t("Cancellation")}}</el-button>
+        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
   </div>

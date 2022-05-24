@@ -90,6 +90,7 @@
           show-summary
           :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -112,7 +113,7 @@
           >
             <template slot-scope="scope">
               <span>{{
-                scope.row.operationType == 0 ? this.$t("Chip") : this.$t("Cash")
+                scope.row.operationType == 0 ? $t("Chip") : $t("Cash")
               }}</span>
             </template>
           </el-table-column>
