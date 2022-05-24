@@ -1,7 +1,7 @@
 <template>
    
     <!-- 下注记录 -->
-    <el-dialog :title="$t('bet.betRecord')" :visible.sync="isRecord" width="1500px" :before-close="handleClose" class="zhudanBox_dialog" append-to-body>
+    <el-dialog :title="$t('bet.betRecord')" :visible.sync="isRecord" width="1700px" :before-close="handleClose" class="zhudanBox_dialog" append-to-body>
       <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -15,21 +15,18 @@
             align="center"
             key="tableId"
             prop="tableId"
-            width="80px"
           />
           <el-table-column
             :label="$t('Boot-number')"
             align="center"
             key="bootNum"
             prop="bootNum"
-            width="60px"
           />
           <el-table-column
             :label="$t('Game-number')"
             align="center"
             key="gameNum"
             prop="gameNum"
-            width="60px"
           />
           <el-table-column
             :label="$t('Game-Type')"
@@ -61,7 +58,6 @@
             align="center"
             key="type"
             prop="type"
-            width="80px"
           >
             <template slot-scope="scope" class="wanfabox">
               <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
