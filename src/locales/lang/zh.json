@@ -117,6 +117,8 @@
   "is-remit": "是否可汇出",
   "main-number": "主卡号合计",
   "sub-number": "子卡号合计",
+  "main-card": "主卡号",
+  "sub-card": "子卡号",
   "card-number": "卡号",
   "Phone-number": "电话",
   "Password": "密码",
@@ -141,6 +143,8 @@
   "Job-Search": "工号查询",
   "Name-Search": "姓名查询",
   "Add-new-role": "新增角色",
+  "Add-new-employee": "新增员工",
+  "Edit-employee": "新增员工",
   "Role": "角色",
   "Description": "描述",
   "Oprt": "操作",
@@ -457,6 +461,7 @@
   "Remittance-Successful": "汇入成功",
   "Rolling-Settlement-successful": "结算洗码成功",
   "Card-No-cannot-be-empty": "卡号不能为空",
+  "user-name-cannot-be-empty": "用户昵称不能为空",
   "Game-No-cannot-be-empty": "局号不能为空",
   "Please-select-a-currency": "请选择币种",
   "Please-enter-at-least-one-deposit-amount": "请输入至少一个存码金额",
@@ -512,7 +517,7 @@
   "Please-select-the-role-of-authority": "请选择权限角色",
   "Please-select-a-start-date": "请选择入职日期",
   "Role-cannot-be-empty": "角色不能为空",
-  "confirmed-delete-employee": "是否确认删除工号为***的员工",
+  "confirmed-delete-employee": "是否确认删除员工:",
   "Confirm-deletion-of-the-card-number": "是否确认删除该卡号",
   "Please-enter-the-correct-IP-address": "请输入正确的IP地址",
   "Please-select-the-prize-result": "请选择开奖结果",
@@ -542,6 +547,12 @@
   "card-deactivated":"该卡号已停用",
   "card-counts":"合计卡号数",
   "Yes":"是",
-  "No":"否"
+  "No":"否",
+  "enter-card-number":"请输入卡号",
+  "enter-phone-number":"请输入电话",
+  "male":"男",
+  "female":"女",
+  "master-card":"主卡",
+  "child-card":"子卡"
 
 }

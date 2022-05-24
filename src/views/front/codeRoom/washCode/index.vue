@@ -259,7 +259,7 @@
             prop="isSettlement"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isSettlement == 0 ? this.$t("No") : this.$t("Yes")}}</span>
+              <span>{{ scope.row.isSettlement == 0 ? $t("No") : $t("Yes")}}</span>
             </template>
           </el-table-column>
 
