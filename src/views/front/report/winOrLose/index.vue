@@ -396,32 +396,7 @@ export default {
   components: { TableTime },
   data() {
     return {
-      Gameoptions: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: "1",
-          label: "百家乐"
-        },
-        {
-          value: "2",
-          label: "龙虎"
-        },
-        {
-          value: "3",
-          label: "牛牛"
-        },
-        {
-          value: 4,
-          label: "三公"
-        },
-        {
-          value: 5,
-          label: "推筒子"
-        }
-      ],
+
       //台号列表
       tableOptions: [],
       //总计
@@ -458,6 +433,43 @@ export default {
         orderByColumn: null
       }
     };
+  },
+  computed: {
+    // 游戏类型列表
+    Gameoptions() {
+      return [
+        {
+          value: "",
+          label: this.$t("All")
+          // label: "全部"
+        },
+        {
+          value: 1,
+          label: this.$t("Baccarat")
+          // label: "百家乐"
+        },
+        {
+          value: 2,
+          label: this.$t("DT")
+          // label: "龙虎"
+        },
+        {
+          value: 3,
+          label: this.$t("Niu-Niu")
+          // label: "牛牛"
+        },
+        {
+          value: 4,
+          label: this.$t("San-Gong")
+          // label: "三公"
+        },
+        {
+          value: 5,
+          label: this.$t("Tui-Tong-Zi")
+          // label: "推筒子"
+        }
+      ];
+    },
   },
 
   created() {

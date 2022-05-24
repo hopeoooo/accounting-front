@@ -537,6 +537,11 @@
   "cash-win-loss":"现金输赢",
   "currency-Type": "货币类型",
   "settlement-time": "结算时间",
-  "no-data": "暂无数据"
+  "no-data": "暂无数据",
+  "bulk-settlement": "批量结算",
+  "card-deactivated":"该卡号已停用",
+  "card-counts":"合计卡号数",
+  "Yes":"是",
+  "No":"否"
 
 }

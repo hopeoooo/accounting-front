@@ -11,14 +11,14 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="fromSearch.card"
               placeholder=""
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="fromSearch.isAdmin">过滤内部卡号</el-checkbox>
+            <el-checkbox v-model="fromSearch.isAdmin">{{$t("Filter-internal-card")}}</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -26,10 +26,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
@@ -42,7 +42,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{$t("Export")}}</el-button
             >
           </el-col>
         </el-row>
@@ -58,27 +58,27 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+             :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="状态"
+             :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">正常</span>
-              <span v-else style="color:red">停用</span>
+              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
+              <span v-else style="color:red">{{$t("Deactivated")}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -105,7 +105,7 @@
           </el-table-column>
 
           <el-table-column
-            label="备注"
+               :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -121,7 +121,7 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="260"
             class-name="small-padding fixed-width"
@@ -146,7 +146,7 @@
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >明细</el-button
+                >{{$t('Breakdown')}}</el-button
               >
             </template>
           </el-table-column>
@@ -161,27 +161,27 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+             :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="状态"
+             :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">正常</span>
-              <span v-else style="color:red">停用</span>
+              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
+              <span v-else style="color:red">{{$t("Deactivated")}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -207,7 +207,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="备注"
+               :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -216,7 +216,7 @@
           />
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="260"
             class-name="small-padding fixed-width"
@@ -241,7 +241,7 @@
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >明细</el-button
+                >{{$t('Breakdown')}}</el-button
               >
             </template>
           </el-table-column>
@@ -272,7 +272,7 @@
         :show-message="true"
         label-width="100px"
       >
-        <el-form-item label="卡号" prop="card">
+        <el-form-item  :label="$t('Card-number')"  prop="card">
           <el-input
             v-model="form.card"
             placeholder=""
@@ -343,7 +343,7 @@
           <el-input
             type="textarea"
             :rows="7"
-            placeholder="请输入内容"
+            :placeholder="$t('Please-enter-conten')"
             v-model="form.remark"
             maxlength="100"
             show-word-limit
@@ -360,9 +360,9 @@
               form.signedAmount == 0 &&
               form.signedAmountTh == 0
           "
-          >确认</el-button
+          >{{$t("Confirm")}}</el-button
         >
-        <el-button @click="cancel">取消</el-button>
+        <el-button @click="cancel">{{$t("Cancellation")}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -477,7 +477,7 @@ export default {
         if (!this.form.amount && !this.form.amountTh) {
           callback(new Error("请输入签单金额"));
         } else if (value && value <= 0) {
-          callback(new Error("请输入大于0的数字"));
+          callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else {
           callback();
         }
@@ -487,7 +487,7 @@ export default {
         if (!this.form.amount && !this.form.amountTh) {
           callback(new Error("请输入还单金额"));
         } else if (value && value <= 0) {
-          callback(new Error("请输入大于0的数字"));
+          callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else if (value && value > this.form[field]) {
           callback(new Error("请输入正确的金额"));
         } else {
@@ -533,7 +533,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index === 3) {
@@ -553,7 +553,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "小计";
+           sums[index] = this.$t("Subtotal");
           return;
         }
         if (index === 1 || index === 2 || index === 5) {
@@ -690,7 +690,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "status") {
-            return v["status"] == 0 ? "正常" : "停用";
+            return v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
           } else {
             return v[j];
           }
@@ -702,7 +702,7 @@ export default {
     submitForm: function() {
       if (this.openType == "sign") {
         if (this.form.status == 1) {
-          this.$modal.msgError("该卡号已停用");
+          this.$modal.msgError(this.$t("card-deactivated"));
           return;
         }
       }
