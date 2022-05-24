@@ -1,49 +1,48 @@
 <template>
    
     <!-- 下注记录 -->
-    <el-dialog title="注单记录" :visible.sync="isRecord" width="1500px" :before-close="handleClose" class="zhudanBox_dialog" append-to-body>
+    <el-dialog :title="$t('bet.betRecord')" :visible.sync="isRecord" width="1500px" :before-close="handleClose" class="zhudanBox_dialog" append-to-body>
       <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="台号"
+            :label="$t('Station-number')"
             align="center"
             key="tableId"
             prop="tableId"
             width="80px"
           />
           <el-table-column
-            label="靴号"
+            :label="$t('Boot-number')"
             align="center"
             key="bootNum"
             prop="bootNum"
             width="60px"
           />
           <el-table-column
-            label="局号"
+            :label="$t('Game-number')"
             align="center"
             key="gameNum"
             prop="gameNum"
             width="60px"
           />
           <el-table-column
-            label="游戏类型"
+            :label="$t('Game-Type')"
             align="center"
             key="gameId"
             prop="gameId"
-            width="100px"
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="下注玩法"
+            :label="$t('bets-to-play')"
             align="center"
             key="option"
             prop="option"
@@ -58,7 +57,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="币种"
+            :label="$t('currency')"
             align="center"
             key="type"
             prop="type"
@@ -74,7 +73,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注金额"
+            :label="$t('bet-money')"
             align="center"
             key="betMoney"
             prop="betMoney"
@@ -84,10 +83,11 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="开牌结果"
+            :label="$t('Result')"
             align="center"
             key="gameResult"
             prop="gameResult"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <div>
@@ -103,7 +103,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="输赢"
+            :label="$t('Win-Loss')"
             align="center"
             key="winLose"
             prop="winLose"
@@ -113,14 +113,14 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注时间"
+            :label="$t('Betting-Time')"
             align="center"
             key="createTime"
             prop="createTime"
             width="180px"
           />
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
@@ -139,84 +139,90 @@
 
 <script>
 import {baccaratRecord} from "@/api/bet/baccarat";
+import i18n from "@/locales";
 // 开牌结果映射
 const betOptionList = {
-  4: "庄",
-  1: "闲",
-  7: "和",
-  8: "庄对",
-  5: "闲对",
-  3: "庄保险", //庄保险
-  0: "闲保险", //闲保险
-  2: "和保险", //和保险
-  9: "大",
-  6: "小",
-  a: "幸运6（2张牌)",//幸运6(2张牌)
-  b: "幸运6（3张牌)",//幸运6(3张牌)
-  龙: "龙",
-  虎: "虎",
-  和: "和",
-  输: "输",
-  赢: "赢",
-  "-": "-"
+  4: i18n.t("B"), //庄
+  1: i18n.t("P"), //闲
+  7: i18n.t("T"), //和
+  8: i18n.t("B-P"), //庄对
+  5: i18n.t("P-P"), //闲对
+  3: i18n.t("B-Ins"), //庄保险
+  0: i18n.t("P-Ins"), //闲保险
+  2: i18n.t("T-Ins"), //和保险
+  9: i18n.t("BIG"), //大
+  6: i18n.t("S"), //小
+  a: i18n.t("Lucky-2-cards"), //幸运6(2张牌)
+  b: i18n.t("Lucky-3-cards"), //幸运6(3张牌)
+  龙: i18n.t("D"), //
+  虎: i18n.t("TYG"), //
+  和: i18n.t("T"), //
+  输: i18n.t("Loss"), //
+  赢: i18n.t("Win"), //
+  "-": "-" //
 };
 
 // 下注玩法映射
 const playTextMap = {
-  4: "庄",
-  1: "闲",
-  7: "和",
-  8: "庄对",
-  5: "闲对",
-  3: "庄保险", //庄保险
-  0: "闲保险", //闲保险
-  2: "和保险", //和保险
-  9: "大",
-  6: "小",
-  a: "幸运6",//幸运6
-  龙: "龙",
-  虎: "虎",
-  和: "和",
-  输: "输",
-  赢: "赢",
-  "-": "-"
+  4: i18n.t("B"), //庄
+  1: i18n.t("P"), //闲
+  7: i18n.t("T"), //和
+  8: i18n.t("B-P"), //庄对
+  5: i18n.t("P-P"), //闲对
+  3: i18n.t("B-Ins"), //庄保险
+  0: i18n.t("P-Ins"), //闲保险
+  2: i18n.t("T-Ins"), //和保险
+  9: i18n.t("BIG"), //大
+  6: i18n.t("S"), //小
+  a: i18n.t("Lucky-6"), //幸运6
+  龙: i18n.t("D"), //
+  虎: i18n.t("TYG"), //
+  和: i18n.t("T"), //
+  输: i18n.t("Loss"), //
+  赢: i18n.t("Win"), //
+  "-": "-" //
 };
+
 // 百家乐
 const optionMap = {
-  banker: "4",
-  player: "1",
-  tie: "7",
-  bankerPair: "8",
-  playerPair: "5",
+  banker: "4", //
+  player: "1", //
+  tie: "7", //
+  bankerPair: "8", //
+  playerPair: "5", //
   bankerIns: "3", //庄保险
   playerIns: "0", //闲保险
   tieIns: "2", //和保险
-  big: "9",
-  small: "6",
-  two: "a",//幸运6(两张牌)
-  three: "b",//幸运6(三张牌)
-  4: "banker",
-  1: "player",
-  7: "tie",
-  8: "bankerPair",
-  5: "playerPair",
+  big: "9", //
+  small: "6", //
+  two: "a", //幸运6(两张牌)
+  three: "b", //幸运6(三张牌)
+  4: "banker", //
+  1: "player", //
+  7: "tie", //
+  8: "bankerPair", //
+  5: "playerPair", //
   3: "bankerIns", //庄保险
   0: "playerIns", //闲保险
   2: "tieIns", //和保险
-  9: "big",
-  6: "small",
-  a: "two",
-  b: "three"
+  9: "big", //
+  6: "small", //
+  a: "two", //
+  b: "three" //
 };
 // 龙虎
 const longhuOptionMap = {
-  dragon: "龙",
-  tiger: "虎",
+  dragon: "龙", //龙
+  tiger: "虎", //虎
   tie: "和", //和
-  龙: "dragon",
-  虎: "tiger",
-  和: "tie"
+  龙: "dragon", //龙
+  虎: "tiger", //虎
+  和: "tie" //和
 };
+const gameResult1 = ["4", "1", "7"]; //庄闲和
+const gameResult2 = ["8", "5"]; //庄对、闲对
+const gameResult3 = ["9", "6"]; //大小
+const gameResult4 = ["a", "b"]; // 幸运6(2张牌)/幸运6(3张牌)
 export default {
   name: "BetRecord",
   props:['record'],
