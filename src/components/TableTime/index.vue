@@ -42,86 +42,7 @@ export default {
         this.query.endDate != ""
           ? 0
           : 999,
-      TimeList: [
-        {
-          name: "今日",
-          val: [
-            moment(new Date())
-              .startOf("day")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment(new Date())
-              .endOf("day")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        },
-        {
-          name: "昨日",
-          val: [
-            moment()
-              .subtract(1, "days")
-              .startOf("day")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment()
-              .subtract(1, "days")
-              .endOf("day")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        },
-        {
-          name: "本周",
-          val: [
-            moment()
-              .week(moment().week())
-              .startOf("week")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment()
-              .week(moment().week())
-              .endOf("week")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        },
-        {
-          name: "上周",
-          val: [
-            moment()
-              .week(moment().week() - 1)
-              .startOf("week")
-              .add(1, "days")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment()
-              .week(moment().week() - 1)
-              .endOf("week")
-              .add(1, "days")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        },
-        {
-          name: "本月",
-          val: [
-            moment()
-              .month(moment().month())
-              .startOf("month")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment()
-              .month(moment().month())
-              .endOf("month")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        },
-        {
-          name: "上月",
-          val: [
-            moment()
-              .month(moment().month() - 1)
-              .startOf("month")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment()
-              .month(moment().month() - 1)
-              .endOf("month")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        }
-      ],
+
       pickerOptions: {
         disabledDate(time) {
           return (
@@ -156,6 +77,90 @@ export default {
     fetchData: {
       type: Function,
       default: () => () => {}
+    }
+  },
+  computed: {
+    TimeList(){
+      return [
+        {
+          name: this.$t("Today"),
+          val: [
+            moment(new Date())
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment(new Date())
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: this.$t("Yesterday"),
+          val: [
+            moment()
+              .subtract(1, "days")
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .subtract(1, "days")
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: this.$t("This-Week"),
+          val: [
+            moment()
+              .week(moment().week())
+              .startOf("week")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .week(moment().week())
+              .endOf("week")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name:this.$t("Last-Week"),
+          val: [
+            moment()
+              .week(moment().week() - 1)
+              .startOf("week")
+              .add(1, "days")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .week(moment().week() - 1)
+              .endOf("week")
+              .add(1, "days")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: this.$t("This-Month"),
+          val: [
+            moment()
+              .month(moment().month())
+              .startOf("month")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .month(moment().month())
+              .endOf("month")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: this.$t("Last-Month"),
+          val: [
+            moment()
+              .month(moment().month() - 1)
+              .startOf("month")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .month(moment().month() - 1)
+              .endOf("month")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        }
+      ]
     }
   },
   created() {

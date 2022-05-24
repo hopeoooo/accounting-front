@@ -143,14 +143,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleBuy(scope.row)"
-                >买码</el-button
+                >{{$t("Buy-codes")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleExchange(scope.row)"
-                >换现</el-button
+                >{{$t("Cash-Out")}}</el-button
               >
               <el-button
                 size="mini"
@@ -229,7 +229,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="操作备注"
+              :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -256,14 +256,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleBuy(scope.row)"
-                >买码</el-button
+                >{{$t("Buy-codes")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleExchange(scope.row)"
-                >换现</el-button
+                >{{$t("Cash-Out")}}</el-button
               >
               <el-button
                 size="mini"
@@ -358,7 +358,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="操作备注" prop="remark">
+        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"

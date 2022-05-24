@@ -109,14 +109,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleIn(scope.row)"
-                >汇入</el-button
+                >{{$t("Remit-in")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleOut(scope.row)"
-                >汇出</el-button
+                >{{$t("Remit-out")}}</el-button
               >
               <el-button
                 size="mini"
@@ -187,12 +187,12 @@
           prop="operationType"
         >
           <el-radio-group v-model="form.operationType">
-            <el-radio :label="0">筹码</el-radio>
-            <el-radio :label="1">现金</el-radio>
+            <el-radio :label="0">{{$t("Chip")}}</el-radio>
+            <el-radio :label="1">{{$t("Cash")}}</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="操作备注" prop="remark">
+        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"
@@ -406,7 +406,7 @@ export default {
       this.form = { ...this.form, ...{ card, status } };
       this.open = true;
       this.openType = "in";
-      this.title = "汇入";
+      this.title = this.$t("Remit-in");
     },
 
     /** 汇出 */
@@ -416,7 +416,7 @@ export default {
       this.form = { ...this.form, ...{ card, status, isOut } };
       this.open = true;
       this.openType = "out";
-      this.title = "汇出";
+      this.title = this.$t("Remit-out");
     },
 
     // 明细

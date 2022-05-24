@@ -11,19 +11,19 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="台号" prop="userName">
-            <el-select v-model="queryParams.tableId" placeholder="请选择">
+          <el-form-item :label="$t('Station-number')" prop="userName">
+            <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId ? item.tableId : '全部'"
+                :label="item.tableId ? item.tableId : $t('All')"
                 :value="item.tableId"
               >
               </el-option>
             </el-select>
           </el-form-item>
 
-          <!-- <el-form-item label="会员卡号" prop="userName">
+          <!-- <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
                         <el-input
                             v-model="queryParams.card"
                             placeholder=""
@@ -31,14 +31,14 @@
                             style="width: 240px; margin-right: 20px"
                         />
                     </el-form-item> -->
-          <el-form-item label="点码时间">
+          <el-form-item :label="$t('Chip-counting-time')">
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -47,10 +47,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
 
             <el-button
@@ -59,152 +59,152 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{$t("Export")}}</el-button
             >
           </el-form-item>
         </el-form>
 
         <el-table v-loading="loading" :data="userList">
-          <el-table-column label="台号" fixed align="center" prop="tableId" />
-          <el-table-column label="靴号" align="center" prop="bootNum" />
-          <el-table-column label="$系统点码数" align="center" width="100px">
+          <el-table-column :label="$t('Station-number')" fixed align="center" prop="tableId" />
+          <el-table-column :label="$t('Boot-number')" align="center" prop="bootNum" />
+          <el-table-column :label="'$' + $t('system-chip-counts')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$手动点码数" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('manual-chip-counts')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.personChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$筹码差距" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Chip-Gap')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$现金差距" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Cash-gap')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$筹码增减" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$现金增减" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险系统点码数" align="center" width="150px">
+          <el-table-column  :label="'$' + $t('Insurance-system-chip-counts')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险手动点码数" align="center" width="150px">
+          <el-table-column  :label="'$' + $t('manual-insurance-chip-counts')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.personInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码差距" align="center" width="150px">
+          <el-table-column   :label="'$' + $t('Insurance-Chip-Gap')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码增减" align="center" width="150px">
+          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$洗码量" align="center" width="100px">
+          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="$输赢" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Win-Loss')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险输赢" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿系统点码数" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('system-chip-counts')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿手动点码数" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('manual-chip-counts')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.personChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿筹码差距" align="center" width="100px">
+          <el-table-column  :label="'฿' + $t('Chip-Gap')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿现金差距" align="center" width="100px">
+          <el-table-column  :label="'฿' + $t('Cash-Gap')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿筹码增减" align="center" width="100px">
+          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿现金增减" align="center" width="100px">
+          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险系统点码数" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('Insurance-system-chip-counts')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险手动点码数" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('Insurance-manual-chip-counts')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.personInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险筹码差距" align="center" width="150px">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Gap')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险筹码增减" align="center" width="150px">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿洗码量" align="center" width="100px">
+          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿输赢" align="center" width="100px">
+          <el-table-column   :label="'฿' + $t('Win-Loss')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险输赢" align="center" width="100px">
+          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="点码时间" align="center" width="180px">
+          <el-table-column   :label="'฿' + $t('Chip-counting-time')" align="center" width="180px">
             <template slot-scope="scope">
               <span>{{ scope.row.createTime || "--" }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="操作备注"
+              :label="$t('Operation-Remarks')"
             align="center"
             width="180px"
             :show-overflow-tooltip="true"
@@ -214,7 +214,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="操作"
+             :label="$t('Operation')"
             align="center"
             fixed="right"
             class-name="small-padding fixed-width"
@@ -227,7 +227,7 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                >点码修改</el-button
+                >{{title}}</el-button
               >
             </template>
           </el-table-column>
@@ -269,7 +269,7 @@ export default {
       formData: {},
       //台号列表
       tableOptions: [],
-      title: "点码修改",
+
       open: false,
       //总计
       userTotal: {},
@@ -301,6 +301,12 @@ export default {
         pageSize: 30
       }
     };
+  },
+  computed: {
+     title(){
+      //点码修改
+       return this.$t("Chip-counting-modification")
+     },
   },
 
   created() {
@@ -485,11 +491,11 @@ export default {
       require.ensure([], () => {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = [
-          "台号",
-          "靴号",
-          "$系统点码数",
-          "$手动点码数",
-          "$筹码差距",
+          this.$t("Station-number"),
+          this.$t("Boot-number"),
+          "$"+this.$t("system-chip-counts"),
+          "$"+this.$t("manual-chip-counts"),
+          "$"+this.$t("Chip-Gap"),
           "$现金差距",
           "$筹码增减",
           "$现金增减",
@@ -566,7 +572,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "type") {
-            return v[j] == 5 ? "签单" : "还单";
+            return v[j] == 5 ? this.$t("Signing") : this.$t("Returns");
           }
           if (j == "amount") {
             return `${v["amountBefore"]}→(${v["amount"]})→${v["amountAfter"]}
@@ -577,7 +583,7 @@ export default {
                  `;
           }
           if (j == "amountType") {
-            return v[j] == 0 ? "筹码" : "现金";
+            return v[j] == 0 ? this.$t("Chip") : this.$t("Cash");
           }
           return v[j];
         })

@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="员工工号" prop="userName">
+          <el-form-item :label="$t('Staff-Work-Number')" prop="userName">
             <el-input
               v-model="queryParams.userName"
               placeholder=""
@@ -19,14 +19,14 @@
               style="width: 240px; margin-right: 20px"
             />
           </el-form-item>
-          <el-form-item label="统计时间">
+          <el-form-item  :label="$t('Statistical-time')" >
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd HH:mm:ss"
               type="datetimerange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
               clearable
             ></el-date-picker>
           </el-form-item>
@@ -36,28 +36,28 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
 
         <el-table v-loading="loading" :data="userList">
-          <el-table-column label="排序" align="center">
+          <el-table-column :label="$t('Sort-by')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="工号"
+            :label="$t('Job-Number')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="nickName"
             prop="nickName"
@@ -66,17 +66,17 @@
               <span>{{ scope.row.nickName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="录入次数" align="center" key="input">
+          <el-table-column :label="$t('Number-of-entries')" align="center" key="input">
             <template slot-scope="scope">
               <span>{{ scope.row.input || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="错误次数" align="center" key="waterAmount">
+          <el-table-column :label="$t('Number-of-errors')"  align="center" key="waterAmount">
             <template slot-scope="scope">
               <span>{{ scope.row.error || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="错误率" align="center" key="errorRate">
+          <el-table-column :label="$t('Error-rate')" align="center" key="errorRate">
             <template slot-scope="scope">
               <span>{{ scope.row.errorRate }}</span>
             </template>

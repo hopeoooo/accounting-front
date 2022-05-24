@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="userName">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -19,14 +19,14 @@
               style="width: 240px; margin-right: 20px"
             />
           </el-form-item>
-          <el-form-item label="统计时间">
+          <el-form-item :label="$t('Statistical-time')">
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -35,11 +35,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -47,27 +47,37 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="小计"
+          :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
         >
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
-          <el-table-column label="姓名" align="center" key="name" prop="name">
+          <el-table-column
+            :label="$t('Name')"
+            align="center"
+            key="name"
+            prop="name"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.name || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="日期" align="center" key="date" prop="date">
+          <el-table-column
+            :label="$t('Date')"
+            align="center"
+            key="date"
+            prop="date"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.date || "--" }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$输赢"
+            :label="'$' + $t('Win-Loss')"
             align="center"
             key="winLose"
             prop="winLose"
@@ -77,7 +87,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$累计输赢"
+            :label="'$' + $t('Card-Cumulative-Win-Loss')"
             align="center"
             key="sumWinLose"
             prop="sumWinLose"
@@ -87,7 +97,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$洗码量"
+            :label="'$' + $t('Rolling-Amount')"
             align="center"
             key="water"
             prop="water"
@@ -97,7 +107,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$累计洗码量"
+            :label="'$' + $t('Cumulative-rolling-amount')"
             align="center"
             key="sumWater"
             prop="sumWater"
@@ -107,7 +117,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿输赢"
+            :label="'฿' + $t('Win-Loss')"
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
@@ -117,7 +127,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿累计输赢"
+            :label="'฿' + $t('Card-Cumulative-Win-Loss')"
             align="center"
             key="sumWinLoseTh"
             prop="sumWinLoseTh"
@@ -128,7 +138,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿洗码量"
+            :label="'฿' + $t('Rolling-Amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
@@ -139,7 +149,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿累计洗码量"
+            :label="'฿' + $t('Cumulative-rolling-amount')"
             align="center"
             key="sumWaterTh"
             prop="sumWaterTh"
@@ -156,27 +166,37 @@
           :data="userList"
           class="table2"
           show-summary
-          sum-text="总计"
+          :sum-text="$t('Tot')"
           :summary-method="getSummaries"
         >
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
-          <el-table-column label="姓名" align="center" key="name" prop="name">
+          <el-table-column
+            :label="$t('Name')"
+            align="center"
+            key="name"
+            prop="name"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.name || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="日期" align="center" key="date" prop="date">
+          <el-table-column
+            :label="$t('Date')"
+            align="center"
+            key="date"
+            prop="date"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.date || "--" }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$输赢"
+            :label="'$' + $t('Win-Loss')"
             align="center"
             key="winLose"
             prop="winLose"
@@ -186,7 +206,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$累计输赢"
+            :label="'$' + $t('Card-Cumulative-Win-Loss')"
             align="center"
             key="sumWinLose"
             prop="sumWinLose"
@@ -196,7 +216,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$洗码量"
+            :label="'$' + $t('Rolling-Amount')"
             align="center"
             key="water"
             prop="water"
@@ -206,7 +226,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$累计洗码量"
+            :label="'$' + $t('Cumulative-rolling-amount')"
             align="center"
             key="sumWater"
             prop="sumWater"
@@ -216,7 +236,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿输赢"
+            :label="'฿' + $t('Win-Loss')"
             align="center"
             key="chipWinLoseTh"
             prop="chipWinLoseTh"
@@ -236,7 +256,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿洗码量"
+            :label="'฿' + $t('Rolling-Amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
@@ -315,7 +335,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "小计";
+          sums[index] = this.$t("Subtotal");
           // return;
         } else if (index == 3 || index == 5 || index == 7 || index == 9) {
           const values = data.map(item => Number(item[column.property]));
@@ -353,7 +373,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index === 3) {
