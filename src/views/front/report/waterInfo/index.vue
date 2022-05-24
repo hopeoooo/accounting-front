@@ -242,7 +242,7 @@
           >
             <template slot-scope="scope">
               <span>{{
-                scope.row.operationType == 0 ? this.$t("Chip") : this.$t("Cash")
+                scope.row.operationType == 0 ? $t("Chip") : $t("Cash")
               }}</span>
             </template>
           </el-table-column>

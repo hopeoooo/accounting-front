@@ -20,7 +20,7 @@
            <i slot="suffix" :class="flag1 == false ? 'el-input__icon icofont-eye-blocked icofont-2x' : 'el-input__icon icofont-eye icofont-2x '" @click="flag1=!flag1"></i>
        </el-input>
     </el-form-item>
-    <el-form-item label="确认密码" prop="confirmPassword">
+    <el-form-item  :label="$t('Confirm-Password')"  prop="confirmPassword">
       <!-- <el-input v-model="user.confirmPassword" placeholder="请确认密码" type="password" show-password/> -->
        <el-input :type="flag2 == false ? 'password' : 'text'" v-model="user.confirmPassword" placeholder="再次输入新密码" autocomplete="off">
            <i slot="suffix" :class="flag2 == false ? 'el-input__icon icofont-eye-blocked icofont-2x' : 'el-input__icon icofont-eye icofont-2x '" @click="flag2=!flag2"></i>
@@ -41,7 +41,7 @@ export default {
   data() {
     const equalToPassword = (rule, value, callback) => {
       if (this.user.newPassword !== value) {
-        callback(new Error("两次输入的密码不一致"));
+        callback(new Error( this.$t("Password-entered-twice-does-not-match")));
       } else {
         callback();
       }
