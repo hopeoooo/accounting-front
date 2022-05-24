@@ -542,6 +542,16 @@
   "card-deactivated":"该卡号已停用",
   "card-counts":"合计卡号数",
   "Yes":"是",
-  "No":"否"
-
+  "No":"否",
+  "sys_tips_title1":"系统提示",
+  "sys_tips_cnt1":"登录状态已过期，您可以继续留在该页面，或者重新登录",
+  "relogin":"重新登录",
+  "sys_tips_cnt2":"数据正在处理，请勿重复提交",
+  "sys_tips_cnt3":"无效的会话，或者会话已过期，请重新登录。",
+  "sys_tips_cnt4":"后端接口连接异常",
+  "sys_tips_cnt5":"系统接口请求超时",
+  "sys_tips_cnt6":"系统接口",
+  "sys_tips_cnt7":"异常",
+  "sys_tips_cnt8":"正在下载数据，请稍候",
+  "sys_tips_cnt9":"下载文件出现错误，请联系管理员！"
 }

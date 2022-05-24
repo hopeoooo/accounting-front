@@ -64,12 +64,13 @@ export default {
       //   console.log("选择语言", val);
       setLanguage(val);
       //   this.$t.locale = val;
+      //  this.$i18n.locale = type;
+      //   document.title = `${i18n.t('meta.'+this.$route.meta.title)} - ${i18n.t('meta.base')}`
     },
 
     // 路由切换
     changeRouter(){
        store.dispatch('GenerateRoutes')
-      
     }
   }
 };

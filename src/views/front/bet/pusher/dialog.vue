@@ -283,7 +283,7 @@
 
 <script>
 import { pusherReckon,pusherEdit} from "@/api/bet/pusher";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Dialog",
   props:['title','open'],
@@ -331,12 +331,18 @@ export default {
       ]   
     };
   },
+    computed:{
+    ...mapState("app",['currentLanguage']),
+  },
   created() {
     console.log(this.isOpen)
   },
   watch: {
       open (val) {
         this.isOpen = val
+      },
+      currentLanguage(val){
+        this.reset()
       }
     },
   methods: {

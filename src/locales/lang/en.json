@@ -389,7 +389,7 @@
   "Enter-old-password": "Enter old password",
   "Enter-new-password": "Enter new password",
   "Re-enter-new-password": "Re-enter new password",
-  "Cage-Management-System": "Cage Management System",
+  "Cage-Management-System": "Cage Management ",
   "Personal-Centre": "Personal Centre",
   "Layout-settings": "Layout settings",
   "Logging-out": "Logging out",
@@ -542,5 +542,16 @@
   "card-deactivated": "This card is deactivated",
   "card-counts": "card amounts",
   "Yes": "Yes",
-  "No": "No"
+  "No": "No",
+  "sys_tips_title1":"Tips",
+  "sys_tips_cnt1":"Your login status has expired, you can stay on this page or log in again",
+  "relogin":"Login again",
+  "sys_tips_cnt2":"Data is being processed, please do not resubmit",
+  "sys_tips_cnt3":"Invalid session, or session has expired, please log in again.",
+  "sys_tips_cnt4":"Backend interface connection exception",
+  "sys_tips_cnt5":"System interface request timeout",
+  "sys_tips_cnt6":"System interface",
+  "sys_tips_cnt7":"abnormal",
+  "sys_tips_cnt8":"Downloading data, please wait",
+  "sys_tips_cnt9":"There was an error downloading the file, please contact the administrator!"
 }

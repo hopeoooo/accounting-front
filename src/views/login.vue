@@ -1,13 +1,14 @@
 <template>
   <div class="login">
+    <LanguageSelect />
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">账房后台管理系统</h3>
+      <h3 class="title">{{currentLanguage == 'zh'?'账房后台管理系统':'Accounting backstage'}}</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
           type="text"
           auto-complete="off"
-          placeholder="账号"
+          :placeholder="currentLanguage == 'zh'?'账号':'Account'"
         >
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
@@ -17,7 +18,7 @@
           v-model="loginForm.password"
           type="password"
           auto-complete="off"
-          placeholder="密码"
+          :placeholder="currentLanguage == 'zh'?'密码':'Password'"
           @keyup.enter.native="handleLogin"
         >
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
@@ -37,7 +38,7 @@
           <img :src="codeUrl" @click="getCode" class="login-code-img"/>
         </div>
       </el-form-item> -->
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">{{currentLanguage == 'zh'?'记住密码':'Remember password'}}</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
@@ -46,11 +47,11 @@
           style="width:100%;"
           @click.native.prevent="handleLogin"
         >
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
+          <span v-if="!loading">{{currentLanguage == 'zh'?'登 录':'Log in'}}</span>
+          <span v-else>{{currentLanguage == 'zh'?'登 录 中...':'Logging in...'}}</span>
         </el-button>
         <div style="float: right;" v-if="register">
-          <router-link class="link-type" :to="'/register'">立即注册</router-link>
+          <router-link class="link-type" :to="'/register'">{{currentLanguage == 'zh'?'立即注册':'Sign up now'}}</router-link>
         </div>
       </el-form-item>
     </el-form>
@@ -65,8 +66,12 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
-
+import { mapState, mapMutations } from "vuex";
+import LanguageSelect from "@/views/components/LanguageSelect";
 export default {
+  components: {
+    LanguageSelect
+  },
   name: "Login",
   data() {
     return {
@@ -78,15 +83,7 @@ export default {
         code: "",
         uuid: ""
       },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", message: "请输入您的账号" }
-        ],
-        password: [
-          { required: true, trigger: "blur", message: "请输入您的密码" }
-        ],
-        // code: [{ required: true, trigger: "change", message: "请输入验证码" }]
-      },
+     
       loading: false,
       // 验证码开关
       captchaOnOff: true,
@@ -106,6 +103,20 @@ export default {
   created() {
     // this.getCode();
     this.getCookie();
+  },
+  computed: {
+    ...mapState("app",['currentLanguage']),
+     loginRules() {
+        return {
+          username: [
+          { required: true, trigger: "blur", message: this.currentLanguage == 'zh'?"请输入您的账号":"Please enter your account number" }
+        ],
+        password: [
+          { required: true, trigger: "blur", message: this.currentLanguage == 'zh'?"请输入您的密码":"Please enter your password" }
+        ],
+        };
+       
+      },
   },
   methods: {
     getCode() {
@@ -163,6 +174,13 @@ export default {
   height: 100%;
   background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
+  .language-select-component-pc{
+    position: fixed;
+    top: 20px;
+    right: 50px;
+    background: #ffffff70;
+    border-radius:18px ;
+  }
 }
 .title {
   margin: 0px auto 30px auto;

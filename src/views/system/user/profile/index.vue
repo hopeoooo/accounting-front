@@ -21,19 +21,19 @@
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
-                <svg-icon icon-class="user" />用户名称
+                <svg-icon icon-class="user" />{{this.$t('User-name')}}
                 <div class="pull-right">{{ user.userName }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="phone" />手机号码
+                <svg-icon icon-class="phone" />{{this.$t('Mobile-P-No.')}}
                 <div class="pull-right">{{ user.phonenumber }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="peoples" />生日
+                <svg-icon icon-class="peoples" />{{this.$t('DOB')}}
                 <div class="pull-right">{{ user.brithday }}</div>
               </li>
               <li class="list-group-item">
-                <svg-icon icon-class="date" />创建日期
+                <svg-icon icon-class="date" />{{this.$t('Date-created')}}
                 <div class="pull-right">{{ user.joinTime }}</div>
               </li>
             </ul>

@@ -31,11 +31,14 @@ export default {
     },
     sideTheme() {
       return this.$store.state.settings.sideTheme
+    },
+    title(){
+      return this.$t('Cage-Management-System')
     }
   },
   data() {
     return {
-      title: '账房管理系统',
+      // title: '账房管理系统',
       logo: logoImg
     }
   }
