@@ -229,38 +229,38 @@ export default {
       rules:{},
       loading:false,
        // 游戏类型列表
-      Gameoptions: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: 1,
-          label: "百家乐"
-        },
-        {
-          value: 2,
-          label: "龙虎"
-        },
-        {
-          value: 3,
-          label: "牛牛"
-        },
-        {
-          value: 4,
-          label: "三公"
-        },
-        {
-          value: 5,
-          label: "推筒子"
-        }
-      ],
-        typeMap: {
-        0: "$筹码",
-        1: "$现金",
-        2: "฿筹码",
-        3: "฿现金"
-      },
+      // Gameoptions: [
+      //   {
+      //     value: "",
+      //     label: "全部"
+      //   },
+      //   {
+      //     value: 1,
+      //     label: "百家乐"
+      //   },
+      //   {
+      //     value: 2,
+      //     label: "龙虎"
+      //   },
+      //   {
+      //     value: 3,
+      //     label: "牛牛"
+      //   },
+      //   {
+      //     value: 4,
+      //     label: "三公"
+      //   },
+      //   {
+      //     value: 5,
+      //     label: "推筒子"
+      //   }
+      // ],
+      //   typeMap: {
+      //   0: "$筹码",
+      //   1: "$现金",
+      //   2: "฿筹码",
+      //   3: "฿现金"
+      // },
       
       defaultProps: {
         children: "children",
@@ -281,6 +281,144 @@ export default {
     console.log(this.isRecord)
     this.getListRecord()
   },
+    computed: {
+    // 游戏类型列表
+    Gameoptions() {
+      return [
+        {
+          value: "",
+          label: i18n.t("All")
+          // label: "全部"
+        },
+        {
+          value: 1,
+          label: i18n.t("Baccarat")
+          // label: "百家乐"
+        },
+        {
+          value: 2,
+          label: i18n.t("DT")
+          // label: "龙虎"
+        },
+        {
+          value: 3,
+          label: i18n.t("Niu-Niu")
+          // label: "牛牛"
+        },
+        {
+          value: 4,
+          label: i18n.t("San-Gong")
+          // label: "三公"
+        },
+        {
+          value: 5,
+          label: i18n.t("Tui-Tong-Zi")
+          // label: "推筒子"
+        }
+      ];
+    },
+    // 币种类型列表
+    typeOptions() {
+      return [
+        {
+          value: null,
+          label: i18n.t("All")
+          // label: "全部"
+        },
+        {
+          value: 1,
+          label: `$${i18n.t("Chip")}`
+          // label: "$筹码"
+        },
+        {
+          value: 2,
+          label: `$${i18n.t("Cash")}`
+          // label: "$现金"
+        },
+        {
+          value: 3,
+          label: `฿${i18n.t("Chip")}`
+          // label: "฿筹码"
+        },
+        {
+          value: 4,
+          label: `฿${i18n.t("Cash")}`
+          // label: "฿现金"
+        },
+
+        {
+          value: 5,
+          label: `$${i18n.t("Chip")}+$${i18n.t("Cash")}`
+          // label: "$筹码+$现金"
+        },
+        {
+          value: 6,
+          label: `฿${i18n.t("Chip")}+฿${i18n.t("Cash")}`
+          // label: "฿筹码+฿现金"
+        }
+      ];
+    },
+    typeOptions2() {
+      return [
+        {
+          value: 0,
+          label: `$${i18n.t("Chip")}`
+          // label: "$筹码"
+        },
+        {
+          value: 1,
+          label: `$${i18n.t("Cash")}`
+          // label: "$现金"
+        },
+        {
+          value: 2,
+          label: `฿${i18n.t("Chip")}`
+          // label: "฿筹码"
+        },
+        {
+          value: 3,
+          label: `฿${i18n.t("Cash")}`
+          // label: "฿现金"
+        }
+      ];
+    },
+    typeMap(){
+      return {
+        0: `$${i18n.t("Chip")}`,
+        1: `$${i18n.t("Cash")}`,
+        2: `฿${i18n.t("Chip")}`,
+        3: `฿${i18n.t("Cash")}`
+      }
+    },
+    TimeList() {
+      return [
+        {
+          name: this.$t("Today"),
+          val: [
+            moment(new Date())
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment(new Date())
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: this.$t("Yesterday"),
+          val: [
+            moment()
+              .subtract(1, "days")
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .subtract(1, "days")
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        }
+      ];
+    },
+  },  
   watch: {
       record (val) {
         this.isRecord = val
