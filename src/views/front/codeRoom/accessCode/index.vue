@@ -166,14 +166,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >存码</el-button
+                >{{$t("Chip-deposit")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >取码</el-button
+                >{{$t("Chips-withdrawal")}}</el-button
               >
               <el-button
                 size="mini"
@@ -294,14 +294,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >存码</el-button
+                >{{$t("Chip-deposit")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >取码</el-button
+                >{{$t("Chips-withdrawal")}}</el-button
               >
             </template>
           </el-table-column>
@@ -485,7 +485,7 @@
 
         <!-- 取码结束 -->
 
-        <el-form-item label="操作备注" prop="remark">
+        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"
@@ -948,7 +948,7 @@ export default {
       this.form["remark"] = "";
       this.open = true;
       this.openType = "deposit";
-      this.title = "存码";
+      this.title = this.$t("Chip-deposit");
     },
 
     /** 取码 */
@@ -960,7 +960,7 @@ export default {
       this.form["remark"] = "";
       this.open = true;
       this.openType = "withdraw";
-      this.title = "取码";
+      this.title = this.$t("Chips-withdrawal");
     },
     /** 导出按钮操作 */
     handleExport() {

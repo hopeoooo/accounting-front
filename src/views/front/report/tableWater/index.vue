@@ -11,14 +11,14 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="统计时间">
+          <el-form-item :label="$t('Statistical-time')">
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -27,11 +27,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -39,27 +39,35 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="总计"
+          :sum-text="$t('Tot')"
           :summary-method="getSummaries"
         >
           <el-table-column
-            label="台号"
+            :label="$t('Station-number')"
             align="center"
             key="tableId"
             prop="tableId"
           />
-          <el-table-column label="$筹码输赢" align="center" key="chipWinLose">
+          <el-table-column
+            :label="'$' + $t('chip-win-loss')"
+            align="center"
+            key="chipWinLose"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$现金输赢" align="center" key="cashWinLose">
+          <el-table-column
+            :label="'$' + $t('cash-win-loss')"
+            align="center"
+            key="cashWinLose"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$保险输赢"
+            :label="'$' + $t('Insurance-Win-Loss')"
             align="center"
             key="insuranceWinLose"
           >
@@ -67,29 +75,45 @@
               <span>{{ scope.row.insuranceWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$合计输赢" align="center" key="winLose">
+          <el-table-column
+            :label="'$' + $t('Tot-Win-Loss')"
+            align="center"
+            key="winLose"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="$洗码量" align="center" key="water">
+          <el-table-column
+            :label="'$' + $t('Rolling-Amount')"
+            align="center"
+            key="water"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿筹码输赢" align="center" key="chipWinLoseTh">
+          <el-table-column
+            :label="'฿' + $t('chip-win-loss')"
+            align="center"
+            key="chipWinLoseTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿现金输赢" align="center" key="cashWinLoseTh">
+          <el-table-column
+            :label="'฿' + $t('cash-win-loss')"
+            align="center"
+            key="cashWinLoseTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="฿保险输赢"
+            :label="'฿' + $t('Insurance-Win-Loss')"
             align="center"
             key="insuranceWinLoseTh"
           >
@@ -97,13 +121,21 @@
               <span>{{ scope.row.insuranceWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿合计输赢" align="center" key="winLoseTh">
+          <el-table-column
+            :label="'฿' + $t('Tot-Win-Loss')"
+            align="center"
+            key="winLoseTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="฿洗码量" align="center" key="waterTh">
+          <el-table-column
+            :label="'฿' + $t('Rolling-Amount')"
+            align="center"
+            key="waterTh"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
@@ -180,7 +212,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index === 1) {

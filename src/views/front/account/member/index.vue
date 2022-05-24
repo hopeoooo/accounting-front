@@ -31,13 +31,13 @@
               v-model="queryParams.isChild"
               style="margin-left:20px;"
               :disabled="!queryParams.value"
-              >包含子卡</el-checkbox
+              >{{$t('Include-sub-cards')}}</el-checkbox
             >
           </el-form-item>
 
           <el-form-item label="卡号状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="全部">
-              <el-option label="全部" :value="null"></el-option>
+            <el-select v-model="queryParams.status"  :placeholder="$t('All')">
+              <el-option :label="$t('All')" :value="null"></el-option>
               <el-option label="正常" :value="0"></el-option>
               <el-option label="停用" :value="1"></el-option>
             </el-select>
@@ -95,7 +95,7 @@
           v-loading="loading"
           :data="userList"
           @selection-change="handleSelectionChange"
-          empty-text="暂无数据"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column
             fixed

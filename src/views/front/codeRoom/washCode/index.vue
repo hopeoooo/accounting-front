@@ -78,7 +78,7 @@
           :row-class-name="status_change"
           show-summary
           :summary-method="getSummaries1"
-          empty-text="暂无数据"
+          :empty-text="$t('no-data')"
           ref="dataTable"
           @sort-change="onSortChange"
         >
@@ -386,8 +386,8 @@
         </el-form-item>
         <el-form-item label="结算币种:" prop="operationType">
           <el-radio-group v-model="form.operationType">
-            <el-radio :label="0">筹码</el-radio>
-            <el-radio :label="1">现金</el-radio>
+            <el-radio :label="0">{{$t("Chip")}}</el-radio>
+            <el-radio :label="1">{{$t("Cash")}}</el-radio>
           </el-radio-group>
         </el-form-item>
 

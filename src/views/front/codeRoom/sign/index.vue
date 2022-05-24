@@ -132,14 +132,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >签单</el-button
+                >{{$t("Signing")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >还单</el-button
+                >{{$t("Returns")}}</el-button
               >
               <el-button
                 size="mini"
@@ -227,14 +227,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >签单</el-button
+                >{{$t("Signing")}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >还单</el-button
+                >{{$t("Returns")}}</el-button
               >
               <el-button
                 size="mini"
@@ -339,7 +339,7 @@
           </el-form-item>
         </div>
 
-        <el-form-item label="操作备注" prop="remark">
+        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"

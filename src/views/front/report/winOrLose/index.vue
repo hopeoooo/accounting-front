@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="userName">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -21,26 +21,32 @@
             <el-checkbox
               v-model="queryParams.cardType"
               :disabled="!queryParams.card"
-              >包含子卡号</el-checkbox
+              >{{ $t("Include-sub") }}</el-checkbox
             >
-            <el-checkbox v-model="queryParams.isAdmin"
-              >过滤内部卡号</el-checkbox
-            >
+            <el-checkbox v-model="queryParams.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
-          <el-form-item label="台号" prop="userName">
-            <el-select v-model="queryParams.tableId" placeholder="请选择">
+          <el-form-item :label="$t('Station-number')" prop="userName">
+            <el-select
+              v-model="queryParams.tableId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId ? item.tableId : '全部'"
+                :label="item.tableId ? item.tableId : $t('All')"
                 :value="item.tableId"
               >
               </el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="游戏类型" prop="userName">
-            <el-select v-model="queryParams.gameId" placeholder="请选择">
+          <el-form-item :label="$t('Game-Type')" prop="userName">
+            <el-select
+              v-model="queryParams.gameId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in Gameoptions"
                 :key="item.value"
@@ -54,7 +60,7 @@
           <TableTime
             ref="TableTime"
             :query="queryParams"
-            label="时间范围"
+            :label="$t('time-range')"
             :quickbtn="true"
             :alltime="true"
           />
@@ -64,11 +70,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
 
             <el-button
               type="warning"
@@ -76,7 +82,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-form-item>
         </el-form>
@@ -85,19 +91,23 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="小计"
+          :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
-           ref="dataTable"
+          ref="dataTable"
         >
-          <el-table-column label="会员卡号" align="center" prop="card" />
-          <el-table-column label="姓名" align="center" prop="name">
+          <el-table-column
+            :label="$t('Membership-Card-Number')"
+            align="center"
+            prop="card"
+          />
+          <el-table-column :label="$t('Name')" align="center" prop="name">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$投注额"
+            :label="'$' + $t('Bet-amount')"
             align="center"
             key="betMoney"
             prop="betMoney"
@@ -108,7 +118,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$洗码量"
+            :label="'$' + $t('Rolling-Amount')"
             align="center"
             key="water"
             prop="water"
@@ -118,7 +128,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$洗码费"
+            :label="'$' + $t('Rolling-Fee')"
             align="center"
             key="waterAmount"
             prop="waterAmount"
@@ -127,18 +137,28 @@
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$和钱" align="center" key="tie" prop="tie">
+          <el-table-column
+            :label="'$' + $t('T-money')"
+            align="center"
+            key="tie"
+            prop="tie"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.tie || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$抽水" align="center" key="pump" prop="pump">
+          <el-table-column
+            :label="'$' + $t('Comm')"
+            align="center"
+            key="pump"
+            prop="pump"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.pump | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$输赢"
+            :label="'$' + $t('Win-Loss')"
             align="center"
             key="winLose"
             prop="winLose"
@@ -148,7 +168,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿投注额"
+            :label="'฿' + $t('Bet-amount')"
             align="center"
             key="betMoneyTh"
             prop="betMoneyTh"
@@ -159,7 +179,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿洗码量"
+            :label="'฿' + $t('Rolling-Amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
@@ -170,7 +190,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿洗码费"
+            :label="'฿' + $t('Rolling-Fee')"
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
@@ -181,7 +201,7 @@
           </el-table-column>
           <el-table-column
             prop="tieTh"
-            label="฿和钱"
+            :label="'฿' + $t('T-money')"
             align="center"
             key="tieTh"
           >
@@ -191,7 +211,7 @@
           </el-table-column>
           <el-table-column
             prop="pumpTh"
-            label="฿抽水"
+            :label="'฿' + $t('Comm')"
             align="center"
             key="pumpTh"
           >
@@ -200,7 +220,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿输赢"
+            :label="'฿' + $t('Win-Loss')"
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
@@ -215,17 +235,21 @@
           :data="userList"
           class="table2"
           show-summary
-          sum-text="总计"
+          :sum-text="$t('Tot')"
           :summary-method="getSummaries"
         >
-          <el-table-column label="会员卡号" align="center" prop="card" />
-          <el-table-column label="姓名" align="center" prop="name">
+          <el-table-column
+            :label="$t('Membership-Card-Number')"
+            align="center"
+            prop="card"
+          />
+          <el-table-column :label="$t('Name')" align="center" prop="name">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$投注额"
+            :label="'$' + $t('Bet-amount')"
             align="center"
             key="betMoney"
             prop="betMoney"
@@ -236,7 +260,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$洗码量"
+            :label="'$' + $t('Rolling-Amount')"
             align="center"
             key="water"
             prop="water"
@@ -246,7 +270,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$洗码费"
+            :label="'$' + $t('Rolling-Fee')"
             align="center"
             key="waterAmount"
             prop="waterAmount"
@@ -255,18 +279,28 @@
               <span>{{ scope.row.waterAmount || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$和钱" align="center" key="tie" prop="tie">
+          <el-table-column
+            :label="'$' + $t('T-money')"
+            align="center"
+            key="tie"
+            prop="tie"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.tie || 0 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$抽水" align="center" key="pump" prop="pump">
+          <el-table-column
+            :label="'$' + $t('Comm')"
+            align="center"
+            key="pump"
+            prop="pump"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.pump || 0 }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$输赢"
+            :label="'$' + $t('Win-Loss')"
             align="center"
             key="winLose"
             prop="winLose"
@@ -287,7 +321,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿洗码量"
+            :label="'฿' + $t('Rolling-Amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
@@ -328,7 +362,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿输赢"
+            :label="'฿' + $t('Win-Loss')"
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
@@ -536,7 +570,7 @@ export default {
         isAsc: null,
         orderByColumn: null
       };
-      this.$refs.dataTable.clearSort()
+      this.$refs.dataTable.clearSort();
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -599,7 +633,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "type") {
-            return v[j] == 5 ? "签单" : "还单";
+            return v[j] == 5 ? this.$t("Signing") : this.$t("Returns");
           }
           if (j == "amount") {
             return `${v["amountBefore"]}→(${v["amount"]})→${v["amountAfter"]}
@@ -610,7 +644,7 @@ export default {
                  `;
           }
           if (j == "amountType") {
-            return v[j] == 0 ? "筹码" : "现金";
+            return v[j] == 0 ? this.$t("Chip") : this.$t("Cash");
           }
           return v[j];
         })
@@ -626,7 +660,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "小计";
+          sums[index] = this.$t("Subtotal");
         } else if (index > 1) {
           const values = data.map(item => {
             return Number(item[column.property]);
@@ -662,7 +696,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index == 2) {
