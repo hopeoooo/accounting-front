@@ -41,10 +41,10 @@
           icon="el-icon-search"
           size="mini"
           @click="handleQuery"
-          >查询</el-button
+          >{{$t("Enq")}}</el-button
         >
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-          >重置</el-button
+          >{{$t("Rst")}}</el-button
         >
       </el-form-item>
     </el-form>
@@ -65,7 +65,7 @@
     <el-table v-loading="loading" :data="employeeList">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="工号" prop="userName" />
-      <el-table-column label="姓名" prop="nickName" />
+      <el-table-column  :label="$t('Name')"  prop="nickName" />
       <el-table-column label="职位" prop="post">
         <template slot-scope="scope">
           <span v-if="scope.row.post">{{ scope.row.post }}</span>
@@ -108,7 +108,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="操作"
+         :label="$t('Opr')"
         align="center"
         class-name="small-padding fixed-width"
       >
@@ -166,7 +166,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="姓名" prop="nickName">
+            <el-form-item  :label="$t('Name')"  prop="nickName">
               <el-input v-model="form.nickName" placeholder="请输入姓名" />
             </el-form-item>
           </el-col>
@@ -266,7 +266,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click="submitForm">确定</el-button>
-        <el-button @click="resetBtn">重置</el-button>
+        <el-button @click="resetBtn">{{$t("Rst")}}</el-button>
       </div>
     </el-dialog>
   </div>

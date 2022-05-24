@@ -11,14 +11,14 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="fromSearch.card"
               placeholder=""
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="fromSearch.isAdmin">过滤内部卡号</el-checkbox>
+            <el-checkbox v-model="fromSearch.isAdmin">{{$t("Filter-internal-card")}}</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -26,10 +26,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
@@ -42,7 +42,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{$t("Export")}}</el-button
             >
           </el-col>
         </el-row>
@@ -59,31 +59,31 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+             :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="状态"
+             :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">正常</span>
-              <span v-else style="color:red">停用</span>
+              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
+              <span v-else style="color:red">{{$t("Deactivated")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$已存筹码余额"
+            :label="'$'+$t('Deposited-Chip-Balance')"
             align="center"
             sortable="custom"
             key="chipBalance"
@@ -94,7 +94,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$已存现金余额"
+            :label="'$'+$t('Deposited-Cash-Balance')"
             align="center"
             sortable="custom"
             key="cashBalance"
@@ -105,7 +105,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿已存筹码余额"
+          :label="'฿'+$t('Deposited-Chip-Balance')"
+
             align="center"
             sortable="custom"
             key="chipBalanceTh"
@@ -116,7 +117,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿已存现金余额"
+           :label="'฿'+$t('Deposited-Cash-Balance')"
+
             align="center"
             sortable="custom"
             key="cashBalanceTh"
@@ -139,7 +141,7 @@
           </el-table-column> -->
 
           <el-table-column
-            label="备注"
+               :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -155,7 +157,7 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="200"
             class-name="small-padding fixed-width"
@@ -180,7 +182,7 @@
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >明细</el-button
+                >{{$t('Breakdown')}}</el-button
               >
             </template>
           </el-table-column>
@@ -198,31 +200,31 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+             :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="状态"
+             :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">正常</span>
-              <span v-else style="color:red">停用</span>
+              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
+              <span v-else style="color:red">{{$t("Deactivated")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$已存筹码余额"
+            :label="'$'+$t('Deposited-Chip-Balance')"
             align="center"
             sortable="custom"
             key="chipBalance"
@@ -233,7 +235,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$已存现金余额"
+            :label="'$'+$t('Deposited-Cash-Balance')"
             align="center"
             sortable="custom"
             key="cashBalance"
@@ -275,7 +277,7 @@
           /> -->
 
           <el-table-column
-            label="备注"
+               :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -283,7 +285,7 @@
           />
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="200"
             class-name="small-padding fixed-width"
@@ -333,7 +335,7 @@
         label-width="100px"
         class="access-code-form"
       >
-        <el-form-item label="卡号" prop="card">
+        <el-form-item :label="$t('Card-number')" prop="card">
           <el-input
             v-model="form.card"
             placeholder=""
@@ -345,7 +347,7 @@
         <!-- 存码 开始-->
         <div v-if="openType == 'deposit'">
           <el-form-item
-            label="$存储筹码"
+            :label="'$'+$t('Deposit-Chip')"
             prop="chipAmount"
             v-if="openType == 'deposit'"
           >
@@ -358,7 +360,8 @@
             />
           </el-form-item>
           <el-form-item
-            label="$存储现金"
+           :label="'$'+$t('Deposit-Cash')"
+
             prop="cashAmount"
             v-if="openType == 'deposit'"
           >
@@ -371,7 +374,8 @@
             />
           </el-form-item>
           <el-form-item
-            label="฿存储筹码"
+          :label="'฿'+$t('Deposit-Chip')"
+
             prop="chipAmountTh"
             v-if="openType == 'deposit'"
           >
@@ -384,7 +388,8 @@
             />
           </el-form-item>
           <el-form-item
-            label="฿存储现金"
+           :label="'฿'+$t('Deposit-Cash')"
+
             prop="cashAmountTh"
             v-if="openType == 'deposit'"
           >
@@ -403,14 +408,14 @@
         <!-- 取码 开始-->
         <div class="withdraw-box" v-if="openType == 'withdraw'">
           <div style="display:flex">
-            <el-form-item label="$现有筹码" prop="chipBalance">
+            <el-form-item :label="'$'+$t('Available-Chip')" prop="chipBalance">
               <el-input
                 v-model="form.chipBalance"
                 placeholder=""
                 :disabled="true"
               />
             </el-form-item>
-            <el-form-item label="$现有现金" prop="cashBalance">
+            <el-form-item :label="'$'+$t('Available-Cash')"  prop="cashBalance">
               <el-input
                 v-model="form.cashBalance"
                 placeholder=""
@@ -419,7 +424,7 @@
             </el-form-item>
           </div>
           <div style="display:flex">
-            <el-form-item label="$取出筹码" prop="chipAmount">
+            <el-form-item :label="'$'+$t('Chip-withdrawal')" prop="chipAmount">
               <el-input
                 v-model="form.chipAmount"
                 placeholder=""
@@ -428,7 +433,7 @@
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item label="$取出现金" prop="cashAmount">
+            <el-form-item :label="'$'+$t('Cash-withdrawal')" prop="cashAmount">
               <el-input
                 v-model="form.cashAmount"
                 placeholder=""
@@ -442,14 +447,14 @@
 
         <div class="withdraw-box" v-if="openType == 'withdraw'">
           <div style="display:flex">
-            <el-form-item label="฿现有筹码" prop="chipBalanceTh">
+            <el-form-item :label="'฿'+$t('Available-Chip')"  prop="chipBalanceTh">
               <el-input
                 v-model="form.chipBalanceTh"
                 placeholder=""
                 :disabled="true"
               />
             </el-form-item>
-            <el-form-item label="฿现有现金" prop="cashBalanceTh">
+            <el-form-item :label="'฿'+$t('Available-Cash')"  prop="cashBalanceTh">
               <el-input
                 v-model="form.cashBalanceTh"
                 placeholder=""
@@ -459,7 +464,8 @@
           </div>
           <div style="display:flex">
             <el-form-item
-              label="฿取出筹码"
+             :label="'฿'+$t('Chip-withdrawal')"
+
               prop="chipAmountTh"
               :show-message="false"
             >
@@ -471,7 +477,7 @@
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item label="฿取出现金" prop="cashAmountTh">
+            <el-form-item :label="'฿'+$t('Cash-withdrawal')"  prop="cashAmountTh">
               <el-input
                 v-model="form.cashAmountTh"
                 placeholder=""
@@ -489,7 +495,7 @@
           <el-input
             type="textarea"
             :rows="7"
-            placeholder="请输入内容"
+            :placeholder="$t('Please-enter-conten')"
             v-model="form.remark"
             maxlength="100"
             show-word-limit
@@ -508,9 +514,9 @@
               form.chipBalanceTh == 0 &&
               form.cashBalanceTh == 0
           "
-          >确认</el-button
+          >{{$t("Confirm")}}</el-button
         >
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -637,120 +643,7 @@ export default {
     this.getList();
   },
   methods: {
-    // chipAmountValidator(rule, value, callback) {
-    //   // 筹码金额校验
-    //   if (this.openType == "deposit") {
-    //     // 存码的校验规则
-    //     if (
-    //       !this.form.chipAmount &&
-    //       !this.form.cashAmount &&
-    //       !this.form.chipAmountTh &&
-    //       !this.form.cashAmountTh
-    //     ) {
-    //       callback(new Error("请输入至少一个存码金额"));
-    //     } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
-    //       callback(new Error("请输入大于0的数字"));
-    //     } else {
-    //       // 当筹码金额通过校验时，如果现金金额通过校验，则移除现金的校验结果果
-    //       if (
-    //         !this.form.cashAmount ||
-    //         (this.form.cashAmount && this.form.cashAmount > 0)
-    //       ) {
-    //         this.$refs["form"].clearValidate("cashAmount");
-    //       }
-    //       callback();
-    //     }
-    //   } else {
-    //     // 取码的校验规则
-    //     if (
-    //       !this.form.chipAmount &&
-    //       !this.form.cashAmount &&
-    //       !this.form.chipAmountTh &&
-    //       !this.form.cashAmountTh
-    //     ) {
-    //       callback(new Error("请输入至少一个取码金额"));
-    //     } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
-    //       callback(new Error("请输入大于0的数字"));
-    //     } else if (
-    //       this.form.chipAmount &&
-    //       this.form.chipAmount > this.form.chipBalance
-    //     ) {
-    //       // 取出的筹码/现金必须小于等于现有筹码/现金，否则提示“余额不足“
-    //       callback(new Error("余额不足"));
-    //     } else if (this.form.chipAmount && this.form.chipBalance == 0) {
-    //       // 现有筹码为0，对应的取出金额输入任何金额，提示“余额不足’
-    //       callback(new Error("余额不足"));
-    //     } else {
-    //       // 当筹码金额通过校验时，如果现金金额通过校验，则移除该输入项的校验结果
-    //       if (
-    //         !this.form.cashAmount ||
-    //         (this.form.cashAmount &&
-    //           this.form.cashBalance > 0 &&
-    //           this.form.cashAmount > 0 &&
-    //           this.form.cashAmount <= this.cashBalance)
-    //       ) {
-    //         this.$refs["form"].clearValidate("cashAmount");
-    //       }
 
-    //       callback();
-    //     }
-    //   }
-    // },
-    // cashAmountValidator(rule, value, callback) {
-    //   // 现金金额校验
-    //   if (this.openType == "deposit") {
-    //     // 存码的校验规则
-    //     if (!this.form.chipAmount && !this.form.cashAmount) {
-    //       callback(new Error("请输入至少一个存码金额"));
-    //     } else if (this.form.cashAmount && this.form.cashAmount <= 0) {
-    //       callback(new Error("请输入大于0的数字"));
-    //     } else {
-    //       // 当现金金额通过校验时，如果筹码金金额为空或者筹码金额不为空但是大于0，则移除筹码金额的校验结果
-    //       if (
-    //         !this.form.chipAmount ||
-    //         (this.form.chipAmount && this.form.chipAmount > 0)
-    //       ) {
-    //         this.$refs["form"].clearValidate("chipAmount");
-    //       }
-
-    //       callback();
-    //     }
-    //   } else {
-    //     // 取码的校验规则
-    //     if (!this.form.chipAmount && !this.form.cashAmount) {
-    //       callback(new Error("请输入至少一个取码金额"));
-    //     } else if (this.form.cashAmount && this.form.cashAmount <= 0) {
-    //       callback(new Error("请输入大于0的数字"));
-    //     } else if (
-    //       this.form.cashAmount &&
-    //       this.form.cashAmount > this.form.cashBalance
-    //     ) {
-    //       callback(new Error("余额不足"));
-    //     } else if (this.form.cashAmount && this.form.cashBalance == 0) {
-    //       // 现有现金为0，对应的取出金额输入任何金额，提示“余额不足’
-    //       callback(new Error("余额不足"));
-    //     } else {
-    //       // 如果现金金额符合校验,同时移除筹码金额的校验结果
-    //       console.log("如果现金金额符合校验,同时移除筹码金额的校验结果");
-
-    //       if (
-    //         !this.form.chipAmount ||
-    //         (this.form.chipAmount &&
-    //           this.form.chipBalance > 0 &&
-    //           this.form.chipAmount > 0 &&
-    //           this.form.chipAmount <= this.chipBalance)
-    //       ) {
-    //         this.$refs["form"].clearValidate("chipAmount");
-    //       }
-    //       // else {
-    //       //   console.log("再对筹码校验");
-    //       //   this.$refs["form"].validate("chipAmount");
-    //       // }
-
-    //       callback();
-    //     }
-    //   }
-    // },
     // 通用的金额校验
     amountValidator(rule, value, callback) {
       // console.log(rule,value);
@@ -762,9 +655,9 @@ export default {
           !this.form.chipAmountTh &&
           !this.form.cashAmountTh
         ) {
-          callback(new Error("请输入至少一个存码金额"));
+          callback(new Error(this.$t("Please-enter-at-least-one-deposit-amount")));
         } else if (value && value <= 0) {
-          callback(new Error("请输入大于0的数字"));
+          callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else {
           callback();
         }
@@ -779,15 +672,15 @@ export default {
           !this.form.chipAmountTh &&
           !this.form.cashAmountTh
         ) {
-          callback(new Error("请输入至少一个取码金额"));
+          callback(new Error(this.$t("Please-enter-at-least-one-withdrawal-amount")));
         } else if (value && value <= 0) {
-          callback(new Error("请输入大于0的数字"));
+          callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else if (value && value > this.form[balanceField]) {
           // 取出的筹码/现金必须小于等于现有筹码/现金，否则提示“余额不足“
-          callback(new Error("余额不足"));
+          callback(new Error(this.$t("Insufficient-balance")));
         } else if (value && this.form[balanceField] == 0) {
           // 现有筹码为0，对应的取出金额输入任何金额，提示“余额不足’
-          callback(new Error("余额不足"));
+          callback(new Error(this.$t("Insufficient-balance")));
         } else {
           callback();
         }
@@ -831,7 +724,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "小计";
+           sums[index] = this.$t("Subtotal");
           return;
         }
         if (index === 1 || index === 2 || index === 7) {
@@ -871,7 +764,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index === 3) {
@@ -1000,7 +893,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "status") {
-            return v["status"] == 0 ? "正常" : "停用";
+            return v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
           } else {
             return v[j];
           }
@@ -1017,7 +910,7 @@ export default {
       if (this.openType == "withdraw") {
         if (this.form.status == 1) {
           // 取码时 如果卡号停用，则提示“该卡号已停用”
-          this.$modal.msgError("该卡号已停用");
+          this.$modal.msgError(this.$t("card-deactivated"));
           return;
         }
       }
@@ -1032,7 +925,7 @@ export default {
           if (this.openType == "withdraw") {
             updateCodeFetching(this.form)
               .then(response => {
-                this.$modal.msgSuccess("取码成功");
+                this.$modal.msgSuccess(this.$t("Withdrawal-Successful"));
 
                 this.open = false;
                 this.getList();
@@ -1044,7 +937,7 @@ export default {
             // this.form["cardType"] = 1;
             saveCode(this.form)
               .then(response => {
-                this.$modal.msgSuccess("存码成功");
+                this.$modal.msgSuccess(this.$t("Deposit-Successful"));
                 this.open = false;
                 this.getList();
               })

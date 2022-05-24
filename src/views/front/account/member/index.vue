@@ -59,10 +59,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
@@ -105,9 +105,9 @@
             width="50"
             align="center"
           /> -->
-          <el-table-column label="卡号" align="center" key="card" prop="card" />
+          <el-table-column  :label="$t('Card-number')"  align="center" key="card" prop="card" />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="name"
             prop="name"
@@ -125,7 +125,7 @@
               <span v-else>--</span>
             </template>
           </el-table-column>
-          <el-table-column label="状态" align="center" key="status">
+          <el-table-column  :label="$t('Staus')"  align="center" key="status">
             <template slot-scope="scope">
               <!-- <el-switch
                 v-model="scope.row.status"
@@ -133,8 +133,8 @@
                 inactive-value="1"
                 @change="handleStatusChange(scope.row)"
               ></el-switch> -->
-              <span v-if="scope.row.status == 0">正常</span>
-              <span v-else style="color:red">停用</span>
+              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
+              <span v-else style="color:red">{{$t("Deactivated")}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -154,7 +154,7 @@
             prop="isAdmin"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isAdmin == 0 ? "否" : "是" }}</span>
+              <span>{{ scope.row.isAdmin == 0 ? this.$t("No") : this.$t("Yes")}}</span>
             </template>
           </el-table-column>
           <el-table-column label="性别" align="center" key="sex" prop="sex">
@@ -180,7 +180,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="备注"
+               :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -195,7 +195,7 @@
 
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="260"
             style="text-align:left;"
@@ -266,7 +266,7 @@
       >
         <el-row :gutter="0" v-if="isMain == false">
           <el-col :span="12">
-            <el-form-item label="卡号" prop="card">
+            <el-form-item  :label="$t('Card-number')"  prop="card">
               <el-input
                 v-model="form.card"
                 placeholder="请输入卡号"
@@ -275,7 +275,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
+            <el-form-item  :label="$t('Name')"  prop="name">
               <el-input v-model="form.name" placeholder="请输入姓名" />
             </el-form-item>
           </el-col>
@@ -291,7 +291,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
+            <el-form-item  :label="$t('Name')"  prop="name">
               <el-input v-model="form.name" placeholder="请输入姓名" />
             </el-form-item>
           </el-col>
@@ -501,20 +501,20 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="是否可换现" prop="isCash">
+            <el-form-item  :label="$t('is-cash-out')"  prop="isCash">
               <el-select
                 v-model="form.isCash"
                 placeholder=""
                 style="width:100px"
               >
-                <el-option label="否" :value="0"></el-option>
-                <el-option label="是" :value="1"></el-option>
+                <el-option  :label="$t('No')"  :value="0"></el-option>
+                <el-option  :label="$t('Yes')"  :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="是否可结算洗码"
+              :label="$t('is-settle')"
               prop="isSettlement"
               label-width="110px"
             >
@@ -523,8 +523,8 @@
                 placeholder=""
                 style="width:100px"
               >
-                <el-option label="否" :value="0"></el-option>
-                <el-option label="是" :value="1"></el-option>
+                <el-option  :label="$t('No')"  :value="0"></el-option>
+                <el-option  :label="$t('Yes')"  :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -537,8 +537,8 @@
                 placeholder=""
                 style="width:100px"
               >
-                <el-option label="否" :value="0"></el-option>
-                <el-option label="是" :value="1"></el-option>
+                <el-option  :label="$t('No')"  :value="0"></el-option>
+                <el-option  :label="$t('Yes')"  :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -549,15 +549,15 @@
                 placeholder=""
                 style="width:100px"
               >
-                <el-option label="否" :value="0"></el-option>
-                <el-option label="是" :value="1"></el-option>
+                <el-option  :label="$t('No')"  :value="0"></el-option>
+                <el-option  :label="$t('Yes')"  :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item  :label="$t('Staus')"  prop="status">
               <el-select
                 v-model="form.status"
                 placeholder=""
@@ -579,19 +579,19 @@
                 placeholder=""
                 style="width:100px"
               >
-                <el-option label="否" :value="0"></el-option>
-                <el-option label="是" :value="1"></el-option>
+                <el-option  :label="$t('No')"  :value="0"></el-option>
+                <el-option  :label="$t('Yes')"  :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item    :label="$t('Remarks')"    prop="remark">
               <el-input
                 type="textarea"
                 :rows="7"
-                placeholder="请输入内容"
+                :placeholder="$t('Please-enter-conten')"
                 v-model="form.remark"
                 maxlength="100"
                 show-word-limit
@@ -603,7 +603,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="resetAddForm">重置</el-button>
+        <el-button @click="resetAddForm">{{$t("Rst")}}</el-button>
       </div>
     </el-dialog>
 
@@ -703,13 +703,13 @@
         <div class="list">
           <span>是否抽水</span
           ><span>{{
-            memlist.isPump != null ? (memlist.isPump == 0 ? "否" : "是") : "-"
+            memlist.isPump != null ? (memlist.isPump == 0 ? this.$t("No") : "是") : "-"
           }}</span>
         </div>
         <div class="list">
           <span>是否可换现</span
           ><span>{{
-            memlist.isCash != null ? (memlist.isCash == 0 ? "否" : "是") : "-"
+            memlist.isCash != null ? (memlist.isCash == 0 ? this.$t("No") : "是") : "-"
           }}</span>
         </div>
         <div class="list">
@@ -717,7 +717,7 @@
           ><span>{{
             memlist.isSettlement != null
               ? memlist.isSettlement == 0
-                ? "否"
+                ? this.$t("No")
                 : "是"
               : "-"
           }}</span>
@@ -725,10 +725,10 @@
         <div class="list">
           <span>是否可汇出</span
           ><span>{{
-            memlist.isOut != null ? (memlist.isOut == 0 ? "否" : "是") : "-"
+            memlist.isOut != null ? (memlist.isOut == 0 ? this.$t("No") : "是") : "-"
           }}</span>
         </div>
-        <!-- <div class="list"><span>是否走账</span><span>{{memlist.isBill?(memlist.isBill==0?"否":"是"):'-'}}</span></div> -->
+        <!-- <div class="list"><span>是否走账</span><span>{{memlist.isBill?(memlist.isBill==0?this.$t("No"):"是"):'-'}}</span></div> -->
       </div>
     </el-dialog>
   </div>

@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="260"
             class-name="small-padding fixed-width"
@@ -102,7 +102,7 @@
               <el-input
                 type="textarea"
                 :rows="7"
-                placeholder="请输入内容"
+                :placeholder="$t('Please-enter-conten')"
                 v-model="form.remark"
                 maxlength="100"
                 show-word-limit
@@ -143,7 +143,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
   </div>

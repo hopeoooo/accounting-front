@@ -47,7 +47,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="操作"
+         :label="$t('Opr')"
         align="center"
         class-name="small-padding fixed-width"
       >
@@ -146,7 +146,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -490,7 +490,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index === 2) {

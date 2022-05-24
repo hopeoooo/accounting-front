@@ -566,7 +566,7 @@ export default {
       // 大于0的数字数字校验
       // 请输入大于0的数字
       if (value < 0) {
-        callback(new Error("请输入大于0的数字"));
+        callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
       } else {
         callback();
       }

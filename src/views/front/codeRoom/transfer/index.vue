@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="fromSearch.card"
               placeholder=""
@@ -26,10 +26,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
@@ -48,27 +48,27 @@
             align="center"
           /> -->
           <el-table-column
-            label="会员卡号"
+             :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="状态"
+             :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
             width="80"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">正常</span>
-              <span v-else style="color:red">停用</span>
+              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
+              <span v-else style="color:red">{{$t("Deactivated")}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -78,11 +78,11 @@
             prop="isOut"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isOut == 0 ? "否" : "是" }}</span>
+              <span>{{ scope.row.isOut == 0 ? this.$t("No") : this.$t("Yes")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="备注"
+               :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -98,7 +98,7 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="操作"
+             :label="$t('Opr')"
             align="center"
             width="260"
             class-name="small-padding fixed-width"
@@ -123,7 +123,7 @@
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >明细</el-button
+                >{{$t('Breakdown')}}</el-button
               >
             </template>
           </el-table-column>
@@ -149,7 +149,7 @@
       :close-on-click-modal="false"
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="卡号" prop="card">
+        <el-form-item  :label="$t('Card-number')"  prop="card">
           <el-input
             v-model="form.card"
             placeholder=""
@@ -198,7 +198,7 @@
             :rows="7"
             maxlength="100"
             show-word-limit
-            placeholder="请输入内容"
+            :placeholder="$t('Please-enter-conten')"
             v-model="form.remark"
           >
           </el-input>
@@ -206,7 +206,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
         <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -315,7 +315,7 @@ export default {
           this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额";
         callback(new Error(errMsg));
       } else if (this.form.amount && this.form.amount <= 0) {
-        callback(new Error("请输入大于0的数字"));
+        callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
       } else {
         if (
           !this.form.amountTh ||
@@ -332,7 +332,7 @@ export default {
           this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额";
         callback(new Error(errMsg));
       } else if (this.form.amountTh && this.form.amountTh <= 0) {
-        callback(new Error("请输入大于0的数字"));
+        callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
       } else {
         if (!this.form.amount || (this.form.amount && this.form.amount > 0)) {
           this.$refs["form"].clearValidate("amount");
@@ -429,7 +429,7 @@ export default {
       if (this.openType == "out") {
         if (this.form.status == 1) {
           // 如果卡号停用，则提示“该卡号已停用”
-          this.$modal.msgError("该卡号已停用");
+          this.$modal.msgError(this.$t("card-deactivated"));
           return;
         }
 

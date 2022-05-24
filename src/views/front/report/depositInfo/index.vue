@@ -72,7 +72,7 @@
               icon="el-icon-c-scale-to-original"
               size="mini"
               @click="handleDetail"
-              >明细</el-button
+              >{{$t('Breakdown')}}</el-button
             >
           </el-col> -->
           <el-col :span="1.5">
