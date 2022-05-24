@@ -152,7 +152,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="百家乐洗码比例（$筹码）"
+               :label="$t('Baccarat-Rolling-Ratio-S-Chip')"
               prop="baccaratRollingRatioChip"
               label-width="200px"
             >
@@ -169,7 +169,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="百家乐洗码比例（$现金）"
+               :label="$t('Baccarat-Rolling-Ratio-S-Cash')"
               prop="baccaratRollingRatioCash"
               label-width="200px"
             >
@@ -186,7 +186,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="龙虎洗码比例（$筹码）"
+               :label="$t('DT-Rolling-Ratio-S-Chip')"
               prop="dragonTigerRatioChip"
               label-width="200px"
             >
@@ -202,7 +202,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="龙虎洗码比例（$现金）"
+               :label="$t('DT-Rolling-Ratio-S-Cash')"
               prop="dragonTigerRatioCash"
               label-width="200px"
             >
@@ -219,7 +219,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="百家乐洗码比例（฿筹码）"
+               :label="$t('Baccarat-Rolling-Ratio-B-Chip')"
               prop="baccaratRollingRatioChipTh"
               label-width="200px"
             >
@@ -236,7 +236,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="百家乐洗码比例（฿现金）"
+               :label="$t('Baccarat-Rolling-Ratio-B-Cash')"
               prop="baccaratRollingRatioCashTh"
               label-width="200px"
             >
@@ -253,7 +253,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="龙虎洗码比例（฿筹码）"
+               :label="$t('DT-Rolling-Ratio-B-chip')"
               prop="dragonTigerRatioChipTh"
               label-width="200px"
             >
@@ -270,7 +270,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-              label="龙虎洗码比例（฿现金）"
+               :label="$t('DT-Rolling-Ratio-B-cash')"
               prop="dragonTigerRatioCashTh"
               label-width="200px"
             >
@@ -347,7 +347,7 @@ export default {
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100"
+            message:  this.$t("Only-0-100-can-be-entered")
           }
           // {
           //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
@@ -453,96 +453,96 @@ export default {
         baccaratRollingRatioChip: [
           {
             required: true,
-            message: "百家乐洗码比例（$筹码）不能为空",
+            message:  this.$t("Baccarat-Rolling-Ratio-S-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioCash: [
           {
             required: true,
-            message: "百家乐洗码比例（$现金）不能为空",
+            message:  this.$t("Baccarat-Rolling-Ratio-S-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioChip: [
           {
             required: true,
-            message: "龙虎洗码比例（$筹码）不能为空",
+            message:  this.$t("DT-Rolling-Ratio-S-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioCash: [
           {
             required: true,
-            message: "龙虎洗码比例（$现金）不能为空",
+            message:  this.$t("DT-Rolling-Ratio-S-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioChipTh: [
           {
             required: true,
-            message: "百家乐洗码比例（฿筹码）不能为空",
+            message:  this.$t("Baccarat-Rolling-Ratio-B-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioCashTh: [
           {
             required: true,
-            message: "百家乐洗码比例（฿现金）不能为空",
+            message:  this.$t("Baccarat-Rolling-Ratio-B-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioChipTh: [
           {
             required: true,
-            message: "龙虎洗码比例（฿筹码）不能为空",
+            message:  this.$t("DT-Rolling-Ratio-B-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioCashTh: [
           {
             required: true,
-            message: "龙虎洗码比例（฿现金）不能为空",
+            message:  this.$t("DT-Rolling-Ratio-B-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message:  this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ]
@@ -557,7 +557,7 @@ export default {
       // 百分比校验
       // 只能输入0-100
       if (value > 100 || value < 0) {
-        callback(new Error("只能输入0-100"));
+        callback(new Error( this.$t("Only-0-100-can-be-entered")));
       } else {
         callback();
       }

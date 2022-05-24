@@ -205,7 +205,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm">{{$t('OK')}}</el-button>
         <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>

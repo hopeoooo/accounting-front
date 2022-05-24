@@ -34,7 +34,7 @@ service.defaults.timeout = 10000;
 // request拦截器
 service.interceptors.request.use(config => {
   // 给每个请求加请求头加上当前语言
-  config.headers.language = languageMap[i18n.locale]
+  config.headers.language = languageMap[i18n.locale] || "en_us"
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交

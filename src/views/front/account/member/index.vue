@@ -17,9 +17,9 @@
               placeholder=""
               style="width: 130px"
             >
-              <el-option label="卡号查询" value="card"></el-option>
-              <el-option label="姓名查询" value="name"></el-option>
-              <el-option label="电话号码查询" value="phone"></el-option>
+              <el-option :label="$t('Card-search')" value="card"></el-option>
+              <el-option :label="$t('Name-search')" value="name"></el-option>
+              <el-option :label="$t('Phone-search')" value="phone"></el-option>
             </el-select>
             <el-input
               v-model="queryParams.value"
@@ -31,26 +31,26 @@
               v-model="queryParams.isChild"
               style="margin-left:20px;"
               :disabled="!queryParams.value"
-              >{{$t('Include-sub-cards')}}</el-checkbox
+              >{{ $t("Include-sub-cards") }}</el-checkbox
             >
           </el-form-item>
 
-          <el-form-item label="卡号状态" prop="status">
-            <el-select v-model="queryParams.status"  :placeholder="$t('All')">
+          <el-form-item :label="$t('card-status')" prop="status">
+            <el-select v-model="queryParams.status" :placeholder="$t('All')">
               <el-option :label="$t('All')" :value="null"></el-option>
-              <el-option label="正常" :value="0"></el-option>
-              <el-option label="停用" :value="1"></el-option>
+              <el-option :label="$t('Normal')" :value="0"></el-option>
+              <el-option :label="$t('Deactivated')" :value="1"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="开户时间">
+          <el-form-item :label="$t('Acc-Op-Tm')">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -59,11 +59,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -75,7 +75,7 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
-              >新增</el-button
+              >{{$t('Add-New')}}</el-button
             >
           </el-col>
           <!-- <el-col :span="1.5">
@@ -105,16 +105,21 @@
             width="50"
             align="center"
           /> -->
-          <el-table-column  :label="$t('Card-number')"  align="center" key="card" prop="card" />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Card-number')"
+            align="center"
+            key="card"
+            prop="card"
+          />
+          <el-table-column
+            :label="$t('Name')"
             align="center"
             key="name"
             prop="name"
             :show-overflow-tooltip="true"
           />
           <el-table-column
-            label="电话号码"
+            :label="$t('phone-number')"
             align="center"
             key="phone"
             prop="phone"
@@ -125,7 +130,7 @@
               <span v-else>--</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="$t('Staus')"  align="center" key="status">
+          <el-table-column :label="$t('Staus')" align="center" key="status">
             <template slot-scope="scope">
               <!-- <el-switch
                 v-model="scope.row.status"
@@ -133,44 +138,49 @@
                 inactive-value="1"
                 @change="handleStatusChange(scope.row)"
               ></el-switch> -->
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
+              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
+              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="卡类型"
+            :label="$t('Card-Type')"
             align="center"
             key="cardType"
             prop="cardType"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.cardType == 0 ? "主卡" : "子卡" }}</span>
+              <span>{{ scope.row.cardType == 0 ? $t("master-card") : $t("child-card")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="是否内部卡号"
+            :label="$t('Int-card')"
             align="center"
             key="isAdmin"
             prop="isAdmin"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isAdmin == 0 ? $t("No") : $t("Yes")}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="性别" align="center" key="sex" prop="sex">
-            <template slot-scope="scope">
-              <span>{{ scope.row.sex == 0 ? "男" : "女" }}</span>
+              <span>{{ scope.row.isAdmin == 0 ? $t("No") : $t("Yes") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="开户人"
+            :label="$t('Gender')"
+            align="center"
+            key="sex"
+            prop="sex"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.sex == 0 ? $t('male') : $t('female') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('Acc-holder')"
             align="center"
             key="createBy"
             prop="createBy"
             width="120"
           />
           <el-table-column
-            label="开户时间"
+            :label="$t('Dt-op-acc')"
             align="center"
             prop="createTime"
             width="160"
@@ -180,7 +190,7 @@
             </template>
           </el-table-column>
           <el-table-column
-               :label="$t('Remarks')"
+            :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -195,26 +205,26 @@
 
           <el-table-column
             fixed="right"
-             :label="$t('Opr')"
+            :label="$t('Opr')"
             align="center"
             width="260"
             style="text-align:left;"
             class-name="operation-column small-padding fixed-width"
           >
-            <template slot-scope="scope" >
+            <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
                 @click="handleMore(scope.row.id)"
-                >更多信息</el-button
+                >{{ $t("More-information") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                >修改</el-button
+                >{{ $t("Modifications") }}</el-button
               >
               <el-button
                 v-if="scope.row.cardType == 0"
@@ -222,19 +232,26 @@
                 type="text"
                 icon="el-icon-circle-plus-outline"
                 @click="handleAddChild(scope.row.card)"
-                >新增子卡</el-button
+                >{{ $t("Add-new-subcard") }}</el-button
               >
             </template>
           </el-table-column>
         </el-table>
 
-        <div class="count-item-box" v-if="userList && userList.length >0">
-          <span class="count-item">主卡号合计:{{ count.parentCount }}</span
-          ><span class="count-item">子卡号合计:{{ count.childCount }}</span
-          ><span class="count-item">$押金:{{ count.depositCount }}</span
-          ><span class="count-item">฿押金:{{ count.depositCountTh }}</span
-          ><span class="count-item">$补卡费:{{ count.repairCount }}</span
-          ><span class="count-item">฿补卡费:{{ count.repairCountTh }}</span>
+        <div class="count-item-box" v-if="userList && userList.length > 0">
+          <span class="count-item"
+            >{{ $t("main-number") }}:{{ count.parentCount }}</span
+          ><span class="count-item"
+            >{{ $t("sub-number") }}:{{ count.childCount }}</span
+          ><span class="count-item"
+            >${{ $t("Deposit") }}:{{ count.depositCount }}</span
+          ><span class="count-item"
+            >฿{{ $t("Deposit") }}:{{ count.depositCountTh }}</span
+          ><span class="count-item"
+            >${{ $t("Rep-C-Fee") }}:{{ count.repairCount }}</span
+          ><span class="count-item"
+            >฿{{ $t("Rep-C-Fee") }}:{{ count.repairCountTh }}</span
+          >
         </div>
 
         <pagination
@@ -266,62 +283,68 @@
       >
         <el-row :gutter="0" v-if="isMain == false">
           <el-col :span="12">
-            <el-form-item  :label="$t('Card-number')"  prop="card">
+            <el-form-item :label="$t('Card-number')" prop="card">
               <el-input
                 v-model="form.card"
-                placeholder="请输入卡号"
+                :placeholder="$t('enter-card-number')"
                 :disabled="openType == 'edit'"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item  :label="$t('Name')"  prop="name">
+            <el-form-item :label="$t('Name')" prop="name">
               <el-input v-model="form.name" placeholder="请输入姓名" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0" v-if="isMain">
           <el-col :span="12">
-            <el-form-item label="主卡号" prop="parentCard">
+            <el-form-item :label="$t('main-card')" prop="parentCard">
               <el-input
                 v-model="form.parentCard"
                 :disabled="true"
-                placeholder="请输入卡号"
+                :placeholder="$t('enter-card-number')"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item  :label="$t('Name')"  prop="name">
+            <el-form-item :label="$t('Name')" prop="name">
               <el-input v-model="form.name" placeholder="请输入姓名" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0" v-if="isMain">
           <el-col :span="12">
-            <el-form-item label="子卡号" prop="card">
-              <el-input v-model="form.card" placeholder="请输入卡号" />
+            <el-form-item :label="$t('sub-card')" prop="card">
+              <el-input
+                v-model="form.card"
+                :placeholder="$t('enter-card-number')"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="性别" prop="sex">
+            <el-form-item :label="$t('Gender')" prop="sex">
               <el-select v-model="form.sex" placeholder="">
-                <el-option label="男" :value="0"></el-option>
-                <el-option label="女" :value="1"></el-option>
+                <el-option :label="$t('male')" :value="0"></el-option>
+                <el-option :label="$t('female')" :value="1"></el-option>
                 <!-- <el-option label="未知" :value="2"></el-option> -->
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电话" prop="phone">
-              <el-input v-model="form.phone" placeholder="请输入电话" />
+            <el-form-item :label="$t('Phone-number')" prop="phone">
+              <el-input
+                v-model="form.phone"
+                :placeholder="$t('enter-phone-number')"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="密码" prop="password" v-if="isshow">
+            <el-form-item :label="$t('Password')" prop="password" v-if="isshow">
               <el-input
                 v-model="form.password"
                 :placeholder="openType == 'edit' ? '******' : '请输入密码'"
@@ -329,7 +352,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="确认密码" prop="rawPassword" v-if="isshow">
+            <el-form-item
+              :label="$t('Confirm-Password')"
+              prop="rawPassword"
+              v-if="isshow"
+            >
               <el-input
                 v-model="form.rawPassword"
                 :placeholder="openType == 'edit' ? '******' : '请确认密码'"
@@ -339,7 +366,7 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="押金" prop="deposit">
+            <el-form-item :label="$t('Deposit')" prop="deposit">
               <el-input
                 v-model="form.deposit"
                 placeholder="请输入押金"
@@ -348,7 +375,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="补卡费" prop="repair">
+            <el-form-item :label="$t('Rep-C-Fee')" prop="repair">
               <el-input
                 v-model="form.repair"
                 placeholder="请输入补卡费"
@@ -359,7 +386,7 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="占股比例" prop="shareRatio">
+            <el-form-item :label="$t('Shr')" prop="shareRatio">
               <el-input
                 style="width:180px"
                 v-model="form.shareRatio"
@@ -369,7 +396,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="返点比例" prop="rebateRatio">
+            <el-form-item :label="$t('rebate-Percentage')" prop="rebateRatio">
               <el-input
                 style="width:180px"
                 v-model="form.rebateRatio"
@@ -382,7 +409,7 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              label="百家乐洗码比例（$筹码）"
+              :label="$t('Baccarat-Rolling-Ratio-S-Chip')"
               prop="baccaratRollingRatioChip"
               label-width="200px"
             >
@@ -396,7 +423,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="百家乐洗码比例（$现金）"
+              :label="$t('Baccarat-Rolling-Ratio-S-Cash')"
               prop="baccaratRollingRatioCash"
               label-width="200px"
             >
@@ -412,7 +439,7 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              label="百家乐洗码比例（฿筹码）"
+              :label="$t('Baccarat-Rolling-Ratio-B-Chip')"
               prop="baccaratRollingRatioChipTh"
               label-width="200px"
             >
@@ -426,7 +453,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="百家乐洗码比例（฿现金）"
+              :label="$t('Baccarat-Rolling-Ratio-B-Cash')"
               prop="baccaratRollingRatioCashTh"
               label-width="200px"
             >
@@ -442,7 +469,7 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              label="龙虎洗码比例（$筹码）"
+              :label="$t('DT-Rolling-Ratio-S-Chip')"
               prop="dragonTigerRatioChip"
               label-width="200px"
             >
@@ -456,7 +483,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="龙虎洗码比例（$现金）"
+              :label="$t('DT-Rolling-Ratio-S-Cash')"
               prop="dragonTigerRatioCash"
               label-width="200px"
             >
@@ -472,7 +499,7 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              label="龙虎洗码比例（฿筹码）"
+              :label="$t('DT-Rolling-Ratio-B-chip')"
               prop="dragonTigerRatioChipTh"
               label-width="200px"
             >
@@ -486,7 +513,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="龙虎洗码比例（฿现金）"
+              :label="$t('DT-Rolling-Ratio-B-cash')"
               prop="dragonTigerRatioCashTh"
               label-width="200px"
             >
@@ -501,14 +528,14 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item  :label="$t('is-cash-out')"  prop="isCash">
+            <el-form-item :label="$t('is-cash-out')" prop="isCash">
               <el-select
                 v-model="form.isCash"
                 placeholder=""
                 style="width:100px"
               >
-                <el-option  :label="$t('No')"  :value="0"></el-option>
-                <el-option  :label="$t('Yes')"  :value="1"></el-option>
+                <el-option :label="$t('No')" :value="0"></el-option>
+                <el-option :label="$t('Yes')" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -523,54 +550,58 @@
                 placeholder=""
                 style="width:100px"
               >
-                <el-option  :label="$t('No')"  :value="0"></el-option>
-                <el-option  :label="$t('Yes')"  :value="1"></el-option>
+                <el-option :label="$t('No')" :value="0"></el-option>
+                <el-option :label="$t('Yes')" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item    :label="$t('is-remit')"   prop="isOut">
+            <el-form-item :label="$t('is-remit')" prop="isOut">
               <el-select
                 v-model="form.isOut"
                 placeholder=""
                 style="width:100px"
               >
-                <el-option  :label="$t('No')"  :value="0"></el-option>
-                <el-option  :label="$t('Yes')"  :value="1"></el-option>
+                <el-option :label="$t('No')" :value="0"></el-option>
+                <el-option :label="$t('Yes')" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否抽水" prop="isPump" label-width="110px">
+            <el-form-item
+              :label="$t('Whether-have-commission')"
+              prop="isPump"
+              label-width="110px"
+            >
               <el-select
                 v-model="form.isPump"
                 placeholder=""
                 style="width:100px"
               >
-                <el-option  :label="$t('No')"  :value="0"></el-option>
-                <el-option  :label="$t('Yes')"  :value="1"></el-option>
+                <el-option :label="$t('No')" :value="0"></el-option>
+                <el-option :label="$t('Yes')" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item  :label="$t('Staus')"  prop="status">
+            <el-form-item :label="$t('Staus')" prop="status">
               <el-select
                 v-model="form.status"
                 placeholder=""
                 style="width:100px"
               >
-                <el-option label="正常" :value="0"></el-option>
-                <el-option label="停用" :value="1"></el-option>
+                <el-option :label="$t('Normal')" :value="0"></el-option>
+                <el-option :label="$t('Deactivated')" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="是否内部卡号"
+              :label="$t('Int-card')"
               prop="isAdmin"
               label-width="110px"
             >
@@ -579,15 +610,15 @@
                 placeholder=""
                 style="width:100px"
               >
-                <el-option  :label="$t('No')"  :value="0"></el-option>
-                <el-option  :label="$t('Yes')"  :value="1"></el-option>
+                <el-option :label="$t('No')" :value="0"></el-option>
+                <el-option :label="$t('Yes')" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="24">
-            <el-form-item    :label="$t('Remarks')"    prop="remark">
+            <el-form-item :label="$t('Remarks')" prop="remark">
               <el-input
                 type="textarea"
                 :rows="7"
@@ -602,8 +633,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="resetAddForm">{{$t("Rst")}}</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t("OK") }}</el-button>
+        <el-button @click="resetAddForm">{{ $t("Rst") }}</el-button>
       </div>
     </el-dialog>
 
@@ -617,103 +648,127 @@
     >
       <div class="detailBox">
         <div class="list">
-          <span>$押金</span
+          <span>${{ $t("Deposit") }}</span
           ><span>{{ memlist.deposit ? memlist.deposit : "0" }}</span>
         </div>
         <div class="list">
-          <span>฿押金</span
+          <span>฿{{ $t("Deposit") }}</span
           ><span>{{ memlist.depositTh ? memlist.depositTh : "0" }}</span>
         </div>
         <div class="list">
-          <span>$补卡费</span
+          <span>${{ $t("Rep-C-Fee") }}</span
           ><span>{{ memlist.repair ? memlist.repair : "0" }}</span>
         </div>
         <div class="list">
-          <span>฿补卡费</span
+          <span>฿{{ $t("Rep-C-Fee") }}</span
           ><span>{{ memlist.repairTh ? memlist.repairTh : "0" }}</span>
         </div>
         <div class="list">
-          <span>占股比例</span
+          <span>{{ $t("Shr") }}</span
           ><span>{{ memlist.shareRatio ? memlist.shareRatio : "0" }}%</span>
         </div>
         <div class="list">
-          <span>返点比例</span
+          <span>{{ $t("rebate-Percentage") }}</span
           ><span>{{ memlist.rebateRatio ? memlist.rebateRatio : "0" }}%</span>
         </div>
         <div class="list">
-          <span>百家乐洗码比例（$筹码）</span
-          ><span>{{
-            memlist.baccaratRollingRatioChip
-              ? memlist.baccaratRollingRatioChip
-              : "0"
-          }}%</span>
+          <span>{{ $t("Baccarat-Rolling-Ratio-S-Chip") }}</span
+          ><span
+            >{{
+              memlist.baccaratRollingRatioChip
+                ? memlist.baccaratRollingRatioChip
+                : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>百家乐洗码比例（฿筹码）</span
-          ><span>{{
-            memlist.baccaratRollingRatioChipTh
-              ? memlist.baccaratRollingRatioChipTh
-              : "0"
-          }}%</span>
+          <span>{{ $t("Baccarat-Rolling-Ratio-B-Chip") }}）</span
+          ><span
+            >{{
+              memlist.baccaratRollingRatioChipTh
+                ? memlist.baccaratRollingRatioChipTh
+                : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>百家乐洗码比例（$现金）</span
-          ><span>{{
-            memlist.baccaratRollingRatioCash
-              ? memlist.baccaratRollingRatioCash
-              : "0"
-          }}%</span>
+          <span>{{ $t("Baccarat-Rolling-Ratio-S-Cash") }}）</span
+          ><span
+            >{{
+              memlist.baccaratRollingRatioCash
+                ? memlist.baccaratRollingRatioCash
+                : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>百家乐洗码比例（฿现金）</span
-          ><span>{{
-            memlist.baccaratRollingRatioCashTh
-              ? memlist.baccaratRollingRatioCashTh
-              : "0"
-          }}%</span>
+          <span>{{ $t("Baccarat-Rolling-Ratio-B-Cash") }}</span
+          ><span
+            >{{
+              memlist.baccaratRollingRatioCashTh
+                ? memlist.baccaratRollingRatioCashTh
+                : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>龙虎洗码比例（$筹码）</span
-          ><span>{{
-            memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "0"
-          }}%</span>
+          <span>{{ $t("DT-Rolling-Ratio-S-Chip") }}</span
+          ><span
+            >{{
+              memlist.dragonTigerRatioChip ? memlist.dragonTigerRatioChip : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>龙虎洗码比例（฿筹码）</span
-          ><span>{{
-            memlist.dragonTigerRatioChipTh
-              ? memlist.dragonTigerRatioChipTh
-              : "0"
-          }}%</span>
+          <span>{{ $t("DT-Rolling-Ratio-B-Chip") }}</span
+          ><span
+            >{{
+              memlist.dragonTigerRatioChipTh
+                ? memlist.dragonTigerRatioChipTh
+                : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>龙虎洗码比例（$现金）</span
-          ><span>{{
-            memlist.dragonTigerRatioCash ? memlist.dragonTigerRatioCash : "0"
-          }}%</span>
+          <span>{{ $t("DT-Rolling-Ratio-S-Cash") }}</span
+          ><span
+            >{{
+              memlist.dragonTigerRatioCash ? memlist.dragonTigerRatioCash : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>龙虎洗码比例（฿现金）</span
-          ><span>{{
-            memlist.dragonTigerRatioCashTh
-              ? memlist.dragonTigerRatioCashTh
-              : "0"
-          }}%</span>
+          <span>{{ $t("DT-Rolling-Ratio-B-Chip") }}</span
+          ><span
+            >{{
+              memlist.dragonTigerRatioCashTh
+                ? memlist.dragonTigerRatioCashTh
+                : "0"
+            }}%</span
+          >
         </div>
         <div class="list">
-          <span>是否抽水</span
+          <span>{{ $t("Whether-have-commission") }}</span
           ><span>{{
-            memlist.isPump != null ? (memlist.isPump == 0 ? this.$t("No") : "是") : "-"
+            memlist.isPump != null
+              ? memlist.isPump == 0
+                ? this.$t("No")
+                : "是"
+              : "-"
           }}</span>
         </div>
         <div class="list">
-          <span>是否可换现</span
+          <span>{{ $t("is-cash-out") }}</span
           ><span>{{
-            memlist.isCash != null ? (memlist.isCash == 0 ? this.$t("No") : "是") : "-"
+            memlist.isCash != null
+              ? memlist.isCash == 0
+                ? this.$t("No")
+                : "是"
+              : "-"
           }}</span>
         </div>
         <div class="list">
-          <span>是否可结算洗码</span
+          <span>{{ $t("is-settle") }}</span
           ><span>{{
             memlist.isSettlement != null
               ? memlist.isSettlement == 0
@@ -723,9 +778,13 @@
           }}</span>
         </div>
         <div class="list">
-          <span>是否可汇出</span
+          <span>{{ $t("is-remit") }}</span
           ><span>{{
-            memlist.isOut != null ? (memlist.isOut == 0 ? this.$t("No") : "是") : "-"
+            memlist.isOut != null
+              ? memlist.isOut == 0
+                ? this.$t("No")
+                : "是"
+              : "-"
           }}</span>
         </div>
         <!-- <div class="list"><span>是否走账</span><span>{{memlist.isBill?(memlist.isBill==0?this.$t("No"):"是"):'-'}}</span></div> -->
@@ -751,7 +810,7 @@ export default {
   data() {
     const equalToPassword = (rule, value, callback) => {
       if (this.form.password !== value) {
-        callback(new Error("两次输入的密码不一致"));
+        callback(new Error(this.$t("Password-entered-twice-does-not-match")));
       } else {
         callback();
       }
@@ -842,29 +901,30 @@ export default {
     rules() {
       return {
         card: [
-          { required: true, message: "卡号不能为空", trigger: "blur" }
-          // {
-          //   min: 2,
-          //   max: 20,
-          //   message: "用户名称长度必须介于 2 和 20 之间",
-          //   trigger: "blur"
-          // }
+          {
+            required: true,
+            message: this.$t("Card-No-cannot-be-empty"),
+            trigger: "blur"
+          }
         ],
         name: [
-          { required: true, message: "用户昵称不能为空", trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("user-name-cannot-be-empty"),
+            trigger: "blur"
+          }
         ],
         password: [
           {
             required: this.openType == "edit" ? false : true,
-            message: "新密码不能为空",
+            message: this.$t("New-password-cannot-be-empty"),
             trigger: "blur"
           }
-          // { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
         ],
         rawPassword: [
           {
             required: this.openType == "edit" ? false : true,
-            message: "确认密码不能为空",
+            message: this.$t("Confirm-password-cannot-be-empty"),
             trigger: "blur"
           },
           { validator: this.equalToPassword, trigger: "blur" }
@@ -872,131 +932,122 @@ export default {
         deposit: [
           {
             pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
+            message: this.$t("Please-enter-a-No-greater-than-0")
           }
         ],
         repair: [
           {
             pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-            message: "请输入大于0的数字"
-          },
-
+            message: this.$t("Please-enter-a-No-greater-than-0")
+          }
         ],
         shareRatio: [
-          // {
-          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-          //   message: "请输入大于0的数字"
-          // },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         rebateRatio: [
-          // {
-          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-          //   message: "请输入大于0的数字"
-          // },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioChip: [
           {
             required: true,
-            message: "百家乐洗码比例（$筹码）不能为空",
+            message: this.$t("Baccarat-Rolling-Ratio-S-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioCash: [
           {
             required: true,
-            message: "百家乐洗码比例（$现金）不能为空",
+            message: this.$t("Baccarat-Rolling-Ratio-S-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioChip: [
           {
             required: true,
-            message: "龙虎洗码比例（$筹码）不能为空",
+            message: this.$t("DT-Rolling-Ratio-S-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioCash: [
           {
             required: true,
-            message: "龙虎洗码比例（$现金）不能为空",
+            message: this.$t("DT-Rolling-Ratio-S-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioChipTh: [
           {
             required: true,
-            message: "百家乐洗码比例（฿筹码）不能为空",
+            message: this.$t("Baccarat-Rolling-Ratio-B-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         baccaratRollingRatioCashTh: [
           {
             required: true,
-            message: "百家乐洗码比例（฿现金）不能为空",
+            message: this.$t("Baccarat-Rolling-Ratio-B-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioChipTh: [
           {
             required: true,
-            message: "龙虎洗码比例（฿筹码）不能为空",
+            message: this.$t("DT-Rolling-Ratio-B-chip-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ],
         dragonTigerRatioCashTh: [
           {
             required: true,
-            message: "龙虎洗码比例（฿现金）不能为空",
+            message: this.$t("DT-Rolling-Ratio-B-cash-cannot-be-empty"),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
-            message: "只能输入0-100",
+            message: this.$t("Only-0-100-can-be-entered"),
             trigger: "blur"
           }
         ]
@@ -1016,7 +1067,7 @@ export default {
   methods: {
     equalToPassword(rule, value, callback) {
       if (this.form.password !== value) {
-        callback(new Error("两次输入的密码不一致"));
+        callback(new Error(this.$t("Password-entered-twice-does-not-match")));
       } else {
         callback();
       }
@@ -1025,7 +1076,7 @@ export default {
       // 百分比校验
       // 只能输入0-100
       if (value > 100 || value < 0) {
-        callback(new Error("只能输入0-100"));
+        callback(new Error(this.$t("Only-0-100-can-be-entered")));
       } else {
         callback();
       }
@@ -1161,7 +1212,7 @@ export default {
       this.openType = "add";
       this.isshow = true;
       this.isMain = false;
-      this.title = "新增卡号";
+      this.title = this.$t("New-card-no");
       this.reset();
       this.addOdds();
       // 移除表单校验结果
@@ -1173,7 +1224,8 @@ export default {
       this.openType = "addChild";
       this.isMain = true;
       this.isshow = true;
-      this.title = "新增子卡卡号";
+      this.title = this.$t("Add-new-sub");
+
       this.reset();
       // 将用户更多信息加进form里
       this.form["parentCard"] = parentCard;
@@ -1187,7 +1239,8 @@ export default {
       this.openType = "edit";
       this.isMain = false;
       this.isshow = true;
-      this.title = "卡号修改";
+      this.title = this.$t("Card-Amendment");
+
       this.reset();
       this.form = Object.assign({}, row);
       // 将用户更多信息加进form里
@@ -1213,7 +1266,7 @@ export default {
           if (this.openType == "edit") {
             // 修改卡号
             updateMambers(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess(this.$t("Change-successful"));
               this.open = false;
               this.getList();
             });
@@ -1221,14 +1274,14 @@ export default {
             // 新增子卡卡号
             this.form["cardType"] = 1;
             addMambers(this.form).then(response => {
-              this.$modal.msgSuccess("新增子卡卡号成功");
+              this.$modal.msgSuccess(this.$t("Adding-card-number-successful"));
               this.open = false;
               this.getList();
             });
           } else {
             // 新增卡号
             addMambers(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(this.$t("Add-success"));
               this.open = false;
               this.getList();
             });
@@ -1241,13 +1294,13 @@ export default {
       const userIds = row.userId || this.ids;
       console.log(userIds.toString());
       this.$modal
-        .confirm("是否确认删除该卡号")
+        .confirm(this.$t("Confirm-deletion-of-the-card-number"))
         .then(function() {
           return delMambers({ ids: userIds.toString() });
         })
         .then(() => {
           this.getList();
-          this.$modal.msgSuccess("删除成功");
+          this.$modal.msgSuccess(this.$t("Deletion-successful"));
         })
         .catch(() => {});
     },

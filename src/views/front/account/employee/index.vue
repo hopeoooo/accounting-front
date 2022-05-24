@@ -13,8 +13,8 @@
           placeholder=""
           style="width: 120px;margin-right:20px;"
         >
-          <el-option label="工号查询" value="userName"></el-option>
-          <el-option label="姓名查询" value="nickName"></el-option>
+          <el-option :label="$t('Job-Search')" value="userName"></el-option>
+          <el-option :label="$t('Name-Search')" value="nickName"></el-option>
         </el-select>
         <el-input
           v-model="queryParams.value"
@@ -24,15 +24,15 @@
         />
       </el-form-item>
 
-      <el-form-item label="入职时间">
+      <el-form-item  :label="$t('Ent-Tm')">
         <el-date-picker
           v-model="dateRange"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('start-time')"
+          :end-placeholder="$t('end-time')"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -57,45 +57,45 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          >新增</el-button
+          >{{$t('Add-New')}}</el-button
         >
       </el-col>
     </el-row>
 
     <el-table v-loading="loading" :data="employeeList">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="工号" prop="userName" />
+      <el-table-column :label="$t('Work Number')" prop="userName" />
       <el-table-column  :label="$t('Name')"  prop="nickName" />
-      <el-table-column label="职位" prop="post">
+      <el-table-column :label="$t('Position')" prop="post">
         <template slot-scope="scope">
           <span v-if="scope.row.post">{{ scope.row.post }}</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column label="性别" prop="sex">
+      <el-table-column :label="$t('Gender')" prop="sex">
         <template slot-scope="scope">
-          {{ scope.row.sex == 0 ? "男" : scope.row.sex == 2 ? "未知" : "女" }}
+          {{ scope.row.sex == 0 ? $t('male') : scope.row.sex == 2 ? "未知" : $t('female') }}
         </template>
       </el-table-column>
-      <el-table-column label="年龄" prop="brithday">
+      <el-table-column :label="$t('Age')" prop="brithday">
         <template slot-scope="scope">
           {{ scope.row.brithday ? getYear - scope.row.brithday : "--" }}
         </template>
       </el-table-column>
-      <el-table-column label="籍贯" prop="address">
+      <el-table-column :label="$t('Origin')" prop="address">
         <template slot-scope="scope">
           <span v-if="scope.row.address">{{ scope.row.address }}</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column label="联系方式" prop="phonenumber">
+      <el-table-column  :label="$t('Contact-details')" prop="phonenumber">
         <template slot-scope="scope">
           <span v-if="scope.row.phonenumber">{{ scope.row.phonenumber }}</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="入职时间"
+         :label="$t('Ent-Tm')"
         align="center"
         prop="joinTime"
         width="180"
@@ -157,7 +157,7 @@
       >
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="工号" prop="userName">
+            <el-form-item :label="$t('Work Number')" prop="userName">
               <el-input
                 v-model="form.userName"
                 placeholder="请输入工号"
@@ -173,16 +173,16 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="性别" prop="sex">
+            <el-form-item :label="$t('Gender')" prop="sex">
               <el-select v-model="form.sex" placeholder="">
-                <el-option label="男" :value="0"></el-option>
-                <el-option label="女" :value="1"></el-option>
+                <el-option :label="$t('male')" :value="0"></el-option>
+                <el-option :label="$t('female')":value="1"></el-option>
                 <!-- <el-option label="未知" :value="2"></el-option> -->
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系方式" prop="phonenumber">
+            <el-form-item :label="$t('Contact-details')"prop="phonenumber">
               <el-input
                 v-model="form.phonenumber"
                 placeholder="请输入联系方式"
@@ -196,12 +196,12 @@
           v-if="(openType == 'edit' && user.userId == 1) || openType == 'add'"
         >
           <el-col :span="12">
-            <el-form-item label="密码" prop="password">
+            <el-form-item  :label="$t('Password')"  prop="password">
               <el-input v-model="form.password" placeholder="请输入密码" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="确认密码" prop="rawPassword">
+            <el-form-item  :label="$t('Confirm-Password')"  prop="rawPassword">
               <el-input
                 v-model="form.rawPassword"
                 placeholder="请输入确认密码"
@@ -211,19 +211,19 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="籍贯" prop="address">
+            <el-form-item :label="$t('Origin')" prop="address">
               <el-input v-model="form.address" placeholder="请输入籍贯" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="职位" prop="post">
+            <el-form-item :label="$t('Position')" prop="post">
               <el-input v-model="form.post" placeholder="请输入职位" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="权限角色" prop="roleId">
+            <el-form-item :label="$t('Perm-Role')" prop="roleId">
               <el-select v-model="form.roleId" :placeholder="$t('Please-select')">
                 <el-option
                   v-for="item in roleList"
@@ -236,7 +236,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="入职日期" prop="joinTime">
+            <el-form-item :label="$t('Ent-Tm')" prop="joinTime">
               <el-date-picker
                 style="width:180px"
                 v-model="form.joinTime"
@@ -250,7 +250,7 @@
         </el-row>
         <el-row :gutter="0">
           <el-col :span="12">
-            <el-form-item label="出生年份" prop="brithday">
+            <el-form-item :label="$t('Y0B')" prop="brithday">
               <el-date-picker
                 v-model="form.brithday"
                 type="year"
@@ -386,15 +386,15 @@ export default {
       // 表单校验规则
       return {
         userName: [
-          { required: true, message: "工号不能为空", trigger: "blur" }
+          { required: true, message:this.$t("The-job-number-cannot-be-empty"), trigger: "blur" }
         ],
         nickName: [
-          { required: true, message: "姓名不能为空", trigger: "blur" }
+          { required: true, message: this.$t("Name-cannot-be-empty"), trigger: "blur" }
         ],
         password: [
           {
             required: this.openType == "add" ? true : false,
-            message: "密码不能为空",
+            message: this.$t("Password-cannot-be-empty"),
             trigger: "blur"
           }
           // { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
@@ -402,16 +402,16 @@ export default {
         rawPassword: [
           {
             required: this.openType == "add" ? true : false,
-            message: "确认密码不能为空",
+            message: this.$t("Confirm-password-cannot-be-empty"),
             trigger: "blur"
           },
           { validator: this.equalToPassword, trigger: "blur" }
         ],
         roleId: [
-          { required: true, message: "请选择权限角色", trigger: "change" }
+          { required: true, message: this.$t("Please-select-the-role-of-authority"), trigger: "change" }
         ],
         joinTime: [
-          { required: true, message: "请选择入职日期", trigger: "change" }
+          { required: true, message:this.$t("Please-select-a-start-date"), trigger: "change" }
         ]
       };
     }
@@ -423,7 +423,7 @@ export default {
         this.form.password != "" &&
         this.form.password !== value
       ) {
-        callback(new Error("两次输入的密码不一致"));
+        callback(new Error( this.$t("Password-entered-twice-does-not-match")));
       } else {
         callback();
       }
@@ -520,7 +520,7 @@ export default {
       this.reset();
       this.openType = "add";
       this.open = true;
-      this.title = "新增员工";
+      this.title = this.$t('Add-new-employee');
 
       // this.getRole();
       setTimeout(() => {
@@ -533,7 +533,7 @@ export default {
       this.reset();
       this.openType = "edit";
       this.open = true;
-      this.title = "编辑员工";
+      this.title =this.$t('Edit-employee');
       // this.form = Object.assign({}, row);
       this.form = { ...this.form, ...row };
       this.initForm = { ...this.form, ...row };
@@ -550,13 +550,13 @@ export default {
         if (valid) {
           if (this.openType == "edit") {
             updateEmployee(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess(this.$t("Modified-successfully"));
               this.open = false;
               this.getList();
             });
           } else {
             addEmployee(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(this.$t("Add-success"));
               this.open = false;
               this.getList();
             });
@@ -570,13 +570,13 @@ export default {
       const userName = row.userName;
       const userId = row.userId || this.ids;
       this.$modal
-        .confirm('是否确认删除工号为"' + userName + '"的员工？')
+        .confirm( this.$t("confirmed-delete-employee")+ userName + '？')
         .then(function() {
           return delEmployee({ userId: userId });
         })
         .then(() => {
           this.getList();
-          this.$modal.msgSuccess("删除成功");
+          this.$modal.msgSuccess(this.$t("Deletion-successful"));
         })
         .catch(() => {});
     }

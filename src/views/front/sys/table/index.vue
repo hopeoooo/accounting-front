@@ -8,7 +8,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          >新增</el-button
+          >{{$t('Add-New')}}</el-button
         >
       </el-col>
     </el-row>
@@ -145,7 +145,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm">{{$t('OK')}}</el-button>
         <el-button @click="cancel">{{$t("Cancel")}}</el-button>
       </div>
     </el-dialog>
