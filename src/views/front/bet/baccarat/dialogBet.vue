@@ -281,7 +281,7 @@ export default {
     console.log(this.isRecord)
     this.getListRecord()
   },
-    computed: {
+  computed: {
     // 游戏类型列表
     Gameoptions() {
       return [
