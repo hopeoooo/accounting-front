@@ -27,13 +27,13 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
-            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item>{{$t('Personal-Centre')}}</el-dropdown-item>
           </router-link>
           <el-dropdown-item @click.native="setting = true">
-            <span>布局设置</span>
+            <span>{{$t('Layout-settings')}}</span>
           </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
-            <span>退出登录</span>
+            <span>{{$t('Logging-out')}}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -89,9 +89,9 @@ export default {
       this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
-      this.$confirm("确定注销并退出系统吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm(this.$t('Sure-to-log-out'), this.$t('Prompt'), {
+        confirmButtonText: this.$t('OK'),
+        cancelButtonText: this.$t('Cancel'),
         type: "warning"
       })
         .then(() => {

@@ -297,7 +297,7 @@
 
 <script>
 import { reckonPorint,editPorint} from "@/api/report/report";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Dialog",
   props:['title','open','formData'],
@@ -351,6 +351,9 @@ export default {
     console.log(this.form)
     this. getForm()
   },
+   computed:{
+    ...mapState("app",['currentLanguage']),
+  },
   watch: {
       open (val) {
         this.isOpen = val
@@ -367,6 +370,9 @@ export default {
         //   this.$forceUpdate()
         // },
         // deep:true
+      },
+      currentLanguage(val){
+        this.reset()
       }
     },
   methods: {
