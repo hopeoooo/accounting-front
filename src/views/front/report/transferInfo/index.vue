@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -19,33 +19,36 @@
               style="width: 240px;margin-right:20px"
             />
 
-            <el-checkbox v-model="queryParams.isAdmin"
-              >过滤内部卡号</el-checkbox
+            <el-checkbox v-model="queryParams.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
+          </el-form-item>
+          <el-form-item :label="$t('Operation')" prop="type">
+            <el-select v-model="queryParams.type" :placeholder="$t('All')">
+              <el-option :label="$t('All')" :value="null"></el-option>
+              <el-option :label="$t('Remit-in')" :value="11"></el-option>
+              <el-option :label="$t('Remit-out')" :value="12"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('currency-Type')" prop="type">
+            <el-select
+              v-model="queryParams.operationType"
+              :placeholder="$t('All')"
             >
-          </el-form-item>
-          <el-form-item label="操作类型" prop="type">
-            <el-select v-model="queryParams.type" placeholder="全部">
-              <el-option label="全部" :value="null"></el-option>
-              <el-option label="汇入" :value="11"></el-option>
-              <el-option label="汇出" :value="12"></el-option>
+              <el-option :label="$t('All')" :value="null"></el-option>
+              <el-option :label="$t('Chip')" :value="0"></el-option>
+              <el-option :label="$t('Cash')" :value="1"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="货币类型" prop="type">
-            <el-select v-model="queryParams.operationType" placeholder="全部">
-              <el-option label="全部" :value="null"></el-option>
-              <el-option label="筹码" :value="0"></el-option>
-              <el-option label="现金" :value="1"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="操作时间">
+          <el-form-item :label="$t('operation-time')">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -54,11 +57,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -70,7 +73,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
@@ -79,41 +82,46 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="小计"
+          :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
-          <el-table-column label="类型" align="center" key="type" prop="type">
+          <el-table-column
+            :label="$t('Type')"
+            align="center"
+            key="type"
+            prop="type"
+          >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '11'">汇入</span>
-              <span v-if="scope.row.type == '12'">汇出</span>
+              <span v-if="scope.row.type == '11'">{{$t("Remit-in")}}</span>
+              <span v-if="scope.row.type == '12'">{{$t("Remit-out")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="货币类型"
+            :label="$t('currency-Type')"
             align="center"
             key="operationType"
             prop="operationType"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.operationType == 0">筹码</span>
-              <span v-if="scope.row.operationType == 1">现金</span>
+              <span v-if="scope.row.operationType == 0">{{$t("Chip")}}</span>
+              <span v-if="scope.row.operationType == 1">{{$t("Cash")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$金额"
+            :label="'$' + $t('Amount')"
             align="center"
             key="amount"
             prop="amount"
@@ -124,7 +132,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿金额"
+            :label="'฿' + $t('Amount')"
             align="center"
             key="amountTh"
             prop="amountTh"
@@ -135,21 +143,21 @@
           </el-table-column>
 
           <el-table-column
-            label="操作时间"
+            :label="$t('operation-time')"
             align="center"
             key="operationTime"
             prop="operationTime"
           />
 
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-            label="操作备注"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -171,41 +179,46 @@
           :data="userList"
           class="table2"
           show-summary
-          sum-text="总计"
+          :sum-text="$t('Tot')"
           :summary-method="getSummaries"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
-          <el-table-column label="类型" align="center" key="type" prop="type">
+          <el-table-column
+            :label="$t('Type')"
+            align="center"
+            key="type"
+            prop="type"
+          >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '11'">汇入</span>
-              <span v-if="scope.row.type == '12'">汇出</span>
+              <span v-if="scope.row.type == '11'">{{$t("Remit-in")}}</span>
+              <span v-if="scope.row.type == '12'">{{$t("Remit-out")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="货币类型"
+            :label="$t('currency-Type')"
             align="center"
             key="operationType"
             prop="operationType"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.operationType == 0">筹码</span>
-              <span v-if="scope.row.operationType == 1">现金</span>
+              <span v-if="scope.row.operationType == 0">{{$t("Chip")}}</span>
+              <span v-if="scope.row.operationType == 1">{{$t("Cash")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$金额"
+            :label="'$' + $t('Amount')"
             align="center"
             key="amount"
             prop="amount"
@@ -216,7 +229,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿金额"
+            :label="'฿' + $t('Amount')"
             align="center"
             key="amountTh"
             prop="amountTh"
@@ -227,21 +240,21 @@
           </el-table-column>
 
           <el-table-column
-            label="操作时间"
+            :label="$t('operation-time')"
             align="center"
             key="operationTime"
             prop="operationTime"
           />
 
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-            label="操作备注"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -364,19 +377,23 @@ export default {
       };
 
       this.loading = true;
-      listRemittanceDetailed(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
-      listRemittanceDetailedTotal(params).then(response => {
-        this.userTotal = response.data;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      listRemittanceDetailed(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+      listRemittanceDetailedTotal(params)
+        .then(response => {
+          this.userTotal = response.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -388,7 +405,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "小计";
+          sums[index] = this.$t("Subtotal");
           // return;
         } else if (index == 4 || index == 5) {
           // 只有第4、5列的金额 才需要小计
@@ -425,7 +442,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
 
@@ -448,7 +465,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-           this.dateRange = [
+      this.dateRange = [
         moment(new Date())
           .startOf("day")
           .format("YYYY-MM-DD"),
@@ -511,10 +528,10 @@ export default {
             let result = "";
             switch (v[j]) {
               case 11:
-                result = "汇入";
+                result = this.$t("Remit-in");
                 break;
               case 12:
-                result = "汇出";
+                result = this.$t("Remit-out");
                 break;
               default:
                 break;
@@ -525,10 +542,10 @@ export default {
             let result = "";
             switch (v[j]) {
               case 0:
-                result = "筹码";
+                result = this.$t("Chip");
                 break;
               case 1:
-                result = "现金";
+                result = this.$t("Cash");
                 break;
               default:
                 break;

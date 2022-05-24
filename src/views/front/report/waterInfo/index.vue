@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -21,21 +21,21 @@
             <el-checkbox
               v-model="queryParams.cardType"
               :disabled="!queryParams.card"
-              >包含子卡</el-checkbox
+              >{{ $t("Include-sub-cards") }}</el-checkbox
             >
-            <el-checkbox v-model="queryParams.isAdmin"
-              >过滤内部卡号</el-checkbox
-            >
+            <el-checkbox v-model="queryParams.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
-          <el-form-item label="结算时间">
+          <el-form-item :label="$t('settlement-time')">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -44,11 +44,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -79,7 +79,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
@@ -88,29 +88,36 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="小计"
+          :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
-          <el-table-column label="姓名" align="center" key="name" prop="name" />
           <el-table-column
-            label="结算币种"
+            :label="$t('Name')"
+            align="center"
+            key="name"
+            prop="name"
+          />
+          <el-table-column
+            :label="$t('Settlement-for-Currency')"
             align="center"
             key="operationType"
             prop="operationType"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.operationType == 0 ? "筹码" : "现金" }}</span>
+              <span>{{
+                scope.row.operationType == 0 ? this.$t("Chip") : this.$t("Cash")
+              }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$结算洗码量"
+            :label="'$' + $t('Settlement-for-rolling-amount')"
             align="center"
             key="water"
             prop="water"
@@ -120,7 +127,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$应结算洗码费"
+            :label="'$' + $t('Settlement-for-rolling-Fee')"
             align="center"
             key="waterAmount"
             prop="waterAmount"
@@ -130,7 +137,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$实际结算洗码费"
+            :label="'$' + $t('Actual-Settlement-for-rolling-fee')"
             align="center"
             key="actualWaterAmount"
             prop="actualWaterAmount"
@@ -140,7 +147,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿结算洗码量"
+            :label="'฿' + $t('Settlement-for-rolling-amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
@@ -150,7 +157,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿应结算洗码费"
+            :label="'฿' + $t('Settlement-for-rolling-Fee')"
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
@@ -160,7 +167,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿实际结算洗码费"
+            :label="'฿' + $t('Actual-Settlement-for-rolling-fee')"
             align="center"
             key="actualWaterAmountTh"
             prop="actualWaterAmountTh"
@@ -171,26 +178,26 @@
           </el-table-column>
 
           <el-table-column
-            label="截止时间"
+           :label="$t('Cut-off-Time')"
             align="center"
             key="deadline"
             prop="deadline"
           />
           <el-table-column
-            label="结算时间"
+            :label="$t('settlement-time')"
             align="center"
             key="createTime"
             prop="createTime"
           />
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-            label="操作备注"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -215,24 +222,31 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
-          <el-table-column label="姓名" align="center" key="name" prop="name" />
           <el-table-column
-            label="结算币种"
+            :label="$t('Name')"
+            align="center"
+            key="name"
+            prop="name"
+          />
+          <el-table-column
+            :label="$t('Settlement-for-Currency')"
             align="center"
             key="operationType"
             prop="operationType"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.operationType == 0 ? "筹码" : "现金" }}</span>
+              <span>{{
+                scope.row.operationType == 0 ? this.$t("Chip") : this.$t("Cash")
+              }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$结算洗码量"
+            :label="'$' + $t('Settlement-for-rolling-amount')"
             align="center"
             key="water"
             prop="water"
@@ -242,7 +256,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$应结算洗码费"
+            :label="'$' + $t('Settlement-for-rolling-Fee')"
             align="center"
             key="waterAmount"
             prop="waterAmount"
@@ -252,7 +266,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$实际结算洗码费"
+            :label="'$' + $t('Actual-Settlement-for-rolling-fee')"
             align="center"
             key="actualWaterAmount"
             prop="actualWaterAmount"
@@ -293,26 +307,26 @@
           </el-table-column>
 
           <el-table-column
-            label="截止时间"
+           :label="$t('Cut-off-Time')"
             align="center"
             key="deadline"
             prop="deadline"
           />
           <el-table-column
-            label="结算时间"
+            :label="$t('settlement-time')"
             align="center"
             key="createTime"
             prop="createTime"
           />
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-            label="操作备注"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -402,15 +416,13 @@ export default {
         card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
         cardType: 0,
-        pageSize:30,
-        pageNum:1
+        pageSize: 30,
+        pageNum: 1
         // dateRange: []
       }
     };
   },
-  watch: {
-
-  },
+  watch: {},
   created() {
     this.getList();
   },
@@ -456,7 +468,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "小计";
+          sums[index] = this.$t("Subtotal");
           // return;
         } else if (
           index == 3 ||
@@ -498,7 +510,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总计";
+          sums[index] = this.$t("Tot");
           return;
         }
         if (index === 3) {
@@ -613,7 +625,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "operationType") {
-            return v[j] == 0 ? "筹码" : "现金";
+            return v[j] == 0 ? this.$t("Chip") : this.$t("Cash");
           }
           return v[j];
         })

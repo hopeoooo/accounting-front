@@ -10,7 +10,11 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card" label-width="100">
+          <el-form-item
+            :label="$t('Membership-Card-Number')"
+            prop="card"
+            label-width="100"
+          >
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -18,20 +22,30 @@
               style="width: 150px; "
             />
           </el-form-item>
-          <el-form-item label="台号" prop="tableId">
-            <el-select v-model="queryParams.tableId" placeholder="请选择">
+          <el-form-item :label="$t('Station-number')" prop="tableId">
+            <el-select
+              v-model="queryParams.tableId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId ? item.tableId : '全部'"
+                :label="item.tableId ? item.tableId : $t('All')"
                 :value="item.tableId"
               >
               </el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="游戏类型" prop="gameId" label-width="100">
-            <el-select v-model="queryParams.gameId" placeholder="请选择">
+          <el-form-item
+            :label="$t('Game-Type')"
+            prop="gameId"
+            label-width="100"
+          >
+            <el-select
+              v-model="queryParams.gameId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in Gameoptions"
                 :key="item.value"
@@ -42,8 +56,15 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="币种类型" prop="type" label-width="100">
-            <el-select v-model="queryParams.type" placeholder="请选择">
+          <el-form-item
+            :label="$t('Currency-Type')"
+            prop="type"
+            label-width="100"
+          >
+            <el-select
+              v-model="queryParams.type"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in typeOptions"
                 :key="item.value"
@@ -53,7 +74,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="靴号" prop="bootNum">
+          <el-form-item :label="$t('Boot-number')" prop="bootNum">
             <el-input
               v-model="queryParams.bootNum"
               placeholder=""
@@ -61,7 +82,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="局号" prop="gameNum">
+          <el-form-item :label="$t('Game-number')" prop="gameNum">
             <el-input
               v-model="queryParams.gameNum"
               placeholder=""
@@ -69,7 +90,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="操作员" prop="createBy">
+          <el-form-item :label="$t('Operator')" prop="createBy">
             <el-input
               v-model="queryParams.createBy"
               placeholder=""
@@ -77,15 +98,15 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="下注时间" label-width="100">
+          <el-form-item :label="$t('Betting-Time')" label-width="100">
             <el-date-picker
               v-model="dateRange"
               style="width: 400px"
               value-format="yyyy-MM-dd HH:mm:ss"
               type="datetimerange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
               :default-time="['00:00:00', '23:59:59']"
               @change="setTimedata"
               clearable
@@ -110,14 +131,14 @@
               size="mini"
               @click="handleQuery"
               v-prclick
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
             <el-button
               icon="el-icon-refresh"
               size="mini"
               @click="resetQuery"
               v-prclick
-              >重置</el-button
+              >{{ $t("Rst") }}</el-button
             >
 
             <el-button
@@ -126,7 +147,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-form-item>
         </el-form>
@@ -134,34 +155,34 @@
         <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="台号"
+            :label="$t('Station-number')"
             align="center"
             key="tableId"
             prop="tableId"
             width="80px"
           />
           <el-table-column
-            label="靴号"
+            :label="$t('Boot-number')"
             align="center"
             key="bootNum"
             prop="bootNum"
             width="60px"
           />
           <el-table-column
-            label="局号"
+            :label="$t('Game-number')"
             align="center"
             key="gameNum"
             prop="gameNum"
             width="60px"
           />
           <el-table-column
-            label="游戏类型"
+            :label="$t('Game-Type')"
             align="center"
             key="gameId"
             prop="gameId"
@@ -171,7 +192,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注玩法"
+            :label="$t('bets-to-play')"
             align="center"
             key="option"
             prop="option"
@@ -186,7 +207,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="币种"
+            :label="$t('currency')"
             align="center"
             key="type"
             prop="type"
@@ -202,7 +223,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注金额"
+            :label="$t('bet-money')"
             align="center"
             key="betMoney"
             prop="betMoney"
@@ -212,7 +233,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="开牌结果"
+            :label="$t('Result')"
             align="center"
             key="gameResult"
             prop="gameResult"
@@ -232,7 +253,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="输赢"
+            :label="$t('Win-Loss')"
             align="center"
             key="winLose"
             prop="winLose"
@@ -242,14 +263,14 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注时间"
+            :label="$t('Betting-Time')"
             align="center"
             key="createTime"
             prop="createTime"
             width="180px"
           />
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
@@ -257,7 +278,7 @@
 
           <el-table-column
             fixed="right"
-            label="操作"
+            :label="$t('Operation')"
             align="center"
             width="150"
             class-name="small-padding fixed-width"
@@ -268,14 +289,14 @@
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleEdit(scope.row)"
-                >编辑</el-button
+                >{{ $t("Edit") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleRepair(scope.row)"
-                >补录</el-button
+                >{{ $t("repair") }}</el-button
               >
             </template>
           </el-table-column>
@@ -311,18 +332,18 @@
         <div class="bet-form-row">
           <!-- 卡号、台号 -->
           <el-form-item
-            label="卡号:"
+            :label="$t('card-number') + ':'"
             prop="card"
             class="bet-form-item"
-            label-width="65px"
+            label-width="100px"
           >
             <el-input v-model="form.card" placeholder="" />
           </el-form-item>
           <el-form-item
-            label="台号:"
+            :label="$t('Station-number') + ':'"
             prop="tableId"
             class="bet-form-item"
-            label-width="65px"
+            label-width="100px"
           >
             <el-input v-model="form.tableId" placeholder="" :disabled="true" />
           </el-form-item>
@@ -330,18 +351,18 @@
         <!-- 靴号、局号 -->
         <div class="bet-form-row">
           <el-form-item
-            label="靴号:"
+            :label="$t('Boot-number') + ':'"
             prop="bootNum"
             class="bet-form-item"
-            label-width="65px"
+            label-width="100px"
           >
             <el-input v-model="form.bootNum" placeholder="" :disabled="true" />
           </el-form-item>
           <el-form-item
-            label="局号:"
+            :label="$t('Game-number') + ':'"
             prop="gameNum"
             class="bet-form-item"
-            label-width="65px"
+            label-width="100px"
           >
             <el-input
               v-model="form.gameNum"
@@ -354,16 +375,16 @@
         <!-- 输赢、币种 -->
         <div class="bet-form-row">
           <div class="bet-form-item" v-if="openType == 'edit'">
-            <span class="winlose-label">输赢:</span>
+            <span class="winlose-label">{{ $t("Win-Loss") }}:</span>
             <span>{{ form.winLose }}</span>
           </div>
           <el-form-item
-            label="币种:"
+            :label="$t('currency') + ':'"
             prop="type"
             class="bet-form-item"
-            label-width="65px"
+            label-width="100px"
           >
-            <el-select v-model="form.type" placeholder="请选择">
+            <el-select v-model="form.type" :placeholder="$t('Please-select')">
               <el-option
                 v-for="item in typeOptions2"
                 :key="item.value"
@@ -375,29 +396,33 @@
           </el-form-item>
         </div>
 
-        <div class="bet-time">下注时间: {{ form.createTime }}</div>
+        <div class="bet-time">
+          {{ $t("Betting-Time") }}: {{ form.createTime }}
+        </div>
 
         <!-- 龙虎 -->
         <div v-if="openGameId == 2" class="longhu-box">
           <!-- 下注金额 -->
           <div class="longhu-amount-box">
-            <div class="box-label"><i class="start-symbol">*</i>下注金额</div>
+            <div class="box-label">
+              <i class="start-symbol">*</i>{{ $t("bet-money") }}
+            </div>
             <!-- <div> -->
-            <el-form-item label="龙:" label-width="30px">
+            <el-form-item :label="$t('D') + ':'" label-width="30px">
               <el-input
                 v-model="longhuFormOption.dragon"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item label="虎:" label-width="30px">
+            <el-form-item :label="$t('TYG') + ':'" label-width="30px">
               <el-input
                 v-model="longhuFormOption.tiger"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item label="和:" label-width="30px">
+            <el-form-item :label="$t('T') + ':'" label-width="30px">
               <el-input
                 v-model="longhuFormOption.tie"
                 placeholder=""
@@ -409,11 +434,11 @@
 
           <!-- 开牌结果 -->
           <div class="longhu-result-box">
-            <div class="box-label">开牌结果</div>
+            <div class="box-label">{{ $t("Result") }}</div>
             <el-radio-group v-model="form.gameResult" class="result-list">
-              <el-radio label="龙">龙</el-radio>
-              <el-radio label="虎">虎</el-radio>
-              <el-radio label="和">和</el-radio>
+              <el-radio :label="$t('D')">{{ $t("D") }}</el-radio>
+              <el-radio :label="$t('TYG')">{{ $t("TYG") }}</el-radio>
+              <el-radio :label="$t('T')">{{ $t("T") }}</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -421,11 +446,9 @@
         <!-- 牛牛/三公/推筒子 -->
         <div
           class="niuniu-box"
-          v-if="
-            openGameId == 3 || openGameId == 4 || openGameId == 5
-          "
+          v-if="openGameId == 3 || openGameId == 4 || openGameId == 5"
         >
-          <el-form-item label="下注金额:" label-width="80px">
+          <el-form-item :label="$t('bet-money') + ':'" label-width="80px">
             <el-input
               v-model="form.betMoney"
               @change="onBetMoneyChange"
@@ -434,13 +457,17 @@
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
           </el-form-item>
-          <el-form-item label="开牌结果:" prop="gameResult" label-width="80px">
+          <el-form-item
+            :label="$t('Result') + ':'"
+            prop="gameResult"
+            label-width="80px"
+          >
             <el-radio-group
               v-model="form.gameResult"
               @change="onNiuGameResultChange"
             >
-              <el-radio label="赢">赢</el-radio>
-              <el-radio label="输">输</el-radio>
+              <el-radio :label="$t('Win')">{{ $t("Win") }}</el-radio>
+              <el-radio :label="$t('Loss')">{{ $t("Loss") }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
@@ -449,45 +476,45 @@
         <div v-if="openGameId == 1" class="bjl-box">
           <!-- 下注金额 -->
           <div class="bet-amount-box">
-            <div class="box-label">下注金额</div>
+            <div class="box-label">{{ $t("bet-money") }}</div>
             <div class="bet-amount-container">
               <div class="amount-left-box">
-                <el-form-item label="庄:" label-width="60px">
+                <el-form-item :label="$t('B') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.banker"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="闲:" label-width="60px">
+                <el-form-item :label="$t('P') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.player"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="和:" label-width="60px">
+                <el-form-item :label="$t('T') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.tie"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="庄对:" label-width="60px">
+                <el-form-item :label="$t('B-P') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.bankerPair"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="闲对:" label-width="60px">
+                <el-form-item :label="$t('P-P') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.playerPair"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="幸运6:" label-width="60px">
+                <el-form-item :label="$t('Lucky-6') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.two"
                     placeholder=""
@@ -496,35 +523,35 @@
                 </el-form-item>
               </div>
               <div class="amount-left-box">
-                <el-form-item label="庄保险:" label-width="60px">
+                <el-form-item :label="$t('B-Ins') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.bankerIns"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="闲保险:" label-width="60px">
+                <el-form-item :label="$t('P-Ins') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.playerIns"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="和保险:" label-width="60px">
+                <el-form-item :label="$t('T-Ins') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.tieIns"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="大:" label-width="60px">
+                <el-form-item :label="$t('BIG') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.big"
                     placeholder=""
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item label="小:" label-width="60px">
+                <el-form-item :label="$t('S') + ':'" label-width="60px">
                   <el-input
                     v-model="formOption.small"
                     placeholder=""
@@ -562,30 +589,30 @@
             </el-checkbox-group>
           </div> -->
           <div class="game-result-box">
-            <div class="box-label">开牌结果</div>
+            <div class="box-label">{{ $t("Result") }}</div>
             <div class="result-box">
               <el-radio-group
                 v-model="checkedFormResult1"
                 class="result-item-box result1-box"
               >
-                <el-radio :label="4">庄</el-radio>
-                <el-radio :label="1">闲</el-radio>
-                <el-radio :label="7">和</el-radio>
+                <el-radio :label="4">{{ $t("B") }}</el-radio>
+                <el-radio :label="1">{{ $t("P") }}</el-radio>
+                <el-radio :label="7">{{ $t("T") }}</el-radio>
               </el-radio-group>
               <el-checkbox-group
                 v-model="checkedFormResult2"
                 class="result-item-box"
               >
-                <el-checkbox label="8">庄对</el-checkbox>
-                <el-checkbox label="5">闲对</el-checkbox>
+                <el-checkbox label="8">{{ $t("B-P") }}</el-checkbox>
+                <el-checkbox label="5">{{ $t("P-P") }}</el-checkbox>
               </el-checkbox-group>
               <el-checkbox-group
                 v-model="checkedFormResult3"
                 @change="onGameResultChange3"
                 class="result-item-box"
               >
-                <el-checkbox label="9">大</el-checkbox>
-                <el-checkbox label="6">小</el-checkbox>
+                <el-checkbox label="9">{{ $t("S") }}</el-checkbox>
+                <el-checkbox label="6">{{ $t("BIG") }}</el-checkbox>
               </el-checkbox-group>
 
               <el-checkbox-group
@@ -593,16 +620,16 @@
                 @change="onGameResultChange4"
                 class="result-item-box"
               >
-                <el-checkbox label="a">幸运6(2张牌)</el-checkbox>
-                <el-checkbox label="b">幸运6(3张牌)</el-checkbox>
+                <el-checkbox label="a">{{ $t("Lucky-2-cards") }}</el-checkbox>
+                <el-checkbox label="b">{{ $t("Lucky-3-cards") }}</el-checkbox>
               </el-checkbox-group>
             </div>
           </div>
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t("OK") }}</el-button>
+        <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -625,85 +652,85 @@ import {
 } from "@/api/report/report";
 import moment from "moment";
 const _ = require("lodash");
-
+import i18n from "@/locales";
 // 开牌结果映射
 const betOptionList = {
-  4: "庄",
-  1: "闲",
-  7: "和",
-  8: "庄对",
-  5: "闲对",
-  3: "庄保险", //庄保险
-  0: "闲保险", //闲保险
-  2: "和保险", //和保险
-  9: "大",
-  6: "小",
-  a: "幸运6（2张牌)", //幸运6(2张牌)
-  b: "幸运6（3张牌)", //幸运6(3张牌)
-  龙: "龙",
-  虎: "虎",
-  和: "和",
-  输: "输",
-  赢: "赢",
-  "-": "-"
+  4: i18n.t("B"), //庄
+  1: i18n.t("P"), //闲
+  7: i18n.t("T"), //和
+  8: i18n.t("B-P"), //庄对
+  5: i18n.t("P-P"), //闲对
+  3: i18n.t("B-Ins"), //庄保险
+  0: i18n.t("P-Ins"), //闲保险
+  2: i18n.t("T-Ins"), //和保险
+  9: i18n.t("BIG"), //大
+  6: i18n.t("S"), //小
+  a: i18n.t("Lucky-2-cards"), //幸运6(2张牌)
+  b: i18n.t("Lucky-3-cards"), //幸运6(3张牌)
+  龙: i18n.t("D"), //
+  虎: i18n.t("TYG"), //
+  和: i18n.t("T"), //
+  输: i18n.t("Loss"), //
+  赢: i18n.t("Win"), //
+  "-": "-" //
 };
 
 // 下注玩法映射
 const playTextMap = {
-  4: "庄",
-  1: "闲",
-  7: "和",
-  8: "庄对",
-  5: "闲对",
-  3: "庄保险", //庄保险
-  0: "闲保险", //闲保险
-  2: "和保险", //和保险
-  9: "大",
-  6: "小",
-  a: "幸运6", //幸运6
-  龙: "龙",
-  虎: "虎",
-  和: "和",
-  输: "输",
-  赢: "赢",
-  "-": "-"
+  4: i18n.t("B"), //庄
+  1: i18n.t("P"), //闲
+  7: i18n.t("T"), //和
+  8: i18n.t("B-P"), //庄对
+  5: i18n.t("P-P"), //闲对
+  3: i18n.t("B-Ins"), //庄保险
+  0: i18n.t("P-Ins"), //闲保险
+  2: i18n.t("T-Ins"), //和保险
+  9: i18n.t("BIG"), //大
+  6: i18n.t("S"), //小
+  a: i18n.t("Lucky-6"), //幸运6
+  龙: i18n.t("D"), //
+  虎: i18n.t("TYG"), //
+  和: i18n.t("T"), //
+  输: i18n.t("Loss"), //
+  赢: i18n.t("Win"), //
+  "-": "-" //
 };
 
 // 百家乐
 const optionMap = {
-  banker: "4",
-  player: "1",
-  tie: "7",
-  bankerPair: "8",
-  playerPair: "5",
+  banker: "4", //
+  player: "1", //
+  tie: "7", //
+  bankerPair: "8", //
+  playerPair: "5", //
   bankerIns: "3", //庄保险
   playerIns: "0", //闲保险
   tieIns: "2", //和保险
-  big: "9",
-  small: "6",
+  big: "9", //
+  small: "6", //
   two: "a", //幸运6(两张牌)
   three: "b", //幸运6(三张牌)
-  4: "banker",
-  1: "player",
-  7: "tie",
-  8: "bankerPair",
-  5: "playerPair",
+  4: "banker", //
+  1: "player", //
+  7: "tie", //
+  8: "bankerPair", //
+  5: "playerPair", //
   3: "bankerIns", //庄保险
   0: "playerIns", //闲保险
   2: "tieIns", //和保险
-  9: "big",
-  6: "small",
-  a: "two",
-  b: "three"
+  9: "big", //
+  6: "small", //
+  a: "two", //
+  b: "three" //
 };
 // 龙虎
 const longhuOptionMap = {
-  dragon: "龙",
-  tiger: "虎",
+  dragon: "龙", //龙
+  tiger: "虎", //虎
   tie: "和", //和
-  龙: "dragon",
-  虎: "tiger",
-  和: "tie"
+  龙: "dragon", //龙
+  虎: "tiger", //虎
+  和: "tie" //和
 };
 const gameResult1 = ["4", "1", "7"]; //庄闲和
 const gameResult2 = ["8", "5"]; //庄对、闲对
@@ -828,88 +855,126 @@ export default {
 
       // 台号列表
       tableOptions: [],
-      // 游戏类型列表
-      Gameoptions: [
+
+
+      Datatype: 0,
+
+
+    };
+  },
+  computed: {
+    // 游戏类型列表
+    Gameoptions() {
+      return [
         {
           value: "",
-          label: "全部"
+          label: i18n.t("All")
+          // label: "全部"
         },
         {
           value: 1,
-          label: "百家乐"
+          label: i18n.t("Baccarat")
+          // label: "百家乐"
         },
         {
           value: 2,
-          label: "龙虎"
+          label: i18n.t("DT")
+          // label: "龙虎"
         },
         {
           value: 3,
-          label: "牛牛"
+          label: i18n.t("Niu-Niu")
+          // label: "牛牛"
         },
         {
           value: 4,
-          label: "三公"
+          label: i18n.t("San-Gong")
+          // label: "三公"
         },
         {
           value: 5,
-          label: "推筒子"
+          label: i18n.t("Tui-Tong-Zi")
+          // label: "推筒子"
         }
-      ],
-      // 币种类型列表
-      typeOptions: [
+      ];
+    },
+    // 币种类型列表
+    typeOptions() {
+      return [
         {
           value: null,
-          label: "全部"
+          label: i18n.t("All")
+          // label: "全部"
         },
         {
           value: 1,
-          label: "$筹码"
+          label: `$${i18n.t("Chip")}`
+          // label: "$筹码"
         },
         {
           value: 2,
-          label: "$现金"
+          label: `$${i18n.t("Cash")}`
+          // label: "$现金"
         },
         {
           value: 3,
-          label: "฿筹码"
+          label: `฿${i18n.t("Chip")}`
+          // label: "฿筹码"
         },
         {
           value: 4,
-          label: "฿现金"
+          label: `฿${i18n.t("Cash")}`
+          // label: "฿现金"
         },
 
         {
           value: 5,
-          label: "$筹码+$现金"
+          label: `$${i18n.t("Chip")}+$${i18n.t("Cash")}`
+          // label: "$筹码+$现金"
         },
         {
           value: 6,
-          label: "฿筹码+฿现金"
+          label: `฿${i18n.t("Chip")}+฿${i18n.t("Cash")}`
+          // label: "฿筹码+฿现金"
         }
-      ],
-      // 币种类型列表
-      typeOptions2: [
+      ];
+    },
+    typeOptions2() {
+      return [
         {
           value: 0,
-          label: "$筹码"
+          label: `$${i18n.t("Chip")}`
+          // label: "$筹码"
         },
         {
           value: 1,
-          label: "$现金"
+          label: `$${i18n.t("Cash")}`
+          // label: "$现金"
         },
         {
           value: 2,
-          label: "฿筹码"
+          label: `฿${i18n.t("Chip")}`
+          // label: "฿筹码"
         },
         {
           value: 3,
-          label: "฿现金"
+          label: `฿${i18n.t("Cash")}`
+          // label: "฿现金"
         }
-      ],
-      Datatype: 0,
-      TimeList: [
+      ];
+    },
+    typeMap(){
+      return {
+        0: `$${i18n.t("Chip")}`,
+        1: `$${i18n.t("Cash")}`,
+        2: `฿${i18n.t("Chip")}`,
+        3: `฿${i18n.t("Cash")}`
+      }
+    },
+    TimeList() {
+      return [
         {
-          name: "今日",
+          name: this.$t("Today"),
           val: [
             moment(new Date())
               .startOf("day")
@@ -920,7 +985,7 @@ export default {
           ]
         },
         {
-          name: "昨日",
+          name: this.$t("Yesterday"),
           val: [
             moment()
               .subtract(1, "days")
@@ -932,16 +997,8 @@ export default {
               .format("YYYY-MM-DD HH:mm:ss")
           ]
         }
-      ],
-      typeMap: {
-        0: "$筹码",
-        1: "$现金",
-        2: "฿筹码",
-        3: "฿现金"
-      }
-    };
-  },
-  computed: {
+      ];
+    },
     rules() {
       if (this.openType == "edit") {
         return {
@@ -1137,17 +1194,20 @@ export default {
       const gameName = this.getGameName(row.gameId);
       this.openGame = gameName;
       this.openGameId = row.gameId;
-      this.title = `${gameName}注单修改`;
-      if (gameName == "百家乐") {
+      this.title = `${gameName}  ${this.$t("Bet-slip-amendment")}`;
+      if (row.gameId == 1) {
+        // 百家乐
         // 初始化下注金额和开牌结果
         this.initOption(row.option);
         this.getFormGameResult(row.gameResult);
       }
-      if (gameName == "龙虎") {
+      if (row.gameId == 2) {
+        // 龙虎
         this.initLongHuOption(row.option);
       }
 
-      if (gameName != "百家乐" || gameName != "龙虎") {
+      if (row.gameId != 1 || row.gameId != 2) {
+        // 牛牛、三公、骰子
         this.form.betMoney = row.betMoney;
       }
       // 复制一份原始的form，用于提交时对比差异
@@ -1170,7 +1230,7 @@ export default {
       const gameName = this.getGameName(row.gameId);
       this.openGame = gameName;
       this.openGameId = row.gameId;
-      this.title = `${gameName}注单补录`;
+      this.title = `${gameName} ${this.$t("Bet-slip-supplementary")}`;
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -1179,8 +1239,8 @@ export default {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = [
           "会员卡号",
-          "台号",
-          "靴号",
+          this.$t("Station-number"),
+          this.$t("Boot-number"),
           "局号",
           "游戏类型",
           "下注玩法",
@@ -1363,7 +1423,7 @@ export default {
         // 百家乐：将下注金额带入表单，生成初始化的formOption，用于百家乐的表单里的下注金额数据绑定
         for (let index = 0; index < options.length; index++) {
           const element = options[index];
-          // betOption数字4变成英文banker : 4->banker ,对应formOption里的banker
+          // betOption数字4变成字母banker : 4->banker ,对应formOption里的banker
           const key = optionMap[element.betOption];
           // {banker:20}
           this.formOption[key] = element.betMoney;
@@ -1405,7 +1465,7 @@ export default {
       //龙虎：将下注金额带入表单，生成初始化的formOption，用于龙虎的表单里的下注金额数据绑定
       for (let index = 0; index < options.length; index++) {
         const element = options[index];
-        // betOption中文 "龙"变成英文 "dragon" : "龙"->"dragon" ,对应longhuFormOption里的dragon
+        // betOption中文 "龙"变成字母 "dragon" : "龙"->"dragon" ,对应longhuFormOption里的dragon
         const key = longhuOptionMap[element.betOption];
         // {dragon:20}
         this.longhuFormOption[key] = element.betMoney;
@@ -1514,7 +1574,9 @@ export default {
             )
           ) {
             // 没有修改东西,不调接口
-            this.$modal.msgError("本次未做任何修改");
+            this.$modal.msgError(
+              this.$t("No-changes-have-been-made-this-time")
+            );
             return;
           }
         }
@@ -1531,7 +1593,9 @@ export default {
             )
           ) {
             // 没有修改东西,不调接口
-            this.$modal.msgError("本次未做任何修改");
+            this.$modal.msgError(
+              this.$t("No-changes-have-been-made-this-time")
+            );
             return;
           }
         }
@@ -1547,7 +1611,9 @@ export default {
             this.form.betMoney == this.initForm.betMoney
           ) {
             // 没有修改东西,不调接口
-            this.$modal.msgError("本次未做任何修改");
+            this.$modal.msgError(
+              this.$t("No-changes-have-been-made-this-time")
+            );
             return;
           }
         }
@@ -1557,7 +1623,7 @@ export default {
           (!this.form.card || !this.formBetMoney || this.form.gameResult == "")
         ) {
           // 百家乐 、龙虎
-          this.$modal.msgError("请录入完整注单数据");
+          this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
           return;
         }
 
@@ -1568,24 +1634,23 @@ export default {
           (!this.form.card || !this.form.betMoney || this.form.gameResult == "")
         ) {
           // 、牛牛、三公、推筒子
-          this.$modal.msgError("请录入完整注单数据");
+          this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
           return;
         }
 
         /** 3.百家乐 庄闲和必选一*/
         if (this.openGameId == 1 && !this.checkedFormResult1) {
-          this.$modal.msgError("请选择庄/闲/和");
+          this.$modal.msgError(this.$t("select-b-p-t"));
           return;
         }
         // 注单修改
         editBetRecord(this.form).then(response => {
-          this.$modal.msgSuccess("注单修改成功");
+          this.$modal.msgSuccess(this.$t("Order-amended-successfully"));
           this.open = false;
           this.reset();
           setTimeout(() => {
-             this.getList();
+            this.getList();
           }, 500);
-
         });
       } else {
         // 补录
@@ -1599,12 +1664,12 @@ export default {
             this.form.type == null ||
             !this.form.gameResult)
         ) {
-          this.$modal.msgError("请录入完整注单数据");
+          this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
           return;
         }
         /** 2.百家乐 庄闲和必选一*/
         if (this.openGameId == 1 && !this.checkedFormResult1) {
-          this.$modal.msgError("请选择庄/闲/和");
+          this.$modal.msgError(this.$t("select-b-p-t"));
           return;
         }
 
@@ -1619,12 +1684,12 @@ export default {
             this.form.type == null ||
             !this.form.gameResult)
         ) {
-          this.$modal.msgError("请录入完整注单数据");
+          this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
           return;
         }
         // 注单补录
         repairBetRecord(this.form).then(response => {
-          this.$modal.msgSuccess("注单补录成功");
+          this.$modal.msgSuccess(this.$t("Order-supplemented-successfully"));
           this.open = false;
           this.reset();
           this.getList();
@@ -1672,12 +1737,12 @@ export default {
     display: flex;
     justify-content: space-between;
     .bet-form-item {
-      width: 40%;
+      width: 50%;
       height: 35px;
       margin-bottom: 30px;
       .winlose-label {
         display: inline-block;
-        width: 65px;
+        width: 85px;
         font-size: 14px;
         color: #606266;
         font-weight: 500;

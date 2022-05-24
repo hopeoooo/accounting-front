@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -20,25 +20,25 @@
             />
 
             <el-checkbox v-model="queryParams.isAdmin"
-              >过滤内部卡号</el-checkbox
+              >{{$t("Filter-internal-card")}}</el-checkbox
             >
           </el-form-item>
-          <el-form-item label="操作类型" prop="type">
-            <el-select v-model="queryParams.type" placeholder="全部">
-              <el-option label="全部" :value="null"></el-option>
-              <el-option label="存码" :value="1"></el-option>
-              <el-option label="取码" :value="2"></el-option>
+          <el-form-item  :label="$t('Operation')" prop="type">
+            <el-select v-model="queryParams.type"  :placeholder="$t('All')">
+              <el-option :label="$t('All')" :value="null"></el-option>
+              <el-option   :label="$t('Chip-deposit')" :value="1"></el-option>
+              <el-option  :label="$t('Chips-withdrawal')" :value="2"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="操作时间">
+          <el-form-item :label="$t('operation-time')">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -47,10 +47,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
@@ -82,7 +82,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{$t("Export")}}</el-button
             >
           </el-col>
         </el-row>
@@ -90,30 +90,30 @@
         <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-            label="姓名"
+             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-            label="操作类型"
+             :label="$t('Operation')"
             align="center"
             key="type"
             prop="type"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '1'">存码</span>
-              <span v-if="scope.row.type == '2'">取码</span>
+              <span v-if="scope.row.type == '1'">{{$t("Chip-deposit")}}</span>
+              <span v-if="scope.row.type == '2'">{{$t("Chips-withdrawal")}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="$筹码变动记录"
+             :label="'$'+$t('Chips-Movement-Records')"
             align="center"
             key="chipAmount"
             prop="chipAmount"
@@ -128,7 +128,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="$现金变动记录"
+            :label="'$'+$t('Cash-movement-records')"
             align="center"
             key="cashAmount"
             prop="cashAmount"
@@ -143,7 +143,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿筹码变动记录"
+             :label="'฿'+$t('Chips-Movement-Records')"
             align="center"
             key="chipAmountTh"
             prop="chipAmountTh"
@@ -158,7 +158,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="฿现金变动记录"
+            :label="'฿'+$t('Cash-movement-records')"
             align="center"
             key="cashAmountTh"
             prop="cashAmountTh"
@@ -174,21 +174,21 @@
           </el-table-column>
 
           <el-table-column
-            label="操作时间"
+            :label="$t('operation-time')"
             align="center"
             key="operationTime"
             prop="operationTime"
           />
 
           <el-table-column
-            label="操作员"
+             :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-            label="操作备注"
+              :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -386,7 +386,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "type") {
-            return v[j] == 1 ? "存码" : "取码";
+            return v[j] == 1 ? this.$t("Chip-deposit") : this.$t("Chips-withdrawal");
           }
           if (j == "chipAmount") {
             return `${v["chipAmountBefore"]}→(${v["chipAmount"]})→${v["chipAmountAfter"]}

@@ -10,7 +10,7 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -18,20 +18,20 @@
               style="width: 150px; "
             />
           </el-form-item>
-          <el-form-item label="台号" prop="tableId">
-            <el-select v-model="queryParams.tableId" placeholder="请选择">
+          <el-form-item :label="$t('Station-number')" prop="tableId">
+            <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId ? item.tableId : '全部'"
+               :label="item.tableId ? item.tableId : $t('All')"
                 :value="item.tableId"
               >
               </el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="游戏类型" prop="gameId">
-            <el-select v-model="queryParams.gameId" placeholder="请选择">
+          <el-form-item :label="$t('Game-Type')" prop="gameId">
+            <el-select v-model="queryParams.gameId" :placeholder="$t('Please-select')">
               <el-option
                 v-for="item in Gameoptions"
                 :key="item.value"
@@ -43,7 +43,7 @@
           </el-form-item>
 
           <!-- <el-form-item label="币种类型" prop="type">
-            <el-select v-model="queryParams.type" placeholder="请选择">
+            <el-select v-model="queryParams.type" :placeholder="$t('Please-select')">
               <el-option
                 v-for="item in typeOptions"
                 :key="item.value"
@@ -53,7 +53,7 @@
               </el-option>
             </el-select>
           </el-form-item> -->
-          <el-form-item label="靴号" prop="bootNum">
+          <el-form-item :label="$t('Boot-number')" prop="bootNum">
             <el-input
               v-model="queryParams.bootNum"
               placeholder=""
@@ -61,7 +61,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="局号" prop="gameNum">
+          <el-form-item :label="$t('Game-number')" prop="gameNum">
             <el-input
               v-model="queryParams.gameNum"
               placeholder=""
@@ -69,7 +69,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="操作员" prop="createBy">
+          <el-form-item :label="$t('Operator')" prop="createBy">
             <el-input
               v-model="queryParams.createBy"
               placeholder=""
@@ -77,15 +77,15 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item label="修改时间">
+          <el-form-item :label="$t('Modification-time')" label-width="100px">
             <el-date-picker
               v-model="dateRange"
               style="width: 400px"
               value-format="yyyy-MM-dd hh:mm:ss"
               type="datetimerange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -107,14 +107,14 @@
               size="mini"
               @click="handleQuery"
               v-prclick
-              >查询</el-button
+              >{{ $t("Enq") }}</el-button
             >
             <el-button
               icon="el-icon-refresh"
               size="mini"
               @click="resetQuery"
               v-prclick
-              >重置</el-button
+              >{{ $t("Rst") }}</el-button
             >
 
             <el-button
@@ -124,7 +124,7 @@
               size="mini"
               @click="handleExport"
               v-prclick
-              >导出</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-form-item>
         </el-form>
@@ -132,7 +132,7 @@
         <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
@@ -145,7 +145,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="台号"
+            :label="$t('Station-number')"
             align="center"
             key="tableId"
             prop="tableId"
@@ -160,7 +160,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="靴号"
+            :label="$t('Boot-number')"
             align="center"
             key="bootNum"
             prop="bootNum"
@@ -175,7 +175,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="局号"
+            :label="$t('Game-number')"
             align="center"
             key="gameNum"
             prop="gameNum"
@@ -190,7 +190,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="游戏类型"
+            :label="$t('Game-Type')"
             align="center"
             key="gameId"
             prop="gameId"
@@ -205,7 +205,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注玩法"
+            :label="$t('bets-to-play')"
             align="center"
             key="option"
             prop="option"
@@ -223,7 +223,7 @@
           </el-table-column>
 
           <el-table-column
-            label="币种"
+            :label="$t('Currency-Type')"
             align="center"
             key="type"
             prop="type"
@@ -238,7 +238,7 @@
           </el-table-column>
 
           <el-table-column
-            label="下注金额"
+            :label="$t('bet-money')"
             align="center"
             key="amount"
             prop="amount"
@@ -254,7 +254,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="开牌结果"
+            :label="$t('Result')"
             align="center"
             key="result"
             prop="result"
@@ -270,7 +270,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="输赢"
+            :label="$t('Win-Loss')"
             align="center"
             key="win"
             prop="win"
@@ -284,7 +284,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="下注时间"
+            :label="$t('Betting-Time')"
             align="center"
             key="betTime"
             prop="betTime"
@@ -300,7 +300,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="操作员"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
@@ -316,7 +316,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="最近修改时间"
+            :label="$t('last-modify')"
             align="center"
             key="updateTime"
             prop="updateTime"
@@ -490,116 +490,141 @@ export default {
 
       //台号列表
       tableOptions: [],
-      // 游戏类型列表
-      Gameoptions: [
-        {
-          value: "",
-          label: "全部"
-        },
-        {
-          value: 1,
-          label: "百家乐"
-        },
-        {
-          value: 2,
-          label: "龙虎"
-        },
-        {
-          value: 3,
-          label: "牛牛"
-        },
-        {
-          value: 4,
-          label: "三公"
-        },
-        {
-          value: 5,
-          label: "推筒子"
-        }
-      ],
-      // 币种类型列表
-      typeOptions: [
-        {
-          value: null,
-          label: "全部"
-        },
-        {
-          value: 0,
-          label: "$筹码"
-        },
-        {
-          value: 1,
-          label: "$现金"
-        },
-        {
-          value: 2,
-          label: "฿筹码"
-        },
-        {
-          value: 3,
-          label: "฿现金"
-        },
 
-        {
-          value: 4,
-          label: "$筹码+$现金"
-        },
-        {
-          value: 5,
-          label: "฿筹码+฿现金"
-        }
-      ],
-      // 币种类型列表
-      typeOptions2: [
-        {
-          value: 0,
-          label: "$筹码"
-        },
-        {
-          value: 1,
-          label: "$现金"
-        },
-        {
-          value: 2,
-          label: "฿筹码"
-        },
-        {
-          value: 3,
-          label: "฿现金"
-        }
-      ],
       Datatype: 0,
-      TimeList: [
-        {
-          name: "今日",
-          val: [
-            moment(new Date())
-              .startOf("day")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment(new Date())
-              .endOf("day")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        },
-        {
-          name: "昨日",
-          val: [
-            moment()
-              .subtract(1, "days")
-              .startOf("day")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            moment()
-              .subtract(1, "days")
-              .endOf("day")
-              .format("YYYY-MM-DD HH:mm:ss")
-          ]
-        }
-      ],
 
       checkList: []
     };
   },
   computed: {
+    // 游戏类型列表
+    Gameoptions() {
+      return [
+        {
+          value: "",
+          label: this.$t("All")
+          // label: "全部"
+        },
+        {
+          value: 1,
+          label: this.$t("Baccarat")
+          // label: "百家乐"
+        },
+        {
+          value: 2,
+          label: this.$t("DT")
+          // label: "龙虎"
+        },
+        {
+          value: 3,
+          label: this.$t("Niu-Niu")
+          // label: "牛牛"
+        },
+        {
+          value: 4,
+          label: this.$t("San-Gong")
+          // label: "三公"
+        },
+        {
+          value: 5,
+          label: this.$t("Tui-Tong-Zi")
+          // label: "推筒子"
+        }
+      ];
+    },
+    // 币种类型列表
+    typeOptions() {
+      return [
+        {
+          value: null,
+          label: this.$t("All")
+          // label: "全部"
+        },
+        {
+          value: 1,
+          label: `$${this.$t("Chip")}`
+          // label: "$筹码"
+        },
+        {
+          value: 2,
+          label: `$${this.$t("Cash")}`
+          // label: "$现金"
+        },
+        {
+          value: 3,
+          label: `฿${this.$t("Chip")}`
+          // label: "฿筹码"
+        },
+        {
+          value: 4,
+          label: `฿${this.$t("Cash")}`
+          // label: "฿现金"
+        },
+
+        {
+          value: 5,
+          label: `$${this.$t("Chip")}+$${this.$t("Cash")}`
+          // label: "$筹码+$现金"
+        },
+        {
+          value: 6,
+          label: `฿${this.$t("Chip")}+฿${this.$t("Cash")}`
+          // label: "฿筹码+฿现金"
+        }
+      ];
+    },
+    typeOptions2() {
+      return [
+        {
+          value: 0,
+          label: `$${this.$t("Chip")}`
+          // label: "$筹码"
+        },
+        {
+          value: 1,
+          label: `$${this.$t("Cash")}`
+          // label: "$现金"
+        },
+        {
+          value: 2,
+          label: `฿${this.$t("Chip")}`
+          // label: "฿筹码"
+        },
+        {
+          value: 3,
+          label: `฿${this.$t("Cash")}`
+          // label: "฿现金"
+        }
+      ];
+    },
+    TimeList() {
+      return [
+        {
+          name: this.$t("Today"),
+          val: [
+            moment(new Date())
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment(new Date())
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        },
+        {
+          name: this.$t("Yesterday"),
+          val: [
+            moment()
+              .subtract(1, "days")
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            moment()
+              .subtract(1, "days")
+              .endOf("day")
+              .format("YYYY-MM-DD HH:mm:ss")
+          ]
+        }
+      ];
+    },
     rules() {
       if (this.openType == "edit") {
         return {
@@ -689,8 +714,8 @@ export default {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = [
           "会员卡号",
-          "台号",
-          "靴号",
+          this.$t("Station-number"),
+          this.$t("Boot-number"),
           "局号",
           "游戏类型",
           "下注玩法",

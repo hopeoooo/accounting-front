@@ -11,7 +11,7 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="会员卡号" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
@@ -20,37 +20,37 @@
             />
 
             <el-checkbox v-model="queryParams.isAdmin"
-              >过滤内部卡号</el-checkbox
+              >{{$t("Filter-internal-card")}}</el-checkbox
             >
           </el-form-item>
-          <el-form-item label="操作类型" prop="type">
+          <el-form-item  :label="$t('Operation')" prop="type">
             <!-- 操作类型: 1:存码,2:取码,3:下注赢,4:下注输,5:签单,6:还单,7:换现,13:买码,8:注单修改,9:注单补录,10:洗码结算,11:汇入,12:汇出 -->
-            <el-select v-model="queryParams.type" placeholder="全部">
-              <el-option label="全部" :value="null"></el-option>
-              <el-option label="存码" :value="1"></el-option>
-              <el-option label="取码" :value="2"></el-option>
-              <el-option label="下注赢" :value="3"></el-option>
-              <el-option label="下注输" :value="4"></el-option>
-              <el-option label="签单" :value="5"></el-option>
-              <el-option label="还单" :value="6"></el-option>
-              <el-option label="换现" :value="7"></el-option>
-              <el-option label="买码" :value="13"></el-option>
-              <el-option label="注单修改" :value="8"></el-option>
-              <el-option label="注单补录" :value="9"></el-option>
-              <el-option label="洗码费结算为筹码" :value="10"></el-option>
-              <el-option label="汇入取筹码" :value="11"></el-option>
-              <el-option label="筹码汇出" :value="12"></el-option>
+            <el-select v-model="queryParams.type"  :placeholder="$t('All')">
+              <el-option :label="$t('All')" :value="null"></el-option>
+              <el-option   :label="$t('Chip-deposit')" :value="1"></el-option>
+              <el-option  :label="$t('Chips-withdrawal')" :value="2"></el-option>
+              <el-option  :label="$t('Winning-bets')" :value="3"></el-option>
+              <el-option :label="$t('Bet-Loss')"  :value="4"></el-option>
+              <el-option  :label="$t('Signing')" :value="5"></el-option>
+              <el-option :label="$t('Returns')" :value="6"></el-option>
+              <el-option :label="$t('Cash-Out')"   :value="7"></el-option>
+              <el-option  :label="$t('Buy-codes')"  :value="13"></el-option>
+              <el-option  :label="$t('Bet-slip-amendment')" :value="8"></el-option>
+              <el-option  :label="$t('Bet-slip-supplementary')"  :value="9"></el-option>
+              <el-option  :label="$t('Settlement-of-rolling-fees-into-chip')"  :value="10"></el-option>
+              <el-option  :label="$t('Remittance-to-pick-up-chip')"  :value="11"></el-option>
+              <el-option  :label="$t('Remittance-of-chip')" :value="12"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="操作时间">
+          <el-form-item :label="$t('operation-time')">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -59,10 +59,10 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
           </el-form-item>
         </el-form>
@@ -75,7 +75,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{$t("Export")}}</el-button
             >
           </el-col>
         </el-row>
@@ -83,37 +83,37 @@
         <el-table v-loading="loading" :data="userList">
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-            label="会员卡号"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
-          <el-table-column label="姓名" align="center" key="name" prop="name" />
+          <el-table-column  :label="$t('Name')" align="center" key="name" prop="name" />
           <el-table-column
-            label="操作类型"
+             :label="$t('Operation')"
             align="center"
             key="type"
             prop="type"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '1'">存码</span>
-              <span v-if="scope.row.type == '2'">取码</span>
-              <span v-if="scope.row.type == '3'">下注赢</span>
-              <span v-if="scope.row.type == '4'">下注输</span>
-              <span v-if="scope.row.type == '5'">签单</span>
-              <span v-if="scope.row.type == '6'">还单</span>
-              <span v-if="scope.row.type == '7'">换现</span>
-              <span v-if="scope.row.type == '13'">买码</span>
-              <span v-if="scope.row.type == '8'">注单修改</span>
-              <span v-if="scope.row.type == '9'">注单补录</span>
-              <span v-if="scope.row.type == '10'">洗码费结算为筹码</span>
-              <span v-if="scope.row.type == '11'">汇入取筹码</span>
-              <span v-if="scope.row.type == '12'">筹码汇出</span>
+              <span v-if="scope.row.type == '1'">{{$t("Chip-deposit")}}</span>
+              <span v-if="scope.row.type == '2'">{{$t("Chips-withdrawal")}}</span>
+              <span v-if="scope.row.type == '3'">{{$t("Winning-bets")}}</span>
+              <span v-if="scope.row.type == '4'">{{$t("Bet-Loss")}}</span>
+              <span v-if="scope.row.type == '5'">{{$t("Signing")}}</span>
+              <span v-if="scope.row.type == '6'">{{$t("Returns")}}</span>
+              <span v-if="scope.row.type == '7'">{{$t("Cash-Out")}}</span>
+              <span v-if="scope.row.type == '13'">{{$t("Buy-codes")}}</span>
+              <span v-if="scope.row.type == '8'">{{$t("Bet-slip-amendment")}}</span>
+              <span v-if="scope.row.type == '9'">{{$t("Bet-slip-supplementary")}}</span>
+              <span v-if="scope.row.type == '10'">{{$t("Settlement-of-rolling-fees-into-chip")}}</span>
+              <span v-if="scope.row.type == '11'">{{$t("Remittance-to-pick-up-chip")}}</span>
+              <span v-if="scope.row.type == '12'">{{$t("Remittance-of-chip")}}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-            label="$筹码变动记录"
+             :label="'$'+$t('Chips-Movement-Records')"
             align="center"
             key="before"
             prop="before"
@@ -129,7 +129,7 @@
           </el-table-column>
 
           <el-table-column
-            label="฿筹码变动记录"
+             :label="'฿'+$t('Chips-Movement-Records')"
             align="center"
             key="beforeTh"
             prop="beforeTh"
@@ -145,21 +145,21 @@
           </el-table-column>
 
           <el-table-column
-            label="操作时间"
+            :label="$t('operation-time')"
             align="center"
             key="createTime"
             prop="createTime"
           />
 
           <el-table-column
-            label="操作员"
+             :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-            label="操作备注"
+              :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
@@ -358,10 +358,10 @@ export default {
             let result = "";
             switch (v[j]) {
               case 1:
-                result = "存码";
+                result = this.$t("Chip-deposit");
                 break;
               case 2:
-                result = "取码";
+                result = this.$t("Chips-withdrawal");
                 break;
               case 3:
                 result = "下注赢";
@@ -388,10 +388,10 @@ export default {
                 result = "洗码结算";
                 break;
               case 11:
-                result = "汇入";
+                result = this.$t("Remit-in");
                 break;
               case 12:
-                result = "汇出";
+                result = this.$t("Remit-out");
                 break;
               case 13:
                 result = "买码";

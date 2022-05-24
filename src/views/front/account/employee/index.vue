@@ -224,7 +224,7 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="权限角色" prop="roleId">
-              <el-select v-model="form.roleId" placeholder="请选择">
+              <el-select v-model="form.roleId" :placeholder="$t('Please-select')">
                 <el-option
                   v-for="item in roleList"
                   :key="item.roleId"

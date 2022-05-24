@@ -11,19 +11,19 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="台号" prop="userName">
-            <el-select v-model="queryParams.tableId" placeholder="请选择">
+          <el-form-item :label="$t('Station-number')" prop="userName">
+            <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-                :label="item.tableId ? item.tableId : '全部'"
+                :label="item.tableId ? item.tableId : $t('All')"
                 :value="item.tableId"
               >
               </el-option>
             </el-select>
           </el-form-item>
 
-          <!-- <el-form-item label="会员卡号" prop="userName">
+          <!-- <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
                         <el-input
                             v-model="queryParams.card"
                             placeholder=""
@@ -31,14 +31,14 @@
                             style="width: 240px; margin-right: 20px"
                         />
                     </el-form-item> -->
-          <el-form-item label="收码时间">
+          <el-form-item  :label="$t('Collection-Time')">
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('start-time')"
+              :end-placeholder="$t('end-time')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
@@ -48,14 +48,14 @@
               size="mini"
               @click="handleQuery"
               v-prclick
-              >查询</el-button
+              >{{$t("Enq")}}</el-button
             >
             <el-button
               icon="el-icon-refresh"
               size="mini"
               @click="resetQuery"
               v-prclick
-              >重置</el-button
+              >{{$t("Rst")}}</el-button
             >
 
             <el-button
@@ -64,13 +64,13 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >导出</el-button
+              >{{$t("Export")}}</el-button
             >
           </el-form-item>
         </el-form>
 
         <el-table v-loading="loading" :data="userList">
-          <el-table-column label="台号" align="center" prop="tableId">
+          <el-table-column :label="$t('Station-number')" align="center" prop="tableId">
             <template slot-scope="scope">
               <el-button
                 type="text"
@@ -81,103 +81,103 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="$筹码-收" align="center">
+          <el-table-column :label="'$'+ $t('Chip-Received')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.chip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$现金-收" align="center">
+          <el-table-column :label="'$'+ $t('Cash-Receive')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.cash | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码-收" align="center">
+          <el-table-column :label="'$'+ $t('Insurance-Chip-Receive')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.insurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$筹码增减" align="center">
+          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$现金增减" align="center">
+          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险筹码增减" align="center">
+          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$洗码量" align="center">
+          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$输赢" align="center">
+          <el-table-column  :label="'$' + $t('Win-Loss')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.win | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="$保险输赢" align="center">
+          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="฿筹码-收" align="center">
+          <el-table-column :label="'฿'+ $t('Chip-Received')"  align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.chipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿现金-收" align="center">
+          <el-table-column :label="'฿'+ $t('Cash-Receive')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.cashTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险筹码-收" align="center">
+          <el-table-column :label="'฿'+ $t('Insurance-Chip-Receive')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿筹码增减" align="center">
+          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿现金增减" align="center">
+          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险筹码增减" align="center">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿洗码量" align="center">
+          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿输赢" align="center">
+          <el-table-column   :label="'฿' + $t('Win-Loss')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="฿保险输赢" align="center">
+          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.winTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="收码时间" align="center">
+          <el-table-column  :label="$t('Collection-Time')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.createTime || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作备注" align="center">
+          <el-table-column   :label="$t('Operation-Remarks')" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.remark || "--" }}</span>
             </template>
@@ -351,7 +351,7 @@ export default {
       require.ensure([], () => {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = [
-          "台号",
+          this.$t("Station-number"),
           "$筹码-收",
           "$现金-收",
           "$保险筹码-收",
@@ -414,7 +414,7 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "type") {
-            return v[j] == 5 ? "签单" : "还单";
+            return v[j] == 5 ? this.$t("Signing") : this.$t("Returns");
           }
           if (j == "amount") {
             return `${v["amountBefore"]}→(${v["amount"]})→${v["amountAfter"]}
@@ -425,7 +425,7 @@ export default {
                  `;
           }
           if (j == "amountType") {
-            return v[j] == 0 ? "筹码" : "现金";
+            return v[j] == 0 ? this.$t("Chip") : this.$t("Cash");
           }
           return v[j];
         })
