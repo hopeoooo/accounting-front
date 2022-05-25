@@ -71,6 +71,7 @@ export default {
     // 路由切换
     changeRouter(){
        store.dispatch('GenerateRoutes')
+       location.reload()
     }
   }
 };
