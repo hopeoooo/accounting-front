@@ -8,7 +8,7 @@
           ref="queryForm"
           size="small"
           :inline="true"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item
             :label="$t('Membership-Card-Number')"
@@ -165,27 +165,28 @@
             align="center"
             key="tableId"
             prop="tableId"
-            width="80px"
+            width="100px"
           />
           <el-table-column
             :label="$t('Boot-number')"
             align="center"
             key="bootNum"
             prop="bootNum"
-            width="60px"
+             width="100px"
           />
           <el-table-column
             :label="$t('Game-number')"
             align="center"
             key="gameNum"
             prop="gameNum"
-            width="60px"
+             width="100px"
           />
           <el-table-column
             :label="$t('Game-Type')"
             align="center"
             key="gameId"
             prop="gameId"
+             width="100px"
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -211,7 +212,7 @@
             align="center"
             key="type"
             prop="type"
-            width="80px"
+             width="100px"
           >
             <template slot-scope="scope" class="wanfabox">
               <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
@@ -257,6 +258,7 @@
             align="center"
             key="winLose"
             prop="winLose"
+             width="120px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>

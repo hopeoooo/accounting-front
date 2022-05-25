@@ -8,7 +8,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          >{{$t('Add-New')}}</el-button
+          >{{ $t("Add-New") }}</el-button
         >
       </el-col>
     </el-row>
@@ -23,33 +23,54 @@
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column :label="$t('T-No')" prop="tableId" width="120" />
+      <el-table-column :label="$t('Game-type')" prop="gameName" width="120px" />
       <el-table-column
-         :label="$t('Game-type')"
-        prop="gameName"
-        :show-overflow-tooltip="true"
+        :label="'$' + $t('Chip-Point-Base')"
+        prop="chipPointBase"
+        width="150px"
       />
-      <el-table-column  :label="'$'+$t('Chip-Point-Base')" prop="chipPointBase" />
-      <el-table-column  :label="'$'+$t('Cash-Point-Base')" prop="cashPointBase" />
-      <el-table-column  :label="'$'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBase" />
-      <el-table-column  :label="'฿'+$t('Chip-Point-Base')" prop="chipPointBaseTh" />
-      <el-table-column  :label="'฿'+$t('Cash-Point-Base')" prop="cashPointBaseTh" />
-      <el-table-column  :label="'฿'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBaseTh" />
+      <el-table-column
+        :label="'$' + $t('Cash-Point-Base')"
+        prop="cashPointBase"
+        width="150px"
+      />
+      <el-table-column
+        :label="'$' + $t('Insurance-Chip-Point-Base')"
+        prop="insurancePointBase"
+        width="220px"
+      />
+      <el-table-column
+        :label="'฿' + $t('Chip-Point-Base')"
+        prop="chipPointBaseTh"
+        width="150px"
+      />
+      <el-table-column
+        :label="'฿' + $t('Cash-Point-Base')"
+        prop="cashPointBaseTh"
+        width="150px"
+      />
+      <el-table-column
+        :label="'฿' + $t('Insurance-Chip-Point-Base')"
+        prop="insurancePointBaseTh"
+        width="220px"
+      />
       <el-table-column label="IP" prop="ip" />
 
       <el-table-column
-         :label="$t('Create-Time')"
+        :label="$t('Create-Time')"
         align="center"
         prop="createTime"
-        width="150px"
+        width="180px"
       >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column
-         :label="$t('Opr')"
+        :label="$t('Opr')"
         align="center"
         class-name="small-padding fixed-width"
+        width="150px"
       >
         <template slot-scope="scope">
           <el-button
@@ -57,14 +78,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            >{{$t('Edit')}}</el-button
+            >{{ $t("Edit") }}</el-button
           >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            >{{$t('Del')}}</el-button
+            >{{ $t("Del") }}</el-button
           >
         </template>
       </el-table-column>
@@ -95,8 +116,12 @@
           />
         </el-form-item>
 
-        <el-form-item  :label="$t('Game-type')" prop="gameId">
-          <el-select v-model="form.gameId" :placeholder="$t('select-a-game-type')" @change="onGameChange">
+        <el-form-item :label="$t('Game-type')" prop="gameId">
+          <el-select
+            v-model="form.gameId"
+            :placeholder="$t('select-a-game-type')"
+            @change="onGameChange"
+          >
             <el-option :label="$t('Baccarat')" :value="1"></el-option>
             <el-option :label="$t('DT')" :value="2"></el-option>
             <el-option :label="$t('Niu-Niu')" :value="3"></el-option>
@@ -105,48 +130,63 @@
           </el-select>
         </el-form-item>
         <el-form-item label="IP" prop="ip">
-          <el-input v-model="form.ip" :placeholder="$t('Please-enter')+'...'"></el-input>
+          <el-input
+            v-model="form.ip"
+            :placeholder="$t('Please-enter') + '...'"
+          ></el-input>
         </el-form-item>
-        <el-form-item  :label="'$'+$t('Chip-Point-Base')" prop="chipPointBase">
+        <el-form-item :label="'$' + $t('Chip-Point-Base')" prop="chipPointBase">
           <el-input
             v-model="form.chipPointBase"
-             :placeholder="$t('Please-enter')+'...'"
+            :placeholder="$t('Please-enter') + '...'"
           ></el-input>
         </el-form-item>
-        <el-form-item  :label="'$'+$t('Cash-Point-Base')" prop="cashPointBase">
+        <el-form-item :label="'$' + $t('Cash-Point-Base')" prop="cashPointBase">
           <el-input
             v-model="form.cashPointBase"
-             :placeholder="$t('Please-enter')+'...'"
+            :placeholder="$t('Please-enter') + '...'"
           ></el-input>
         </el-form-item>
-        <el-form-item  :label="'฿'+$t('Chip-Point-Base')" prop="chipPointBaseTh">
+        <el-form-item
+          :label="'฿' + $t('Chip-Point-Base')"
+          prop="chipPointBaseTh"
+        >
           <el-input
             v-model="form.chipPointBaseTh"
-             :placeholder="$t('Please-enter')+'...'"
+            :placeholder="$t('Please-enter') + '...'"
           ></el-input>
         </el-form-item>
-        <el-form-item  :label="'฿'+$t('Cash-Point-Base')" prop="cashPointBaseTh">
+        <el-form-item
+          :label="'฿' + $t('Cash-Point-Base')"
+          prop="cashPointBaseTh"
+        >
           <el-input
             v-model="form.cashPointBaseTh"
-             :placeholder="$t('Please-enter')+'...'"
+            :placeholder="$t('Please-enter') + '...'"
           ></el-input>
         </el-form-item>
-        <el-form-item  :label="'$'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBase">
+        <el-form-item
+          :label="'$' + $t('Insurance-Chip-Point-Base')"
+          prop="insurancePointBase"
+        >
           <el-input
             v-model="form.insurancePointBase"
-             :placeholder="$t('Please-enter')+'...'"
+            :placeholder="$t('Please-enter') + '...'"
           ></el-input>
         </el-form-item>
-        <el-form-item  :label="'฿'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBaseTh">
+        <el-form-item
+          :label="'฿' + $t('Insurance-Chip-Point-Base')"
+          prop="insurancePointBaseTh"
+        >
           <el-input
             v-model="form.insurancePointBaseTh"
-             :placeholder="$t('Please-enter')+'...'"
+            :placeholder="$t('Please-enter') + '...'"
           ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">{{$t('OK')}}</el-button>
-        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t("OK") }}</el-button>
+        <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -219,8 +259,7 @@ export default {
       defaultProps: {
         children: "children",
         label: "label"
-      },
-
+      }
     };
   },
   computed: {
@@ -259,11 +298,19 @@ export default {
         }
       ];
     },
-    rules(){
+    rules() {
       return {
         tableId: [
-          { required: true, message:this.$t("T-NO.cannot-be-empty") , trigger: "blur" },
-          { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("T-NO.cannot-be-empty"),
+            trigger: "blur"
+          },
+          {
+            type: "number",
+            message: this.$t("Please-enter-a-number"),
+            trigger: "blur"
+          },
           {
             validator: this.numberValitor,
 
@@ -271,12 +318,16 @@ export default {
           }
         ],
         gameId: [
-          { required: true, message:  this.$t("Please-select-a-game-type") , trigger: "change" }
+          {
+            required: true,
+            message: this.$t("Please-select-a-game-type"),
+            trigger: "change"
+          }
         ],
         ip: [
           {
             required: true,
-            message:this.$t("Please-enter-the-correct-IP-address") ,
+            message: this.$t("Please-enter-the-correct-IP-address"),
             // validator: validateIP,
             trigger: "blur"
           }
@@ -284,7 +335,7 @@ export default {
         chipPointBase: [
           {
             required: true,
-            message: this.$t("Dollar-Chip-Point-Base-cannot-be-empty") ,
+            message: this.$t("Dollar-Chip-Point-Base-cannot-be-empty"),
             trigger: "blur"
           },
           // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
@@ -297,7 +348,7 @@ export default {
         cashPointBase: [
           {
             required: true,
-            message:  this.$t("USD-Cash-Point-Base-cannot-be-empty") ,
+            message: this.$t("USD-Cash-Point-Base-cannot-be-empty"),
             trigger: "blur"
           },
           // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
@@ -310,7 +361,7 @@ export default {
         insurancePointBase: [
           {
             required: true,
-            message: this.$t("USD-insurance-chip-point-base-cannot-be-empty")  ,
+            message: this.$t("USD-insurance-chip-point-base-cannot-be-empty"),
             trigger: "blur"
           },
           // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
@@ -322,7 +373,7 @@ export default {
         chipPointBaseTh: [
           {
             required: true,
-            message:  this.$t("Thai-baht-chip-point-base-cannot-be-empty"),
+            message: this.$t("Thai-baht-chip-point-base-cannot-be-empty"),
             trigger: "blur"
           },
           // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
@@ -335,20 +386,20 @@ export default {
         cashPointBaseTh: [
           {
             required: true,
-            message:  this.$t("Thai-Baht-Cash-Point-Base-cannot-be-empty") ,
+            message: this.$t("Thai-Baht-Cash-Point-Base-cannot-be-empty"),
             trigger: "blur"
           },
           // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message:  this.$t("Please-enter-a-No-greater-than-0"),
+            message: this.$t("Please-enter-a-No-greater-than-0"),
             trigger: "blur"
           }
         ],
         insurancePointBaseTh: [
           {
             required: true,
-            message: this.$t("Baht-insurance-chip-point-base-cannot-be-empty")  ,
+            message: this.$t("Baht-insurance-chip-point-base-cannot-be-empty"),
             trigger: "blur"
           },
           // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
@@ -357,7 +408,7 @@ export default {
             message: this.$t("Please-enter-a-No-greater-than-0")
           }
         ]
-      }
+      };
     }
   },
   created() {
@@ -371,7 +422,7 @@ export default {
         callback(new Error(this.$t("Please-enter-a-number")));
       }
       if (value < 0) {
-        callback(new Error( this.$t("Please-enter-a-No-greater-than-0")));
+        callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
       } else {
         callback();
       }
@@ -478,10 +529,10 @@ export default {
       this.openType = "";
     },
 
-    onGameChange(gameId){
+    onGameChange(gameId) {
       console.log(gameId);
-       const game = this.Gameoptions.filter(item => item.value == gameId)[0];
-       this.form.gameName = game.label
+      const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+      this.form.gameName = game.label;
     },
 
     /** 提交按钮 */

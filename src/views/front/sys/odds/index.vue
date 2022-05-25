@@ -1,6 +1,6 @@
 <template>
   <div class="app-container" v-loading="loading">
-    <el-form ref="form" :model="oddsList" :rules="rules" label-width="80px">
+    <el-form ref="form" :model="oddsList" :rules="rules" label-width="120px">
       <div class="title">{{$t('Odds-Settings')}}</div>
       <el-row :gutter="20">
         <el-col :span="16" :xs="24">
@@ -84,9 +84,8 @@
               <div class="list">
                 <el-form-item
                  :label="$t('Lucky-2-cards')+': '+ $t('1x')"
-
                   prop="baccaratTwo"
-                  label-width="150px"
+                  label-width="180px"
                 >
                   <el-input
                     v-model="oddsList.baccaratTwo"
@@ -100,7 +99,7 @@
                  :label="$t('Lucky-3-cards')+': '+ $t('1x')"
 
                   prop="baccaratThere"
-                  label-width="150px"
+                  label-width="180px"
                 >
                   <el-input
                     v-model="oddsList.baccaratThere"
@@ -156,7 +155,7 @@
             <el-form-item
                :label="$t('Baccarat-Rolling-Ratio-S-Chip')"
               prop="baccaratRollingRatioChip"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChip"
@@ -173,7 +172,7 @@
             <el-form-item
                :label="$t('Baccarat-Rolling-Ratio-S-Cash')"
               prop="baccaratRollingRatioCash"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCash"
@@ -190,7 +189,7 @@
             <el-form-item
                :label="$t('DT-Rolling-Ratio-S-Chip')"
               prop="dragonTigerRatioChip"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioChip"
@@ -206,7 +205,7 @@
             <el-form-item
                :label="$t('DT-Rolling-Ratio-S-Cash')"
               prop="dragonTigerRatioCash"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCash"
@@ -223,7 +222,7 @@
             <el-form-item
                :label="$t('Baccarat-rolling-percentage-B-chip')"
               prop="baccaratRollingRatioChipTh"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioChipTh"
@@ -240,7 +239,7 @@
             <el-form-item
                :label="$t('Baccarat-Rolling-Ratio-B-cash')"
               prop="baccaratRollingRatioCashTh"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.baccaratRollingRatioCashTh"
@@ -257,7 +256,7 @@
             <el-form-item
                :label="$t('DT-Rolling-Ratio-B-chip')"
               prop="dragonTigerRatioChipTh"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioChipTh"
@@ -274,7 +273,7 @@
             <el-form-item
                :label="$t('DT-Rollingh-Ratio-B-cash')"
               prop="dragonTigerRatioCashTh"
-              label-width="200px"
+              label-width="230px"
             >
               <el-input
                 v-model="oddsList.dragonTigerRatioCashTh"

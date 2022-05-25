@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item label="" prop="gameName">
             <el-select
@@ -110,6 +110,7 @@
             align="center"
             key="card"
             prop="card"
+
           />
           <el-table-column
             :label="$t('Name')"
@@ -147,6 +148,7 @@
             align="center"
             key="cardType"
             prop="cardType"
+             width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.cardType == 0 ? $t("master-card") : $t("child-card")}}</span>
@@ -157,6 +159,7 @@
             align="center"
             key="isAdmin"
             prop="isAdmin"
+             width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.isAdmin == 0 ? $t("No") : $t("Yes") }}</span>
@@ -278,7 +281,7 @@
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
         v-if="open"
       >
         <el-row :gutter="0" v-if="isMain == false">
@@ -411,10 +414,10 @@
             <el-form-item
               :label="$t('Baccarat-Rolling-Ratio-S-Chip')"
               prop="baccaratRollingRatioChip"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioChip"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -425,10 +428,10 @@
             <el-form-item
               :label="$t('Baccarat-Rolling-Ratio-S-Cash')"
               prop="baccaratRollingRatioCash"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioCash"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -439,12 +442,12 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              :label="$t('Baccarat-Rolling-Ratio-B-Chip')"
+              :label="$t('Baccarat-rolling-percentage-B-chip')"
               prop="baccaratRollingRatioChipTh"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioChipTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -453,12 +456,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="$t('Baccarat-Rolling-Ratio-B-Cash')"
+              :label="$t('Baccarat-Rolling-Ratio-B-cash')"
               prop="baccaratRollingRatioCashTh"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioCashTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -471,10 +474,10 @@
             <el-form-item
               :label="$t('DT-Rolling-Ratio-S-Chip')"
               prop="dragonTigerRatioChip"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioChip"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -485,10 +488,10 @@
             <el-form-item
               :label="$t('DT-Rolling-Ratio-S-Cash')"
               prop="dragonTigerRatioCash"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioCash"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -501,10 +504,10 @@
             <el-form-item
               :label="$t('DT-Rolling-Ratio-B-chip')"
               prop="dragonTigerRatioChipTh"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioChipTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -513,12 +516,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="$t('DT-Rolling-Ratio-B-cash')"
+              :label="$t('DT-Rollingh-Ratio-B-cash')"
               prop="dragonTigerRatioCashTh"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioCashTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -573,7 +576,7 @@
             <el-form-item
               :label="$t('Whether-have-commission')"
               prop="isPump"
-              label-width="110px"
+              label-width="150px"
             >
               <el-select
                 v-model="form.isPump"
@@ -603,7 +606,7 @@
             <el-form-item
               :label="$t('Int-card')"
               prop="isAdmin"
-              label-width="110px"
+              label-width="150px"
             >
               <el-select
                 v-model="form.isAdmin"
@@ -622,7 +625,7 @@
               <el-input
                 type="textarea"
                 :rows="7"
-                :placeholder="$t('Please-enter-conten')"
+                :placeholder="$t('Please-enter-content')"
                 v-model="form.remark"
                 maxlength="100"
                 show-word-limit
@@ -682,7 +685,7 @@
           >
         </div>
         <div class="list">
-          <span>{{ $t("Baccarat-Rolling-Ratio-B-Chip") }}）</span
+          <span>{{ $t("Baccarat-rolling-percentage-B-chip") }}）</span
           ><span
             >{{
               memlist.baccaratRollingRatioChipTh

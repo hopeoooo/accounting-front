@@ -1,5 +1,5 @@
 import { Message, MessageBox, Notification, Loading } from 'element-ui'
-
+import i18n from '@/locales/index.js'
 let loadingInstance;
 
 export default {
@@ -53,9 +53,9 @@ export default {
   },
   // 确认窗体
   confirm(content) {
-    return MessageBox.confirm(content, "系统提示", {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    return MessageBox.confirm(content, i18n.t("System-prompt"), {
+      confirmButtonText: i18n.t("OK"),
+      cancelButtonText: i18n.t("Cancel"),
       type: "warning",
     })
   },

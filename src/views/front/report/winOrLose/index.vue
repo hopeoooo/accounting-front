@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
             <el-input
@@ -113,6 +113,7 @@
             key="betMoney"
             prop="betMoney"
             sortable="custom"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney | MoneyFormat }}</span>
@@ -123,6 +124,7 @@
             align="center"
             key="water"
             prop="water"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -133,6 +135,7 @@
             align="center"
             key="waterAmount"
             prop="waterAmount"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
@@ -143,6 +146,7 @@
             align="center"
             key="tie"
             prop="tie"
+            width="100px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.tie || 0 }}</span>
@@ -163,6 +167,7 @@
             align="center"
             key="winLose"
             prop="winLose"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
@@ -174,6 +179,7 @@
             key="betMoneyTh"
             prop="betMoneyTh"
             sortable="custom"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoneyTh | MoneyFormat }}</span>
@@ -184,6 +190,7 @@
             align="center"
             key="waterTh"
             prop="waterTh"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -195,6 +202,7 @@
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
@@ -205,6 +213,7 @@
             :label="'฿' + $t('T-money')"
             align="center"
             key="tieTh"
+            width="100px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.tieTh | MoneyFormat }}</span>
@@ -225,6 +234,7 @@
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
@@ -234,10 +244,13 @@
         <el-table
           v-loading="loading"
           :data="userList"
-          class="table2"
           show-summary
-          :sum-text="$t('Tot')"
-          :summary-method="getSummaries"
+          :sum-text="$t('Subtotal')"
+          :summary-method="getSummaries1"
+          @sort-change="onSortChange"
+          ref="dataTable"
+          :empty-text="$t('no-data')"
+          class="table2"
         >
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -255,9 +268,10 @@
             key="betMoney"
             prop="betMoney"
             sortable="custom"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.betMoney || 0 }}</span>
+              <span>{{ scope.row.betMoney | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -265,9 +279,10 @@
             align="center"
             key="water"
             prop="water"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.water || 0 }}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -275,9 +290,10 @@
             align="center"
             key="waterAmount"
             prop="waterAmount"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterAmount || 0 }}</span>
+              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -285,6 +301,7 @@
             align="center"
             key="tie"
             prop="tie"
+            width="100px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.tie || 0 }}</span>
@@ -297,7 +314,7 @@
             prop="pump"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.pump || 0 }}</span>
+              <span>{{ scope.row.pump | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -305,20 +322,22 @@
             align="center"
             key="winLose"
             prop="winLose"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.winLose || 0 }}</span>
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="฿投注额"
+            :label="'฿' + $t('Bet-amount')"
             align="center"
             key="betMoneyTh"
             prop="betMoneyTh"
             sortable="custom"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.betMoneyTh || 0 }}</span>
+              <span>{{ scope.row.betMoneyTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -326,40 +345,43 @@
             align="center"
             key="waterTh"
             prop="waterTh"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterTh || 0 }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-            label="฿洗码费"
+            :label="'฿' + $t('Rolling-Fee')"
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterAmountTh || 0 }}</span>
+              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="tieTh"
-            label="฿和钱"
+            :label="'฿' + $t('T-money')"
             align="center"
             key="tieTh"
+            width="100px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.tieTh || 0 }}</span>
+              <span>{{ scope.row.tieTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="pumpTh"
-            label="฿抽水"
+            :label="'฿' + $t('Comm')"
             align="center"
             key="pumpTh"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.pumpTh || 0 }}</span>
+              <span>{{ scope.row.pumpTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -367,9 +389,10 @@
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh || 0 }}</span>
+              <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
         </el-table>

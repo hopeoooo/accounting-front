@@ -143,7 +143,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="600px"
+      width="700px"
       @close="onDialogClose"
       :close-on-click-modal="false"
       append-to-body
@@ -152,7 +152,7 @@
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="150px"
         v-if="open"
       >
         <el-row :gutter="0">
@@ -242,7 +242,7 @@
                 v-model="form.joinTime"
                 type="date"
                 value-format="yyyy-MM-dd"
-                placeholder="选择日期"
+                :placeholder="$t('Please-select')"
               >
               </el-date-picker>
             </el-form-item>
@@ -256,7 +256,7 @@
                 type="year"
                 value-format="yyyy"
                 style="width:180px"
-                placeholder="选择年"
+                 :placeholder="$t('Please-select')"
                 :picker-options="pickerOptions"
               >
               </el-date-picker>
