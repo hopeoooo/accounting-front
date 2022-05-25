@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-05-04 22:06:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-25 14:10:34
+ * @LastEditTime: 2022-05-25 18:45:56
  * @Description: file content
  */
 import Vue from 'vue'
@@ -21,8 +21,9 @@ import directive from './directive' // directive
 import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
 import i18n from '@/locales'
-import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
+import enLocale from 'element-ui/lib/locale/lang/en'
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 
 import './assets/icons' // icon
@@ -72,8 +73,7 @@ Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
-// 设置语言
-// locale.use(lang)
+
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
@@ -89,8 +89,16 @@ DictData.install()
  */
 
 Vue.use(Element, {
+  locale:{...zhLocale,...enLocale},
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
+if (i18n.locale == "en") {
+  // element UI设置语言
+  locale.use(enLocale);
+}else{
+  locale.use(zhLocale);
+}
+
 
 Vue.config.productionTip = false
 

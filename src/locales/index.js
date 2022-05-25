@@ -77,14 +77,12 @@ function importLangData(languages) {
 
   const messages = {
     en: {
-      ...enLocale,
       ...require(`./lang/en.json`),
-
+      ...enLocale
     },
     zh: {
-      ...zhLocale,
       ...require(`./lang/zh.json`),
-
+      ...zhLocale
     }
   };
   return messages;
@@ -148,7 +146,7 @@ const i18n = new VueI18n({
   locale, //this.$i18n.locale 通过切换locale的值来实现语言切换
   fallbackLocale: locale, // 语言环境中不存在相应massage键时回退到指定语言
   messages,
-  formatter: new CustomFormatter()
+  // formatter: new CustomFormatter()
 });
 // ElementLocale.i18n((key, value) => i18n.t(key, value));
 export default i18n;

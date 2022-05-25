@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-07 13:31:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-25 12:16:08
+ * @LastEditTime: 2022-05-25 19:49:54
  * @Description: 语言选择框
 -->
 <template>
@@ -35,11 +35,16 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import Element from 'element-ui'
 import { mapState, mapMutations } from "vuex";
 import { languagesConfig, langMap } from "@/locales/index";
 import { setLanguage } from "@/utils/locale";
 import store from "../../store";
 import router from "../../router";
+import locale from "element-ui/lib/locale";
+import enLocale from "element-ui/lib/locale/lang/en";
+import zhLocale from "element-ui/lib/locale/lang/zh-CN";
 export default {
   /**语言选择 */
   name: "LanguageSelect",
@@ -59,6 +64,20 @@ export default {
   watch: {
     currentLanguage(val) {
       this.changeRouter();
+      if (val == "en") {
+        console.log("切换element ui 语言", val);
+        // element UI设置语言
+        // locale.use(enLocale);
+        // Vue.use(Element, {
+        //   locale: enLocale
+        // });
+      } else {
+        console.log("切换element ui 语言", val);
+        // Vue.use(Element, {
+        //   locale: zhLocale
+        // });
+        // locale.use(zhLocale);
+      }
     }
   },
   methods: {
