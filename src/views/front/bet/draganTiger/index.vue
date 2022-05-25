@@ -133,7 +133,7 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" stripe class="betBox" height="500px" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
+     <el-table v-loading="loading" stripe class="betBox" height="500px" style="font-size: 20px;" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="360px">
                <template slot-scope="scope">
