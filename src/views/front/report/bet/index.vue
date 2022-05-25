@@ -454,9 +454,9 @@
           <div class="longhu-result-box">
             <div class="box-label">{{ $t("Result") }}</div>
             <el-radio-group v-model="form.gameResult" class="result-list">
-              <el-radio :label="$t('D')">{{ $t("D") }}</el-radio>
-              <el-radio  :label="currentLanguage == 'zh'? '虎:' : 'TYG:'">{{ $t("TYG") }}</el-radio>
-              <el-radio :label="$t('T')">{{ $t("T") }}</el-radio>
+              <el-radio  label="龙">{{$t('D')}}</el-radio>
+              <el-radio  label="虎">{{currentLanguage == 'zh'? '虎' : 'TYG'}}</el-radio>
+              <el-radio  label="和">{{$t('T')}}</el-radio>
             </el-radio-group>
           </div>
         </div>
