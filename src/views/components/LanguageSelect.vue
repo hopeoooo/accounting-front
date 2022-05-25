@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-07 13:31:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-25 18:53:04
+ * @LastEditTime: 2022-05-25 19:49:54
  * @Description: 语言选择框
 -->
 <template>
@@ -66,7 +66,6 @@ export default {
       this.changeRouter();
       if (val == "en") {
         console.log("切换element ui 语言", val);
-
         // element UI设置语言
         // locale.use(enLocale);
         // Vue.use(Element, {

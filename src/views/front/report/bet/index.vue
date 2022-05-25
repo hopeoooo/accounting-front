@@ -431,7 +431,10 @@
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item :label="currentLanguage == 'zh'? '虎:' : 'TYG:'" label-width="50px">
+            <el-form-item
+              :label="currentLanguage == 'zh' ? '虎:' : 'TYG:'"
+              label-width="50px"
+            >
               <el-input
                 v-model="longhuFormOption.tiger"
                 placeholder=""
@@ -454,9 +457,11 @@
           <div class="longhu-result-box">
             <div class="box-label">{{ $t("Result") }}</div>
             <el-radio-group v-model="form.gameResult" class="result-list">
-              <el-radio  label="龙">{{$t('D')}}</el-radio>
-              <el-radio  label="虎">{{currentLanguage == 'zh'? '虎' : 'TYG'}}</el-radio>
-              <el-radio  label="和">{{$t('T')}}</el-radio>
+              <el-radio label="龙">{{ $t("D") }}</el-radio>
+              <el-radio label="虎">{{
+                currentLanguage == "zh" ? "虎" : "TYG"
+              }}</el-radio>
+              <el-radio label="和">{{ $t("T") }}</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -502,7 +507,7 @@
                   <el-input
                     v-model="formOption.banker"
                     placeholder=""
-                     maxlength="11"
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -891,7 +896,7 @@ export default {
     };
   },
   computed: {
-     ...mapState("app", ["currentLanguage"]),
+    ...mapState("app", ["currentLanguage"]),
     // 游戏类型列表
     Gameoptions() {
       return [
@@ -1069,6 +1074,7 @@ export default {
       handler(newVal, oldVal) {
         // 生成新的option,用于form提交
         console.log("生成新的龙虎option,用于form提交", newVal, oldVal);
+
         this.getNewLongHuOption(newVal);
       },
       deep: true,
@@ -1178,6 +1184,7 @@ export default {
       this.openType = "";
       this.gameResultList = [];
       this.formBetMoney = null;
+      this.form.betMoney = null;
       this.resetOption();
       this.resetGameResult();
     },
@@ -1235,9 +1242,10 @@ export default {
         this.initLongHuOption(row.option);
       }
 
-      if (row.gameId != 1 || row.gameId != 2) {
+      if (row.gameId != 1 && row.gameId != 2) {
         // 牛牛、三公、骰子
         this.form.betMoney = row.betMoney;
+        this.initNiuOption(row.option);
       }
       // 复制一份原始的form，用于提交时对比差异
       this.initForm = Object.assign({}, row);
@@ -1245,14 +1253,16 @@ export default {
 
     /** 补录 */
     handleRepair(row) {
-      this.reset();
+      // this.reset();
+
+
       this.form = Object.assign({}, row);
       this.form.card = "";
       this.form.gameNum = "";
       this.form.type = null;
       this.form.option = {};
       this.form.gameResult = "";
-      this.form.betMoney = null;
+      this.$delete(this.form, "betMoney");
       this.form.optionTime = row.createTime;
       this.open = true;
       this.openType = "repair";
@@ -1367,15 +1377,19 @@ export default {
 
     //开牌结果样式
     getResultStyle(option) {
-      if (option == 4 || option == "龙") {
+      if (option == 4 || option == "龙" || option == "D") {
         // 龙/庄（红色）
         return "result-long-banker";
       }
-      if (option == 1 || option == "虎") {
+      if (
+        option == 1 ||
+        option == "虎" ||
+        option.toLocaleLowerCase() == "tyg"
+      ) {
         // 虎/闲（蓝色）
         return "result-hu-player";
       }
-      if (option == 7) {
+      if (option == 7 || option == "T") {
         // 和（绿色）
         return "result-tie";
       }
@@ -1510,9 +1524,9 @@ export default {
       for (const key in formOption) {
         if (formOption.hasOwnProperty(key)) {
           //例如 value 是20
-          const value = formOption[key] ? Number(formOption[key]) :null;
+          const value = formOption[key] ? Number(formOption[key]) : null;
 
-          if (value !=null) {
+          if (value != null) {
             // 比如formOption的里key是dragon,对应到longhuOptionMap里的值是"龙"
             const optionKey = longhuOptionMap[key];
             // {"龙":20}
@@ -1527,12 +1541,24 @@ export default {
       this.formBetMoney = betAmount;
     },
 
+    initNiuOption(options) {
+      this.form.option = {
+        [this.form.gameResult]: Number(options[0].betMoney)
+        // [this.form.gameResult]: Number(this.form.betMoney),
+      };
+    },
+
     // 牛牛/三公/推筒子:当betMoney变化时生成option
     onBetMoneyChange(val) {
+      console.log("牛牛/三公/推筒子当betMoney变化", this.form.gameResult);
+
       if (this.form.gameResult) {
         this.form.option = {
           [this.form.gameResult]: Number(val)
         };
+
+        // 复制一份下注金额.用于提交时对比差异
+        this.originalOption = Object.assign({}, this.form.option);
       }
     },
     // 牛牛/三公/推筒子:当gameResulty变化时生成option
@@ -1546,7 +1572,7 @@ export default {
 
     /**重置下注金额option */
     resetOption() {
-      //  重置百家乐option
+      // 重置百家乐option
       this.formOption = {
         banker: "",
         player: "",
@@ -1572,7 +1598,8 @@ export default {
     // 对比下注金额的数据是否与原始数据相等
     equalOption(originalOption, formOption) {
       // 因为formOption的值类型是string,originalOption值类型是Number
-      if (originalOption == Number(formOption)) {
+
+      if (originalOption == (formOption)) {
         return true;
       }
     },
@@ -1648,7 +1675,9 @@ export default {
         /** 2. 是否有录入完整注单数据 */
         if (
           (this.openGameId == 1 || this.openGameId == 2) &&
-          (!this.form.card || _.size(this.form.option) == 0 || this.form.gameResult == "")
+          (!this.form.card ||
+            _.size(this.form.option) == 0 ||
+            this.form.gameResult == "")
         ) {
           // 百家乐 、龙虎
           this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
@@ -1659,7 +1688,9 @@ export default {
           (this.openGameId == 3 ||
             this.openGameId == 4 ||
             this.openGameId == 5) &&
-          (!this.form.card || _.size(this.form.option) == 0 || this.form.gameResult == "")
+          (!this.form.card ||
+            _.size(this.form.option) == 0 ||
+            this.form.gameResult == "")
         ) {
           // 、牛牛、三公、推筒子
           this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
@@ -1688,7 +1719,7 @@ export default {
           (this.openGameId == 1 || this.openGameId == 2) &&
           (!this.form.card ||
             !this.form.gameNum ||
-            !this.formBetMoney ||
+            _.size(this.form.option) == 0 ||
             this.form.type == null ||
             !this.form.gameResult)
         ) {
@@ -1708,7 +1739,7 @@ export default {
             this.openGameId == 5) &&
           (!this.form.card ||
             !this.form.gameNum ||
-            !this.form.betMoney ||
+             _.size(this.form.option) == 0 ||
             this.form.type == null ||
             !this.form.gameResult)
         ) {
