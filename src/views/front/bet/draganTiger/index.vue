@@ -10,6 +10,7 @@
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
              <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
+              <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
           </el-card>
       </el-col>
        <!--桌台信息-->
@@ -178,7 +179,7 @@
 </template>
 
 <script>
-import { dragantigerInfo,dragantigerList,dragantigerOpen,dragantigerUpdate,dragantigerInput,dragantigerSave} from "@/api/bet/draganTiger";
+import { dragantigerInfo,dragontigerNext,dragantigerList,dragantigerOpen,dragantigerUpdate,dragantigerInput,dragantigerSave} from "@/api/bet/draganTiger";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
 import BetRecord from "./dialogBet.vue"
@@ -303,6 +304,20 @@ export default {
     roadChange(){},
     betRecord(){
       this.record = true
+    },
+    nextGame(){
+      this.$confirm(this.$t('bet.sureNext'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
+        type: 'warning',
+         customClass:'dialog_tips'
+      }).then(() => {
+        dragontigerNext().then(res => {
+          this.loading = false;
+           this.getTableInfo()
+            this.getResult()
+        })
+      })
     },
     //获取本地存储
     getStatus(){

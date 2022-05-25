@@ -1,7 +1,7 @@
-
 {
   "persino-info": "个人信息",
   "bet":{
+    "next":"下一局",
     "user":"当前操作员",
     "changeAccount":"切换账号",
     "noScreen":"未投屏",
@@ -41,6 +41,7 @@
     "isChoose":"请检查币种是否漏勾选",
     "ishas":"请检查卡号是否漏填",
     "sureAdd":"是否确定录入？",
+    "sureNext":"是否确定录入下一局？",
     "heji":"合计",
     "xiaoji":"小计",
     "tips1":"路单图修改成功",

@@ -16,6 +16,22 @@ export function pusherReckon(data) {
     params: data
   })
 }
+// 注单记录
+export function pusherRecord(data) {
+  return request({
+    url: '/bet/pusher/record',
+    method: 'post',
+    params: data
+  })
+}
+// 下一局
+export function pusherNext(data) {
+  return request({
+    url: '/bet/pusher/next',
+    method: 'post',
+    params: data
+  })
+}
 // 录入   
 export function pusherInput(query) {
   return request({

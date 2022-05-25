@@ -16,6 +16,22 @@ export function niuniuReckon(data) {
     params: data
   })
 }
+// 注单记录
+export function niuniuRecord(data) {
+  return request({
+    url: '/bet/niuniu/record',
+    method: 'post',
+    params: data
+  })
+}
+// 下一局
+export function niuniuNext(data) {
+  return request({
+    url: '/bet/niuniu/next',
+    method: 'post',
+    params: data
+  })
+}
 // 录入
 export function niuniuInput(query) {
   return request({

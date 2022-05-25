@@ -1,6 +1,7 @@
 {
   "persino-info":"Info",
   "bet":{
+    "next":"Next game",
     "user":"Operator",
     "changeAccount":"Switching account",
     "noScreen":"Uncast",
@@ -40,6 +41,7 @@
     "isChoose":"Please check if the currency is not checked",
     "ishas":"Please check if you have missed the test number",
     "sureAdd":"Are you sure about the entry?",
+    "sureNext":"Are you sure about the entry next game?",
     "heji":"Tot",
     "xiaoji":"Subtotal",
     "tips1":"Roadmap modified successfully",

@@ -16,6 +16,22 @@ export function sangongReckon(data) {
     params: data
   })
 }
+// 注单记录
+export function sangongRecord(data) {
+  return request({
+    url: '/bet/sangong/record',
+    method: 'post',
+    params: data
+  })
+}
+// 下一局
+export function sangongNext(data) {
+  return request({
+    url: '/bet/sangong/next',
+    method: 'post',
+    params: data
+  })
+}
 // 录入
 export function sangongInput(query) {
   return request({

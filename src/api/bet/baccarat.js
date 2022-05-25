@@ -16,6 +16,14 @@ export function baccaratRecord(data) {
     params: data
   })
 }
+// 下一局
+export function baccaratNext(data) {
+  return request({
+    url: '/bet/baccarat/next',
+    method: 'post',
+    params: data
+  })
+}
 // 点码||收码 计算差距
 export function baccaratReckon(data) {
   return request({

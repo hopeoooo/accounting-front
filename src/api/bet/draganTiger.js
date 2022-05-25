@@ -16,6 +16,14 @@ export function dragontigerRecord(data) {
     params: data
   })
 }
+// 下一局
+export function dragontigerNext(data) {
+  return request({
+    url: '/bet/dragontiger/next',
+    method: 'post',
+    params: data
+  })
+}
 // 点码||收码 计算差距
 export function dragantigerReckon(data) {
   return request({
