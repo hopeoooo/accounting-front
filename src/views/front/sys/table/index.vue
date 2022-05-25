@@ -22,22 +22,22 @@
       @selection-change="handleSelectionChange"
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="桌台编号" prop="tableId" width="120" />
+      <el-table-column :label="$t('T-No')" prop="tableId" width="120" />
       <el-table-column
-        label="游戏类型"
+         :label="$t('Game-type')"
         prop="gameName"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="$筹码点码基数" prop="chipPointBase" />
-      <el-table-column label="$现金点码基数" prop="cashPointBase" />
-      <el-table-column label="$保险筹码点码基数" prop="insurancePointBase" />
-      <el-table-column label="฿筹码点码基数" prop="chipPointBaseTh" />
-      <el-table-column label="฿现金点码基数" prop="cashPointBaseTh" />
-      <el-table-column label="฿保险筹码点码基数" prop="insurancePointBaseTh" />
+      <el-table-column  :label="'$'+$t('Chip-Point-Base')" prop="chipPointBase" />
+      <el-table-column  :label="'$'+$t('Cash-Point-Base')" prop="cashPointBase" />
+      <el-table-column  :label="'$'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBase" />
+      <el-table-column  :label="'฿'+$t('Chip-Point-Base')" prop="chipPointBaseTh" />
+      <el-table-column  :label="'฿'+$t('Cash-Point-Base')" prop="cashPointBaseTh" />
+      <el-table-column  :label="'฿'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBaseTh" />
       <el-table-column label="IP" prop="ip" />
 
       <el-table-column
-        label="创建时间"
+         :label="$t('Create-Time')"
         align="center"
         prop="createTime"
         width="150px"
@@ -57,14 +57,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            >编辑</el-button
+            >{{$t('Edit')}}</el-button
           >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            >删除</el-button
+            >{{$t('Del')}}</el-button
           >
         </template>
       </el-table-column>
@@ -88,59 +88,59 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="180px">
-        <el-form-item label="桌台编号" prop="tableId">
+        <el-form-item :label="$t('T-No')" prop="tableId">
           <el-input
             v-model.number="form.tableId"
-            placeholder="请输入桌台编号"
+            :placeholder="$t('Please-enter-a-T-No')"
           />
         </el-form-item>
 
-        <el-form-item label="游戏类型" prop="gameName">
-          <el-select v-model="form.gameName" placeholder="请选择游戏类型">
-            <el-option label="百家乐" value="百家乐"></el-option>
-            <el-option label="龙虎" value="龙虎"></el-option>
-            <el-option label="牛牛" value="牛牛"></el-option>
-            <el-option label="三公" value="三公"></el-option>
-            <el-option label="推筒子" value="推筒子"></el-option>
+        <el-form-item  :label="$t('Game-type')" prop="gameId">
+          <el-select v-model="form.gameId" :placeholder="$t('select-a-game-type')" @change="onGameChange">
+            <el-option :label="$t('Baccarat')" :value="1"></el-option>
+            <el-option :label="$t('DT')" :value="2"></el-option>
+            <el-option :label="$t('Niu-Niu')" :value="3"></el-option>
+            <el-option :label="$t('San-Gong')" :value="4"></el-option>
+            <el-option :label="$t('Tui-Tong-Zi')" :value="5"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="IP" prop="ip">
-          <el-input v-model="form.ip" placeholder="请输入..."></el-input>
+          <el-input v-model="form.ip" :placeholder="$t('Please-enter')+'...'"></el-input>
         </el-form-item>
-        <el-form-item label="$筹码点码基数" prop="chipPointBase">
+        <el-form-item  :label="'$'+$t('Chip-Point-Base')" prop="chipPointBase">
           <el-input
             v-model="form.chipPointBase"
-            placeholder="请输入..."
+             :placeholder="$t('Please-enter')+'...'"
           ></el-input>
         </el-form-item>
-        <el-form-item label="$现金点码基数" prop="cashPointBase">
+        <el-form-item  :label="'$'+$t('Cash-Point-Base')" prop="cashPointBase">
           <el-input
             v-model="form.cashPointBase"
-            placeholder="请输入..."
+             :placeholder="$t('Please-enter')+'...'"
           ></el-input>
         </el-form-item>
-        <el-form-item label="฿筹码点码基数" prop="chipPointBaseTh">
+        <el-form-item  :label="'฿'+$t('Chip-Point-Base')" prop="chipPointBaseTh">
           <el-input
             v-model="form.chipPointBaseTh"
-            placeholder="请输入..."
+             :placeholder="$t('Please-enter')+'...'"
           ></el-input>
         </el-form-item>
-        <el-form-item label="฿现金点码基数" prop="cashPointBaseTh">
+        <el-form-item  :label="'฿'+$t('Cash-Point-Base')" prop="cashPointBaseTh">
           <el-input
             v-model="form.cashPointBaseTh"
-            placeholder="请输入..."
+             :placeholder="$t('Please-enter')+'...'"
           ></el-input>
         </el-form-item>
-        <el-form-item label="$保险筹码点码基数" prop="insurancePointBase">
+        <el-form-item  :label="'$'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBase">
           <el-input
             v-model="form.insurancePointBase"
-            placeholder="请输入..."
+             :placeholder="$t('Please-enter')+'...'"
           ></el-input>
         </el-form-item>
-        <el-form-item label="฿保险筹码点码基数" prop="insurancePointBaseTh">
+        <el-form-item  :label="'฿'+$t('Insurance-Chip-Point-Base')" prop="insurancePointBaseTh">
           <el-input
             v-model="form.insurancePointBaseTh"
-            placeholder="请输入..."
+             :placeholder="$t('Please-enter')+'...'"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -220,24 +220,63 @@ export default {
         children: "children",
         label: "label"
       },
-      // 表单校验
-      rules: {
+
+    };
+  },
+  computed: {
+    // 游戏类型列表
+    Gameoptions() {
+      return [
+        {
+          value: "",
+          label: this.$t("All")
+          // label: "全部"
+        },
+        {
+          value: 1,
+          label: this.$t("Baccarat")
+          // label: "百家乐"
+        },
+        {
+          value: 2,
+          label: this.$t("DT")
+          // label: "龙虎"
+        },
+        {
+          value: 3,
+          label: this.$t("Niu-Niu")
+          // label: "牛牛"
+        },
+        {
+          value: 4,
+          label: this.$t("San-Gong")
+          // label: "三公"
+        },
+        {
+          value: 5,
+          label: this.$t("Tui-Tong-Zi")
+          // label: "推筒子"
+        }
+      ];
+    },
+    rules(){
+      return {
         tableId: [
-          { required: true, message: "桌台编号不能为空", trigger: "blur" },
-          { type: "number", message: "请输入数字", trigger: "blur" },
+          { required: true, message:this.$t("T-NO.cannot-be-empty") , trigger: "blur" },
+          { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            // message: "请输入大于0的数字",
+
             trigger: "blur"
           }
         ],
-        gameName: [
-          { required: true, message: "请选择游戏类型", trigger: "change" }
+        gameId: [
+          { required: true, message:  this.$t("Please-select-a-game-type") , trigger: "change" }
         ],
         ip: [
           {
             required: true,
-            message: "请输入正确的IP地址",
+            message:this.$t("Please-enter-the-correct-IP-address") ,
             // validator: validateIP,
             trigger: "blur"
           }
@@ -245,81 +284,81 @@ export default {
         chipPointBase: [
           {
             required: true,
-            message: "美元筹码点码基数不能为空",
+            message: this.$t("Dollar-Chip-Point-Base-cannot-be-empty") ,
             trigger: "blur"
           },
-          // { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message: "请输入大于0的数字",
+            message: this.$t("Please-enter-a-No-greater-than-0"),
             trigger: "blur"
           }
         ],
         cashPointBase: [
           {
             required: true,
-            message: "美元现金点码基数不能为空",
+            message:  this.$t("USD-Cash-Point-Base-cannot-be-empty") ,
             trigger: "blur"
           },
-          // { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message: "请输入大于0的数字",
+            message: this.$t("Please-enter-a-No-greater-than-0"),
             trigger: "blur"
           }
         ],
         insurancePointBase: [
           {
             required: true,
-            message: "美元保险筹码点码基数不能为空",
+            message: this.$t("USD-insurance-chip-point-base-cannot-be-empty")  ,
             trigger: "blur"
           },
-          // { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message: "请输入大于0的数字"
+            message: this.$t("Please-enter-a-No-greater-than-0")
           }
         ],
         chipPointBaseTh: [
           {
             required: true,
-            message: "泰铢筹码点码基数不能为空",
+            message:  this.$t("Thai-baht-chip-point-base-cannot-be-empty"),
             trigger: "blur"
           },
-          // { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message: "请输入大于0的数字",
+            message: this.$t("Please-enter-a-No-greater-than-0"),
             trigger: "blur"
           }
         ],
         cashPointBaseTh: [
           {
             required: true,
-            message: "泰铢现金点码基数不能为空",
+            message:  this.$t("Thai-Baht-Cash-Point-Base-cannot-be-empty") ,
             trigger: "blur"
           },
-          // { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message: "请输入大于0的数字",
+            message:  this.$t("Please-enter-a-No-greater-than-0"),
             trigger: "blur"
           }
         ],
         insurancePointBaseTh: [
           {
             required: true,
-            message: "泰铢保险筹码点码基数不能为空",
+            message: this.$t("Baht-insurance-chip-point-base-cannot-be-empty")  ,
             trigger: "blur"
           },
-          // { type: "number", message: "请输入数字", trigger: "blur" },
+          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
           {
             validator: this.numberValitor,
-            message: "请输入大于0的数字"
+            message: this.$t("Please-enter-a-No-greater-than-0")
           }
         ]
       }
-    };
+    }
   },
   created() {
     this.getList();
@@ -329,10 +368,10 @@ export default {
       // 大于0的数字数字校验
       // 请输入大于0的数字
       if (isNaN(value)) {
-        callback(new Error("请输入数字"));
+        callback(new Error(this.$t("Please-enter-a-number")));
       }
       if (value < 0) {
-        callback(new Error("请输入正确数字"));
+        callback(new Error( this.$t("Please-enter-a-No-greater-than-0")));
       } else {
         callback();
       }
@@ -417,7 +456,8 @@ export default {
       this.reset();
       this.open = true;
       this.openType = "add";
-      this.title = "新增桌台";
+
+      this.title = this.$t("Add-a-new-table");
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -426,7 +466,8 @@ export default {
       this.form = Object.assign({}, row);
       this.open = true;
       this.openType = "edit";
-      this.title = "编辑桌台";
+      this.title = this.$t("Add-a-new-table");
+      // this.title = "编辑桌台";
       // addUpTable({id:id}).then(response => {
       //   // this.form = response.data;
 
@@ -437,19 +478,25 @@ export default {
       this.openType = "";
     },
 
+    onGameChange(gameId){
+      console.log(gameId);
+       const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+       this.form.gameName = game.label
+    },
+
     /** 提交按钮 */
     submitForm: function() {
-      if (this.form.gameName == "百家乐") {
-        this.form.gameId = 1;
-      } else if (this.form.gameName == "龙虎") {
-        this.form.gameId = 2;
-      } else if (this.form.gameName == "牛牛") {
-        this.form.gameId = 3;
-      } else if (this.form.gameName == "三公") {
-        this.form.gameId = 4;
-      } else if (this.form.gameName == "推筒子") {
-        this.form.gameId = 5;
-      }
+      // if (this.form.gameName == "百家乐") {
+      //   this.form.gameId = 1;
+      // } else if (this.form.gameName == "龙虎") {
+      //   this.form.gameId = 2;
+      // } else if (this.form.gameName == "牛牛") {
+      //   this.form.gameId = 3;
+      // } else if (this.form.gameName == "三公") {
+      //   this.form.gameId = 4;
+      // } else if (this.form.gameName == "推筒子") {
+      //   this.form.gameId = 5;
+      // }
       console.log(this.form);
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -474,13 +521,13 @@ export default {
     handleDelete(row) {
       const id = row.id || this.ids;
       this.$modal
-        .confirm("是否确认删除该桌台？")
+        .confirm(this.$t("Confirm-deletion-of-the-table"))
         .then(function() {
           return delTable(id);
         })
         .then(() => {
           this.getList();
-          this.$modal.msgSuccess("删除成功");
+          this.$modal.msgSuccess(this.$t("Deletion-successful"));
         })
         .catch(() => {});
     },

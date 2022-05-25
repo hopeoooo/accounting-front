@@ -86,7 +86,7 @@
               size="mini"
               :disabled="multiple"
               @click="handleDelete"
-              >删除</el-button
+              >{{$t('Del')}}</el-button
             >
           </el-col> -->
         </el-row>
@@ -293,7 +293,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('Name')" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名" />
+              <el-input v-model="form.name"  :placeholder="$t('enter-name')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -309,7 +309,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('Name')" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名" />
+              <el-input v-model="form.name"  :placeholder="$t('enter-name')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -347,7 +347,7 @@
             <el-form-item :label="$t('Password')" prop="password" v-if="isshow">
               <el-input
                 v-model="form.password"
-                :placeholder="openType == 'edit' ? '******' : '请输入密码'"
+                :placeholder="openType == 'edit' ? '******' : $t('enter-pwd')"
               />
             </el-form-item>
           </el-col>
@@ -359,7 +359,7 @@
             >
               <el-input
                 v-model="form.rawPassword"
-                :placeholder="openType == 'edit' ? '******' : '请确认密码'"
+                :placeholder="openType == 'edit' ? '******' : $t('confirm-pwd')"
               />
             </el-form-item>
           </el-col>
@@ -369,7 +369,7 @@
             <el-form-item :label="$t('Deposit')" prop="deposit">
               <el-input
                 v-model="form.deposit"
-                placeholder="请输入押金"
+                 :placeholder="$t('enter-deposit')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
@@ -378,7 +378,7 @@
             <el-form-item :label="$t('Rep-C-Fee')" prop="repair">
               <el-input
                 v-model="form.repair"
-                placeholder="请输入补卡费"
+                 :placeholder="$t('enter-fee')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
@@ -390,7 +390,7 @@
               <el-input
                 style="width:180px"
                 v-model="form.shareRatio"
-                placeholder="请输入占股比例"
+                 :placeholder="$t('enter-shr')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
@@ -400,7 +400,7 @@
               <el-input
                 style="width:180px"
                 v-model="form.rebateRatio"
-                placeholder="请输入返点比例"
+                 :placeholder="$t('enter-rebate')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
@@ -640,7 +640,7 @@
 
     <!-- 用户详情 -->
     <el-dialog
-      title="更多信息"
+      :title="$t('More-information')"
       :visible.sync="detailOpen"
       width="400px"
       append-to-body
@@ -752,8 +752,8 @@
           ><span>{{
             memlist.isPump != null
               ? memlist.isPump == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>
@@ -762,8 +762,8 @@
           ><span>{{
             memlist.isCash != null
               ? memlist.isCash == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>
@@ -772,8 +772,8 @@
           ><span>{{
             memlist.isSettlement != null
               ? memlist.isSettlement == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>
@@ -782,8 +782,8 @@
           ><span>{{
             memlist.isOut != null
               ? memlist.isOut == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>

@@ -868,32 +868,32 @@ export default {
       return [
         {
           value: "",
-          label: i18n.t("All")
+          label: this.$t("All")
           // label: "全部"
         },
         {
           value: 1,
-          label: i18n.t("Baccarat")
+          label: this.$t("Baccarat")
           // label: "百家乐"
         },
         {
           value: 2,
-          label: i18n.t("DT")
+          label: this.$t("DT")
           // label: "龙虎"
         },
         {
           value: 3,
-          label: i18n.t("Niu-Niu")
+          label: this.$t("Niu-Niu")
           // label: "牛牛"
         },
         {
           value: 4,
-          label: i18n.t("San-Gong")
+          label: this.$t("San-Gong")
           // label: "三公"
         },
         {
           value: 5,
-          label: i18n.t("Tui-Tong-Zi")
+          label: this.$t("Tui-Tong-Zi")
           // label: "推筒子"
         }
       ];
@@ -903,38 +903,38 @@ export default {
       return [
         {
           value: null,
-          label: i18n.t("All")
+          label: this.$t("All")
           // label: "全部"
         },
         {
           value: 1,
-          label: `$${i18n.t("Chip")}`
+          label: `$${this.$t("Chip")}`
           // label: "$筹码"
         },
         {
           value: 2,
-          label: `$${i18n.t("Cash")}`
+          label: `$${this.$t("Cash")}`
           // label: "$现金"
         },
         {
           value: 3,
-          label: `฿${i18n.t("Chip")}`
+          label: `฿${this.$t("Chip")}`
           // label: "฿筹码"
         },
         {
           value: 4,
-          label: `฿${i18n.t("Cash")}`
+          label: `฿${this.$t("Cash")}`
           // label: "฿现金"
         },
 
         {
           value: 5,
-          label: `$${i18n.t("Chip")}+$${i18n.t("Cash")}`
+          label: `$${this.$t("Chip")}+$${this.$t("Cash")}`
           // label: "$筹码+$现金"
         },
         {
           value: 6,
-          label: `฿${i18n.t("Chip")}+฿${i18n.t("Cash")}`
+          label: `฿${this.$t("Chip")}+฿${this.$t("Cash")}`
           // label: "฿筹码+฿现金"
         }
       ];
@@ -943,32 +943,32 @@ export default {
       return [
         {
           value: 0,
-          label: `$${i18n.t("Chip")}`
+          label: `$${this.$t("Chip")}`
           // label: "$筹码"
         },
         {
           value: 1,
-          label: `$${i18n.t("Cash")}`
+          label: `$${this.$t("Cash")}`
           // label: "$现金"
         },
         {
           value: 2,
-          label: `฿${i18n.t("Chip")}`
+          label: `฿${this.$t("Chip")}`
           // label: "฿筹码"
         },
         {
           value: 3,
-          label: `฿${i18n.t("Cash")}`
+          label: `฿${this.$t("Cash")}`
           // label: "฿现金"
         }
       ];
     },
     typeMap(){
       return {
-        0: `$${i18n.t("Chip")}`,
-        1: `$${i18n.t("Cash")}`,
-        2: `฿${i18n.t("Chip")}`,
-        3: `฿${i18n.t("Cash")}`
+        0: `$${this.$t("Chip")}`,
+        1: `$${this.$t("Cash")}`,
+        2: `฿${this.$t("Chip")}`,
+        3: `฿${this.$t("Cash")}`
       }
     },
     TimeList() {
