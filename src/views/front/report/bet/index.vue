@@ -485,8 +485,8 @@
               v-model="form.gameResult"
               @change="onNiuGameResultChange"
             >
-              <el-radio :label="$t('Win')">{{ $t("Win") }}</el-radio>
-              <el-radio :label="$t('Loss')">{{ $t("Loss") }}</el-radio>
+              <el-radio label="赢">{{ $t("Win") }}</el-radio>
+              <el-radio label="输">{{ $t("Loss") }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
