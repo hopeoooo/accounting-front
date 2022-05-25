@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
@@ -19,18 +19,18 @@
               style="width: 240px;margin-right:20px"
             />
 
-            <el-checkbox v-model="queryParams.isAdmin"
-              >{{$t("Filter-internal-card")}}</el-checkbox
-            >
+            <el-checkbox v-model="queryParams.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
-          <el-form-item  :label="$t('Operation')" prop="type">
-            <el-select v-model="queryParams.type"  :placeholder="$t('All')">
+          <el-form-item :label="$t('Operation')" prop="type">
+            <el-select v-model="queryParams.type" :placeholder="$t('All')">
               <el-option :label="$t('All')" :value="null"></el-option>
-              <el-option   :label="$t('Chip-deposit')" :value="1"></el-option>
-              <el-option  :label="$t('Chips-withdrawal')" :value="2"></el-option>
+              <el-option :label="$t('Chip-deposit')" :value="1"></el-option>
+              <el-option :label="$t('Chips-withdrawal')" :value="2"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')">
+          <el-form-item :label="$t('operation-time')" label-width="120px">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -47,11 +47,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -82,12 +82,16 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -96,27 +100,31 @@
             prop="card"
           />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-             :label="$t('Operation')"
+            :label="$t('Operation')"
             align="center"
             key="type"
             prop="type"
+            width="180px"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '1'">{{$t("Chip-deposit")}}</span>
-              <span v-if="scope.row.type == '2'">{{$t("Chips-withdrawal")}}</span>
+              <span v-if="scope.row.type == '1'">{{ $t("Chip-deposit") }}</span>
+              <span v-if="scope.row.type == '2'">{{
+                $t("Chips-withdrawal")
+              }}</span>
             </template>
           </el-table-column>
           <el-table-column
-             :label="'$'+$t('Chips-Movement-Records')"
+            :label="'$' + $t('Chips-Movement-Records')"
             align="center"
             key="chipAmount"
             prop="chipAmount"
+            width="250px"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.chipAmount != 0"
@@ -128,10 +136,11 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="'$'+$t('Cash-movement-records')"
+            :label="'$' + $t('Cash-movement-records')"
             align="center"
             key="cashAmount"
             prop="cashAmount"
+            width="250px"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.cashAmount != 0"
@@ -143,10 +152,11 @@
             </template>
           </el-table-column>
           <el-table-column
-             :label="'฿'+$t('Chips-Movement-Records')"
+            :label="'฿' + $t('Chips-Movement-Records')"
             align="center"
             key="chipAmountTh"
             prop="chipAmountTh"
+            width="250px"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.chipAmountTh != 0"
@@ -158,10 +168,11 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="'฿'+$t('Cash-movement-records')"
+            :label="'฿' + $t('Cash-movement-records')"
             align="center"
             key="cashAmountTh"
             prop="cashAmountTh"
+            width="250px"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.cashAmountTh != 0"
@@ -178,21 +189,22 @@
             align="center"
             key="operationTime"
             prop="operationTime"
+            width="200px"
           />
 
           <el-table-column
-             :label="$t('Operator')"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-              :label="$t('Operation-Remarks')"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="180px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -306,13 +318,15 @@ export default {
       };
 
       this.loading = true;
-      listAccessCodeDetailed(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      listAccessCodeDetailed(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -386,7 +400,9 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "type") {
-            return v[j] == 1 ? this.$t("Chip-deposit") : this.$t("Chips-withdrawal");
+            return v[j] == 1
+              ? this.$t("Chip-deposit")
+              : this.$t("Chips-withdrawal");
           }
           if (j == "chipAmount") {
             return `${v["chipAmountBefore"]}→(${v["chipAmount"]})→${v["chipAmountAfter"]}

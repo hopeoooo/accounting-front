@@ -645,7 +645,7 @@
     <el-dialog
       :title="$t('More-information')"
       :visible.sync="detailOpen"
-      width="400px"
+      width="700px"
       append-to-body
       :close-on-click-modal="false"
     >
@@ -705,7 +705,7 @@
           >
         </div>
         <div class="list">
-          <span>{{ $t("Baccarat-Rolling-Ratio-B-Cash") }}</span
+          <span>{{ $t("Baccarat-Rolling-Ratio-B-cash") }}</span
           ><span
             >{{
               memlist.baccaratRollingRatioCashTh
@@ -723,7 +723,7 @@
           >
         </div>
         <div class="list">
-          <span>{{ $t("DT-Rolling-Ratio-B-Chip") }}</span
+          <span>{{ $t("DT-Rolling-Ratio-B-chip") }}</span
           ><span
             >{{
               memlist.dragonTigerRatioChipTh
@@ -741,7 +741,7 @@
           >
         </div>
         <div class="list">
-          <span>{{ $t("DT-Rolling-Ratio-B-Chip") }}</span
+          <span>{{ $t("DT-Rollingh-Ratio-B-cash") }}</span
           ><span
             >{{
               memlist.dragonTigerRatioCashTh

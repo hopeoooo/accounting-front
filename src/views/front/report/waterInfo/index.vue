@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
@@ -27,7 +27,7 @@
               $t("Filter-internal-card")
             }}</el-checkbox>
           </el-form-item>
-          <el-form-item :label="$t('settlement-time')">
+          <el-form-item :label="$t('settlement-time')" label-width="150px">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -110,6 +110,7 @@
             align="center"
             key="operationType"
             prop="operationType"
+            width="180px"
           >
             <template slot-scope="scope">
               <span>{{
@@ -122,6 +123,7 @@
             align="center"
             key="water"
             prop="water"
+             width="220px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -132,6 +134,7 @@
             align="center"
             key="waterAmount"
             prop="waterAmount"
+             width="180px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
@@ -142,6 +145,7 @@
             align="center"
             key="actualWaterAmount"
             prop="actualWaterAmount"
+             width="250px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
@@ -152,6 +156,7 @@
             align="center"
             key="waterTh"
             prop="waterTh"
+             width="220px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -162,6 +167,7 @@
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
+             width="190px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
@@ -172,6 +178,7 @@
             align="center"
             key="actualWaterAmountTh"
             prop="actualWaterAmountTh"
+             width="250px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.actualWaterAmountTh | MoneyFormat }}</span>
@@ -183,12 +190,14 @@
             align="center"
             key="deadline"
             prop="deadline"
+             width="150px"
           />
           <el-table-column
             :label="$t('settlement-time')"
             align="center"
             key="createTime"
             prop="createTime"
+             width="150px"
           />
           <el-table-column
             :label="$t('Operator')"
@@ -202,7 +211,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="150px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -216,10 +225,13 @@
 
         <!-- 用于渲染总计 -->
         <el-table
+          v-loading="loading"
           :data="userList"
           class="table2"
           show-summary
           :summary-method="getSummaries"
+          :sum-text="$t('Tot')"
+          :empty-text="$t('no-data')"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -239,6 +251,7 @@
             align="center"
             key="operationType"
             prop="operationType"
+            width="180px"
           >
             <template slot-scope="scope">
               <span>{{
@@ -251,6 +264,7 @@
             align="center"
             key="water"
             prop="water"
+             width="220px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -261,6 +275,7 @@
             align="center"
             key="waterAmount"
             prop="waterAmount"
+             width="180px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
@@ -271,39 +286,43 @@
             align="center"
             key="actualWaterAmount"
             prop="actualWaterAmount"
+             width="250px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="฿结算洗码量"
+            :label="'฿' + $t('Settlement-for-rolling-amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
+             width="220px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="฿应结算洗码费"
+            :label="'฿' + $t('Settlement-for-rolling-Fee')"
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
+             width="190px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
+              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="฿实际结算洗码费"
+            :label="'฿' + $t('Actual-Settlement-for-rolling-fee')"
             align="center"
             key="actualWaterAmountTh"
             prop="actualWaterAmountTh"
+             width="250px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.actualWaterAmount | MoneyFormat }}</span>
+              <span>{{ scope.row.actualWaterAmountTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
@@ -312,12 +331,14 @@
             align="center"
             key="deadline"
             prop="deadline"
+             width="150px"
           />
           <el-table-column
             :label="$t('settlement-time')"
             align="center"
             key="createTime"
             prop="createTime"
+             width="150px"
           />
           <el-table-column
             :label="$t('Operator')"
@@ -331,7 +352,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="150px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
