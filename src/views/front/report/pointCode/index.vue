@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
           <el-form-item :label="$t('Station-number')" prop="userName">
             <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
@@ -31,7 +31,7 @@
                             style="width: 240px; margin-right: 20px"
                         />
                     </el-form-item> -->
-          <el-form-item :label="$t('Chip-counting-time')">
+          <el-form-item :label="$t('Chip-counting-time')" label-width="150px">
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
@@ -65,59 +65,59 @@
         </el-form>
 
         <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
-          <el-table-column :label="$t('Station-number')" fixed align="center" prop="tableId" />
+          <el-table-column :label="$t('Station-number')" fixed align="center" prop="tableId" width="100px"/>
           <el-table-column :label="$t('Boot-number')" align="center" prop="bootNum" />
-          <el-table-column :label="'$' + $t('system-chip-counts')" align="center" width="100px">
+          <el-table-column :label="'$' + $t('system-chip-counts')" align="center" width="210px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('manual-chip-counts')" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('manual-chip-counts')" align="center" width="210px">
             <template slot-scope="scope">
               <span>{{ scope.row.personChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-Gap')" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Chip-Gap')" align="center" width="120px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-gap')" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Cash-Gap')" align="center" width="120px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center" width="210px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center" width="210px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-system-chip-counts')" align="center" width="150px">
+          <el-table-column  :label="'$' + $t('Insurance-system-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('manual-insurance-chip-counts')" align="center" width="150px">
+          <el-table-column  :label="'$' + $t('manual-insurance-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span>{{ scope.row.personInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'$' + $t('Insurance-Chip-Gap')" align="center" width="150px">
+          <el-table-column   :label="'$' + $t('Insurance-Chip-Gap')" align="center" width="210px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center" width="150px">
+          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center" width="250px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center" width="100px">
+          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
@@ -128,17 +128,17 @@
               <span>{{ scope.row.chipWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center" width="100px">
+          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center" width="180px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('system-chip-counts')" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('system-chip-counts')" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('manual-chip-counts')" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('manual-chip-counts')" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.personChipTh | MoneyFormat }}</span>
             </template>
@@ -153,37 +153,37 @@
               <span>{{ scope.row.cashGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center" width="100px">
+          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center" width="100px">
+          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Insurance-system-chip-counts')" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('Insurance-system-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Insurance-manual-chip-counts')" align="center" width="150px">
+          <el-table-column  :label="'฿' + $t('Insurance-manual-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span>{{ scope.row.personInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Gap')" align="center" width="150px">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Gap')" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center" width="150px">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center" width="250px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center" width="100px">
+          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
@@ -193,7 +193,7 @@
               <span>{{ scope.row.chipWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center" width="100px">
+          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center" width="180px">
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
             </template>

@@ -152,7 +152,11 @@
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -172,21 +176,21 @@
             align="center"
             key="bootNum"
             prop="bootNum"
-             width="100px"
+            width="100px"
           />
           <el-table-column
             :label="$t('Game-number')"
             align="center"
             key="gameNum"
             prop="gameNum"
-             width="100px"
+            width="100px"
           />
           <el-table-column
             :label="$t('Game-Type')"
             align="center"
             key="gameId"
             prop="gameId"
-             width="100px"
+            width="100px"
           >
             <template slot-scope="scope">
               <span>{{ getGameName(scope.row.gameId) }}</span>
@@ -212,7 +216,7 @@
             align="center"
             key="type"
             prop="type"
-             width="100px"
+            width="100px"
           >
             <template slot-scope="scope" class="wanfabox">
               <!-- 币种(0美元筹码 1美元现金 2泰铢筹码 3泰铢现金) -->
@@ -258,7 +262,7 @@
             align="center"
             key="winLose"
             prop="winLose"
-             width="120px"
+            width="120px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
@@ -319,7 +323,7 @@
       :title="title"
       :visible.sync="open"
       v-if="open"
-      width="500px"
+      width="600px"
       append-to-body
       :close-on-click-modal="false"
       @close="onDialogClose"
@@ -376,10 +380,19 @@
 
         <!-- 输赢、币种 -->
         <div class="bet-form-row">
-          <div class="bet-form-item" v-if="openType == 'edit'">
+          <!-- <div class="bet-form-item" v-if="openType == 'edit'">
             <span class="winlose-label">{{ $t("Win-Loss") }}:</span>
             <span>{{ form.winLose }}</span>
-          </div>
+          </div> -->
+          <el-form-item
+            :label="$t('Win-Loss') + ':'"
+            prop="winLose"
+            class="bet-form-item"
+            label-width="100px"
+            v-if="openType == 'edit'"
+          >
+            <el-input v-model="form.winLose" placeholder="" :disabled="true" />
+          </el-form-item>
           <el-form-item
             :label="$t('currency') + ':'"
             prop="type"
@@ -410,24 +423,27 @@
               <i class="start-symbol">*</i>{{ $t("bet-money") }}
             </div>
             <!-- <div> -->
-            <el-form-item :label="$t('D') + ':'" label-width="30px">
+            <el-form-item :label="$t('D') + ':'" label-width="50px">
               <el-input
                 v-model="longhuFormOption.dragon"
                 placeholder=""
+                maxlength="11"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item :label="$t('TYG') + ':'" label-width="30px">
+            <el-form-item :label="currentLanguage == 'zh'? '虎:' : 'TYG:'" label-width="50px">
               <el-input
                 v-model="longhuFormOption.tiger"
                 placeholder=""
+                maxlength="11"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item :label="$t('T') + ':'" label-width="30px">
+            <el-form-item :label="$t('T') + ':'" label-width="50px">
               <el-input
                 v-model="longhuFormOption.tie"
                 placeholder=""
+                maxlength="11"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
@@ -438,9 +454,9 @@
           <div class="longhu-result-box">
             <div class="box-label">{{ $t("Result") }}</div>
             <el-radio-group v-model="form.gameResult" class="result-list">
-              <el-radio :label="$t('D')">{{ $t("D") }}</el-radio>
-              <el-radio :label="$t('TYG')">{{ $t("TYG") }}</el-radio>
-              <el-radio :label="$t('T')">{{ $t("T") }}</el-radio>
+              <el-radio  label="龙">{{$t('D')}}</el-radio>
+              <el-radio  label="虎">{{currentLanguage == 'zh'? '虎' : 'TYG'}}</el-radio>
+              <el-radio  label="和">{{$t('T')}}</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -455,6 +471,7 @@
               v-model="form.betMoney"
               @change="onBetMoneyChange"
               placeholder=""
+              maxlength="11"
               style="width:150px"
               oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             />
@@ -468,8 +485,8 @@
               v-model="form.gameResult"
               @change="onNiuGameResultChange"
             >
-              <el-radio :label="$t('Win')">{{ $t("Win") }}</el-radio>
-              <el-radio :label="$t('Loss')">{{ $t("Loss") }}</el-radio>
+              <el-radio label="赢">{{ $t("Win") }}</el-radio>
+              <el-radio label="输">{{ $t("Loss") }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
@@ -481,45 +498,51 @@
             <div class="box-label">{{ $t("bet-money") }}</div>
             <div class="bet-amount-container">
               <div class="amount-left-box">
-                <el-form-item :label="$t('B') + ':'" label-width="60px">
+                <el-form-item :label="$t('B') + ':'" label-width="80px">
                   <el-input
                     v-model="formOption.banker"
                     placeholder=""
+                     maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item :label="$t('P') + ':'" label-width="60px">
+                <el-form-item :label="$t('P') + ':'" label-width="80px">
                   <el-input
                     v-model="formOption.player"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item :label="$t('T') + ':'" label-width="60px">
+                <el-form-item :label="$t('T') + ':'" label-width="80px">
                   <el-input
                     v-model="formOption.tie"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item :label="$t('B-P') + ':'" label-width="60px">
+                <el-form-item :label="$t('B-P') + ':'" label-width="80px">
                   <el-input
                     v-model="formOption.bankerPair"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item :label="$t('P-P') + ':'" label-width="60px">
+                <el-form-item :label="$t('P-P') + ':'" label-width="80px">
                   <el-input
                     v-model="formOption.playerPair"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
-                <el-form-item :label="$t('Lucky-6') + ':'" label-width="60px">
+                <el-form-item :label="$t('Lucky-6') + ':'" label-width="80px">
                   <el-input
                     v-model="formOption.two"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -529,6 +552,7 @@
                   <el-input
                     v-model="formOption.bankerIns"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -536,6 +560,7 @@
                   <el-input
                     v-model="formOption.playerIns"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -543,6 +568,7 @@
                   <el-input
                     v-model="formOption.tieIns"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -550,6 +576,7 @@
                   <el-input
                     v-model="formOption.big"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -557,6 +584,7 @@
                   <el-input
                     v-model="formOption.small"
                     placeholder=""
+                    maxlength="11"
                     oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
                   />
                 </el-form-item>
@@ -646,6 +674,7 @@ import {
 } from "@/api/coderoom/sign";
 import { listTable } from "@/api/sys/table";
 import { MoneyFormat } from "@/filter";
+import { mapGetters, mapState } from "vuex";
 import {
   listBetRecord,
   listBetRecordTotal,
@@ -858,13 +887,11 @@ export default {
       // 台号列表
       tableOptions: [],
 
-
-      Datatype: 0,
-
-
+      Datatype: 0
     };
   },
   computed: {
+     ...mapState("app", ["currentLanguage"]),
     // 游戏类型列表
     Gameoptions() {
       return [
@@ -965,13 +992,13 @@ export default {
         }
       ];
     },
-    typeMap(){
+    typeMap() {
       return {
         0: `$${this.$t("Chip")}`,
         1: `$${this.$t("Cash")}`,
         2: `฿${this.$t("Chip")}`,
         3: `฿${this.$t("Cash")}`
-      }
+      };
     },
     TimeList() {
       return [
@@ -1445,9 +1472,8 @@ export default {
       for (const key in formOption) {
         if (formOption.hasOwnProperty(key)) {
           //例如 value 是20
-          const value = Number(formOption[key]);
-
-          if (value) {
+          const value = formOption[key] ? Number(formOption[key]) : null;
+          if (value != null) {
             // 比如formOption的里key是banker,对应到optionMap里的值是4
             const optionKey = optionMap[key];
             // {4:20}
@@ -1484,9 +1510,9 @@ export default {
       for (const key in formOption) {
         if (formOption.hasOwnProperty(key)) {
           //例如 value 是20
-          const value = Number(formOption[key]);
+          const value = formOption[key] ? Number(formOption[key]) :null;
 
-          if (value) {
+          if (value !=null) {
             // 比如formOption的里key是dragon,对应到longhuOptionMap里的值是"龙"
             const optionKey = longhuOptionMap[key];
             // {"龙":20}
@@ -1622,7 +1648,7 @@ export default {
         /** 2. 是否有录入完整注单数据 */
         if (
           (this.openGameId == 1 || this.openGameId == 2) &&
-          (!this.form.card || !this.formBetMoney || this.form.gameResult == "")
+          (!this.form.card || _.size(this.form.option) == 0 || this.form.gameResult == "")
         ) {
           // 百家乐 、龙虎
           this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
@@ -1633,7 +1659,7 @@ export default {
           (this.openGameId == 3 ||
             this.openGameId == 4 ||
             this.openGameId == 5) &&
-          (!this.form.card || !this.form.betMoney || this.form.gameResult == "")
+          (!this.form.card || _.size(this.form.option) == 0 || this.form.gameResult == "")
         ) {
           // 、牛牛、三公、推筒子
           this.$modal.msgError(this.$t("Please-enter-the-complete-order-data"));
@@ -1741,6 +1767,7 @@ export default {
     .bet-form-item {
       width: 50%;
       height: 35px;
+      line-height: 35px;
       margin-bottom: 30px;
       .winlose-label {
         display: inline-block;

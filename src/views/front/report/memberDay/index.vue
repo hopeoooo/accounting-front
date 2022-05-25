@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
             <el-input
@@ -19,7 +19,7 @@
               style="width: 240px; margin-right: 20px"
             />
           </el-form-item>
-          <el-form-item :label="$t('Statistical-time')">
+          <el-form-item :label="$t('Statistical-time')"  label-width="120px">
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
@@ -72,6 +72,7 @@
             align="center"
             key="date"
             prop="date"
+            width="120px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.date || "--" }}</span>
@@ -82,6 +83,7 @@
             align="center"
             key="winLose"
             prop="winLose"
+             width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
@@ -92,6 +94,7 @@
             align="center"
             key="sumWinLose"
             prop="sumWinLose"
+              width="200px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWinLose | MoneyFormat }}</span>
@@ -102,6 +105,7 @@
             align="center"
             key="water"
             prop="water"
+             width="180px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -112,6 +116,7 @@
             align="center"
             key="sumWater"
             prop="sumWater"
+             width="220px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWater | MoneyFormat }}</span>
@@ -122,6 +127,7 @@
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
+            width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
@@ -132,6 +138,7 @@
             align="center"
             key="sumWinLoseTh"
             prop="sumWinLoseTh"
+             width="200px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
@@ -143,6 +150,7 @@
             align="center"
             key="waterTh"
             prop="waterTh"
+             width="180px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -154,6 +162,7 @@
             align="center"
             key="sumWaterTh"
             prop="sumWaterTh"
+             width="220px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
@@ -165,10 +174,11 @@
         <el-table
           v-loading="loading"
           :data="userList"
-          class="table2"
           show-summary
           :sum-text="$t('Tot')"
           :summary-method="getSummaries"
+          :empty-text="$t('no-data')"
+          class="table2"
         >
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -191,6 +201,7 @@
             align="center"
             key="date"
             prop="date"
+            width="120px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.date || "--" }}</span>
@@ -201,9 +212,10 @@
             align="center"
             key="winLose"
             prop="winLose"
+             width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.winLose || 0 }}</span>
+              <span>{{ scope.row.winLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -211,9 +223,10 @@
             align="center"
             key="sumWinLose"
             prop="sumWinLose"
+              width="200px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLose || 0 }}</span>
+              <span>{{ scope.row.sumWinLose | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -221,9 +234,10 @@
             align="center"
             key="water"
             prop="water"
+             width="180px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.water || 0 }}</span>
+              <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -231,50 +245,56 @@
             align="center"
             key="sumWater"
             prop="sumWater"
+             width="220px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWater || 0 }}</span>
+              <span>{{ scope.row.sumWater | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
             :label="'฿' + $t('Win-Loss')"
             align="center"
-            key="chipWinLoseTh"
-            prop="chipWinLoseTh"
+            key="winLoseTh"
+            prop="winLoseTh"
+            width="150px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLoseTh || 0 }}</span>
+              <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="฿累计输赢"
+            :label="'฿' + $t('Card-Cumulative-Win-Loss')"
             align="center"
-            key="winLoseTh"
-            prop="winLoseTh"
+            key="sumWinLoseTh"
+            prop="sumWinLoseTh"
+             width="200px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh || 0 }}</span>
+              <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
+
           <el-table-column
             :label="'฿' + $t('Rolling-Amount')"
             align="center"
             key="waterTh"
             prop="waterTh"
+             width="180px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh || 0 }}</span>
+              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-            label="฿累计洗码量"
+            :label="'฿' + $t('Cumulative-rolling-amount')"
             align="center"
             key="sumWaterTh"
             prop="sumWaterTh"
+             width="220px"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh || 0 }}</span>
+              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
         </el-table>

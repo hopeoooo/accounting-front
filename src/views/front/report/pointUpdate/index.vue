@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item :label="$t('Station-number')" prop="userName">
             <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
@@ -67,7 +67,7 @@
         <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
           <el-table-column :label="$t('Station-number')" fixed align="center" prop="tableId" />
           <el-table-column:label="$t('Boot-number')" align="center" prop="bootNum" />
-          <el-table-column :label="'$' + $t('system-chip-counts')" align="center">
+          <el-table-column :label="'$' + $t('system-chip-counts')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -77,7 +77,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('manual-chip-counts')" align="center">
+          <el-table-column  :label="'$' + $t('manual-chip-counts')" align="center"  width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -87,7 +87,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-Gap')" align="center">
+          <el-table-column  :label="'$' + $t('Chip-Gap')" align="center" width="150px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -97,7 +97,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-Gap')" align="center">
+          <el-table-column  :label="'$' + $t('Cash-Gap')" align="center" width="150px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -107,7 +107,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center">
+          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -117,7 +117,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center">
+          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -127,7 +127,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-system-chip-counts')" align="center">
+          <el-table-column  :label="'$' + $t('Insurance-system-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -139,7 +139,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('manual-insurance-chip-counts')" align="center">
+          <el-table-column  :label="'$' + $t('manual-insurance-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -151,7 +151,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="'$' + $t('Insurance-Chip-Gap')" align="center">
+          <el-table-column   :label="'$' + $t('Insurance-Chip-Gap')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -163,7 +163,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center">
+          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center" width="250px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -175,7 +175,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center">
+          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -186,7 +186,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column  :label="'$' + $t('Win-Loss')" align="center">
+          <el-table-column  :label="'$' + $t('Win-Loss')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -196,7 +196,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center">
+          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -209,7 +209,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column  :label="'฿' + $t('system-chip-counts')" align="center">
+          <el-table-column  :label="'฿' + $t('system-chip-counts')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -219,7 +219,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('manual-chip-counts')" align="center">
+          <el-table-column  :label="'฿' + $t('manual-chip-counts')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -231,7 +231,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Chip-Gap')" align="center">
+          <el-table-column  :label="'฿' + $t('Chip-Gap')" align="center" width="150px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -241,7 +241,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Cash-Gap')" align="center">
+          <el-table-column  :label="'฿' + $t('Cash-Gap')" align="center" width="150px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -251,7 +251,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center">
+          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -261,7 +261,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center">
+          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -271,7 +271,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Insurance-system-chip-counts')" align="center">
+          <el-table-column  :label="'฿' + $t('Insurance-system-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -283,7 +283,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Insurance-manual-chip-counts')" align="center">
+          <el-table-column  :label="'฿' + $t('Insurance-manual-chip-counts')" align="center" width="250px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -295,7 +295,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Gap')" align="center">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Gap')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -307,7 +307,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center">
+          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center" width="250px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -319,7 +319,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center">
+          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -329,7 +329,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Win-Loss')" align="center">
+          <el-table-column   :label="'฿' + $t('Win-Loss')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -339,7 +339,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center">
+          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -352,7 +352,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column   :label="$t('Modification-time')" align="center">
+          <el-table-column   :label="$t('Modification-time')" align="center" width="200px">
             <template slot-scope="scope">
               <span
                 :class="
@@ -362,7 +362,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column   :label="$t('Operation-Remarks')" align="center" fixed="right">
+          <el-table-column   :label="$t('Operation-Remarks')" align="center" fixed="right" width="200px">
             <template slot-scope="scope">
               <span
                 :class="

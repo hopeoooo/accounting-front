@@ -68,8 +68,8 @@
         </el-table>
 
         <pagination
-          v-show="total > 0"
-          :total="total"
+          v-show="Total > 0"
+          :total="Total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
@@ -175,7 +175,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 0,
+      Total: 0,
       // 用户表格数据
       roleList: null,
       //获取菜单列表
@@ -297,7 +297,7 @@ export default {
       this.loading = true;
       getRoleList().then(response => {
         this.roleList = response.rows;
-        this.total = response.total;
+        this.Total = response.total;
         this.loading = false;
       });
     },

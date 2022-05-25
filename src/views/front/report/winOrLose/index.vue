@@ -245,8 +245,8 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          :sum-text="$t('Subtotal')"
-          :summary-method="getSummaries1"
+          :sum-text="$t('Tot')"
+          :summary-method="getSummaries"
           @sort-change="onSortChange"
           ref="dataTable"
           :empty-text="$t('no-data')"
