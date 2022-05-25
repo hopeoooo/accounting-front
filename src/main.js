@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-05-04 22:06:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-21 16:30:50
+ * @LastEditTime: 2022-05-25 14:10:34
  * @Description: file content
  */
 import Vue from 'vue'
@@ -21,6 +21,10 @@ import directive from './directive' // directive
 import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
 import i18n from '@/locales'
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+
+
 import './assets/icons' // icon
 import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
@@ -68,7 +72,8 @@ Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
-
+// 设置语言
+// locale.use(lang)
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
