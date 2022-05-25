@@ -1,16 +1,16 @@
 <template>
   <div class="app-container" v-loading="loading">
     <el-form ref="form" :model="oddsList" :rules="rules" label-width="80px">
-      <div class="title">赔率设置</div>
+      <div class="title">{{$t('Odds-Settings')}}</div>
       <el-row :gutter="20">
         <el-col :span="16" :xs="24">
           <div class="odds-container">
             <div style="height:60px;">
-              <span>百家乐</span>
+              <span>{{$t('Baccarat')}}</span>
             </div>
             <div class="gamebox">
               <div class="list">
-                <el-form-item label="庄赢抽水" prop="baccaratPump">
+                <el-form-item :label="$t('B-Win-comm')" prop="baccaratPump">
                   <el-input
                     v-model="oddsList.baccaratPump"
                     style="width: 80px"
@@ -19,7 +19,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="庄赢:  1赔" prop="baccaratBankerWin">
+                <el-form-item  :label="$t('B-Win')+': '+ $t('1x')" prop="baccaratBankerWin">
                   <el-input
                     v-model="oddsList.baccaratBankerWin"
                     style="width: 80px"
@@ -28,7 +28,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="闲赢:  1赔" prop="baccaratPlayerWin">
+                <el-form-item :label="$t('P-wins')+': '+ $t('1x')" prop="baccaratPlayerWin">
                   <el-input
                     v-model="oddsList.baccaratPlayerWin"
                     style="width: 80px"
@@ -37,7 +37,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="和赢:  1赔" prop="baccaratTieWin">
+                <el-form-item :label="$t('T-Win')+': '+ $t('1x')" prop="baccaratTieWin">
                   <el-input
                     v-model="oddsList.baccaratTieWin"
                     style="width: 80px"
@@ -46,7 +46,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="庄对:  1赔" prop="baccaratBankerPair">
+                <el-form-item :label="$t('B-P')+': '+ $t('1x')" prop="baccaratBankerPair">
                   <el-input
                     v-model="oddsList.baccaratBankerPair"
                     style="width: 80px"
@@ -55,7 +55,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="闲对:  1赔" prop="baccaratPlayerPair">
+                <el-form-item :label="$t('P-P')+': '+ $t('1x')"  prop="baccaratPlayerPair">
                   <el-input
                     v-model="oddsList.baccaratPlayerPair"
                     style="width: 80px"
@@ -64,7 +64,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="大:  1赔" prop="baccaratLarge">
+                <el-form-item  :label="$t('BIG')+': '+ $t('1x')"  prop="baccaratLarge">
                   <el-input
                     v-model="oddsList.baccaratLarge"
                     style="width: 80px"
@@ -73,7 +73,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="小:  1赔" prop="baccaratSmall">
+                <el-form-item  :label="$t('S')+': '+ $t('1x')"  prop="baccaratSmall">
                   <el-input
                     v-model="oddsList.baccaratSmall"
                     style="width: 80px"
@@ -83,7 +83,8 @@
               </div>
               <div class="list">
                 <el-form-item
-                  label="幸运6(2张牌): 1赔"
+                 :label="$t('Lucky-2-cards')+': '+ $t('1x')"
+
                   prop="baccaratTwo"
                   label-width="150px"
                 >
@@ -96,7 +97,8 @@
               </div>
               <div class="list">
                 <el-form-item
-                  label="幸运6(3张牌): 1赔"
+                 :label="$t('Lucky-3-cards')+': '+ $t('1x')"
+
                   prop="baccaratThere"
                   label-width="150px"
                 >
@@ -113,11 +115,11 @@
         <el-col :span="8" :xs="24">
           <div class="odds-container">
             <div style="height:60px;">
-              <span>龙虎</span>
+              <span>{{$t('DT')}}</span>
             </div>
             <div class="gamebox">
               <div class="list">
-                <el-form-item label="龙赢:  1赔" prop="dragonWin">
+                <el-form-item  :label="$t('D-wins')+': '+ $t('1x')"  prop="dragonWin">
                   <el-input
                     v-model="oddsList.dragonWin"
                     style="width: 80px"
@@ -126,7 +128,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="虎赢:  1赔" prop="tigerWin">
+                <el-form-item  :label="$t('Tiger-wins')+': '+ $t('1x')" prop="tigerWin">
                   <el-input
                     v-model="oddsList.tigerWin"
                     style="width: 80px"
@@ -135,7 +137,7 @@
                 </el-form-item>
               </div>
               <div class="list">
-                <el-form-item label="和赢:  1赔" prop="tieWin">
+                <el-form-item :label="$t('T-Win')+': '+ $t('1x')"   prop="tieWin">
                   <el-input
                     v-model="oddsList.tieWin"
                     style="width: 80px"
@@ -147,7 +149,7 @@
           </div>
         </el-col>
       </el-row>
-      <div class="title">洗码比例</div>
+      <div class="title">{{$t('Rolling-ratio')}}</div>
       <el-row :gutter="20">
         <el-col :span="6" :xs="12">
           <div class="listb">
@@ -219,7 +221,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-               :label="$t('Baccarat-Rolling-Ratio-B-Chip')"
+               :label="$t('Baccarat-rolling-percentage-B-chip')"
               prop="baccaratRollingRatioChipTh"
               label-width="200px"
             >
@@ -236,7 +238,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-               :label="$t('Baccarat-Rolling-Ratio-B-Cash')"
+               :label="$t('Baccarat-Rolling-Ratio-B-cash')"
               prop="baccaratRollingRatioCashTh"
               label-width="200px"
             >
@@ -270,7 +272,7 @@
         <el-col :span="6" :xs="12">
           <div class="listb">
             <el-form-item
-               :label="$t('DT-Rolling-Ratio-B-cash')"
+               :label="$t('DT-Rollingh-Ratio-B-cash')"
               prop="dragonTigerRatioCashTh"
               label-width="200px"
             >
@@ -285,22 +287,22 @@
           </div>
         </el-col>
       </el-row>
-      <div class="title">其它配置</div>
+      <div class="title">{{$t('Other-Conf')}}</div>
       <el-row :gutter="20">
         <el-col :span="6" :xs="12">
           <el-checkbox v-model="checked" @change="onCheckChange1"
-            >洗码佣金取整</el-checkbox
+            >{{$t('Rolling-Commission-rounding')}}</el-checkbox
           >
         </el-col>
         <el-col :span="6" :xs="12">
           <el-checkbox v-model="checked1" @change="onCheckChange2"
-            >庄赢抽水取整</el-checkbox
+            >{{$t('B-win-comm-rounding')}}</el-checkbox
           >
         </el-col>
       </el-row>
     </el-form>
 
-    <div class="commitOdds" @click="submit" v-prclick>保存设置</div>
+    <div class="commitOdds" @click="submit" v-prclick>{{$t('Save-Settings')}}</div>
   </div>
 </template>
 
@@ -338,48 +340,44 @@ export default {
         bankerWinPumpRounding: 0
       },
       // 表单校验
-      rules: {
+
+    };
+  },
+  computed: {
+    rules(){
+      return {
         baccaratPump: [
           {
             required: true,
-            message: "庄赢抽水比例不能为空",
+            message: this.$t('B-comm-p-cannot-be-empty'),
             trigger: "blur"
           },
           {
             validator: this.perValidator,
             message:  this.$t("Only-0-100-can-be-entered")
           }
-          // {
-          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-          //   message: "请输入大于0的数字"
-          // }
+
         ],
         baccaratBankerWin: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
-          // {
-          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-          //   message: "请输入大于0的数字"
-          // }
+
         ],
         baccaratPlayerWin: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
-          // {
-          //   pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/,
-          //   message: "请输入大于0的数字"
-          // }
+
         ],
         baccaratTieWin: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
           // {
@@ -390,63 +388,63 @@ export default {
         baccaratBankerPair: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         baccaratPlayerPair: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         baccaratLarge: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         baccaratSmall: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         baccaratTwo: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         baccaratThere: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         dragonWin: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         tigerWin: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
         tieWin: [
           {
             required: true,
-            message: "不能为空",
+            message: this.$t("Cannot-be-empty"),
             trigger: "blur"
           }
         ],
@@ -547,7 +545,7 @@ export default {
           }
         ]
       }
-    };
+    }
   },
   created() {
     this.getList();
@@ -624,7 +622,7 @@ export default {
           );
           UpOdds(this.oddsList)
             .then(response => {
-              this.$modal.msgSuccess("保存成功");
+              this.$modal.msgSuccess(this.$t("Save-successful"));
               this.loading = false;
             })
             .catch(err => {

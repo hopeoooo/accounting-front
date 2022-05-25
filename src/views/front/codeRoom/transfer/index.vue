@@ -159,7 +159,7 @@
         </el-form-item>
 
         <el-form-item
-          :label="openType == 'in' ? '$汇入金额' : '$汇出金额'"
+          :label="openType == 'in' ? '$'+$t('Remittance-Amount') : '$'+$t('Remit-Amount')"
           prop="amount"
         >
           <el-input
@@ -171,7 +171,7 @@
         </el-form-item>
 
         <el-form-item
-          :label="openType == 'in' ? '฿汇入金额' : '฿汇出金额'"
+          :label="openType == 'in' ? '฿'+$t('Remittance-Amount') : '฿'+$t('Remit-Amount')"
           prop="amountTh"
         >
           <el-input
@@ -183,7 +183,7 @@
         </el-form-item>
 
         <el-form-item
-          :label="openType == 'in' ? '获取货币' : '使用货币'"
+          :label="openType == 'in' ? $t('Get-Currency') : $t('Use-Currency')"
           prop="operationType"
         >
           <el-radio-group v-model="form.operationType">

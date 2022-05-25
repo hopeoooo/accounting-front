@@ -11,21 +11,21 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
-              >新增角色</el-button
+              >{{$t('Add-new-role')}}</el-button
             >
           </el-col>
         </el-row>
 
         <el-table v-loading="loading" :data="roleList">
           <el-table-column
-            label="角色"
+             :label="$t('Role')"
             align="center"
             key="roleName"
             prop="roleName"
             width="160"
           />
           <el-table-column
-            label="描述"
+             :label="$t('Description')"
             align="center"
             key="remark"
             prop="remark"
@@ -36,7 +36,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="创建时间" align="center" prop="createTime">
+          <el-table-column  :label="$t('Create-Time')"  align="center" prop="createTime">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -54,14 +54,14 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                >编辑</el-button
+                >{{$t('Edit')}}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
-                >删除</el-button
+                >{{$t('Del')}}</el-button
               >
             </template>
           </el-table-column>
@@ -90,15 +90,15 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="0">
           <el-col :span="24">
-            <el-form-item label="角色" prop="roleName">
-              <el-input v-model="form.roleName" placeholder="请输入角色" />
+            <el-form-item  :label="$t('Role')" prop="roleName">
+              <el-input v-model="form.roleName" :placeholder="$t('enter-role')" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="0">
           <el-col :span="24">
-            <el-form-item label="描述" prop="remark">
+            <el-form-item  :label="$t('Description')" prop="remark">
               <el-input
                 type="textarea"
                 :rows="7"
@@ -114,16 +114,16 @@
 
         <el-row :gutter="0">
           <el-col :span="24">
-            <el-form-item label="菜单权限">
+            <el-form-item :label="$t('menu-permissions')">
               <el-checkbox
                 v-model="menuExpand"
                 @change="handleCheckedTreeExpand($event)"
-                >展开/折叠</el-checkbox
+                >{{$t("expand-collapse")}}</el-checkbox
               >
               <el-checkbox
                 v-model="menuNodeAll"
                 @change="handleCheckedTreeNodeAll($event)"
-                >全选/全不选</el-checkbox
+                >{{$t("all-none")}}</el-checkbox
               >
               <!-- <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event)">父子联动</el-checkbox> -->
               <el-tree
@@ -213,6 +213,7 @@ export default {
       upload: {
         // 是否显示弹出层（用户导入）
         open: false,
+        openType:"",
         // 弹出层标题（用户导入）
         title: "",
         // 是否禁用上传
@@ -229,16 +230,8 @@ export default {
         pageNum: 1,
         pageSize: 30
       },
-      // 表单校验
-      rules: {
-        roleName: [
-          {
-            required: true,
-            message: "角色不能为空",
-            trigger: "blur"
-          }
-        ]
-      },
+
+
       selectChangeAll: false,
       menuExpand: false,
       menuNodeAll: false,
@@ -249,6 +242,20 @@ export default {
     // 根据名称筛选部门树
     deptName(val) {
       this.$refs.tree.filter(val);
+    }
+  },
+  computed: {
+       // 表单校验
+    rules(){
+      return {
+        roleName: [
+          {
+            required: true,
+            message: this.$t("Role-cannot-be-empty"),
+            trigger: "blur"
+          }
+        ]
+      }
     }
   },
   created() {
@@ -313,6 +320,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openType = ""
       this.reset();
     },
     // 表单重置
@@ -342,7 +350,8 @@ export default {
       this.reset();
       console.log(this.form, this.treelist);
       this.open = true;
-      this.title = "新增角色";
+       this.openType = "add";
+      this.title = this.$t("Add-new-role");
     },
 
     /** 修改按钮操作 */
@@ -370,7 +379,8 @@ export default {
       });
       console.log(this.form);
       this.open = true;
-      this.title = "角色修改";
+      this.openType = "edit";
+      this.title = this.$t("Edit-role");
     },
 
     /** 提交按钮 */
@@ -379,16 +389,18 @@ export default {
         if (valid) {
           this.$delete(this.form, "menuCheckStrictly");
           this.form.menuIds = this.getMenuAllCheckedKeys();
-          if (this.title == "角色修改") {
+          if (this.openType == "edit") {
+            // 角色修改
             this.$delete(this.form, "createTime");
             updateRole(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess(this.$t("Modified-successfully"));
               this.open = false;
               this.getList();
             });
           } else {
+            // 角色新增
             addRole(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(this.$t("Add-success"));
               this.open = false;
               this.getList();
             });
