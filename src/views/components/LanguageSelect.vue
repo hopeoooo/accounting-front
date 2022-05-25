@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-07 13:31:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-21 16:47:07
+ * @LastEditTime: 2022-05-25 12:16:08
  * @Description: 语言选择框
 -->
 <template>
@@ -15,12 +15,16 @@
       popper-class="select-language-popup-pc"
       @change="onLanguageChange"
       tabindex="-1"
-
     >
       <template slot="prefix" class="prefixSlot">
         <img class="prefix-img" :src="langIcons[selectedLanguage]" alt srcset />
       </template>
-      <el-option v-for="item in languages" :key="item.id" :label="item.label" :value="item.value"  >
+      <el-option
+        v-for="item in languages"
+        :key="item.id"
+        :label="item.label"
+        :value="item.value"
+      >
         <span style="float: left">{{ item.label }}</span>
         <span style="float: right" class="lang-opt-imgbox">
           <img :src="langIcons[item.value]" class="lang-opt-img" />
@@ -34,8 +38,8 @@
 import { mapState, mapMutations } from "vuex";
 import { languagesConfig, langMap } from "@/locales/index";
 import { setLanguage } from "@/utils/locale";
-import store from '../../store'
-import router from '../../router'
+import store from "../../store";
+import router from "../../router";
 export default {
   /**语言选择 */
   name: "LanguageSelect",
@@ -47,15 +51,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("app",['currentLanguage'])
+    ...mapState("app", ["currentLanguage"])
   },
-  mounted () {
+  mounted() {
     console.log(this.$i18n.locale);
-
   },
-  watch:{
-    currentLanguage(val){
-      this.changeRouter()
+  watch: {
+    currentLanguage(val) {
+      this.changeRouter();
     }
   },
   methods: {
@@ -69,20 +72,24 @@ export default {
     },
 
     // 路由切换
-    changeRouter(){
-       store.dispatch('GenerateRoutes')
+    changeRouter() {
+      store.dispatch("GenerateRoutes").then(accessRoutes => {
+        // 根据roles权限生成可访问的路由表
+        router.addRoutes(accessRoutes); // 动态添加可访问路由表
+        // next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+      });
     }
   }
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .language-select-component-pc {
-//   position: absolute;
-    width: 140px;
-    height: 36px;
-    // top: 30px;
-    // right: 80px;
+  //   position: absolute;
+  width: 140px;
+  height: 36px;
+  // top: 30px;
+  // right: 80px;
   .lang-select-box {
     display: block;
     text-align: right;
@@ -119,10 +126,10 @@ export default {
           width: 100%;
         }
       }
-      .el-input__suffix{
-        .el-icon-arrow-up:before{
+      .el-input__suffix {
+        .el-icon-arrow-up:before {
           font-size: 18px;
-          color: #D1B58E;
+          color: #d1b58e;
           font-weight: bold;
         }
       }
@@ -142,7 +149,7 @@ export default {
     .el-select-dropdown__item {
       padding: 10px 15px 10px 10px;
 
-      background: linear-gradient(0deg, #D8AC79, #EBDAB4);
+      background: linear-gradient(0deg, #d8ac79, #ebdab4);
       color: #524740;
       font-size: 14px;
       display: flex;
@@ -152,9 +159,8 @@ export default {
     }
     .el-select-dropdown__item.selected {
       color: #fff;
-      background: linear-gradient(0deg, #1E2A38, #344D6B);
+      background: linear-gradient(0deg, #1e2a38, #344d6b);
       box-shadow: none;
-
     }
 
     .el-select-dropdown__item:first-child {
@@ -174,5 +180,4 @@ export default {
     }
   }
 }
-
 </style>
