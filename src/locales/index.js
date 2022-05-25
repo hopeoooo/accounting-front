@@ -1,6 +1,9 @@
 import VueI18n from "vue-i18n";
 import Vue from "vue";
 import store from "@/store/index";
+import enLocale from 'element-ui/lib/locale/lang/en'        //element-ui英文语言包
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
+import ElementLocale from 'element-ui/lib/locale'
 // import { LANG_KEY } from "@/pc/config/index";
 const LANG_KEY = "USER_LANG"
 const USER_LANG = localStorage.getItem(LANG_KEY) || "";
@@ -61,11 +64,28 @@ const isSupport = testBrowserSupport(languages, Nav_Lang);
 
 // 导入所有语言包,
 function importLangData(languages) {
-    let messages = {};
-    for (let i = 0; i < languages.length; i++) {
-        messages[
-            languages[i].value
-        ] = require(`./lang/${languages[i].value}.json`);
+    // let messages = {};
+    // for (let i = 0; i < languages.length; i++) {
+    //   // 自定义语言包
+    //   const coustomData =  require(`./lang/${languages[i].value}.json`)
+    //   // element-ui语言包
+    //   const eleData = languages[i].value == 'zh'? zhLocale:enLocale;
+    //   console.log(eleData);
+    //     messages[
+    //         languages[i].value
+    //     ] = {...coustomData,...eleData};
+    // }
+
+
+    const messages = {
+      en: {
+        ...require(`./lang/en.json`),
+        ...enLocale
+      },
+      zh: {
+        ...require(`./lang/zh.json`),
+        ...zhLocale
+      }
     }
     return messages;
 }
@@ -131,5 +151,5 @@ const i18n = new VueI18n({
     messages,
     formatter: new CustomFormatter(),
 });
-
+ElementLocale.i18n((key, value) => i18n.t(key, value))
 export default i18n;

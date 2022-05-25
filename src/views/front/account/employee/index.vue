@@ -118,14 +118,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            >修改</el-button
+            >{{$t('Edit')}}</el-button
           >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            >删除</el-button
+            >{{$t('Del')}}</el-button
           >
         </template>
       </el-table-column>
@@ -143,7 +143,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="600px"
+      width="700px"
       @close="onDialogClose"
       :close-on-click-modal="false"
       append-to-body
@@ -152,7 +152,7 @@
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="150px"
         v-if="open"
       >
         <el-row :gutter="0">
@@ -160,14 +160,14 @@
             <el-form-item :label="$t('Work Number')" prop="userName">
               <el-input
                 v-model="form.userName"
-                placeholder="请输入工号"
+                :placeholder="$t('enter-work-no')"
                 :disabled="openType == 'edit'"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item  :label="$t('Name')"  prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入姓名" />
+              <el-input v-model="form.nickName"  :placeholder="$t('enter-name')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -185,7 +185,7 @@
             <el-form-item :label="$t('Contact-details')"prop="phonenumber">
               <el-input
                 v-model="form.phonenumber"
-                placeholder="请输入联系方式"
+                :placeholder="$t('enter-contact')"
               />
             </el-form-item>
           </el-col>
@@ -197,14 +197,14 @@
         >
           <el-col :span="12">
             <el-form-item  :label="$t('Password')"  prop="password">
-              <el-input v-model="form.password" placeholder="请输入密码" />
+              <el-input v-model="form.password" :placeholder="$t('enter-pwd')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item  :label="$t('Confirm-Password')"  prop="rawPassword">
               <el-input
                 v-model="form.rawPassword"
-                placeholder="请输入确认密码"
+                :placeholder="$t('confirm-pwd')"
               />
             </el-form-item>
           </el-col>
@@ -212,12 +212,12 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item :label="$t('Origin')" prop="address">
-              <el-input v-model="form.address" placeholder="请输入籍贯" />
+              <el-input v-model="form.address" :placeholder="$t('enter-origin')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('Position')" prop="post">
-              <el-input v-model="form.post" placeholder="请输入职位" />
+              <el-input v-model="form.post" :placeholder="$t('enter-position')"  />
             </el-form-item>
           </el-col>
         </el-row>
@@ -242,7 +242,7 @@
                 v-model="form.joinTime"
                 type="date"
                 value-format="yyyy-MM-dd"
-                placeholder="选择日期"
+                :placeholder="$t('Please-select')"
               >
               </el-date-picker>
             </el-form-item>
@@ -256,7 +256,7 @@
                 type="year"
                 value-format="yyyy"
                 style="width:180px"
-                placeholder="选择年"
+                 :placeholder="$t('Please-select')"
                 :picker-options="pickerOptions"
               >
               </el-date-picker>
@@ -265,7 +265,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click="submitForm">确定</el-button>
+        <el-button type="primary" @click="submitForm">{{$t('OK')}}</el-button>
         <el-button @click="resetBtn">{{$t("Rst")}}</el-button>
       </div>
     </el-dialog>

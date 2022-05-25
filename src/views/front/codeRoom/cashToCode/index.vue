@@ -228,7 +228,7 @@
             prop="isCash"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isCash == 0 ? this.$t("No") : this.$t("Yes")}}</span>
+              <span>{{ scope.row.isCash == 0 ? $t("No") : $t("Yes")}}</span>
             </template>
           </el-table-column>
           <el-table-column

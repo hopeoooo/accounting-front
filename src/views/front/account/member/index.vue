@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item label="" prop="gameName">
             <el-select
@@ -86,7 +86,7 @@
               size="mini"
               :disabled="multiple"
               @click="handleDelete"
-              >删除</el-button
+              >{{$t('Del')}}</el-button
             >
           </el-col> -->
         </el-row>
@@ -110,6 +110,7 @@
             align="center"
             key="card"
             prop="card"
+
           />
           <el-table-column
             :label="$t('Name')"
@@ -147,6 +148,7 @@
             align="center"
             key="cardType"
             prop="cardType"
+             width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.cardType == 0 ? $t("master-card") : $t("child-card")}}</span>
@@ -157,6 +159,7 @@
             align="center"
             key="isAdmin"
             prop="isAdmin"
+             width="150px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.isAdmin == 0 ? $t("No") : $t("Yes") }}</span>
@@ -278,7 +281,7 @@
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
         v-if="open"
       >
         <el-row :gutter="0" v-if="isMain == false">
@@ -293,7 +296,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('Name')" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名" />
+              <el-input v-model="form.name"  :placeholder="$t('enter-name')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -309,7 +312,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('Name')" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名" />
+              <el-input v-model="form.name"  :placeholder="$t('enter-name')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -347,7 +350,7 @@
             <el-form-item :label="$t('Password')" prop="password" v-if="isshow">
               <el-input
                 v-model="form.password"
-                :placeholder="openType == 'edit' ? '******' : '请输入密码'"
+                :placeholder="openType == 'edit' ? '******' : $t('enter-pwd')"
               />
             </el-form-item>
           </el-col>
@@ -359,7 +362,7 @@
             >
               <el-input
                 v-model="form.rawPassword"
-                :placeholder="openType == 'edit' ? '******' : '请确认密码'"
+                :placeholder="openType == 'edit' ? '******' : $t('confirm-pwd')"
               />
             </el-form-item>
           </el-col>
@@ -369,7 +372,7 @@
             <el-form-item :label="$t('Deposit')" prop="deposit">
               <el-input
                 v-model="form.deposit"
-                placeholder="请输入押金"
+                 :placeholder="$t('enter-deposit')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
@@ -378,7 +381,7 @@
             <el-form-item :label="$t('Rep-C-Fee')" prop="repair">
               <el-input
                 v-model="form.repair"
-                placeholder="请输入补卡费"
+                 :placeholder="$t('enter-fee')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
@@ -390,7 +393,7 @@
               <el-input
                 style="width:180px"
                 v-model="form.shareRatio"
-                placeholder="请输入占股比例"
+                 :placeholder="$t('enter-shr')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
@@ -400,7 +403,7 @@
               <el-input
                 style="width:180px"
                 v-model="form.rebateRatio"
-                placeholder="请输入返点比例"
+                 :placeholder="$t('enter-rebate')"
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />%
             </el-form-item>
@@ -411,10 +414,10 @@
             <el-form-item
               :label="$t('Baccarat-Rolling-Ratio-S-Chip')"
               prop="baccaratRollingRatioChip"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioChip"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -425,10 +428,10 @@
             <el-form-item
               :label="$t('Baccarat-Rolling-Ratio-S-Cash')"
               prop="baccaratRollingRatioCash"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioCash"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -439,12 +442,12 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item
-              :label="$t('Baccarat-Rolling-Ratio-B-Chip')"
+              :label="$t('Baccarat-rolling-percentage-B-chip')"
               prop="baccaratRollingRatioChipTh"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioChipTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -453,12 +456,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="$t('Baccarat-Rolling-Ratio-B-Cash')"
+              :label="$t('Baccarat-Rolling-Ratio-B-cash')"
               prop="baccaratRollingRatioCashTh"
-              label-width="200px"
+              label-width="250px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.baccaratRollingRatioCashTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -471,10 +474,10 @@
             <el-form-item
               :label="$t('DT-Rolling-Ratio-S-Chip')"
               prop="dragonTigerRatioChip"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioChip"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -485,10 +488,10 @@
             <el-form-item
               :label="$t('DT-Rolling-Ratio-S-Cash')"
               prop="dragonTigerRatioCash"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioCash"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -501,10 +504,10 @@
             <el-form-item
               :label="$t('DT-Rolling-Ratio-B-chip')"
               prop="dragonTigerRatioChipTh"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioChipTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -513,12 +516,12 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="$t('DT-Rolling-Ratio-B-cash')"
+              :label="$t('DT-Rollingh-Ratio-B-cash')"
               prop="dragonTigerRatioCashTh"
-              label-width="200px"
+              label-width="220px"
             >
               <el-input
-                style="width:80px"
+                style="width:60px"
                 v-model="form.dragonTigerRatioCashTh"
                 placeholder=""
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
@@ -573,7 +576,7 @@
             <el-form-item
               :label="$t('Whether-have-commission')"
               prop="isPump"
-              label-width="110px"
+              label-width="150px"
             >
               <el-select
                 v-model="form.isPump"
@@ -603,7 +606,7 @@
             <el-form-item
               :label="$t('Int-card')"
               prop="isAdmin"
-              label-width="110px"
+              label-width="150px"
             >
               <el-select
                 v-model="form.isAdmin"
@@ -622,7 +625,7 @@
               <el-input
                 type="textarea"
                 :rows="7"
-                :placeholder="$t('Please-enter-conten')"
+                :placeholder="$t('Please-enter-content')"
                 v-model="form.remark"
                 maxlength="100"
                 show-word-limit
@@ -640,7 +643,7 @@
 
     <!-- 用户详情 -->
     <el-dialog
-      title="更多信息"
+      :title="$t('More-information')"
       :visible.sync="detailOpen"
       width="400px"
       append-to-body
@@ -682,7 +685,7 @@
           >
         </div>
         <div class="list">
-          <span>{{ $t("Baccarat-Rolling-Ratio-B-Chip") }}）</span
+          <span>{{ $t("Baccarat-rolling-percentage-B-chip") }}）</span
           ><span
             >{{
               memlist.baccaratRollingRatioChipTh
@@ -752,8 +755,8 @@
           ><span>{{
             memlist.isPump != null
               ? memlist.isPump == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>
@@ -762,8 +765,8 @@
           ><span>{{
             memlist.isCash != null
               ? memlist.isCash == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>
@@ -772,8 +775,8 @@
           ><span>{{
             memlist.isSettlement != null
               ? memlist.isSettlement == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>
@@ -782,8 +785,8 @@
           ><span>{{
             memlist.isOut != null
               ? memlist.isOut == 0
-                ? this.$t("No")
-                : "是"
+                ? $t("No")
+                : $t("Yes")
               : "-"
           }}</span>
         </div>

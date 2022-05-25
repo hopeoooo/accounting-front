@@ -66,7 +66,7 @@ service.interceptors.request.use(config => {
         const s_time = sessionObj.time;                // 请求时间
         const interval = 1000;                         // 间隔时间(ms)，小于此时间视为重复提交
         if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
-          const message = this.$t('sys_tips_cnt2');
+          const message = i18n.t('sys_tips_cnt2');
           console.warn(`[${s_url}]: ` + message)
           return Promise.reject(new Error(message))
         } else {
@@ -95,9 +95,9 @@ service.interceptors.response.use(res => {
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
-        MessageBox.confirm(this.$t('sys_tips_cnt1'), this.$t('sys_tips_title1'), {
-          confirmButtonText: this.$t('relogin'),
-          cancelButtonText: this.$t('Cancel'),
+        MessageBox.confirm(i18n.t('sys_tips_cnt1'), i18n.t('sys_tips_title1'), {
+          confirmButtonText: i18n.t('relogin'),
+          cancelButtonText: i18n.t('Cancel'),
           type: 'warning'
         }
       ).then(() => {
@@ -109,7 +109,7 @@ service.interceptors.response.use(res => {
         isRelogin.show = false;
       });
     }
-      return Promise.reject(this.$t('sys_tips_cnt3'))
+      return Promise.reject(i18n.t('sys_tips_cnt3'))
     } else if (code === 500) {
       Message({
         message: msg,
@@ -129,13 +129,13 @@ service.interceptors.response.use(res => {
     console.log('err' + error)
     let { message } = error;
     if (message == "Network Error") {
-      message = this.$t('sys_tips_cnt4');
+      message = i18n.t('sys_tips_cnt4');
     }
     else if (message.includes("timeout")) {
-      message = this.$t('sys_tips_cnt5');
+      message = i18n.t('sys_tips_cnt5');
     }
     else if (message.includes("Request failed with status code")) {
-      message = this.$t('sys_tips_cnt6') + message.substr(message.length - 3) + this.$t('sys_tips_cnt7');
+      message = i18n.t('sys_tips_cnt6') + message.substr(message.length - 3) + i18n.t('sys_tips_cnt7');
     }
     Message({
       message: message,
@@ -148,7 +148,7 @@ service.interceptors.response.use(res => {
 
 // 通用下载方法
 export function download(url, params, filename) {
-  downloadLoadingInstance = Loading.service({ text: this.$t('sys_tips_cnt8'), spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)", })
+  downloadLoadingInstance = Loading.service({ text: i18n.t('sys_tips_cnt8'), spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)", })
   return service.post(url, params, {
     transformRequest: [(params) => { return tansParams(params) }],
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -167,7 +167,7 @@ export function download(url, params, filename) {
     downloadLoadingInstance.close();
   }).catch((r) => {
     console.error(r)
-    Message.error(this.$t('sys_tips_cnt9'))
+    Message.error(i18n.t('sys_tips_cnt9'))
     downloadLoadingInstance.close();
   })
 }

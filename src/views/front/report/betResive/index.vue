@@ -8,7 +8,7 @@
           ref="queryForm"
           size="small"
           :inline="true"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
@@ -19,11 +19,14 @@
             />
           </el-form-item>
           <el-form-item :label="$t('Station-number')" prop="tableId">
-            <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
+            <el-select
+              v-model="queryParams.tableId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
-               :label="item.tableId ? item.tableId : $t('All')"
+                :label="item.tableId ? item.tableId : $t('All')"
                 :value="item.tableId"
               >
               </el-option>
@@ -31,7 +34,10 @@
           </el-form-item>
 
           <el-form-item :label="$t('Game-Type')" prop="gameId">
-            <el-select v-model="queryParams.gameId" :placeholder="$t('Please-select')">
+            <el-select
+              v-model="queryParams.gameId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in Gameoptions"
                 :key="item.value"
@@ -129,7 +135,11 @@
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -149,6 +159,7 @@
             align="center"
             key="tableId"
             prop="tableId"
+            width="120px"
           >
             <template slot-scope="scope">
               <span
@@ -179,6 +190,7 @@
             align="center"
             key="gameNum"
             prop="gameNum"
+             width="120px"
           >
             <template slot-scope="scope">
               <span
@@ -194,6 +206,7 @@
             align="center"
             key="gameId"
             prop="gameId"
+            width="120px"
           >
             <template slot-scope="scope">
               <span
@@ -227,7 +240,7 @@
             align="center"
             key="type"
             prop="type"
-            width="150px"
+            width="120px"
           >
             <template slot-scope="scope">
               <span
