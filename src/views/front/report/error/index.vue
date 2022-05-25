@@ -9,9 +9,9 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="120px"
         >
-          <el-form-item :label="$t('Staff-Work-Number')" prop="userName">
+          <el-form-item :label="$t('Staff-Work-Number')" prop="userName"  label-width="180px">
             <el-input
               v-model="queryParams.userName"
               placeholder=""

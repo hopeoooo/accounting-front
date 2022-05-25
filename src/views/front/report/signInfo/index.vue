@@ -9,28 +9,32 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="100px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px;margin-right:20px"
+              style="width: 100px;margin-right:20px"
             />
 
-            <el-checkbox v-model="queryParams.isAdmin"
-              >{{$t("Filter-internal-card")}}</el-checkbox
-            >
+            <el-checkbox v-model="queryParams.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
-          <el-form-item  :label="$t('Operation')" prop="type">
-            <el-select v-model="queryParams.type"  :placeholder="$t('All')">
+          <el-form-item :label="$t('Operation')" prop="type">
+            <el-select
+              v-model="queryParams.type"
+              :placeholder="$t('All')"
+              width="100px"
+            >
               <el-option :label="$t('All')" :value="null"></el-option>
-              <el-option  :label="$t('Signing')" :value="5"></el-option>
+              <el-option :label="$t('Signing')" :value="5"></el-option>
               <el-option :label="$t('Returns')" :value="6"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')">
+          <el-form-item :label="$t('operation-time')" label-width="120px">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -47,11 +51,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -63,12 +67,16 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -77,28 +85,29 @@
             prop="card"
           />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-             :label="$t('Operation')"
+            :label="$t('Operation')"
             align="center"
             key="type"
             prop="type"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '5'">{{$t("Signing")}}</span>
-              <span v-if="scope.row.type == '6'">{{$t("Returns")}}</span>
+              <span v-if="scope.row.type == '5'">{{ $t("Signing") }}</span>
+              <span v-if="scope.row.type == '6'">{{ $t("Returns") }}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-            :label="'$'+$t('Money-Movement-Records')"
+            :label="'$' + $t('Money-Movement-Records')"
             align="center"
             key="amount"
             prop="amount"
+            width="220px"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.amount != 0"
@@ -110,11 +119,11 @@
             </template>
           </el-table-column>
           <el-table-column
-          :label="'฿'+$t('Money-Movement-Records')"
-
+            :label="'฿' + $t('Money-Movement-Records')"
             align="center"
             key="amountTh"
             prop="amountTh"
+            width="220px"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.amountTh != 0"
@@ -127,14 +136,14 @@
           </el-table-column>
 
           <el-table-column
-           :label="$t('Amount-Type')"
+            :label="$t('Amount-Type')"
             align="center"
             key="amountType"
             prop="amountType"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.amountType == 0">{{$t("Chip")}}</span>
-              <span v-if="scope.row.amountType == 1">{{$t("Cash")}}</span>
+              <span v-if="scope.row.amountType == 0">{{ $t("Chip") }}</span>
+              <span v-if="scope.row.amountType == 1">{{ $t("Cash") }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -142,21 +151,22 @@
             align="center"
             key="operationTime"
             prop="operationTime"
+              width="150px"
           />
 
           <el-table-column
-             :label="$t('Operator')"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-              :label="$t('Operation-Remarks')"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="160px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
