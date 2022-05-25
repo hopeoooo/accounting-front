@@ -77,14 +77,12 @@ function importLangData(languages) {
 
   const messages = {
     en: {
-      ...enLocale,
       ...require(`./lang/en.json`),
-
+      ...enLocale
     },
     zh: {
-      ...zhLocale,
       ...require(`./lang/zh.json`),
-
+      ...zhLocale
     }
   };
   return messages;
