@@ -615,7 +615,7 @@ export default {
     align-items: center;
     margin: 15px 0;
     span{
-      min-width: 150px;
+      flex-flow: 1;
     }
   }
   .dialog-footer{

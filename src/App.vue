@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="currentLanguage=='en'?'app_en':'app_zh'">
-    <router-view />
+    <router-view  v-if="isRouterAlive"/>
   </div>
 </template>
 
@@ -8,13 +8,24 @@
 import { mapState, mapMutations } from "vuex";
 export default  {
   name:  'App',
+   provide() {
+        return { reload: this.reload };
+    },
   data(){
-     return {
-    };
+     return  { isRouterAlive: true };
   },
   computed: {
     ...mapState("app",['currentLanguage'])
   },
+  methods: {
+        reload() {
+            this.isRouterAlive = false;
+            this.$nextTick(function() {
+                this.isRouterAlive = true;
+            });
+        },
+
+    },
     metaInfo() {
         return {
             title: this.$store.state.settings.dynamicTitle && this.$store.state.settings.title,

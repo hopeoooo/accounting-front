@@ -148,5 +148,5 @@ const i18n = new VueI18n({
   messages,
   // formatter: new CustomFormatter()
 });
-// ElementLocale.i18n((key, value) => i18n.t(key, value));
+ElementLocale.i18n((key, value) => i18n.t(key, value));
 export default i18n;

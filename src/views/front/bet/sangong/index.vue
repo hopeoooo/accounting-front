@@ -4,7 +4,7 @@
        <!--桌台信息-->
       <el-col :span="16" :xs="24">
            <el-card class="box-card-box1" style="text-align:center">
-           <div class="h1">{{$t('bet.user')}}</div>
+            <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
               <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
@@ -318,7 +318,7 @@ export default {
       // param['gameResult']=str
       let arr=[]
       let arr1=[]
-
+       this.betList = this.sgList
       arr = this.betList.map(o=>{
             return {
               "type":o.type,

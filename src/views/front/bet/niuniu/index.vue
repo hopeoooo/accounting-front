@@ -322,7 +322,7 @@ export default {
       // param['gameResult']=str
       let arr=[]
       let arr1=[]
-
+      this.betList = this.nnList
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
@@ -331,7 +331,7 @@ export default {
               "赢":o.win,
             }
       })
-      
+      // this.betList = this.nnList
       let isDialog = false
       this.betList.forEach(e=>{
         if(e.lose|| e.win){

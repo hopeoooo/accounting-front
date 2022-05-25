@@ -93,12 +93,14 @@ Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 if (i18n.locale == "en") {
+  console.log(1)
   // element UI设置语言
   locale.use(enLocale);
 }else{
+  console.log(2)
   locale.use(zhLocale);
 }
-
+// Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 

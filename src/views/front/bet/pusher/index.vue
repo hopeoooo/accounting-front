@@ -1,20 +1,16 @@
 <template>
   <div class="app-container game_push">
     <el-row :gutter="20">
-
-      <!--切换账号-->
-      <el-col :span="3" :xs="24">
-          <el-card class="box-card-box" style="text-align:center">
+       <!--桌台信息-->
+      <el-col :span="13" :xs="24">
+            <el-card class="box-card-box1" style="text-align:center">
             <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
               <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-              <!-- <el-button type="primary" plain @click="roadChange">路珠修改</el-button> -->
-              <!-- <el-button class="loginout" type="primary" plain @click="betRecord">下注记录</el-button> -->
+              <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
+              <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
           </el-card>
-      </el-col>
-       <!--桌台信息-->
-      <el-col :span="13" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
@@ -104,16 +100,18 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <Dialog :title='title' :open='open' @getOpen='openData' />
-    
+     <!-- 下注记录 -->
+    <BetRecord :record='record' @getRecord='recordData'/>
 
    
   </div>
 </template>
 
 <script>
-import { pusherInput,pusherOpen,pusherInfo,pusherSave} from "@/api/bet/pusher";
+import { pusherInput,pusherNext,pusherOpen,pusherInfo,pusherSave} from "@/api/bet/pusher";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
+import BetRecord from "./dialogBet.vue"
 export default {
   name: "Pusher",
   data() {
@@ -123,6 +121,7 @@ export default {
       // 遮罩层
       loading: true,
       isVisibles:true,
+      record:false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -185,7 +184,7 @@ export default {
      
     };
   },
-  components:{Dialog},
+  components:{Dialog,BetRecord},
   watch: {
     // 根据名称筛选部门树
 
@@ -194,6 +193,7 @@ export default {
   created() {
     this.getszdata();
     this.getTableInfo()
+    this.getStatus()
   },
   computed:{
     userName(){
@@ -206,16 +206,35 @@ export default {
     screencast(){
       this.isSend = !this.isSend
       this. getSend()
+      localStorage.setItem('PusherType',this.isSend)
     },
   
     roadChange(){},
-    betRecord(){},
+     betRecord(){
+      this.record = true
+    },
+    nextGame(){
+       this.$confirm(this.$t('bet.sureNext'), this.$t('bet.tips'), {
+        confirmButtonText: this.$t('bet.sure'),
+        cancelButtonText: this.$t('bet.cancel'),
+        type: 'warning',
+         customClass:'dialog_tips'
+      }).then(() => {
+        pusherNext().then(res => {
+          this.loading = false;
+           this.getTableInfo()
+            this.getResult()
+        })
+      })
+    },
     openData(data){
       this.open = data
       // if(this.title=='点码')
       this.getTableInfo()
     },
-   
+     recordData(data){
+      this.record = data
+    },
     //桌台信息
     getTableInfo(){
        pusherInfo().then(res => {
@@ -226,7 +245,19 @@ export default {
         this.setTtzSum(this.sumdata),
       );
     },
-  
+      //获取本地存储
+    getStatus(){
+        if(localStorage.getItem("PusherType") != null){
+          if(localStorage.getItem('PusherType')=="true"){
+            this.isSend =true
+          }else{
+            this.isSend =false
+          }
+        }
+         if(localStorage.getItem("PusherList") != null){
+           this.setTtzList(JSON.parse(localStorage.getItem('PusherList')))
+        }
+    },
     //处理路单class
     getclass(c){
       if(c.indexOf('龙')!=-1){
@@ -270,7 +301,7 @@ export default {
     },
     getSend(){
       if(this.isSend == true){
-        pusherSave({'json':this.betList}).then(res => {
+        pusherSave({'json':this.ttzList}).then(res => {
           this.loading = false;
         })
       }else{
@@ -292,7 +323,7 @@ export default {
       // param['gameResult']=str
       let arr=[]
       let arr1=[]
-
+      this.betList = this.ttzList
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
@@ -385,6 +416,7 @@ export default {
             sumChip:'',
             sumCash:'',
           }
+          localStorage.setItem('PusherList',JSON.stringify(this.betList))
           this.setTtzList(this.betList)
           this.setTtzSum(this.sumdata)
           let that=this
@@ -562,7 +594,6 @@ export default {
     font-size: 18px;  .el-card__body{
       display: flex;
       flex-direction: column;
-      min-height: 256px;
       button{
         width: 80%;
         height: 80px;
@@ -696,13 +727,53 @@ export default {
     
 
   }
+  .box-card-box1{
+    margin-bottom: 10px;
+    font-size: 18px;  
+    .el-card__body{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 10px 20px;
+      .h1{
+        font-size: 22px;
+        line-height: 40px;
+        margin-right: 20px;
+      }
+      button{
+        width: 150px;
+        height: 60px;
+        margin-left: 30px;
+      }
+      .loginout{
+        height: 40px;
+      }
+      ul{
+        padding: 0;
+        margin: 0;
+      text-align: left;
+      border-top:1px solid #cbcbcb ;
+      &:nth-child(1){
+        border: 0;
+      }
+        li{
+          list-style: none;
+          display: inline-block;
+          min-width:100px;
+          margin: 0 8px;
+          line-height: 32px;
+          font-size: 18px;
+          // font-weight: bold;
+        }
+      }
+    }
+  }
   .box-card-box-list{
     .el-card__body{
       display: flex;
       justify-content: space-around;
       align-items: center;
       padding: 5px 20px;
-      min-height: 256px;
       .el-row{
         .el-col{
           height: 100px;
@@ -832,18 +903,18 @@ export default {
     .el-table__header-wrapper{
       thead{
         th{
-          &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(10){
+          &:nth-child(3){
             background: red;
             color: #fff;
           }
-          &:nth-child(4), &:nth-child(7), &:nth-child(9), &:nth-child(11){
+          &:nth-child(4){
             background: blue;
             color: #fff;
           }
-          &:nth-child(5){
-            background: green;
-            color: #fff;
-          }
+          // &:nth-child(5){
+          //   background: green;
+          //   color: #fff;
+          // }
         }
       }
     }

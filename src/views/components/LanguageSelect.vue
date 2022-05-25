@@ -48,6 +48,7 @@ import zhLocale from "element-ui/lib/locale/lang/zh-CN";
 export default {
   /**语言选择 */
   name: "LanguageSelect",
+  inject:['reload'],
   data() {
     return {
       languages: languagesConfig.languages,
@@ -92,6 +93,7 @@ export default {
 
     // 路由切换
     changeRouter() {
+      this.reload()
       store.dispatch("GenerateRoutes").then(accessRoutes => {
         // 根据roles权限生成可访问的路由表
         router.addRoutes(accessRoutes); // 动态添加可访问路由表

@@ -178,7 +178,7 @@
                     <div>-</div>
                   </div>
                    <div class="list">
-                    <div>฿{{$t('bet.chipReduce')}}</div>>
+                    <div>฿{{$t('bet.chipReduce')}}</div>
                     <div>
                       <el-input v-model.number="form.chipSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
@@ -613,10 +613,11 @@ export default {
   }
   .remark{
     display: flex;
+    white-space: nowrap;
     align-items: center;
     margin: 15px 0;
     span{
-      min-width: 150px;
+      flex-flow: 1;
     }
   }
   .dialog-footer{

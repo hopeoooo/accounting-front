@@ -429,7 +429,7 @@ export default {
       param['gameResult']=str
       let arr=[]
       let arr1=[]
-
+        this.betList = this.lhList
       arr = this.betList.map(o=>{
             return {
               "type":o.type,
@@ -1116,7 +1116,7 @@ export default {
     // background: rgb(199, 135, 135);
   }
 }
-.app_zh .game_bjl .box-card-box .ludanbox .ludan .list2 .list_p {
+.app_zh .game_lh .box-card-box .ludanbox .ludan .list2 .list_p {
   .type1{
                 background: url("../../../../assets/images/ludan/l.svg") center no-repeat;
                 background-size: 100%;
@@ -1130,7 +1130,7 @@ export default {
                 background-size: 100%;
               }
 }
-.app_en .game_bjl .box-card-box .ludanbox .ludan .list2 .list_p {
+.app_en .game_lh .box-card-box .ludanbox .ludan .list2 .list_p {
   .type1{
                 background: url("../../../../assets/images/ludan/l_en.svg") center no-repeat;
                 background-size: 100%;
@@ -1179,8 +1179,8 @@ export default {
         justify-content: center;
         width: 100%;
         .el-checkbox-button__inner,.el-radio-button__inner{
-        min-width: 80px;
-        height: 40px;
+        min-width: 100px;
+        height: 50px;
         line-height: 40px;
         background: #919191;
         border-radius: 6px;
