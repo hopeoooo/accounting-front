@@ -1,3 +1,10 @@
+<!--
+ * @Author:
+ * @Date: 2022-05-24 13:49:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-26 11:35:49
+ * @Description: file content
+-->
 <template>
   <div id="app" :class="currentLanguage=='en'?'app_en':'app_zh'">
     <router-view  v-if="isRouterAlive"/>

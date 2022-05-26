@@ -9,16 +9,18 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
-          <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="fromSearch.card"
               placeholder=""
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="fromSearch.isAdmin">{{$t("Filter-internal-card")}}</el-checkbox>
+            <el-checkbox v-model="fromSearch.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -26,11 +28,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -42,7 +44,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
@@ -60,70 +62,73 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-             :label="$t('Membership-Card-Number')"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
+            :width="currentLanguage == 'zh' ? '100px' : '100px'"
           />
           <el-table-column
-             :label="$t('Staus')"
+            :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
-            width="80"
+            :width="currentLanguage == 'zh' ? '' : '100px'"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
+              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
+              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            :label="'$'+$t('Deposited-Chip-Balance')"
+            :label="'$' + $t('Deposited-Chip-Balance')"
             align="center"
             sortable="custom"
             key="chipBalance"
             prop="chipBalance"
+            :width="currentLanguage == 'zh' ? '150px' : '220px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.chipBalance | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            :label="'$'+$t('Deposited-Cash-Balance')"
+            :label="'$' + $t('Deposited-Cash-Balance')"
             align="center"
             sortable="custom"
             key="cashBalance"
             prop="cashBalance"
+            :width="currentLanguage == 'zh' ? '150px' : '220px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.cashBalance | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-          :label="'฿'+$t('Deposited-Chip-Balance')"
-
+            :label="'฿' + $t('Deposited-Chip-Balance')"
             align="center"
             sortable="custom"
             key="chipBalanceTh"
             prop="chipBalanceTh"
+            :width="currentLanguage == 'zh' ? '150px' : '220px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.chipBalanceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column
-           :label="'฿'+$t('Deposited-Cash-Balance')"
-
+            :label="'฿' + $t('Deposited-Cash-Balance')"
             align="center"
             sortable="custom"
             key="cashBalanceTh"
             prop="cashBalanceTh"
+            :width="currentLanguage == 'zh' ? '150px' : '220px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.cashBalanceTh | MoneyFormat }}</span>
@@ -142,11 +147,11 @@
           </el-table-column> -->
 
           <el-table-column
-               :label="$t('Remarks')"
+            :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="150px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -158,157 +163,38 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-             :label="$t('Opr')"
+            :label="$t('Opr')"
             align="center"
-            width="200"
+            width="200px"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope"  >
+            <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleSign(scope.row)"
-                >{{$t("Chip-deposit")}}</el-button
+                >{{ $t("Chip-deposit") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleBack(scope.row)"
-                >{{$t("Chips-withdrawal")}}</el-button
+                >{{ $t("Chips-withdrawal") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >{{$t('Breakdown')}}</el-button
+                >{{ $t("Breakdown") }}</el-button
               >
             </template>
           </el-table-column>
         </el-table>
 
-        <!-- 用于渲染总计 -->
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          :row-class-name="status_change"
-          show-summary
-          sum-text="总计"
-          class="table2"
-          :summary-method="getSummaries"
-        >
-          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column
-             :label="$t('Membership-Card-Number')"
-            align="center"
-            key="card"
-            prop="card"
-          />
-          <el-table-column
-             :label="$t('Name')"
-            align="center"
-            key="userName"
-            prop="userName"
-          />
-          <el-table-column
-             :label="$t('Staus')"
-            align="center"
-            key="status"
-            prop="status"
-            width="80"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$'+$t('Deposited-Chip-Balance')"
-            align="center"
-            sortable="custom"
-            key="chipBalance"
-            prop="chipBalance"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.chipBalance | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$'+$t('Deposited-Cash-Balance')"
-            align="center"
-            sortable="custom"
-            key="cashBalance"
-            prop="cashBalance"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.cashBalance | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="฿已存筹码余额"
-            align="center"
-            sortable="custom"
-            key="chipBalanceTh"
-            prop="chipBalanceTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.chipBalanceTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="฿已存现金余额"
-            align="center"
-            sortable="custom"
-            key="cashBalanceTh"
-            prop="cashBalanceTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.cashBalanceTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
 
-          <!-- <el-table-column
-            label="总余额"
-            align="center"
-             sortable="custom"
-            key="totalBalance"
-            prop="totalBalance"
-          /> -->
-
-          <el-table-column
-               :label="$t('Remarks')"
-            align="center"
-            key="remark"
-            prop="remark"
-            width="150"
-          />
-          <el-table-column
-            fixed="right"
-             :label="$t('Opr')"
-            align="center"
-            width="200"
-            class-name="small-padding fixed-width"
-          >
-            <template slot-scope="scope"  >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-tickets"
-                @click="handleSign(scope.row)"
-                >{{$t("Chip-deposit")}}</el-button
-              >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleBack(scope.row)"
-                >{{$t("Chips-withdrawal")}}</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -323,7 +209,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="600px"
+     :width="currentLanguage == 'zh' ? '500px' : '600px'"
       v-if="open"
       append-to-body
       :close-on-click-modal="false"
@@ -333,7 +219,7 @@
         :model="form"
         :rules="rules"
         :show-message="false"
-        label-width="100px"
+        :label-width="currentLanguage == 'zh' ? '100px' : '200px'"
         class="access-code-form"
       >
         <el-form-item :label="$t('Card-number')" prop="card">
@@ -348,7 +234,7 @@
         <!-- 存码 开始-->
         <div v-if="openType == 'deposit'">
           <el-form-item
-            :label="'$'+$t('Deposit-Chip')"
+            :label="'$' + $t('Deposit-Chip')"
             prop="chipAmount"
             v-if="openType == 'deposit'"
           >
@@ -361,8 +247,7 @@
             />
           </el-form-item>
           <el-form-item
-           :label="'$'+$t('Deposit-Cash')"
-
+            :label="'$' + $t('Deposit-Cash')"
             prop="cashAmount"
             v-if="openType == 'deposit'"
           >
@@ -375,8 +260,7 @@
             />
           </el-form-item>
           <el-form-item
-          :label="'฿'+$t('Deposit-Chip')"
-
+            :label="'฿' + $t('Deposit-Chip')"
             prop="chipAmountTh"
             v-if="openType == 'deposit'"
           >
@@ -389,8 +273,7 @@
             />
           </el-form-item>
           <el-form-item
-           :label="'฿'+$t('Deposit-Cash')"
-
+            :label="'฿' + $t('Deposit-Cash')"
             prop="cashAmountTh"
             v-if="openType == 'deposit'"
           >
@@ -409,14 +292,20 @@
         <!-- 取码 开始-->
         <div class="withdraw-box" v-if="openType == 'withdraw'">
           <div style="display:flex">
-            <el-form-item :label="'$'+$t('Available-Chip')" prop="chipBalance">
+            <el-form-item
+              :label="'$' + $t('Available-Chip')"
+              prop="chipBalance"
+            >
               <el-input
                 v-model="form.chipBalance"
                 placeholder=""
                 :disabled="true"
               />
             </el-form-item>
-            <el-form-item :label="'$'+$t('Available-Cash')"  prop="cashBalance">
+            <el-form-item
+              :label="'$' + $t('Available-Cash')"
+              prop="cashBalance"
+            >
               <el-input
                 v-model="form.cashBalance"
                 placeholder=""
@@ -425,7 +314,10 @@
             </el-form-item>
           </div>
           <div style="display:flex">
-            <el-form-item :label="'$'+$t('Chip-withdrawal')" prop="chipAmount">
+            <el-form-item
+              :label="'$' + $t('Chip-withdrawal')"
+              prop="chipAmount"
+            >
               <el-input
                 v-model="form.chipAmount"
                 placeholder=""
@@ -434,7 +326,10 @@
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item :label="'$'+$t('Cash-withdrawal')" prop="cashAmount">
+            <el-form-item
+              :label="'$' + $t('Cash-withdrawal')"
+              prop="cashAmount"
+            >
               <el-input
                 v-model="form.cashAmount"
                 placeholder=""
@@ -448,14 +343,20 @@
 
         <div class="withdraw-box" v-if="openType == 'withdraw'">
           <div style="display:flex">
-            <el-form-item :label="'฿'+$t('Available-Chip')"  prop="chipBalanceTh">
+            <el-form-item
+              :label="'฿' + $t('Available-Chip')"
+              prop="chipBalanceTh"
+            >
               <el-input
                 v-model="form.chipBalanceTh"
                 placeholder=""
                 :disabled="true"
               />
             </el-form-item>
-            <el-form-item :label="'฿'+$t('Available-Cash')"  prop="cashBalanceTh">
+            <el-form-item
+              :label="'฿' + $t('Available-Cash')"
+              prop="cashBalanceTh"
+            >
               <el-input
                 v-model="form.cashBalanceTh"
                 placeholder=""
@@ -465,7 +366,7 @@
           </div>
           <div style="display:flex">
             <el-form-item
-             :label="'฿'+$t('Chip-withdrawal')"
+              :label="'฿' + $t('Chip-withdrawal')"
               prop="chipAmountTh"
               :show-message="false"
             >
@@ -477,7 +378,10 @@
                 oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
               />
             </el-form-item>
-            <el-form-item :label="'฿'+$t('Cash-withdrawal')"  prop="cashAmountTh">
+            <el-form-item
+              :label="'฿' + $t('Cash-withdrawal')"
+              prop="cashAmountTh"
+            >
               <el-input
                 v-model="form.cashAmountTh"
                 placeholder=""
@@ -491,11 +395,11 @@
 
         <!-- 取码结束 -->
 
-        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
+        <el-form-item :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"
-            :placeholder="$t('Please-enter-conten')"
+            :placeholder="$t('Please-enter-content')"
             v-model="form.remark"
             maxlength="100"
             show-word-limit
@@ -514,9 +418,9 @@
               form.chipBalanceTh == 0 &&
               form.cashBalanceTh == 0
           "
-          >{{$t("Confirm")}}</el-button
+          >{{ $t("Confirm") }}</el-button
         >
-        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
+        <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -530,7 +434,7 @@ import {
   updateCodeFetching
 } from "@/api/coderoom/accessCode";
 import { MoneyFormat } from "@/filter";
-
+import { mapState, mapMutations } from "vuex";
 const fieldMap = {
   chipAmount: "chipBalance",
   cashAmount: "cashBalance",
@@ -636,6 +540,9 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState("app", ["currentLanguage"])
+  },
   watch: {
     // 根据名称筛选部门树
   },
@@ -643,7 +550,6 @@ export default {
     this.getList();
   },
   methods: {
-
     // 通用的金额校验
     amountValidator(rule, value, callback) {
       // console.log(rule,value);
@@ -655,7 +561,9 @@ export default {
           !this.form.chipAmountTh &&
           !this.form.cashAmountTh
         ) {
-          callback(new Error(this.$t("Please-enter-at-least-one-deposit-amount")));
+          callback(
+            new Error(this.$t("Please-enter-at-least-one-deposit-amount"))
+          );
         } else if (value && value <= 0) {
           callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else {
@@ -672,7 +580,9 @@ export default {
           !this.form.chipAmountTh &&
           !this.form.cashAmountTh
         ) {
-          callback(new Error(this.$t("Please-enter-at-least-one-withdrawal-amount")));
+          callback(
+            new Error(this.$t("Please-enter-at-least-one-withdrawal-amount"))
+          );
         } else if (value && value <= 0) {
           callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
         } else if (value && value > this.form[balanceField]) {
@@ -724,7 +634,11 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-           sums[index] = this.$t("Subtotal");
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
           return;
         }
         if (index === 1 || index === 2 || index === 7) {
@@ -734,7 +648,9 @@ export default {
 
         const values = data.map(item => Number(item[column.property]));
         if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
+          let num1 = ""; // 小计结果
+          let num2 = ""; // 总计结果
+          num1 = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
               const pel = prev + curr; // 主要代码
@@ -745,12 +661,28 @@ export default {
               return pel;
             }
           }, 0);
-          sums[index] += "";
+
+          if (index === 3) {
+            num2 = MoneyFormat(this.userTotal.chipBalance);
+          }
+          if (index === 4) {
+            num2 = MoneyFormat(this.userTotal.cashBalance);
+          }
+          if (index === 5) {
+            num2 = MoneyFormat(this.userTotal.chipBalanceTh);
+          }
+          if (index === 6) {
+            num2 = MoneyFormat(this.userTotal.cashBalanceTh);
+          }
+
           // sums[index] = Number(sums[index]).toFixed(2);
           if (index == 3 || index == 4 || index == 5 || index == 6) {
-            // 金额需要保留两位小数点
-            sums[index] = Number(sums[index]).toFixed(2);
-            sums[index] = MoneyFormat(sums[index]);
+            num1 = MoneyFormat(num1);
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
+          } else {
+            sums[index] = "";
           }
         } else {
           // sums[index] = 'N/A';
@@ -828,7 +760,7 @@ export default {
       this.dateRange = [];
       this.queryParams.isAsc = null;
       this.queryParams.orderByColumn = null;
-      this.$refs.dataTable.clearSort()
+      this.$refs.dataTable.clearSort();
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -893,7 +825,9 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "status") {
-            return v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
+            return v["status"] == 0
+              ? this.$t("Normal")
+              : this.$t("Deactivated");
           } else {
             return v[j];
           }

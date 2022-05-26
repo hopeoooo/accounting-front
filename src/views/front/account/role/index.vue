@@ -102,7 +102,7 @@
               <el-input
                 type="textarea"
                 :rows="7"
-                :placeholder="$t('Please-enter-conten')"
+                :placeholder="$t('Please-enter-content')"
                 v-model="form.remark"
                 maxlength="100"
                 show-word-limit

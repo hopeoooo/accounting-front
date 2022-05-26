@@ -9,16 +9,18 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
-          <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
+          <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="fromSearch.card"
               placeholder=""
               clearable
               style="width: 240px;margin-right:20px"
             />
-            <el-checkbox v-model="fromSearch.isAdmin">{{$t("Filter-internal-card")}}</el-checkbox>
+            <el-checkbox v-model="fromSearch.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -26,11 +28,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -42,7 +44,7 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
@@ -60,41 +62,41 @@
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
-             :label="$t('Membership-Card-Number')"
+            :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
           />
           <el-table-column
-             :label="$t('Name')"
+            :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
           />
           <el-table-column
-             :label="$t('Staus')"
+            :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
-            width="80"
+           :width="currentLanguage == 'zh' ? '' : '120px'"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
+              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
+              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-             :label="$t('is-cash-out')"
+            :label="$t('is-cash-out')"
             align="center"
             key="isCash"
             prop="isCash"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isCash == 0 ? $t("No") : $t("Yes")}}</span>
+              <span>{{ scope.row.isCash == 0 ? $t("No") : $t("Yes") }}</span>
             </template>
           </el-table-column>
           <el-table-column
-             :label="'$'+$t('Chip-Balance')"
+            :label="'$' + $t('Chip-Balance')"
             align="center"
             sortable="custom"
             key="chipAmount"
@@ -105,8 +107,7 @@
             </template>
           </el-table-column>
           <el-table-column
-           :label="'฿'+$t('Chip-Balance')"
-
+            :label="'฿' + $t('Chip-Balance')"
             align="center"
             sortable="custom"
             key="chipAmountTh"
@@ -118,11 +119,11 @@
           </el-table-column>
 
           <el-table-column
-               :label="$t('Remarks')"
+            :label="$t('Remarks')"
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="150px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -134,150 +135,37 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-             :label="$t('Opr')"
+            :label="$t('Opr')"
             align="center"
-            width="260"
+            :width="currentLanguage == 'zh' ? '250px' : '300px'"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope"  >
+            <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-tickets"
                 @click="handleBuy(scope.row)"
-                >{{$t("Buy-codes")}}</el-button
+                >{{ $t("Buy-codes") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleExchange(scope.row)"
-                >{{$t("Cash-Out")}}</el-button
+                >{{ $t("Cash-Out") }}</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document-remove"
                 @click="handleDetail(scope.row.card)"
-                >{{$t('Breakdown')}}</el-button
+                >{{ $t("Breakdown") }}</el-button
               >
             </template>
           </el-table-column>
         </el-table>
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          :row-class-name="status_change"
-          show-summary
-          sum-text="总计"
-          class="table2"
-          :summary-method="getSummaries"
-        >
-          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column
-             :label="$t('Membership-Card-Number')"
-            align="center"
-            key="card"
-            prop="card"
-          />
-          <el-table-column
-             :label="$t('Name')"
-            align="center"
-            key="userName"
-            prop="userName"
-          />
-          <el-table-column
-             :label="$t('Staus')"
-            align="center"
-            key="status"
-            prop="status"
-            width="80"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-             :label="'$'+$t('Chip-Balance')"
-            align="center"
-            sortable="custom"
-            key="chipAmount"
-            prop="chipAmount"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.chipAmount | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-           :label="'฿'+$t('Chip-Balance')"
 
-            align="center"
-            sortable="custom"
-            key="chipAmountTh"
-            prop="chipAmountTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.chipAmountTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-             :label="$t('is-cash-out')"
-            align="center"
-            key="isCash"
-            prop="isCash"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.isCash == 0 ? $t("No") : $t("Yes")}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-              :label="$t('Operation-Remarks')"
-            align="center"
-            key="remark"
-            prop="remark"
-            width="150"
-            :show-overflow-tooltip="true"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.remark" style="text-align:center">{{
-                scope.row.remark
-              }}</span>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-             :label="$t('Opr')"
-            align="center"
-            width="260"
-            class-name="small-padding fixed-width"
-          >
-            <template slot-scope="scope"  >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-tickets"
-                @click="handleBuy(scope.row)"
-                >{{$t("Buy-codes")}}</el-button
-              >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleExchange(scope.row)"
-                >{{$t("Cash-Out")}}</el-button
-              >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleDetail(scope.row.card)"
-                >{{$t('Breakdown')}}</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -292,7 +180,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="600px"
+      :width="currentLanguage == 'zh' ? '500px' : '600px'"
       v-if="open"
       append-to-body
       :close-on-click-modal="false"
@@ -302,9 +190,9 @@
         :model="form"
         :rules="rules"
         :show-message="true"
-        label-width="120px"
+        :label-width="currentLanguage == 'zh' ? '120px' : '200px'"
       >
-        <el-form-item  :label="$t('Card-number')"  prop="card">
+        <el-form-item :label="$t('Card-number')" prop="card">
           <el-input
             v-model="form.card"
             placeholder=""
@@ -313,7 +201,7 @@
           />
         </el-form-item>
         <el-form-item
-          :label="'$'+$t('Buy-in-Chip-Amount')"
+          :label="'$' + $t('Buy-in-Chip-Amount')"
           prop="chipAmount"
           v-if="openType == 'buy'"
         >
@@ -325,8 +213,7 @@
           />
         </el-form-item>
         <el-form-item
-        :label="'฿'+$t('Buy-in-Chip-Amount')"
-
+          :label="'฿' + $t('Buy-in-Chip-Amount')"
           prop="chipAmountTh"
           v-if="openType == 'buy'"
         >
@@ -338,8 +225,7 @@
           />
         </el-form-item>
         <el-form-item
-         :label="'$'+$t('Cash-Exchange-Amount')"
-
+          :label="'$' + $t('Cash-Exchange-Amount')"
           prop="chipAmount"
           v-if="openType == 'exchange'"
         >
@@ -351,7 +237,7 @@
           />
         </el-form-item>
         <el-form-item
-        :label="'฿'+$t('Cash-Exchange-Amount')"
+          :label="'฿' + $t('Cash-Exchange-Amount')"
           prop="chipAmountTh"
           v-if="openType == 'exchange'"
         >
@@ -363,11 +249,11 @@
           />
         </el-form-item>
 
-        <el-form-item   :label="$t('Operation-Remarks')" prop="remark">
+        <el-form-item :label="$t('Operation-Remarks')" prop="remark">
           <el-input
             type="textarea"
             :rows="7"
-            :placeholder="$t('Please-enter-conten')"
+            :placeholder="$t('Please-enter-content')"
             v-model="form.remark"
             maxlength="100"
             show-word-limit
@@ -376,8 +262,10 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="submitForm">{{$t("Confirm")}}</el-button>
-        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
+        <el-button type="primary" @click="submitForm">{{
+          $t("Confirm")
+        }}</el-button>
+        <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -391,6 +279,7 @@ import {
   addCashExchange
 } from "@/api/coderoom/cashToCode";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "CashToCode",
   data() {
@@ -448,11 +337,12 @@ export default {
       },
       fromSearch: {
         card: "",
-        isAdmin: false,
+        isAdmin: false
       }
     };
   },
   computed: {
+    ...mapState("app", ["currentLanguage"]),
     rules() {
       // 表单校验
       return {
@@ -481,7 +371,11 @@ export default {
     chipAmountValitor(rule, value, callback) {
       if (!this.form.chipAmount && !this.form.chipAmountTh) {
         const errMsg =
-          this.openType == "buy" ? this.$t('Please-enter-the-amount-of-chip-purchased') : this.$t('Please-enter-the-amount-of-cash-you-would-like-to-exchange');
+          this.openType == "buy"
+            ? this.$t("Please-enter-the-amount-of-chip-purchased")
+            : this.$t(
+                "Please-enter-the-amount-of-cash-you-would-like-to-exchange"
+              );
         callback(new Error(errMsg));
       } else if (this.form.chipAmount && this.form.chipAmount <= 0) {
         callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
@@ -498,7 +392,11 @@ export default {
     chipAmountThValitor(rule, value, callback) {
       if (!this.form.chipAmount && !this.form.chipAmountTh) {
         const errMsg =
-          this.openType == "buy" ? this.$t('Please-enter-the-amount-of-chip-purchased') : this.$t('Please-enter-the-amount-of-cash-you-would-like-to-exchange');
+          this.openType == "buy"
+            ? this.$t("Please-enter-the-amount-of-chip-purchased")
+            : this.$t(
+                "Please-enter-the-amount-of-cash-you-would-like-to-exchange"
+              );
         callback(new Error(errMsg));
       } else if (this.form.chipAmountTh && this.form.chipAmountTh <= 0) {
         callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
@@ -569,7 +467,11 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-           sums[index] = this.$t("Subtotal");
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
           return;
         }
         if (index == 1 || index == 2 || index == 3 || index == 6) {
@@ -579,7 +481,9 @@ export default {
 
         const values = data.map(item => Number(item[column.property]));
         if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
+          let num1 = ""; // 小计结果
+          let num2 = ""; // 总计结果
+          num1 = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
               const pel = prev + curr; // 主要代码
@@ -590,12 +494,22 @@ export default {
               return pel;
             }
           }, 0);
-          sums[index] += "";
-          // sums[index] = Number(sums[index]).toFixed(2);
+          if (index === 4) {
+            num1 = MoneyFormat(num1);
+            num2 = MoneyFormat(this.userTotal.chipAmount);
+
+          }
+          if (index === 5) {
+            num1 = MoneyFormat(num1);
+            num2 = MoneyFormat(this.userTotal.chipAmountTh);
+
+          }
           if (index == 4 || index == 5) {
-            // 金额需要保留两位小数点
-            sums[index] = Number(sums[index]).toFixed(2);
-            sums[index] = MoneyFormat(sums[index]);
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
+          } else {
+            sums[index] = "";
           }
         } else {
           // sums[index] = 'N/A';
@@ -641,7 +555,7 @@ export default {
       this.fromSearch.card = "";
       this.queryParams.isAsc = null;
       this.queryParams.orderByColumn = null;
-       this.$refs.dataTable.clearSort()
+      this.$refs.dataTable.clearSort();
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -707,7 +621,9 @@ export default {
       return jsonData.map(v =>
         filterVal.map(j => {
           if (j == "status") {
-            return v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
+            return v["status"] == 0
+              ? this.$t("Normal")
+              : this.$t("Deactivated");
           } else if (j == "isCash") {
             return v["isCash"] == 0 ? this.$t("No") : this.$t("Yes");
           } else {
