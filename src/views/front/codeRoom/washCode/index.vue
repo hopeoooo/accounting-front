@@ -85,31 +85,34 @@
           <el-table-column
             fixed
             type="selection"
-            width="80"
             align="center"
             :selectable="onSelectable"
+            width="100px"
           />
           <el-table-column
             :label="$t('Membership-Card-Number')"
             align="center"
             key="card"
             prop="card"
+            :width="currentLanguage == 'zh' ? '100px' : '100px'"
           />
           <el-table-column
             :label="$t('Name')"
             align="center"
             key="name"
             prop="name"
+            :width="currentLanguage == 'zh' ? '' : '100px'"
           />
           <el-table-column
             :label="$t('Staus')"
             align="center"
             key="status"
             prop="status"
+            :width="currentLanguage == 'zh' ? '' : '100px'"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
+              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
+              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -117,9 +120,12 @@
             align="center"
             key="isSettlement"
             prop="isSettlement"
+            :width="currentLanguage=='zh'?'150px':'120px'"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.isSettlement == 0 ? $t("No") : $t("Yes")}}</span>
+              <span>{{
+                scope.row.isSettlement == 0 ? $t("No") : $t("Yes")
+              }}</span>
             </template>
           </el-table-column>
 
@@ -129,6 +135,7 @@
             sortable="custom"
             key="water"
             prop="water"
+            :width="currentLanguage == 'zh' ? '150px' : '200px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -140,6 +147,7 @@
             sortable="custom"
             key="waterAmount"
             prop="waterAmount"
+            :width="currentLanguage == 'zh' ? '150px' : '200px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
@@ -151,6 +159,7 @@
             sortable="custom"
             key="waterTh"
             prop="waterTh"
+            :width="currentLanguage == 'zh' ? '150px' : '200px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -162,6 +171,7 @@
             sortable="custom"
             key="waterAmountTh"
             prop="waterAmountTh"
+            :width="currentLanguage == 'zh' ? '150px' : '200px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
@@ -173,7 +183,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            width="150px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -212,135 +222,6 @@
           </el-table-column>
         </el-table>
 
-        <!-- 用于渲染总计 -->
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          :row-class-name="status_change"
-          show-summary
-          :summary-method="getSummaries"
-          class="summary-table"
-        >
-          <el-table-column
-            fixed
-            type="selection"
-            key="userId"
-            prop="userId"
-            width="80"
-            align="center"
-          />
-          <el-table-column
-            :label="$t('Membership-Card-Number')"
-            align="center"
-            key="card"
-            prop="card"
-          />
-          <el-table-column
-            :label="$t('Name')"
-            align="center"
-            key="userName"
-            prop="name"
-          />
-          <el-table-column
-            :label="$t('Staus')"
-            align="center"
-            key="status"
-            prop="status"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{$t("Normal")}}</span>
-              <span v-else style="color:red">{{$t("Deactivated")}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('is-settle')"
-            align="center"
-            key="isSettlement"
-            prop="isSettlement"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.isSettlement == 0 ? $t("No") : $t("Yes")}}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            :label="'$' + $t('Unsettled-rolling-volume')"
-            align="center"
-            sortable="custom"
-            key="water"
-            prop="water"
-          />
-          <el-table-column
-            :label="'$' + $t('Unsettled-rolling-fee')"
-            align="center"
-            sortable="custom"
-            key="waterAmount"
-            prop="waterAmount"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="฿未结算洗码量"
-            align="center"
-            sortable="custom"
-            key="waterTh"
-            prop="waterTh"
-          />
-          <el-table-column
-            label="฿未结算洗码费"
-            align="center"
-            sortable="custom"
-            key="waterAmountTh"
-            prop="waterAmountTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            :label="$t('Remarks')"
-            align="center"
-            key="remark"
-            prop="remark"
-            width="150"
-            :show-overflow-tooltip="true"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.remark" style="text-align:center">{{
-                scope.row.remark
-              }}</span>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            :label="$t('Opr')"
-            align="center"
-            width="150"
-            class-name="small-padding fixed-width"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-tickets"
-                @click="handleSettlement(scope.row.card)"
-                >{{ $t("Settlement") }}</el-button
-              >
-
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleDetail(scope.row.card)"
-                >{{ $t("Breakdown") }}</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -356,61 +237,92 @@
       :title="title"
       :visible.sync="open"
       v-if="open"
-      width="500px"
+      :width="currentLanguage == 'zh' ? '500px' : '600px'"
       append-to-body
       :close-on-click-modal="false"
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="150px">
-        <el-form-item :label="$t('Settlement-C-No.')+':'" prop="card" v-if="openType == 'set'">
+      <el-form ref="form" :model="form" :rules="rules" :label-width="currentLanguage == 'zh' ? '150px' : '250px'">
+        <el-form-item
+          :label="$t('Settlement-C-No.') + ':'"
+          prop="card"
+          v-if="openType == 'set'"
+        >
           <span>{{ form.card }}</span>
         </el-form-item>
         <el-form-item
-          :label="$t('card-counts')+':'"
+          :label="$t('card-counts') + ':'"
           prop="card"
           v-if="openType == 'batch'"
         >
           <span>{{ this.cards.length }}</span>
         </el-form-item>
-        <el-form-item :label="'$'+$t('Settlement-rolling-amount')+':'" prop="water">
+        <el-form-item
+          :label="'$' + $t('Settlement-rolling-amount') + ':'"
+          prop="water"
+        >
           <span>{{ form.water | MoneyFormat }}</span>
         </el-form-item>
-        <el-form-item :label="'$'+$t('Settlement-rolling-fee')+':'"  prop="waterAmount">
+        <el-form-item
+          :label="'$' + $t('Settlement-rolling-fee') + ':'"
+          prop="waterAmount"
+        >
           <span>{{ form.waterAmount | MoneyFormat }}</span>
         </el-form-item>
-        <el-form-item :label="'฿'+$t('Settlement-rolling-amount')+':'"   prop="water">
+        <el-form-item
+          :label="'฿' + $t('Settlement-rolling-amount') + ':'"
+          prop="water"
+        >
           <span>{{ form.waterTh | MoneyFormat }}</span>
         </el-form-item>
-        <el-form-item :label="'฿'+$t('Settlement-rolling-fee')+':'"  prop="waterAmount">
+        <el-form-item
+          :label="'฿' + $t('Settlement-rolling-fee') + ':'"
+          prop="waterAmount"
+        >
           <span>{{ form.waterAmountTh | MoneyFormat }}</span>
         </el-form-item>
-        <el-form-item :label="'$'+$t('Actual-Settlement-for-rolling-fee')+':'"  prop="actualWaterAmount">
+        <el-form-item
+          :label="'$' + $t('Actual-Settlement-for-rolling-fee') + ':'"
+          prop="actualWaterAmount"
+        >
           <span>{{ form.actualWaterAmount }}</span>
         </el-form-item>
-        <el-form-item :label="'฿'+$t('Actual-Settlement-for-rolling-fee')+':'"   prop="actualWaterAmount">
+        <el-form-item
+          :label="'฿' + $t('Actual-Settlement-for-rolling-fee') + ':'"
+          prop="actualWaterAmount"
+        >
           <span>{{ form.actualWaterAmountTh }}</span>
         </el-form-item>
-        <el-form-item :label="$t('Settlement-for-Currency')+':'"   prop="operationType">
+        <el-form-item
+          :label="$t('Settlement-for-Currency') + ':'"
+          prop="operationType"
+        >
           <el-radio-group v-model="form.operationType">
             <el-radio :label="0">{{ $t("Chip") }}</el-radio>
             <el-radio :label="1">{{ $t("Cash") }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item :label="$t('Operation-Remarks')+':'" prop="remark" v-if="openType == 'set'">
+        <el-form-item
+          :label="$t('Operation-Remarks') + ':'"
+          prop="remark"
+          v-if="openType == 'set'"
+        >
           <el-input
             type="textarea"
             :rows="7"
             maxlength="100"
             show-word-limit
-            :placeholder="$t('Please-enter-conten')"
+            :placeholder="$t('Please-enter-content')"
             v-model="form.remark"
           >
           </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="submitForm">{{$t("Confirmed")}}</el-button>
-        <el-button @click="cancel">{{$t("Cancel")}}</el-button>
+        <el-button type="primary" @click="submitForm">{{
+          $t("Confirmed")
+        }}</el-button>
+        <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -425,6 +337,7 @@ import {
 } from "@/api/coderoom/washCode";
 import { listOdds } from "@/api/sys/odds";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 洗码费结算
   name: "WashCode",
@@ -499,7 +412,7 @@ export default {
     };
   },
   computed: {
-    rules(){
+    rules() {
       return {
         operationType: [
           {
@@ -508,8 +421,11 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      };
     }
+  },
+  computed: {
+    ...mapState("app", ["currentLanguage"])
   },
   created() {
     this.getList();
@@ -626,13 +542,21 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-           sums[index] = this.$t("Subtotal");
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
+          //  sums[index] = this.$t("Subtotal");
           // return;
         } else if (index == 5 || index == 6 || index == 7 || index == 8) {
           // 只有未结算洗码量和未结算洗码费 才需要小计
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
+
+            let num1 = ""; // 小计结果
+            let num2 = ""; // 总计结果
+            num1 = values.reduce((prev, curr) => {
               const value = Number(curr);
               if (!isNaN(value)) {
                 const pel = prev + curr; // 主要代码
@@ -643,14 +567,34 @@ export default {
                 return pel;
               }
             }, 0);
-            sums[index] += "";
-            // sums[index] = Number(sums[index]).toFixed(2);
+            num1 = MoneyFormat(num1);
 
-            if (index == 5 || index == 6 || index == 7 || index == 8) {
-              // 未结算洗码费金额需要保留两位小数点
-              sums[index] = Number(sums[index]).toFixed(2);
-              sums[index] = MoneyFormat(sums[index]);
+            if (index === 5) {
+              // 未结算洗码量
+              num2 = MoneyFormat(this.userTotal.water);
             }
+            if (index === 6) {
+              // 未结算洗码费
+              num2 = MoneyFormat(this.userTotal.waterAmount);
+            }
+            if (index === 7) {
+              // 未结算洗码量
+              num2 = MoneyFormat(this.userTotal.waterTh);
+            }
+            if (index === 8) {
+              // 未结算洗码费
+              num2 = MoneyFormat(this.userTotal.waterAmountTh);
+            }
+
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
+
+            // if (index == 5 || index == 6 || index == 7 || index == 8) {
+            //   // 未结算洗码费金额需要保留两位小数点
+            //   // sums[index] = Number(sums[index]).toFixed(2);
+            //   // sums[index] = MoneyFormat(sums[index]);
+            // }
           } else {
             // sums[index] = 'N/A';
           }
@@ -761,7 +705,7 @@ export default {
       this.form["actualWaterAmountTh"] = row.actualWaterAmountTh;
       this.open = true;
       this.openType = "set";
-      this.title =this.$t("Rolling-settlement");
+      this.title = this.$t("Rolling-settlement");
       if (this.cards.length > 0) {
         // 清空多选
         this.$refs.dataTable.clearSelection();
@@ -778,7 +722,7 @@ export default {
       }
       this.open = true;
       this.openType = "batch";
-      this.title =this.$t("bulk-settlement");
+      this.title = this.$t("bulk-settlement");
       this.onSelectedCardsChange(this.cards);
     },
 
@@ -824,7 +768,8 @@ export default {
         filterVal.map(j => {
           let result = "";
           if (j == "status") {
-            result = v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
+            result =
+              v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
           } else if (j == "isSettlement") {
             result = v["isSettlement"] == 0 ? this.$t("No") : "是";
           } else if (j == "waterAmount") {
