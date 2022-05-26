@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-05-04 22:06:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-25 18:45:56
+ * @LastEditTime: 2022-05-26 12:23:03
  * @Description: file content
  */
 import Vue from 'vue'
@@ -10,6 +10,9 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 
 import Element from 'element-ui'
+
+
+
 import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/index.scss' // global css

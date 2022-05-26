@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
@@ -77,7 +77,7 @@
             align="center"
             key="status"
             prop="status"
-            width="80"
+           :width="currentLanguage == 'zh' ? '' : '120px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
@@ -154,101 +154,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          show-summary
-          sum-text="总计"
-          class="table2"
-          :summary-method="getSummaries"
-        >
-          <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
-          <el-table-column
-            :label="$t('Membership-Card-Number')"
-            align="center"
-            key="card"
-            prop="card"
-          />
-          <el-table-column
-            :label="$t('Name')"
-            align="center"
-            key="userName"
-            prop="userName"
-          />
-          <el-table-column
-            :label="$t('Staus')"
-            align="center"
-            key="status"
-            prop="status"
-            width="80"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.status == 0">{{ $t("Normal") }}</span>
-              <span v-else style="color:red">{{ $t("Deactivated") }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Signed-amount')"
-            align="center"
-            sortable="custom"
-            key="signedAmount"
-            prop="signedAmount"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.signedAmount | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'฿' + $t('Signed-amount')"
-            align="center"
-            sortable="custom"
-            key="signedAmountTh"
-            prop="signedAmountTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.signedAmountTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('Remarks')"
-            align="center"
-            key="remark"
-            prop="remark"
-            width="150"
-            :show-overflow-tooltip="true"
-          />
-          <el-table-column
-            fixed="right"
-            :label="$t('Opr')"
-            align="center"
-            width="260"
-            class-name="small-padding fixed-width"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-tickets"
-                @click="handleSign(scope.row)"
-                >{{ $t("Signing") }}</el-button
-              >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleBack(scope.row)"
-                >{{ $t("Returns") }}</el-button
-              >
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-document-remove"
-                @click="handleDetail(scope.row.card)"
-                >{{ $t("Breakdown") }}</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
+
         <pagination
           v-show="total > 0"
           :total="total"
@@ -263,7 +169,7 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="600px"
+      :width="currentLanguage == 'zh' ? '500px' : '600px'"
       append-to-
       :close-on-click-modal="false"
       v-if="open"
@@ -273,7 +179,7 @@
         :model="form"
         :rules="rules"
         :show-message="true"
-        label-width="100px"
+        :label-width="currentLanguage == 'zh' ? '100px' : '200px'"
       >
         <el-form-item :label="$t('Card-number')" prop="card">
           <el-input
@@ -353,7 +259,7 @@
           <el-input
             type="textarea"
             :rows="7"
-            :placeholder="$t('Please-enter-conten')"
+            :placeholder="$t('Please-enter-content')"
             v-model="form.remark"
             maxlength="100"
             show-word-limit
@@ -386,6 +292,7 @@ import {
   addReturnOrder
 } from "@/api/coderoom/sign";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 const fieldMap = {
   amount: "signedAmount",
   amountTh: "signedAmountTh"
@@ -455,6 +362,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("app", ["currentLanguage"]),
     rules() {
       // 表单校验
       return {
@@ -565,7 +473,11 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = this.$t("Subtotal");
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
           return;
         }
         if (index === 1 || index === 2 || index === 5) {
@@ -574,7 +486,9 @@ export default {
         }
         const values = data.map(item => Number(item[column.property]));
         if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
+          let num1 = ""; // 小计结果
+          let num2 = ""; // 总计结果
+          num1 = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
               const pel = prev + curr; // 主要代码
@@ -585,12 +499,22 @@ export default {
               return pel;
             }
           }, 0);
-          sums[index] += "";
-          // sums[index] = Number(sums[index]).toFixed(2);
+
+          if (index === 3) {
+            num1 = MoneyFormat(num1);
+            num2 = MoneyFormat(this.userTotal.signedAmount);
+          }
+          if (index === 4) {
+            num1 = MoneyFormat(num1);
+            num2 = MoneyFormat(this.userTotal.signedAmountTh);
+          }
+
           if (index == 3 || index == 4) {
-            // 金额需要保留两位小数点
-            sums[index] = Number(sums[index]).toFixed(2);
-            sums[index] = MoneyFormat(sums[index]);
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
+          }else {
+            sums[index] = "";
           }
         } else {
           // sums[index] = 'N/A';

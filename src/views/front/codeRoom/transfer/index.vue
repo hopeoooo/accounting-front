@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
           <el-form-item  :label="$t('Membership-Card-Number')" prop="card">
             <el-input
@@ -100,7 +100,7 @@
             fixed="right"
              :label="$t('Opr')"
             align="center"
-            width="260"
+            :width="currentLanguage == 'zh' ? '250px' : '300px'"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope"  >
@@ -198,7 +198,7 @@
             :rows="7"
             maxlength="100"
             show-word-limit
-            :placeholder="$t('Please-enter-conten')"
+            :placeholder="$t('Please-enter-content')"
             v-model="form.remark"
           >
           </el-input>
