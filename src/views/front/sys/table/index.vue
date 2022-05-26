@@ -187,7 +187,7 @@
             v-model="form.insurancePointBase"
             :placeholder="$t('Please-enter') + '...'"
              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-            :disabled="form.gameId != 1"
+            :disabled="form.gameId != '' && form.gameId != 1"
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -198,7 +198,7 @@
             v-model="form.insurancePointBaseTh"
             :placeholder="$t('Please-enter') + '...'"
              oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
-            :disabled="form.gameId != 1"
+            :disabled="form.gameId != '' && form.gameId != 1"
           ></el-input>
         </el-form-item>
       </el-form>

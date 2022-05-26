@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-07 13:31:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-26 13:24:00
+ * @LastEditTime: 2022-05-26 22:18:36
  * @Description: 语言选择框
 -->
 <template>
@@ -64,21 +64,8 @@ export default {
   },
   watch: {
     currentLanguage(val) {
-      this.changeRouter();
-      if (val == "en") {
-        console.log("切换element ui 语言", val);
-        // element UI设置语言
-        // locale.use(enLocale);
-        // Vue.use(Element, {
-        //   locale: enLocale
-        // });
-      } else {
-        console.log("切换element ui 语言", val);
-        // Vue.use(Element, {
-        //   locale: zhLocale
-        // });
-        // locale.use(zhLocale);
-      }
+      // this.changeRouter();
+      location.reload()
     }
   },
   methods: {
