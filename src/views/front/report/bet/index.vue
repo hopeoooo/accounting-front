@@ -156,6 +156,8 @@
           v-loading="loading"
           :data="userList"
           :empty-text="$t('no-data')"
+          show-summary
+                    :summary-method="getSummaries1"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -232,6 +234,7 @@
             align="center"
             key="betMoney"
             prop="betMoney"
+            width="120px"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney | MoneyFormat }}</span>
@@ -1754,7 +1757,62 @@ export default {
           this.getList();
         });
       }
-    }
+    },
+        // 小计规则
+    getSummaries1(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
+          return;
+        }
+        if (index != 0 && index != 7 && index != 9) {
+          sums[index] = "";
+          return;
+        }
+        const values = data.map(item => Number(item[column.property]));
+        if (!values.every(value => isNaN(value))) {
+          let num1 = ""; // 小计结果
+          let num2 = ""; // 总计结果
+          num1 = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              const pel = prev + curr; // 主要代码
+              return pel;
+            } else {
+              // return prev;
+              const pel = prev; // 主要代码
+              return pel;
+            }
+          }, 0);
+
+          if (index === 7) {
+            num1 = MoneyFormat(num1);
+            num2 = MoneyFormat(this.userTotal.betMoney);
+          }
+          if (index === 9) {
+            num1 = MoneyFormat(num1);
+            num2 = MoneyFormat(this.userTotal.winLose);
+          }
+
+          if (index == 7 || index == 9) {
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
+          }else {
+            sums[index] = "";
+          }
+        } else {
+          // sums[index] = 'N/A';
+        }
+      });
+      return sums;
+    },
   }
 };
 </script>

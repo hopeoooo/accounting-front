@@ -53,7 +53,6 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          sum-text="小计"
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
           ref="dataTable"
@@ -447,26 +446,7 @@ export default {
     //           return 'table-info-red'
     //         }
     // },
-    //总计规则
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = this.$t("Tot");
-          return;
-        }
-        if (index === 3) {
-          sums[index] = MoneyFormat(this.userTotal.signedAmount);
-          return;
-        }
-        if (index === 4) {
-          sums[index] = MoneyFormat(this.userTotal.signedAmountTh);
-          return;
-        }
-      });
-      return sums;
-    },
+
     // 小计规则
     getSummaries1(param) {
       const { columns, data } = param;
