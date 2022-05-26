@@ -9,10 +9,13 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          :label-width="currentLanguage == 'zh' ? '68px' : '100px'"
         >
           <el-form-item :label="$t('Station-number')" prop="userName">
-            <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
+            <el-select
+              v-model="queryParams.tableId"
+              :placeholder="$t('Please-select')"
+            >
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
@@ -23,15 +26,10 @@
             </el-select>
           </el-form-item>
 
-          <!-- <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
-                        <el-input
-                            v-model="queryParams.card"
-                            placeholder=""
-                            clearable
-                            style="width: 240px; margin-right: 20px"
-                        />
-                    </el-form-item> -->
-          <el-form-item  :label="$t('Collection-Time')">
+          <el-form-item
+            :label="$t('Collection-Time')"
+            :label-width="currentLanguage == 'zh' ? '68px' : '180px'"
+          >
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
@@ -48,14 +46,14 @@
               size="mini"
               @click="handleQuery"
               v-prclick
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
             <el-button
               icon="el-icon-refresh"
               size="mini"
               @click="resetQuery"
               v-prclick
-              >{{$t("Rst")}}</el-button
+              >{{ $t("Rst") }}</el-button
             >
 
             <el-button
@@ -64,13 +62,22 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
-          <el-table-column :label="$t('Station-number')" align="center" prop="tableId">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
+          <el-table-column
+            :label="$t('Station-number')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '120px'"
+            prop="tableId"
+          >
             <template slot-scope="scope">
               <el-button
                 type="text"
@@ -81,103 +88,184 @@
               >
             </template>
           </el-table-column>
-          <el-table-column :label="'$'+ $t('Chip-Received')" align="center">
+          <el-table-column
+            :label="'$' + $t('Chip-Received')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '130px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="'$'+ $t('Cash-Receive')" align="center">
+          <el-table-column
+            :label="'$' + $t('Cash-Receive')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '130px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cash | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="'$'+ $t('Insurance-Chip-Receive')" align="center">
+          <el-table-column
+            :label="'$' + $t('Insurance-Chip-Receive')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '120px' : '200px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center">
+          <el-table-column
+            :label="'$' + $t('Chip-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center">
+          <el-table-column
+            :label="'$' + $t('Cash-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center">
+          <el-table-column
+            :label="'$' + $t('Insurance-Chip-Increase-sub')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '120px' : '230px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center">
+          <el-table-column
+            :label="'$' + $t('Rolling-Amount')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '150px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Win-Loss')" align="center">
+          <el-table-column
+            :label="'$' + $t('Win-Loss')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '130px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.win | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center">
+          <el-table-column
+            :label="'$' + $t('Insurance-Win-Loss')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '120px' : '160px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column :label="'฿'+ $t('Chip-Received')"  align="center">
+          <el-table-column
+            :label="'฿' + $t('Chip-Received')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '160px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="'฿'+ $t('Cash-Receive')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Cash-Receive')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '160px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="'฿'+ $t('Insurance-Chip-Receive')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Insurance-Chip-Receive')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '120px' : '200px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Chip-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '200px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Cash-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '200px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Insurance-Chip-Increase-sub')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '120px' : '250px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Rolling-Amount')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '200px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Win-Loss')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Win-Loss')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '130px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.winTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center">
+          <el-table-column
+            :label="'฿' + $t('Insurance-Win-Loss')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '120px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="$t('Collection-Time')" align="center">
+          <el-table-column
+            :label="$t('Collection-Time')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '160px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.createTime || "--" }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="$t('Operation-Remarks')" align="center">
+          <el-table-column
+            :label="$t('Operation-Remarks')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '160px'"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.remark || "--" }}</span>
             </template>
@@ -201,6 +289,7 @@ import { listTable } from "@/api/sys/table";
 import { listReceipt } from "@/api/report/report";
 import moment from "moment";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 客户日报表
   name: "Receipt",
@@ -239,7 +328,9 @@ export default {
       }
     };
   },
-
+  computed: {
+    ...mapState("app", ["currentLanguage"])
+  },
   created() {
     this.getList();
     this.getTableOptions();

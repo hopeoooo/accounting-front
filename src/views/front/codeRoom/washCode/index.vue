@@ -320,7 +320,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
         <el-button type="primary" @click="submitForm">{{
-          $t("Confirmed")
+          $t("Confirm")
         }}</el-button>
         <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
@@ -412,6 +412,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("app", ["currentLanguage"]),
     rules() {
       return {
         operationType: [
@@ -424,9 +425,7 @@ export default {
       };
     }
   },
-  computed: {
-    ...mapState("app", ["currentLanguage"])
-  },
+
   created() {
     this.getList();
   },

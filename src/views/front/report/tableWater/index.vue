@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="150px"
+          :label-width="currentLanguage == 'zh' ? '68px' : '120px'"
         >
           <el-form-item :label="$t('Statistical-time')">
             <el-date-picker
@@ -48,12 +48,13 @@
             align="center"
             key="tableId"
             prop="tableId"
+            :width="currentLanguage == 'zh' ? '' : '120px'"
           />
           <el-table-column
             :label="'$' + $t('chip-win-loss')"
             align="center"
             key="chipWinLose"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinLose | MoneyFormat }}</span>
@@ -63,7 +64,7 @@
             :label="'$' + $t('cash-win-loss')"
             align="center"
             key="cashWinLose"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.cashWinLose | MoneyFormat }}</span>
@@ -73,7 +74,7 @@
             :label="'$' + $t('Insurance-Win-Loss')"
             align="center"
             key="insuranceWinLose"
-            width="180px"
+            :width="currentLanguage == 'zh' ? '' : '160px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinLose | MoneyFormat }}</span>
@@ -83,7 +84,7 @@
             :label="'$' + $t('Tot-Win-Loss')"
             align="center"
             key="winLose"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
@@ -94,7 +95,7 @@
             :label="'$' + $t('Rolling-Amount')"
             align="center"
             key="water"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -104,7 +105,7 @@
             :label="'฿' + $t('chip-win-loss')"
             align="center"
             key="chipWinLoseTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinLoseTh | MoneyFormat }}</span>
@@ -114,7 +115,7 @@
             :label="'฿' + $t('cash-win-loss')"
             align="center"
             key="cashWinLoseTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.cashWinLoseTh | MoneyFormat }}</span>
@@ -124,7 +125,7 @@
             :label="'฿' + $t('Insurance-Win-Loss')"
             align="center"
             key="insuranceWinLoseTh"
-            width="180px"
+            :width="currentLanguage == 'zh' ? '' : '180px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinLoseTh | MoneyFormat }}</span>
@@ -134,7 +135,7 @@
             :label="'฿' + $t('Tot-Win-Loss')"
             align="center"
             key="winLoseTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
@@ -145,7 +146,7 @@
             :label="'฿' + $t('Rolling-Amount')"
             align="center"
             key="waterTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -169,6 +170,7 @@
 import { listTablePlumbing, totalTablePlumbing } from "@/api/report/report";
 import moment from "moment";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 台面上下水
   name: "TableWater",
@@ -207,7 +209,9 @@ export default {
       }
     };
   },
-
+  computed: {
+    ...mapState("app", ["currentLanguage"])
+  },
   created() {
     this.getList();
   },

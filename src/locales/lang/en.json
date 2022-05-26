@@ -587,5 +587,6 @@
   "enter-role": "Please enter role",
   "menu-permissions": "menu permissions",
   "expand-collapse": "expand/collapse",
-  "all-none": "All/None"
+  "all-none": "All/None",
+  "game-num-range": "Game No. must greater than 0"
 }
