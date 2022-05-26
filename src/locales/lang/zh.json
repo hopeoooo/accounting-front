@@ -585,5 +585,6 @@
   "expand-collapse": "展开/折叠",
   "all-none": "全选/全不选",
   "tipsTrans":"当前用户不可汇出",
-  "less2":"请选择至少2个会员"
+  "less2":"请选择至少2个会员",
+  "game-num-range": "局号必须大于0"
 }

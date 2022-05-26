@@ -589,5 +589,6 @@
   "expand-collapse": "expand/collapse",
   "all-none": "All/None",
   "tipsTrans":"Current user cannot export",
-  "less2":"Please select at least 2 members"
+  "less2":"Please select at least 2 members",
+  "game-num-range": "Game No. must greater than 0"
 }

@@ -9,14 +9,14 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="100px"
+          :label-width="currentLanguage == 'zh' ? '' : '80px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px;margin-right:20px"
+              style="width: 120px;margin-right:10px"
             />
 
             <el-checkbox v-model="queryParams.isAdmin">{{
@@ -30,7 +30,7 @@
               <el-option :label="$t('Chips-withdrawal')" :value="2"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')" label-width="120px">
+          <el-form-item :label="$t('operation-time')" :label-width="currentLanguage == 'zh' ? '' : '100px'">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -56,25 +56,6 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handlePrint"
-            >打印</el-button>
-          </el-col> -->
-          <!-- <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-c-scale-to-original"
-              size="mini"
-              @click="handleDetail"
-              >{{$t('Breakdown')}}</el-button
-            >
-          </el-col> -->
           <el-col :span="1.5">
             <el-button
               type="warning"
@@ -232,6 +213,7 @@
 import { listAccessCodeDetailed } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
 import moment from "moment";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 存取码明细表
   name: "DepositInfo",
@@ -296,6 +278,9 @@ export default {
         pageSize: 30
       }
     };
+  },
+  computed: {
+    ...mapState("app", ["currentLanguage"])
   },
   watch: {
     // 根据名称筛选部门树

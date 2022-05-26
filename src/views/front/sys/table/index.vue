@@ -22,11 +22,11 @@
       @selection-change="handleSelectionChange"
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column :label="$t('T-No')" prop="tableId" width="100px" />
-      <el-table-column :label="$t('Game-type')" prop="gameId" width="120px" >
-           <template slot-scope="scope">
-              <span>{{ getGameName(scope.row.gameId) }}</span>
-            </template>
+      <el-table-column :label="$t('T-No')" prop="tableId" :width="currentLanguage == 'zh' ? '100px' : '120px'" />
+      <el-table-column :label="$t('Game-type')" prop="gameId"  :width="currentLanguage == 'zh' ? '100px' : '120px'">
+        <template slot-scope="scope">
+          <span>{{ getGameName(scope.row.gameId) }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         :label="'$' + $t('Chip-Point-Base')"
@@ -149,12 +149,14 @@
           <el-input
             v-model="form.chipPointBase"
             :placeholder="$t('Please-enter') + '...'"
+             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           ></el-input>
         </el-form-item>
         <el-form-item :label="'$' + $t('Cash-Point-Base')" prop="cashPointBase">
           <el-input
             v-model="form.cashPointBase"
             :placeholder="$t('Please-enter') + '...'"
+             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -164,6 +166,7 @@
           <el-input
             v-model="form.chipPointBaseTh"
             :placeholder="$t('Please-enter') + '...'"
+             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -173,6 +176,7 @@
           <el-input
             v-model="form.cashPointBaseTh"
             :placeholder="$t('Please-enter') + '...'"
+             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -182,6 +186,7 @@
           <el-input
             v-model="form.insurancePointBase"
             :placeholder="$t('Please-enter') + '...'"
+             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             :disabled="form.gameId != 1"
           ></el-input>
         </el-form-item>
@@ -192,6 +197,7 @@
           <el-input
             v-model="form.insurancePointBaseTh"
             :placeholder="$t('Please-enter') + '...'"
+             oninput="if(isNaN(value)) { value = null } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"
             :disabled="form.gameId != 1"
           ></el-input>
         </el-form-item>
@@ -537,8 +543,6 @@ export default {
       this.open = true;
       this.openType = "add";
       this.title = this.$t("Add-a-new-table");
-      this.$refs.form && this.$refs.form.resetFields();
-      this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -561,6 +565,13 @@ export default {
       console.log(gameId);
       const game = this.Gameoptions.filter(item => item.value == gameId)[0];
       this.form.gameName = game.label;
+      if (gameId == 1) {
+        this.form.insurancePointBase = "";
+        this.form.insurancePointBaseTh = "";
+      } else {
+        this.form.insurancePointBase = 0;
+        this.form.insurancePointBaseTh = 0;
+      }
     },
 
     getGameName(gameId) {
@@ -592,13 +603,13 @@ export default {
         if (valid) {
           if (this.openType == "add") {
             addUpTable(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(this.$t("Add-success"));
               this.open = false;
               this.getList();
             });
           } else {
             addUpTable(this.form).then(response => {
-              this.$modal.msgSuccess("编辑成功");
+              this.$modal.msgSuccess(this.$t("Edit-successful"));
               this.open = false;
               this.getList();
             });

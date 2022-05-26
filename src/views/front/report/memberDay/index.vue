@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="100px"
+          :label-width="currentLanguage == 'zh' ? '68px' : '100px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
             <el-input
@@ -19,7 +19,10 @@
               style="width: 240px; margin-right: 20px"
             />
           </el-form-item>
-          <el-form-item :label="$t('Statistical-time')"  label-width="120px">
+          <el-form-item
+            :label="$t('Statistical-time')"
+            :label-width="currentLanguage == 'zh' ? '68px' : '120px'"
+          >
             <el-date-picker
               v-model="queryParams.dateRange"
               value-format="yyyy-MM-dd"
@@ -83,7 +86,7 @@
             align="center"
             key="winLose"
             prop="winLose"
-             width="150px"
+            :width="currentLanguage == 'zh' ? '' : '120px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
@@ -94,7 +97,7 @@
             align="center"
             key="sumWinLose"
             prop="sumWinLose"
-              width="200px"
+            :width="currentLanguage == 'zh' ? '' : '180px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWinLose | MoneyFormat }}</span>
@@ -105,7 +108,7 @@
             align="center"
             key="water"
             prop="water"
-             width="180px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -116,7 +119,7 @@
             align="center"
             key="sumWater"
             prop="sumWater"
-             width="220px"
+            :width="currentLanguage == 'zh' ? '' : '210px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWater | MoneyFormat }}</span>
@@ -127,7 +130,7 @@
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '' : '120px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
@@ -138,7 +141,7 @@
             align="center"
             key="sumWinLoseTh"
             prop="sumWinLoseTh"
-             width="200px"
+            :width="currentLanguage == 'zh' ? '' : '180px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
@@ -150,7 +153,7 @@
             align="center"
             key="waterTh"
             prop="waterTh"
-             width="180px"
+            :width="currentLanguage == 'zh' ? '' : '160px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -162,7 +165,7 @@
             align="center"
             key="sumWaterTh"
             prop="sumWaterTh"
-             width="220px"
+            :width="currentLanguage == 'zh' ? '' : '210px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
@@ -170,134 +173,6 @@
           </el-table-column>
         </el-table>
 
-        <!-- 用于渲染总计 -->
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          show-summary
-          :sum-text="$t('Tot')"
-          :summary-method="getSummaries"
-          :empty-text="$t('no-data')"
-          class="table2"
-        >
-          <el-table-column
-            :label="$t('Membership-Card-Number')"
-            align="center"
-            key="card"
-            prop="card"
-          />
-          <el-table-column
-            :label="$t('Name')"
-            align="center"
-            key="name"
-            prop="name"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.name || "--" }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('Date')"
-            align="center"
-            key="date"
-            prop="date"
-            width="120px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.date || "--" }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Win-Loss')"
-            align="center"
-            key="winLose"
-            prop="winLose"
-             width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.winLose | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Card-Cumulative-Win-Loss')"
-            align="center"
-            key="sumWinLose"
-            prop="sumWinLose"
-              width="200px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLose | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Rolling-Amount')"
-            align="center"
-            key="water"
-            prop="water"
-             width="180px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.water | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Cumulative-rolling-amount')"
-            align="center"
-            key="sumWater"
-            prop="sumWater"
-             width="220px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.sumWater | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'฿' + $t('Win-Loss')"
-            align="center"
-            key="winLoseTh"
-            prop="winLoseTh"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'฿' + $t('Card-Cumulative-Win-Loss')"
-            align="center"
-            key="sumWinLoseTh"
-            prop="sumWinLoseTh"
-             width="200px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.sumWinLoseTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            :label="'฿' + $t('Rolling-Amount')"
-            align="center"
-            key="waterTh"
-            prop="waterTh"
-             width="180px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            :label="'฿' + $t('Cumulative-rolling-amount')"
-            align="center"
-            key="sumWaterTh"
-            prop="sumWaterTh"
-             width="220px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -313,6 +188,7 @@
 <script>
 import { listReport, totalReport } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 客户日报表
   name: "MemberDay",
@@ -344,7 +220,9 @@ export default {
       }
     };
   },
-
+  computed: {
+    ...mapState("app", ["currentLanguage"])
+  },
   created() {
     // this.getList();
   },
@@ -356,12 +234,17 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = this.$t("Subtotal");
-          // return;
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
         } else if (index == 3 || index == 5 || index == 7 || index == 9) {
           const values = data.map(item => Number(item[column.property]));
           if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
+            let num1 = ""; // 小计结果
+            let num2 = ""; // 总计结果
+            num1 = values.reduce((prev, curr) => {
               const value = Number(curr);
               if (!isNaN(value)) {
                 const pel = prev + curr; // 主要代码
@@ -372,9 +255,26 @@ export default {
                 return pel;
               }
             }, 0);
-            // sums[index] += "";
-            // sums[index] = Number(sums[index]).toFixed(2);
-            sums[index] = MoneyFormat(sums[index]);
+            num1 = MoneyFormat(num1);
+
+            if (index === 3) {
+              num2 = MoneyFormat(this.userTotal.winLose);
+            }
+
+            if (index === 5) {
+              num2 = MoneyFormat(this.userTotal.water);
+            }
+
+            if (index === 7) {
+              num2 = MoneyFormat(this.userTotal.winLoseTh);
+            }
+
+            if (index === 9) {
+              num2 = MoneyFormat(this.userTotal.waterTh);
+            }
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
           } else {
             // sums[index] = 'N/A';
           }
@@ -384,41 +284,7 @@ export default {
       });
       return sums;
     },
-    /**
-     * @description: 报表底部总计
-     * @param {*} param
-     * @return {*}
-     */
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = this.$t("Tot");
-          return;
-        }
-        if (index === 3) {
-          sums[index] = MoneyFormat(this.userTotal.winLose);
-          return;
-        }
 
-        if (index === 5) {
-          sums[index] = MoneyFormat(this.userTotal.water);
-          return;
-        }
-
-        if (index === 7) {
-          sums[index] = MoneyFormat(this.userTotal.winLoseTh);
-          return;
-        }
-
-        if (index === 9) {
-          sums[index] = MoneyFormat(this.userTotal.waterTh);
-          return;
-        }
-      });
-      return sums;
-    },
     /**
      * @description: 报表数据
      * @param {*}
