@@ -16,7 +16,7 @@
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px;margin-right:20px"
+              style="width: 120px;margin-right:20px"
             />
             <el-checkbox
               v-model="queryParams.cardType"

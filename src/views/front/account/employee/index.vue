@@ -11,7 +11,7 @@
         <el-select
           v-model="queryParams.type"
           placeholder=""
-          style="width: 120px;margin-right:20px;"
+          style="width: 150px;margin-right:20px;"
         >
           <el-option :label="$t('Job-Search')" value="userName"></el-option>
           <el-option :label="$t('Name-Search')" value="nickName"></el-option>
@@ -162,6 +162,7 @@
                 v-model="form.userName"
                 :placeholder="$t('enter-work-no')"
                 :disabled="openType == 'edit'"
+
               />
             </el-form-item>
           </el-col>
