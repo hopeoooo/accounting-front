@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="100px"
+          :label-width="currentLanguage == 'zh' ? '' : '80px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
@@ -34,7 +34,7 @@
               <el-option :label="$t('Returns')" :value="6"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')" label-width="120px">
+          <el-form-item :label="$t('operation-time')"  :label-width="currentLanguage == 'zh' ? '' : '120px'">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -194,6 +194,7 @@
 import { listSignedDetailed } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
 import moment from "moment";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 签单明细表
   name: "SignInfo",
@@ -258,6 +259,9 @@ export default {
         pageSize: 30
       }
     };
+  },
+    computed: {
+    ...mapState("app", ["currentLanguage"])
   },
   watch: {
     // 根据名称筛选部门树

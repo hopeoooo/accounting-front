@@ -9,14 +9,14 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          :label-width="currentLanguage == 'zh' ? '' : '80px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px;margin-right:20px"
+              style="width: 120px;margin-right:20px"
             />
 
             <el-checkbox v-model="queryParams.isAdmin"
@@ -42,7 +42,7 @@
               <el-option  :label="$t('Remittance-of-chip')" :value="12"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')">
+          <el-form-item :label="$t('operation-time')"  :label-width="currentLanguage == 'zh' ? '' : '120px'">
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -117,6 +117,7 @@
             align="center"
             key="before"
             prop="before"
+                        :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.change != 0"
@@ -133,6 +134,7 @@
             align="center"
             key="beforeTh"
             prop="beforeTh"
+                        :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.changeTh != 0"
@@ -163,7 +165,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+                        :width="currentLanguage == 'zh' ? '' : '180px'"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -191,6 +193,7 @@
 import { listChipRecord } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
 import moment from "moment";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 客户筹码明细表
   name: "CashInfo",
@@ -255,6 +258,9 @@ export default {
         pageSize: 30
       }
     };
+  },
+    computed: {
+    ...mapState("app", ["currentLanguage"])
   },
   watch: {
     // 根据名称筛选部门树

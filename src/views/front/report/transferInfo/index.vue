@@ -9,14 +9,14 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          :label-width="currentLanguage == 'zh' ? '' : '80px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px;margin-right:20px"
+              style="width: 120px;margin-right:10px"
             />
 
             <el-checkbox v-model="queryParams.isAdmin">{{
@@ -24,7 +24,11 @@
             }}</el-checkbox>
           </el-form-item>
           <el-form-item :label="$t('Operation')" prop="type">
-            <el-select v-model="queryParams.type" :placeholder="$t('All')">
+            <el-select
+              v-model="queryParams.type"
+              :placeholder="$t('All')"
+              style="width:120px"
+            >
               <el-option :label="$t('All')" :value="null"></el-option>
               <el-option :label="$t('Remit-in')" :value="11"></el-option>
               <el-option :label="$t('Remit-out')" :value="12"></el-option>
@@ -34,13 +38,17 @@
             <el-select
               v-model="queryParams.operationType"
               :placeholder="$t('All')"
+              style="width:120px"
             >
               <el-option :label="$t('All')" :value="null"></el-option>
               <el-option :label="$t('Chip')" :value="0"></el-option>
               <el-option :label="$t('Cash')" :value="1"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')">
+          <el-form-item
+            :label="$t('operation-time')"
+            :label-width="currentLanguage == 'zh' ? '' : '120px'"
+          >
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -92,12 +100,14 @@
             align="center"
             key="card"
             prop="card"
+            :width="currentLanguage == 'zh' ? '100px' : '100px'"
           />
           <el-table-column
             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
+            :width="currentLanguage == 'zh' ? '100px' : '110px'"
           />
           <el-table-column
             :label="$t('Type')"
@@ -106,8 +116,8 @@
             prop="type"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '11'">{{$t("Remit-in")}}</span>
-              <span v-if="scope.row.type == '12'">{{$t("Remit-out")}}</span>
+              <span v-if="scope.row.type == '11'">{{ $t("Remit-in") }}</span>
+              <span v-if="scope.row.type == '12'">{{ $t("Remit-out") }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -115,10 +125,11 @@
             align="center"
             key="operationType"
             prop="operationType"
+            :width="currentLanguage == 'zh' ? '100px' : '100px'"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.operationType == 0">{{$t("Chip")}}</span>
-              <span v-if="scope.row.operationType == 1">{{$t("Cash")}}</span>
+              <span v-if="scope.row.operationType == 0">{{ $t("Chip") }}</span>
+              <span v-if="scope.row.operationType == 1">{{ $t("Cash") }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -162,7 +173,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            :width="currentLanguage == 'zh' ? '150px' : '180px'"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -189,12 +200,14 @@
             align="center"
             key="card"
             prop="card"
+            :width="currentLanguage == 'zh' ? '100px' : '100px'"
           />
           <el-table-column
             :label="$t('Name')"
             align="center"
             key="userName"
             prop="userName"
+            :width="currentLanguage == 'zh' ? '100px' : '110px'"
           />
           <el-table-column
             :label="$t('Type')"
@@ -203,8 +216,8 @@
             prop="type"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '11'">{{$t("Remit-in")}}</span>
-              <span v-if="scope.row.type == '12'">{{$t("Remit-out")}}</span>
+              <span v-if="scope.row.type == '11'">{{ $t("Remit-in") }}</span>
+              <span v-if="scope.row.type == '12'">{{ $t("Remit-out") }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -212,10 +225,11 @@
             align="center"
             key="operationType"
             prop="operationType"
+            :width="currentLanguage == 'zh' ? '100px' : '100px'"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.operationType == 0">{{$t("Chip")}}</span>
-              <span v-if="scope.row.operationType == 1">{{$t("Cash")}}</span>
+              <span v-if="scope.row.operationType == 0">{{ $t("Chip") }}</span>
+              <span v-if="scope.row.operationType == 1">{{ $t("Cash") }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -259,7 +273,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            :width="currentLanguage == 'zh' ? '150px' : '180px'"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -290,6 +304,7 @@ import {
 } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
 import moment from "moment";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 汇款明细表
   name: "TransferInfo",
@@ -355,6 +370,9 @@ export default {
         pageSize: 30
       }
     };
+  },
+  computed: {
+    ...mapState("app", ["currentLanguage"])
   },
   watch: {
     // 根据名称筛选部门树

@@ -30,7 +30,10 @@
               <el-option :label="$t('Chips-withdrawal')" :value="2"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')" :label-width="currentLanguage == 'zh' ? '' : '100px'">
+          <el-form-item
+            :label="$t('operation-time')"
+            :label-width="currentLanguage == 'zh' ? '' : '120px'"
+          >
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -85,13 +88,14 @@
             align="center"
             key="userName"
             prop="userName"
+            :width="currentLanguage == 'zh' ? '100px' : '120px'"
           />
           <el-table-column
             :label="$t('Operation')"
             align="center"
             key="type"
             prop="type"
-            width="180px"
+            :width="currentLanguage == 'zh' ? '' : '150px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.type == '1'">{{ $t("Chip-deposit") }}</span>
@@ -105,7 +109,7 @@
             align="center"
             key="chipAmount"
             prop="chipAmount"
-            width="250px"
+            :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.chipAmount != 0"
@@ -121,7 +125,7 @@
             align="center"
             key="cashAmount"
             prop="cashAmount"
-            width="250px"
+            :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.cashAmount != 0"
@@ -137,7 +141,7 @@
             align="center"
             key="chipAmountTh"
             prop="chipAmountTh"
-            width="250px"
+            :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.chipAmountTh != 0"
@@ -153,7 +157,7 @@
             align="center"
             key="cashAmountTh"
             prop="cashAmountTh"
-            width="250px"
+            :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.cashAmountTh != 0"
@@ -185,7 +189,7 @@
             align="center"
             key="remark"
             prop="remark"
-            width="180px"
+            width="160px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
