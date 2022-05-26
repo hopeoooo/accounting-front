@@ -5,7 +5,7 @@
       :format="alltime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'"
       :editable="false"
       v-model="GetDateTime"
-      style="margin-right: 10px"
+      style="margin-right: 5px"
       value-format="yyyy-MM-dd HH:mm:ss"
       start-placeholder="开始时间"
       end-placeholder="结束时间"
@@ -18,7 +18,7 @@
     <el-button
       v-for="(item, index) in TimeList"
       :key="'Time' + index"
-      style="margin-right: 10px"
+      style="margin-right: 5px"
       type="primary"
       :plain="Datatype == index ? false : true"
       size="mini"
@@ -30,6 +30,7 @@
 
 <script>
 import moment from "moment";
+
 export default {
   name: "Tabletime",
   data() {
@@ -80,6 +81,7 @@ export default {
     }
   },
   computed: {
+
     TimeList(){
       return [
         {

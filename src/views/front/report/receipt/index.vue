@@ -149,12 +149,12 @@
           </el-table-column>
           <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
+              <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center">
@@ -164,12 +164,12 @@
           </el-table-column>
           <el-table-column   :label="'฿' + $t('Win-Loss')" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.sumWaterTh | MoneyFormat }}</span>
+              <span>{{ scope.row.winTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.winTh | MoneyFormat }}</span>
+              <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
           <el-table-column  :label="$t('Collection-Time')" align="center">
@@ -393,7 +393,7 @@ export default {
           "cashAddTh",
           "waterTh",
           "sumWaterTh",
-          "winTh",
+          "insuranceWinTh",
           "createTime",
           "remark"
         ];
