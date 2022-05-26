@@ -612,8 +612,9 @@ export default {
       }
     }
   }
-  .remark{
+ .remark{
     display: flex;
+    white-space: nowrap;
     align-items: center;
     margin: 15px 0;
     span{
