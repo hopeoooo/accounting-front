@@ -22,8 +22,8 @@
       @selection-change="handleSelectionChange"
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column :label="$t('T-No')" prop="tableId" :width="currentLanguage == 'zh' ? '100px' : '120px'" />
-      <el-table-column :label="$t('Game-type')" prop="gameId"  :width="currentLanguage == 'zh' ? '100px' : '120px'">
+      <el-table-column :label="$t('T-No')" prop="tableId" :width="currentLanguage == 'zh' ? '' : '120px'" />
+      <el-table-column :label="$t('Game-type')" prop="gameId"  :width="currentLanguage == 'zh' ? '' : '120px'">
         <template slot-scope="scope">
           <span>{{ getGameName(scope.row.gameId) }}</span>
         </template>
@@ -31,12 +31,12 @@
       <el-table-column
         :label="'$' + $t('Chip-Point-Base')"
         prop="chipPointBase"
-        :width="currentLanguage == 'zh' ? '120px' : '150px'"
+        :width="currentLanguage == 'zh' ? '150px' : '150px'"
       />
       <el-table-column
         :label="'$' + $t('Cash-Point-Base')"
         prop="cashPointBase"
-        :width="currentLanguage == 'zh' ? '120px' : '150px'"
+        :width="currentLanguage == 'zh' ? '150px' : '150px'"
       />
       <el-table-column
         :label="'$' + $t('Insurance-Chip-Point-Base')"
@@ -46,12 +46,12 @@
       <el-table-column
         :label="'฿' + $t('Chip-Point-Base')"
         prop="chipPointBaseTh"
-        :width="currentLanguage == 'zh' ? '120px' : '150px'"
+        :width="currentLanguage == 'zh' ? '150px' : '150px'"
       />
       <el-table-column
         :label="'฿' + $t('Cash-Point-Base')"
         prop="cashPointBaseTh"
-        :width="currentLanguage == 'zh' ? '120px' : '150px'"
+        :width="currentLanguage == 'zh' ? '150px' : '150px'"
       />
       <el-table-column
         :label="'฿' + $t('Insurance-Chip-Point-Base')"
