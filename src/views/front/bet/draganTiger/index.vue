@@ -121,9 +121,9 @@
           </el-form-item>
           <el-form-item label="" prop="">
               <el-radio-group v-model="formLudan.radio1" >
-                  <el-radio-button :label="$t('D')" class="red">{{$t('D')}}</el-radio-button>
-                  <el-radio-button :label="$t('TYG')" class="blue">{{$t('TYG')}}</el-radio-button>
-                  <el-radio-button :label="$t('bet.h')" class="green">{{$t('bet.h')}}</el-radio-button>
+                  <el-radio-button label="龙" class="red">{{$t('D')}}</el-radio-button>
+                  <el-radio-button label="虎" class="blue">{{$t('TYG')}}</el-radio-button>
+                  <el-radio-button label="和" class="green">{{$t('bet.h')}}</el-radio-button>
               </el-radio-group>
             </el-form-item>
       </el-form>
