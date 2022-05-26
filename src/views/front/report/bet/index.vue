@@ -26,7 +26,7 @@
             <el-select
               v-model="queryParams.tableId"
               :placeholder="$t('Please-select')"
-               style="width: 100px; "
+              style="width: 100px; "
             >
               <el-option
                 v-for="item in tableOptions"
@@ -46,7 +46,8 @@
             <el-select
               v-model="queryParams.gameId"
               :placeholder="$t('Please-select')"
-               style="width: 100px; "
+              style="width: 100px; "
+
             >
               <el-option
                 v-for="item in Gameoptions"
@@ -63,10 +64,13 @@
             :label="$t('Currency-Type')"
             prop="type"
             label-width="120px"
+
           >
             <el-select
               v-model="queryParams.type"
               :placeholder="$t('Please-select')"
+              @change="onTypeChange"
+
             >
               <el-option
                 v-for="item in typeOptions"
@@ -160,7 +164,7 @@
           :data="userList"
           :empty-text="$t('no-data')"
           show-summary
-                    :summary-method="getSummaries1"
+          :summary-method="getSummaries1"
         >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
@@ -426,7 +430,7 @@
           <!-- 下注金额 -->
           <div class="longhu-amount-box">
             <div class="box-label">
-              <i class="start-symbol">*</i>{{ $t("bet-money") }}
+             {{ $t("bet-money") }}
             </div>
             <!-- <div> -->
             <el-form-item :label="$t('D') + ':'" label-width="50px">
@@ -1260,7 +1264,6 @@ export default {
     handleRepair(row) {
       // this.reset();
 
-
       this.form = Object.assign({}, row);
       this.form.card = "";
       this.form.gameNum = "";
@@ -1604,7 +1607,7 @@ export default {
     equalOption(originalOption, formOption) {
       // 因为formOption的值类型是string,originalOption值类型是Number
 
-      if (originalOption == (formOption)) {
+      if (originalOption == formOption) {
         return true;
       }
     },
@@ -1744,7 +1747,7 @@ export default {
             this.openGameId == 5) &&
           (!this.form.card ||
             !this.form.gameNum ||
-             _.size(this.form.option) == 0 ||
+            _.size(this.form.option) == 0 ||
             this.form.type == null ||
             !this.form.gameResult)
         ) {
@@ -1760,7 +1763,12 @@ export default {
         });
       }
     },
-        // 小计规则
+    onTypeChange(val){
+      console.log("onTypeChange",val);
+
+      this.getList()
+    },
+    // 小计规则
     getSummaries1(param) {
       const { columns, data } = param;
       const sums = [];
@@ -1772,6 +1780,18 @@ export default {
           const html2 = <div>{this.$t("Tot")}</div>;
           sums[index] = [html1, html2];
           return;
+        }
+        // 单一货币才进行小计和总计
+        if (!this.queryParams.type || this.queryParams.type > 4) {
+          if (index != 0 && index != 7 && index != 9) {
+            sums[index] = "";
+            return;
+          } else {
+            const html1 = <div style="margin-bottom:15px ">-</div>;
+            const html2 = <div>-</div>;
+            sums[index] = [html1, html2];
+            return;
+          }
         }
         if (index != 0 && index != 7 && index != 9) {
           sums[index] = "";
@@ -1806,7 +1826,7 @@ export default {
             const html1 = <div style="margin-bottom:15px ">{num1}</div>;
             const html2 = <div>{num2}</div>;
             sums[index] = [html1, html2];
-          }else {
+          } else {
             sums[index] = "";
           }
         } else {
@@ -1814,7 +1834,7 @@ export default {
         }
       });
       return sums;
-    },
+    }
   }
 };
 </script>
@@ -1907,15 +1927,7 @@ export default {
       margin: 10px auto;
       padding: 10px;
     }
-    .box-label {
-      margin-bottom: 10px;
-      text-align: center;
-      &::before {
-        content: "*";
-        color: #ff4949;
-        margin-right: 4px;
-      }
-    }
+
     .result-box {
       display: flex;
       flex-wrap: wrap;
@@ -1958,6 +1970,15 @@ export default {
 
   .bet-time {
     margin: 10px 0;
+  }
+  .box-label {
+    margin-bottom: 10px;
+    text-align: center;
+    &::before {
+      content: "*";
+      color: #ff4949;
+      margin-right: 4px;
+    }
   }
   // 龙虎
   .longhu-box {
