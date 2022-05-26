@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-07 13:31:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-25 19:49:54
+ * @LastEditTime: 2022-05-26 13:24:00
  * @Description: 语言选择框
 -->
 <template>
@@ -93,7 +93,7 @@ export default {
 
     // 路由切换
     changeRouter() {
-      this.reload()
+      // this.reload()
       store.dispatch("GenerateRoutes").then(accessRoutes => {
         // 根据roles权限生成可访问的路由表
         router.addRoutes(accessRoutes); // 动态添加可访问路由表

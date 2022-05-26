@@ -9,10 +9,14 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="80px"
+          :label-width="currentLanguage == 'zh' ? '68px' : '100px'"
         >
           <el-form-item :label="$t('Station-number')" prop="userName">
-            <el-select v-model="queryParams.tableId" :placeholder="$t('Please-select')">
+            <el-select
+              v-model="queryParams.tableId"
+              :placeholder="$t('Please-select')"
+              style="width: 100px; "
+            >
               <el-option
                 v-for="item in tableOptions"
                 :key="item.tableId"
@@ -23,14 +27,6 @@
             </el-select>
           </el-form-item>
 
-          <!-- <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
-                        <el-input
-                            v-model="queryParams.card"
-                            placeholder=""
-                            clearable
-                            style="width: 240px; margin-right: 20px"
-                        />
-                    </el-form-item> -->
           <el-form-item :label="$t('Chip-counting-time')" label-width="150px">
             <el-date-picker
               v-model="queryParams.dateRange"
@@ -47,11 +43,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
 
             <el-button
               type="warning"
@@ -59,154 +55,276 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
-          <el-table-column :label="$t('Station-number')" fixed align="center" prop="tableId" width="100px"/>
-          <el-table-column :label="$t('Boot-number')" align="center" prop="bootNum" />
-          <el-table-column :label="'$' + $t('system-chip-counts')" align="center" width="210px">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
+          <el-table-column
+            :label="$t('Station-number')"
+            fixed
+            align="center"
+            prop="tableId"
+            width="100px"
+          />
+          <el-table-column
+            :label="$t('Boot-number')"
+            align="center"
+            prop="bootNum"
+          />
+          <el-table-column
+            :label="'$' + $t('system-chip-counts')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '160px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.sysChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('manual-chip-counts')" align="center" width="210px">
+          <el-table-column
+            :label="'$' + $t('manual-chip-counts')"
+            align="center"
+             :width="currentLanguage == 'zh' ? '100px' : '160px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.personChip | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-Gap')" align="center" width="120px">
+          <el-table-column
+            :label="'$' + $t('Chip-Gap')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '120px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-Gap')" align="center" width="120px">
+          <el-table-column
+            :label="'$' + $t('Cash-Gap')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '120px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Chip-increase-reduce')" align="center" width="210px">
+          <el-table-column
+            :label="'$' + $t('Chip-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Cash-increase-reduce')" align="center" width="210px">
+          <el-table-column
+            :label="'$' + $t('Cash-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-system-chip-counts')" align="center" width="250px">
+          <el-table-column
+            :label="'$' + $t('Insurance-system-chip-counts')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '250px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('manual-insurance-chip-counts')" align="center" width="250px">
+          <el-table-column
+            :label="'$' + $t('manual-insurance-chip-counts')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '250px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.personInsurance | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'$' + $t('Insurance-Chip-Gap')" align="center" width="210px">
+          <el-table-column
+            :label="'$' + $t('Insurance-Chip-Gap')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGap | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Chip-Increase-sub')" align="center" width="250px">
+          <el-table-column
+            :label="'$' + $t('Insurance-Chip-Increase-sub')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '230px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAdd | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column     :label="'$' + $t('Rolling-Amount')" align="center" width="150px">
+          <el-table-column
+            :label="'$' + $t('Rolling-Amount')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '150px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column  :label="'$' + $t('Win-Loss')" align="center" width="100px">
+          <el-table-column
+            :label="'$' + $t('Win-Loss')"
+            align="center"
+            width="100px"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'$' + $t('Insurance-Win-Loss')" align="center" width="180px">
+          <el-table-column
+            :label="'$' + $t('Insurance-Win-Loss')"
+            align="center"
+             :width="currentLanguage == 'zh' ? '150px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWin | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('system-chip-counts')" align="center" width="200px">
+          <el-table-column
+            :label="'฿' + $t('system-chip-counts')"
+            align="center"
+             :width="currentLanguage == 'zh' ? '120px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.sysChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('manual-chip-counts')" align="center" width="200px">
+          <el-table-column
+            :label="'฿' + $t('manual-chip-counts')"
+            align="center"
+           :width="currentLanguage == 'zh' ? '120px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.personChipTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Chip-Gap')" align="center" width="100px">
+          <el-table-column
+            :label="'฿' + $t('Chip-Gap')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '120px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Cash-Gap')" align="center" width="100px">
+          <el-table-column
+            :label="'฿' + $t('Cash-Gap')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '120px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Chip-increase-reduce')" align="center" width="200px">
+          <el-table-column
+            :label="'฿' + $t('Chip-increase-reduce')"
+            align="center"
+              :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Cash-increase-reduce')" align="center" width="200px">
+          <el-table-column
+            :label="'฿' + $t('Cash-increase-reduce')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.cashAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Insurance-system-chip-counts')" align="center" width="250px">
+          <el-table-column
+            :label="'฿' + $t('Insurance-system-chip-counts')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '250px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.sysInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column  :label="'฿' + $t('Insurance-manual-chip-counts')" align="center" width="250px">
+          <el-table-column
+            :label="'฿' + $t('Insurance-manual-chip-counts')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '250px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.personInsuranceTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Gap')" align="center" width="200px">
+          <el-table-column
+            :label="'฿' + $t('Insurance-Chip-Gap')"
+            align="center"
+             :width="currentLanguage == 'zh' ? '150px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceGapTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Chip-Increase-sub')" align="center" width="250px">
+          <el-table-column
+            :label="'฿' + $t('Insurance-Chip-Increase-sub')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '150px' : '230px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceAddTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Rolling-Amount')" align="center" width="200px">
+          <el-table-column
+            :label="'฿' + $t('Rolling-Amount')"
+            align="center"
+            :width="currentLanguage == 'zh' ? '100px' : '150px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Win-Loss')" align="center" width="100px">
+          <el-table-column
+            :label="'฿' + $t('Win-Loss')"
+            align="center"
+            width="100px"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.chipWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Insurance-Win-Loss')" align="center" width="180px">
+          <el-table-column
+            :label="'฿' + $t('Insurance-Win-Loss')"
+            align="center"
+             :width="currentLanguage == 'zh' ? '100px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.insuranceWinTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
-          <el-table-column   :label="'฿' + $t('Chip-counting-time')" align="center" width="180px">
+          <el-table-column
+            :label="$t('Chip-counting-time')"
+            align="center"
+             :width="currentLanguage == 'zh' ? '160px' : '180px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.createTime || "--" }}</span>
             </template>
           </el-table-column>
           <el-table-column
-              :label="$t('Operation-Remarks')"
+            :label="$t('Operation-Remarks')"
             align="center"
-            width="180px"
+            width="160px"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -214,7 +332,7 @@
             </template>
           </el-table-column>
           <el-table-column
-             :label="$t('Operation')"
+            :label="$t('Operation')"
             align="center"
             fixed="right"
             class-name="small-padding fixed-width"
@@ -227,7 +345,7 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                >{{title}}</el-button
+                >{{ title }}</el-button
               >
             </template>
           </el-table-column>
@@ -260,6 +378,7 @@ import Dialog from "./dialog.vue";
 import { listTable } from "@/api/sys/table";
 import moment from "moment";
 import { MoneyFormat } from "@/filter";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 客户日报表
   name: "PointCode",
@@ -303,10 +422,11 @@ export default {
     };
   },
   computed: {
-     title(){
+    ...mapState("app", ["currentLanguage"]),
+    title() {
       //点码修改
-       return this.$t("Chip-counting-modification")
-     },
+      return this.$t("Chip-counting-modification");
+    }
   },
 
   created() {
@@ -403,60 +523,60 @@ export default {
       this.getList();
     },
     handleUpdate(row) {
-      if(row.chipAdd>0){
-        row['chipSub'] =0
-      }else if(row.chipAdd==0){
-        row['chipSub'] =0
-      }else{
-        row['chipSub'] = -row.chipAdd
-        row.chipAdd =0
+      if (row.chipAdd > 0) {
+        row["chipSub"] = 0;
+      } else if (row.chipAdd == 0) {
+        row["chipSub"] = 0;
+      } else {
+        row["chipSub"] = -row.chipAdd;
+        row.chipAdd = 0;
       }
-      if(row.cashAdd>0){
-        row['cashSub'] =0
-      }else if(row.cashAdd==0){
-        row['cashSub'] =0
-      }else{
-        row['cashSub'] = -row.cashAdd
-        row.cashAdd =0
+      if (row.cashAdd > 0) {
+        row["cashSub"] = 0;
+      } else if (row.cashAdd == 0) {
+        row["cashSub"] = 0;
+      } else {
+        row["cashSub"] = -row.cashAdd;
+        row.cashAdd = 0;
       }
-      if(row.insuranceAdd>0){
-        row['insuranceSub'] =0
-      }else if(row.insuranceAdd==0){
-        row['insuranceSub'] =0
-      }else{
-        row['insuranceSub'] = -row.insuranceAdd
-        row.insuranceAdd =0
+      if (row.insuranceAdd > 0) {
+        row["insuranceSub"] = 0;
+      } else if (row.insuranceAdd == 0) {
+        row["insuranceSub"] = 0;
+      } else {
+        row["insuranceSub"] = -row.insuranceAdd;
+        row.insuranceAdd = 0;
       }
-        if(row.chipAddTh>0){
-        row['chipSubTh'] =0
-      }else if(row.chipAddTh==0){
-        row['chipSubTh'] =0
-      }else{
-        row['chipSubTh'] = -row.chipAddTh
-        row.chipAddTh =0
+      if (row.chipAddTh > 0) {
+        row["chipSubTh"] = 0;
+      } else if (row.chipAddTh == 0) {
+        row["chipSubTh"] = 0;
+      } else {
+        row["chipSubTh"] = -row.chipAddTh;
+        row.chipAddTh = 0;
       }
-      if(row.cashAddTh>0){
-        row['cashSubTh'] =0
-      }else if(row.cashAddTh==0){
-        row['cashSubTh'] =0
-      }else{
-        row['cashSubTh'] = -row.cashAddTh
-        row.cashAddTh =0
+      if (row.cashAddTh > 0) {
+        row["cashSubTh"] = 0;
+      } else if (row.cashAddTh == 0) {
+        row["cashSubTh"] = 0;
+      } else {
+        row["cashSubTh"] = -row.cashAddTh;
+        row.cashAddTh = 0;
       }
-      if(row.insuranceAddTh>0){
-        row['insuranceSubTh'] =0
-      }else if(row.insuranceAddTh=0){
-        row['insuranceSubTh'] =0
-      }else{
-        row['insuranceSubTh'] = -row.insuranceAddTh
-        row.insuranceAddTh =0
+      if (row.insuranceAddTh > 0) {
+        row["insuranceSubTh"] = 0;
+      } else if ((row.insuranceAddTh = 0)) {
+        row["insuranceSubTh"] = 0;
+      } else {
+        row["insuranceSubTh"] = -row.insuranceAddTh;
+        row.insuranceAddTh = 0;
       }
-      row['totalGap']=row.chipGap+row.cashGap
-      row['totalGapTh']=row.chipGapTh+row.cashGapTh
-      row['insurance']=row.personInsurance
-      row['insuranceTh']=row.personInsuranceTh
+      row["totalGap"] = row.chipGap + row.cashGap;
+      row["totalGapTh"] = row.chipGapTh + row.cashGapTh;
+      row["insurance"] = row.personInsurance;
+      row["insuranceTh"] = row.personInsuranceTh;
       // this.formData = row;
-      this.formData = Object.assign({},row)
+      this.formData = Object.assign({}, row);
       this.open = true;
     },
     /**
@@ -493,9 +613,9 @@ export default {
         const tHeader = [
           this.$t("Station-number"),
           this.$t("Boot-number"),
-          "$"+this.$t("system-chip-counts"),
-          "$"+this.$t("manual-chip-counts"),
-          "$"+this.$t("Chip-Gap"),
+          "$" + this.$t("system-chip-counts"),
+          "$" + this.$t("manual-chip-counts"),
+          "$" + this.$t("Chip-Gap"),
           "$现金差距",
           "$筹码增减",
           "$现金增减",
