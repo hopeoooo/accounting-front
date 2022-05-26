@@ -421,6 +421,8 @@ export default {
            aTotal:'',
           aTotalTh:''
         }
+        this.aTotal=''
+          this.aTotalTh=''
          this.resetForm("form");
     },
      /** 提交按钮 */

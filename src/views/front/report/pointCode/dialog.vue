@@ -451,6 +451,8 @@ export default {
            aTotal:'',
           aTotalTh:''
         }
+        this.aTotal=''
+          this.aTotalTh=''
          this.resetForm("form");
     },
     getForm(){
