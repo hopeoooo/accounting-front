@@ -9,7 +9,7 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          label-width="80px"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input

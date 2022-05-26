@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-05-02 22:14:15
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-25 11:29:11
+ * @LastEditTime: 2022-05-26 15:48:56
  * @Description: file content
 -->
 <template>
@@ -11,7 +11,7 @@
     ref="form"
     :model="user"
     :rules="rules"
-    label-width="80px"
+    label-width="150px"
   >
     <el-form-item :label="$t('Old-password')" prop="oldPassword">
       <el-input
