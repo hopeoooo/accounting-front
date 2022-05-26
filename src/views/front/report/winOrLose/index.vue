@@ -732,10 +732,10 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          // sums[index] = this.$t("Tot");
-          const html1 = <div>小计</div>
-          const html2 = <div>总计</div>
-          sums[index] = [html1,html2];
+          sums[index] = this.$t("Tot");
+          // const html1 = <div>小计</div>
+          // const html2 = <div>总计</div>
+          // sums[index] = [html1,html2];
           return;
         }
         if (index == 2) {
