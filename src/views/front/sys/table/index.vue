@@ -22,39 +22,43 @@
       @selection-change="handleSelectionChange"
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column :label="$t('T-No')" prop="tableId" width="120" />
-      <el-table-column :label="$t('Game-type')" prop="gameName" width="120px" />
+      <el-table-column :label="$t('T-No')" prop="tableId" width="100px" />
+      <el-table-column :label="$t('Game-type')" prop="gameId" width="120px" >
+           <template slot-scope="scope">
+              <span>{{ getGameName(scope.row.gameId) }}</span>
+            </template>
+      </el-table-column>
       <el-table-column
         :label="'$' + $t('Chip-Point-Base')"
         prop="chipPointBase"
-        width="150px"
+        :width="currentLanguage == 'zh' ? '120px' : '150px'"
       />
       <el-table-column
         :label="'$' + $t('Cash-Point-Base')"
         prop="cashPointBase"
-        width="150px"
+        :width="currentLanguage == 'zh' ? '120px' : '150px'"
       />
       <el-table-column
         :label="'$' + $t('Insurance-Chip-Point-Base')"
         prop="insurancePointBase"
-        width="220px"
+        :width="currentLanguage == 'zh' ? '150px' : '220px'"
       />
       <el-table-column
         :label="'฿' + $t('Chip-Point-Base')"
         prop="chipPointBaseTh"
-        width="150px"
+        :width="currentLanguage == 'zh' ? '120px' : '150px'"
       />
       <el-table-column
         :label="'฿' + $t('Cash-Point-Base')"
         prop="cashPointBaseTh"
-        width="150px"
+        :width="currentLanguage == 'zh' ? '120px' : '150px'"
       />
       <el-table-column
         :label="'฿' + $t('Insurance-Chip-Point-Base')"
         prop="insurancePointBaseTh"
-        width="220px"
+        :width="currentLanguage == 'zh' ? '150px' : '220px'"
       />
-      <el-table-column label="IP" prop="ip" />
+      <el-table-column label="IP" prop="ip" width="150px" />
 
       <el-table-column
         :label="$t('Create-Time')"
@@ -103,12 +107,18 @@
     <el-dialog
       :title="title"
       :visible.sync="open"
-      width="800px"
+      v-if="open"
+      :width="currentLanguage == 'zh' ? '500px' : '650px'"
       @close="onDialogClose"
       :close-on-click-modal="false"
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="180px">
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :label-width="currentLanguage == 'zh' ? '150px' : '220px'"
+      >
         <el-form-item :label="$t('T-No')" prop="tableId">
           <el-input
             v-model.number="form.tableId"
@@ -172,6 +182,7 @@
           <el-input
             v-model="form.insurancePointBase"
             :placeholder="$t('Please-enter') + '...'"
+            :disabled="form.gameId != 1"
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -181,10 +192,11 @@
           <el-input
             v-model="form.insurancePointBaseTh"
             :placeholder="$t('Please-enter') + '...'"
+            :disabled="form.gameId != 1"
           ></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click="submitForm">{{ $t("OK") }}</el-button>
         <el-button @click="cancel">{{ $t("Cancel") }}</el-button>
       </div>
@@ -199,7 +211,7 @@ import {
   addUpTable,
   delTable
 } from "@/api/sys/table";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Table",
   data() {
@@ -263,6 +275,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("app", ["currentLanguage"]),
     // 游戏类型列表
     Gameoptions() {
       return [
@@ -313,7 +326,6 @@ export default {
           },
           {
             validator: this.numberValitor,
-
             trigger: "blur"
           }
         ],
@@ -360,11 +372,11 @@ export default {
         ],
         insurancePointBase: [
           {
-            required: true,
+            required: this.form.gameId == 1 ? true : false,
             message: this.$t("USD-insurance-chip-point-base-cannot-be-empty"),
             trigger: "blur"
           },
-          // { type: "number", message: this.$t("Please-enter-a-number"), trigger: "blur" },
+
           {
             validator: this.numberValitor,
             message: this.$t("Please-enter-a-No-greater-than-0")
@@ -398,7 +410,7 @@ export default {
         ],
         insurancePointBaseTh: [
           {
-            required: true,
+            required: this.form.gameId == 1 ? true : false,
             message: this.$t("Baht-insurance-chip-point-base-cannot-be-empty"),
             trigger: "blur"
           },
@@ -416,6 +428,16 @@ export default {
   },
   methods: {
     numberValitor(rule, value, callback) {
+      if (this.form.gameId != 1) {
+        // 非百家乐的情况下不对保险系数进行校验
+        if (
+          rule.field == "insurancePointBase" ||
+          rule.field == "insurancePointBaseTh"
+        ) {
+          callback();
+        }
+      }
+
       // 大于0的数字数字校验
       // 请输入大于0的数字
       if (isNaN(value)) {
@@ -467,6 +489,8 @@ export default {
 
     // 取消按钮
     cancel() {
+      this.$refs.form && this.$refs.form.resetFields();
+      this.$refs.form && this.$refs.form.clearValidate();
       this.open = false;
       this.reset();
     },
@@ -481,9 +505,14 @@ export default {
         ip: "",
         chipPointBase: "",
         cashPointBase: "",
-        insurancePointBase: ""
+        insurancePointBase: "",
+        chipPointBaseTh: "",
+        cashPointBaseTh: "",
+        insurancePointBaseTh: ""
       };
       this.resetForm("form");
+      this.$refs.form && this.$refs.form.resetFields();
+      this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -507,8 +536,9 @@ export default {
       this.reset();
       this.open = true;
       this.openType = "add";
-
       this.title = this.$t("Add-a-new-table");
+      this.$refs.form && this.$refs.form.resetFields();
+      this.$refs.form && this.$refs.form.clearValidate();
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -518,21 +548,30 @@ export default {
       this.open = true;
       this.openType = "edit";
       this.title = this.$t("Add-a-new-table");
-      // this.title = "编辑桌台";
-      // addUpTable({id:id}).then(response => {
-      //   // this.form = response.data;
-
-      // });
+      this.$refs.form && this.$refs.form.resetFields();
+      this.$refs.form && this.$refs.form.clearValidate();
     },
     // 弹窗关闭时
     onDialogClose() {
       this.openType = "";
+      this.$refs.form && this.$refs.form.resetFields();
     },
 
     onGameChange(gameId) {
       console.log(gameId);
       const game = this.Gameoptions.filter(item => item.value == gameId)[0];
       this.form.gameName = game.label;
+    },
+
+    getGameName(gameId) {
+      if (gameId) {
+        //通过gameId 得到游戏名称 gameName
+        const game = this.Gameoptions.filter(item => item.value == gameId)[0];
+        // console.log("通过gameId 得到游戏名称 gameName", game, gameId);
+        return game.label;
+      } else {
+        return "百家乐";
+      }
     },
 
     /** 提交按钮 */

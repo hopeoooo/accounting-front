@@ -19,13 +19,14 @@
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 150px; "
+              style="width: 100px; "
             />
           </el-form-item>
           <el-form-item :label="$t('Station-number')" prop="tableId">
             <el-select
               v-model="queryParams.tableId"
               :placeholder="$t('Please-select')"
+               style="width: 100px; "
             >
               <el-option
                 v-for="item in tableOptions"
@@ -40,17 +41,19 @@
           <el-form-item
             :label="$t('Game-Type')"
             prop="gameId"
-            label-width="100"
+            label-width="100px"
           >
             <el-select
               v-model="queryParams.gameId"
               :placeholder="$t('Please-select')"
+               style="width: 100px; "
             >
               <el-option
                 v-for="item in Gameoptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
+                width="100px"
               >
               </el-option>
             </el-select>
@@ -59,7 +62,7 @@
           <el-form-item
             :label="$t('Currency-Type')"
             prop="type"
-            label-width="100"
+            label-width="120px"
           >
             <el-select
               v-model="queryParams.type"
@@ -1215,7 +1218,6 @@ export default {
         //通过gameId 得到游戏名称 gameName
         const game = this.Gameoptions.filter(item => item.value == gameId)[0];
         // console.log("通过gameId 得到游戏名称 gameName", game, gameId);
-
         return game.label;
       } else {
         return "百家乐";

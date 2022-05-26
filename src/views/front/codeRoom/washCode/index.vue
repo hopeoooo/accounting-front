@@ -547,8 +547,7 @@ export default {
           );
           const html2 = <div>{this.$t("Tot")}</div>;
           sums[index] = [html1, html2];
-          //  sums[index] = this.$t("Subtotal");
-          // return;
+
         } else if (index == 5 || index == 6 || index == 7 || index == 8) {
           // 只有未结算洗码量和未结算洗码费 才需要小计
           const values = data.map(item => Number(item[column.property]));

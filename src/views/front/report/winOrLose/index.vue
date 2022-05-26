@@ -9,14 +9,14 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="100px"
+          :label-width="currentLanguage == 'zh' ? '68px' : '100px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="userName">
             <el-input
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px; margin-right: 20px"
+              style="width: 100px; margin-right: 10px"
             />
             <el-checkbox
               v-model="queryParams.cardType"
@@ -31,6 +31,7 @@
             <el-select
               v-model="queryParams.tableId"
               :placeholder="$t('Please-select')"
+              style="width: 100px; "
             >
               <el-option
                 v-for="item in tableOptions"
@@ -46,6 +47,7 @@
             <el-select
               v-model="queryParams.gameId"
               :placeholder="$t('Please-select')"
+              style="width: 100px; "
             >
               <el-option
                 v-for="item in Gameoptions"
@@ -91,7 +93,6 @@
           v-loading="loading"
           :data="userList"
           show-summary
-          :sum-text="$t('Subtotal')"
           :summary-method="getSummaries1"
           @sort-change="onSortChange"
           ref="dataTable"
@@ -102,7 +103,12 @@
             align="center"
             prop="card"
           />
-          <el-table-column :label="$t('Name')" align="center" prop="name">
+          <el-table-column
+            :label="$t('Name')"
+            align="center"
+            prop="name"
+            :width="currentLanguage == 'zh' ? '120px' : '120px'"
+          >
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
@@ -113,7 +119,7 @@
             key="betMoney"
             prop="betMoney"
             sortable="custom"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoney | MoneyFormat }}</span>
@@ -124,7 +130,7 @@
             align="center"
             key="water"
             prop="water"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.water | MoneyFormat }}</span>
@@ -135,7 +141,7 @@
             align="center"
             key="waterAmount"
             prop="waterAmount"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
@@ -167,7 +173,7 @@
             align="center"
             key="winLose"
             prop="winLose"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLose | MoneyFormat }}</span>
@@ -179,7 +185,7 @@
             key="betMoneyTh"
             prop="betMoneyTh"
             sortable="custom"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.betMoneyTh | MoneyFormat }}</span>
@@ -190,7 +196,7 @@
             align="center"
             key="waterTh"
             prop="waterTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterTh | MoneyFormat }}</span>
@@ -202,7 +208,8 @@
             align="center"
             key="waterAmountTh"
             prop="waterAmountTh"
-            width="150px"
+            w
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
@@ -234,168 +241,14 @@
             align="center"
             key="winLoseTh"
             prop="winLoseTh"
-            width="150px"
+            :width="currentLanguage == 'zh' ? '120px' : '150px'"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
             </template>
           </el-table-column>
         </el-table>
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          show-summary
-          :sum-text="$t('Tot')"
-          :summary-method="getSummaries"
-          @sort-change="onSortChange"
-          ref="dataTable"
-          :empty-text="$t('no-data')"
-          class="table2"
-        >
-          <el-table-column
-            :label="$t('Membership-Card-Number')"
-            align="center"
-            prop="card"
-          />
-          <el-table-column :label="$t('Name')" align="center" prop="name">
-            <template slot-scope="scope">
-              <span>{{ scope.row.name }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Bet-amount')"
-            align="center"
-            key="betMoney"
-            prop="betMoney"
-            sortable="custom"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.betMoney | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Rolling-Amount')"
-            align="center"
-            key="water"
-            prop="water"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.water | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Rolling-Fee')"
-            align="center"
-            key="waterAmount"
-            prop="waterAmount"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.waterAmount | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('T-money')"
-            align="center"
-            key="tie"
-            prop="tie"
-            width="100px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.tie || 0 }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Comm')"
-            align="center"
-            key="pump"
-            prop="pump"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.pump | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'$' + $t('Win-Loss')"
-            align="center"
-            key="winLose"
-            prop="winLose"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.winLose | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'฿' + $t('Bet-amount')"
-            align="center"
-            key="betMoneyTh"
-            prop="betMoneyTh"
-            sortable="custom"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.betMoneyTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'฿' + $t('Rolling-Amount')"
-            align="center"
-            key="waterTh"
-            prop="waterTh"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.waterTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
 
-          <el-table-column
-            :label="'฿' + $t('Rolling-Fee')"
-            align="center"
-            key="waterAmountTh"
-            prop="waterAmountTh"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.waterAmountTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="tieTh"
-            :label="'฿' + $t('T-money')"
-            align="center"
-            key="tieTh"
-            width="100px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.tieTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="pumpTh"
-            :label="'฿' + $t('Comm')"
-            align="center"
-            key="pumpTh"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.pumpTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="'฿' + $t('Win-Loss')"
-            align="center"
-            key="winLoseTh"
-            prop="winLoseTh"
-            width="150px"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.winLoseTh | MoneyFormat }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -414,13 +267,13 @@ import moment from "moment";
 import TableTime from "@/components/TableTime/";
 import { MoneyFormat } from "@/filter";
 import { listTable } from "@/api/sys/table";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 输赢
   name: "WinOrLose",
   components: { TableTime },
   data() {
     return {
-
       //台号列表
       tableOptions: [],
       //总计
@@ -459,6 +312,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("app", ["currentLanguage"]),
     // 游戏类型列表
     Gameoptions() {
       return [
@@ -493,7 +347,7 @@ export default {
           // label: "推筒子"
         }
       ];
-    },
+    }
   },
 
   created() {
@@ -696,14 +550,20 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = this.$t("Subtotal");
+          const html1 = (
+            <div style="margin-bottom:15px ">{this.$t("Subtotal")}</div>
+          );
+          const html2 = <div>{this.$t("Tot")}</div>;
+          sums[index] = [html1, html2];
         } else if (index > 1) {
           const values = data.map(item => {
             return Number(item[column.property]);
           });
           // console.log(index, column, data, data.length, values);
           if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
+            let num1 = ""; // 小计结果
+            let num2 = ""; // 总计结果
+            num1 = values.reduce((prev, curr) => {
               const value = Number(curr);
               if (!isNaN(value)) {
                 const pel = prev + curr;
@@ -714,8 +574,58 @@ export default {
                 return pel;
               }
             }, 0);
+            num1 = MoneyFormat(num1);
 
-            sums[index] = MoneyFormat(sums[index]);
+            if (index == 2) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.betMoney) : "";
+            }
+            if (index == 3) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.water) : "";
+            }
+            if (index == 4) {
+              num2 = this.userTotal
+                ? MoneyFormat(this.userTotal.waterAmount)
+                : "";
+            }
+            if (index == 5) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.tie) : "";
+            }
+            if (index == 6) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.pump) : "";
+            }
+            if (index == 7) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.winLose) : "";
+            }
+            if (index == 8) {
+              num2 = this.userTotal
+                ? MoneyFormat(this.userTotal.betMoneyTh)
+                : "";
+            }
+            if (index == 9) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.waterTh) : "";
+            }
+            if (index == 10) {
+              num2 = this.userTotal
+                ? MoneyFormat(this.userTotal.waterAmountTh)
+                : "";
+            }
+            if (index == 11) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.tieTh) : "";
+            }
+            if (index == 12) {
+              num2 = this.userTotal ? MoneyFormat(this.userTotal.pumpTh) : "";
+            }
+            if (index == 13) {
+              num2 = this.userTotal
+                ? MoneyFormat(this.userTotal.winLoseTh)
+                : "";
+            }
+
+            const html1 = <div style="margin-bottom:15px ">{num1}</div>;
+            const html2 = <div>{num2}</div>;
+            sums[index] = [html1, html2];
+
+            // sums[index] = MoneyFormat(sums[index]);
           } else {
             sums[index] = "N/A";
           }
