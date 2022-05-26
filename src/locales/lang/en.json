@@ -587,5 +587,7 @@
   "enter-role": "Please enter role",
   "menu-permissions": "menu permissions",
   "expand-collapse": "expand/collapse",
-  "all-none": "All/None"
+  "all-none": "All/None",
+  "tipsTrans":"Current user cannot export",
+  "less2":"Please select at least 2 members"
 }
