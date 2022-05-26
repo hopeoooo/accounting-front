@@ -578,12 +578,12 @@ export default {
       require.ensure([], () => {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = [
-          "会员卡号",
-          "姓名",
-          "状态",
-          "$签单金额",
-          "฿签单金额",
-          "操作备注"
+         this.$t('Membership-Card-Number'),
+         this.$t('Name'),
+         this.$t('Staus'),
+         '$' + this.$t('Signed-amount'),
+         '฿' + this.$t('Signed-amount'),
+         this.$t('Remarks')
         ];
         // 上面设置Excel的表格第一行的标题
         const filterVal = [
@@ -598,7 +598,7 @@ export default {
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
         const time_str = this.$getCurrentTime();
-        export_json_to_excel(tHeader, data, `签单列表-${time_str}`);
+        export_json_to_excel(tHeader, data, this.$t('Sign-Up-List')+`-${time_str}`);
       });
     },
     // 该方法负责将数组转化成二维数组

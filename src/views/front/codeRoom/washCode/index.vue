@@ -716,7 +716,7 @@ export default {
       // this.form = Object.assign({},row)
       // this.form["card"] = row;
       if (this.cards.length < 2) {
-        this.$modal.msgError("请选择至少2个会员");
+        this.$modal.msgError(this.$t('less2'));
         return;
       }
       this.open = true;
@@ -731,15 +731,15 @@ export default {
       require.ensure([], () => {
         const { export_json_to_excel } = require("@/excel/Export2Excel");
         const tHeader = [
-          "会员卡号",
-          "姓名",
-          "状态",
-          "是否可结算洗码",
-          "$未结算洗码量",
-          "฿未结算洗码量",
-          "$未结算洗码费",
-          "฿未结算洗码费",
-          "备注"
+          this.$t('Membership-Card-Number'),
+          this.$t('Name'),
+          this.$t('Staus'),
+          this.$t('is-settle'),
+          '$' + this.$t('Unsettled-rolling-volume'),
+          '฿' + this.$t('Unsettled-rolling-volume'),
+          '$' + this.$t('Unsettled-rolling-fee'),
+          '฿' + this.$t('Unsettled-rolling-fee'),
+          this.$t('Remarks')
         ];
         // 上面设置Excel的表格第一行的标题
         const filterVal = [
@@ -757,7 +757,7 @@ export default {
         const list = this.userList; //把data里的tableData存到list
         const data = this.formatJson(filterVal, list);
         const time_str = this.$getCurrentTime();
-        export_json_to_excel(tHeader, data, `洗码费结算列表-${time_str}`);
+        export_json_to_excel(tHeader, data, this.$t('Rolling-fees-settlement-list')+`-${time_str}`);
       });
     },
 
@@ -770,7 +770,7 @@ export default {
             result =
               v["status"] == 0 ? this.$t("Normal") : this.$t("Deactivated");
           } else if (j == "isSettlement") {
-            result = v["isSettlement"] == 0 ? this.$t("No") : "是";
+            result = v["isSettlement"] == 0 ? this.$t("No") : this.$t('Yes');
           } else if (j == "waterAmount") {
             result = MoneyFormat(v["waterAmount"]);
           } else if (j == "waterAmountTh") {
@@ -796,7 +796,7 @@ export default {
             // 结算洗码
             settlementWater(this.form)
               .then(response => {
-                this.$modal.msgSuccess("结算洗码成功");
+                this.$modal.msgSuccess(this.$t('Rolling-Settlement-successful'));
                 this.open = false;
                 this.getList();
               })
@@ -811,7 +811,7 @@ export default {
             };
             batchSettlementWater(params)
               .then(response => {
-                this.$modal.msgSuccess("结算洗码成功");
+                this.$modal.msgSuccess(this.$t('Rolling-Settlement-successful'));
                 this.open = false;
                 this.getList();
               })
@@ -822,7 +822,7 @@ export default {
               });
           }
         } else {
-          this.$modal.msgError("请选择结算币种");
+          this.$modal.msgError(this.$t('select-a-currency'));
         }
       });
     }

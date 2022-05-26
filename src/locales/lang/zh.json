@@ -583,5 +583,7 @@
   "enter-position": "请输入职位",
   "menu-permissions": "菜单权限",
   "expand-collapse": "展开/折叠",
-  "all-none": "全选/全不选"
+  "all-none": "全选/全不选",
+  "tipsTrans":"当前用户不可汇出",
+  "less2":"请选择至少2个会员"
 }

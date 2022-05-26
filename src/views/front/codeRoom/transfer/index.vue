@@ -297,7 +297,7 @@ export default {
           }
         ],
         operationType: [
-          { required: true, message: "请选择币种", trigger: "change" }
+          { required: true, message: this.$t('Please-select-a-currency'), trigger: "change" }
         ]
       };
     }
@@ -312,7 +312,7 @@ export default {
     amountValitor(rule, value, callback) {
       if (!this.form.amount && !this.form.amountTh) {
         const errMsg =
-          this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额";
+          this.openType == "in" ? this.$t('Please-enter-the-amount-remitted') : this.$t('Please-enter-the-amount-to-be-remitted');
         callback(new Error(errMsg));
       } else if (this.form.amount && this.form.amount <= 0) {
         callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
@@ -329,7 +329,7 @@ export default {
     amountThValitor(rule, value, callback) {
       if (!this.form.amount && !this.form.amountTh) {
         const errMsg =
-          this.openType == "in" ? "请输入汇入金额" : "请输入汇出金额";
+          this.openType == "in" ? this.$t('Please-enter-the-amount-remitted') : this.$t('Please-enter-the-amount-to-be-remitted');
         callback(new Error(errMsg));
       } else if (this.form.amountTh && this.form.amountTh <= 0) {
         callback(new Error(this.$t("Please-enter-a-No-greater-than-0")));
@@ -435,7 +435,7 @@ export default {
 
         if (this.form.isOut == 0) {
           // 如果用户不可汇出，则提交的时候，提示“当前用户不可汇出”
-          this.$modal.msgError("当前用户不可汇出");
+          this.$modal.msgError(this.$t('tipsTrans'));
           return;
         }
       }
@@ -446,7 +446,7 @@ export default {
           if (this.openType == "out") {
             addRemit(this.form)
               .then(response => {
-                this.$modal.msgSuccess("汇出成功");
+                this.$modal.msgSuccess(this.$t('Outward-remittance-successful'));
                 this.open = false;
                 this.getList();
               })
@@ -456,7 +456,7 @@ export default {
           } else {
             addImport(this.form)
               .then(response => {
-                this.$modal.msgSuccess("汇入成功");
+                this.$modal.msgSuccess(this.$t('Remittance-Successful'));
                 this.open = false;
                 this.getList();
               })
