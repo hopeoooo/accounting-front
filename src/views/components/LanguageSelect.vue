@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2021-12-07 13:31:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-26 22:24:35
+ * @LastEditTime: 2022-05-27 12:41:27
  * @Description: 语言选择框
 -->
 <template>
@@ -64,7 +64,7 @@ export default {
   },
   watch: {
     currentLanguage(val) {
-      // this.changeRouter();
+      this.changeRouter();
       // location.reload()
     }
   },

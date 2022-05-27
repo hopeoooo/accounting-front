@@ -8,12 +8,12 @@
           ref="queryForm"
           size="small"
           :inline="true"
-          label-width="100px"
+            :label-width="currentLanguage == 'zh' ? '68px' : '80px'"
         >
           <el-form-item
             :label="$t('Membership-Card-Number')"
             prop="card"
-            label-width="100"
+             :label-width="currentLanguage == 'zh' ? '68px' : '80px'"
           >
             <el-input
               v-model="queryParams.card"
@@ -41,7 +41,7 @@
           <el-form-item
             :label="$t('Game-Type')"
             prop="gameId"
-            label-width="100px"
+             :label-width="currentLanguage == 'zh' ? '68px' : '120px'"
           >
             <el-select
               v-model="queryParams.gameId"
@@ -62,7 +62,7 @@
           <el-form-item
             :label="$t('Currency-Type')"
             prop="type"
-            label-width="120px"
+             :label-width="currentLanguage == 'zh' ? '68px' : '120px'"
           >
             <el-select
               v-model="queryParams.type"
@@ -78,7 +78,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('Boot-number')" prop="bootNum">
+          <el-form-item :label="$t('Boot-number')" prop="bootNum"  :label-width="currentLanguage == 'zh' ? '68px' : '80px'">
             <el-input
               v-model="queryParams.bootNum"
               placeholder=""
@@ -86,7 +86,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item :label="$t('Game-number')" prop="gameNum">
+          <el-form-item :label="$t('Game-number')" prop="gameNum"  :label-width="currentLanguage == 'zh' ? '68px' : '80px'">
             <el-input
               v-model="queryParams.gameNum"
               placeholder=""
@@ -94,7 +94,7 @@
               style="width: 100px; "
             />
           </el-form-item>
-          <el-form-item :label="$t('Operator')" prop="createBy">
+          <el-form-item :label="$t('Operator')" prop="createBy"  :label-width="currentLanguage == 'zh' ? '68px' : '80px'">
             <el-input
               v-model="queryParams.createBy"
               placeholder=""
@@ -339,7 +339,7 @@
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        :label-width="currentLanguage == 'zh' ? '' : '100px'"
         class="bet-form-box"
       >
         <div class="bet-form-row">
