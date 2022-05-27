@@ -1,5 +1,4 @@
 {
-
   "persino-info": "个人信息",
   "bet":{
     "dealer":"荷官:",
@@ -589,5 +588,16 @@
   "all-none": "全选/全不选",
   "tipsTrans":"当前用户不可汇出",
   "less2":"请选择至少2个会员",
-  "unknown":"未知"
+  "unknown":"未知",
+  "game-num-range": "局号必须大于0",
+  "no-dealer": "不存在该荷官账号",
+  "dealer": "荷官",
+  "dealer-win-loss": "荷官上下水",
+  "baccarat-win-loss": "百家乐输赢",
+  "dt-win-loss": "龙虎输赢",
+  "sg-win-loss": "三公输赢",
+  "niu-win-loss": "牛牛输赢",
+  "tui-win-loss": "推筒子输赢",
+  "dealer-management": "荷官管理",
+  "dealer-work-number": "荷官工号"
 }

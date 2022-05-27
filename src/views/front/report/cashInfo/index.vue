@@ -9,40 +9,58 @@
           size="small"
           :inline="true"
           v-show="showSearch"
-          label-width="68px"
+          :label-width="currentLanguage == 'zh' ? '' : '80px'"
         >
           <el-form-item :label="$t('Membership-Card-Number')" prop="card">
             <el-input
               v-model="queryParams.card"
               placeholder=""
               clearable
-              style="width: 240px;margin-right:20px"
+              style="width: 120px;margin-right:20px"
             />
 
-            <el-checkbox v-model="queryParams.isAdmin"
-              >{{$t("Filter-internal-card")}}</el-checkbox
-            >
+            <el-checkbox v-model="queryParams.isAdmin">{{
+              $t("Filter-internal-card")
+            }}</el-checkbox>
           </el-form-item>
-          <el-form-item  :label="$t('Operation')" prop="type">
+          <el-form-item :label="$t('Operation')" prop="type">
             <!-- 操作类型: 1:存码,2:取码,3:下注赢,4:下注输,5:签单,6:还单,7:换现,13:买码,8:注单修改,9:注单补录,10:洗码结算,11:汇入,12:汇出 -->
-            <el-select v-model="queryParams.type"  :placeholder="$t('All')">
+            <el-select v-model="queryParams.type" :placeholder="$t('All')">
               <el-option :label="$t('All')" :value="null"></el-option>
-              <el-option   :label="$t('Chip-deposit')" :value="1"></el-option>
-              <el-option  :label="$t('Chips-withdrawal')" :value="2"></el-option>
-              <el-option  :label="$t('Winning-bets')" :value="3"></el-option>
-              <el-option :label="$t('Bet-Loss')"  :value="4"></el-option>
-              <el-option  :label="$t('Signing')" :value="5"></el-option>
+              <el-option :label="$t('Chip-deposit')" :value="1"></el-option>
+              <el-option :label="$t('Chips-withdrawal')" :value="2"></el-option>
+              <el-option :label="$t('Winning-bets')" :value="3"></el-option>
+              <el-option :label="$t('Bet-Loss')" :value="4"></el-option>
+              <el-option :label="$t('Signing')" :value="5"></el-option>
               <el-option :label="$t('Returns')" :value="6"></el-option>
-              <el-option :label="$t('Cash-Out')"   :value="7"></el-option>
-              <el-option  :label="$t('Buy-codes')"  :value="13"></el-option>
-              <el-option  :label="$t('Bet-slip-amendment')" :value="8"></el-option>
-              <el-option  :label="$t('Bet-slip-supplementary')"  :value="9"></el-option>
-              <el-option  :label="$t('Settlement-of-rolling-fees-into-chip')"  :value="10"></el-option>
-              <el-option  :label="$t('Remittance-to-pick-up-chip')"  :value="11"></el-option>
-              <el-option  :label="$t('Remittance-of-chip')" :value="12"></el-option>
+              <el-option :label="$t('Cash-Out')" :value="7"></el-option>
+              <el-option :label="$t('Buy-codes')" :value="13"></el-option>
+              <el-option
+                :label="$t('Bet-slip-amendment')"
+                :value="8"
+              ></el-option>
+              <el-option
+                :label="$t('Bet-slip-supplementary')"
+                :value="9"
+              ></el-option>
+              <el-option
+                :label="$t('Settlement-of-rolling-fees-into-chip')"
+                :value="10"
+              ></el-option>
+              <el-option
+                :label="$t('Remittance-to-pick-up-chip')"
+                :value="11"
+              ></el-option>
+              <el-option
+                :label="$t('Remittance-of-chip')"
+                :value="12"
+              ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('operation-time')">
+          <el-form-item
+            :label="$t('operation-time')"
+            :label-width="currentLanguage == 'zh' ? '' : '120px'"
+          >
             <el-date-picker
               v-model="dateRange"
               style="width: 240px"
@@ -59,11 +77,11 @@
               icon="el-icon-search"
               size="mini"
               @click="handleQuery"
-              >{{$t("Enq")}}</el-button
+              >{{ $t("Enq") }}</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >{{$t("Rst")}}</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{
+              $t("Rst")
+            }}</el-button>
           </el-form-item>
         </el-form>
 
@@ -75,12 +93,16 @@
               icon="el-icon-download"
               size="mini"
               @click="handleExport"
-              >{{$t("Export")}}</el-button
+              >{{ $t("Export") }}</el-button
             >
           </el-col>
         </el-row>
 
-        <el-table v-loading="loading" :data="userList" :empty-text="$t('no-data')">
+        <el-table
+          v-loading="loading"
+          :data="userList"
+          :empty-text="$t('no-data')"
+        >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column
             :label="$t('Membership-Card-Number')"
@@ -88,35 +110,53 @@
             key="card"
             prop="card"
           />
-          <el-table-column  :label="$t('Name')" align="center" key="name" prop="name" />
           <el-table-column
-             :label="$t('Operation')"
+            :label="$t('Name')"
+            align="center"
+            key="name"
+            prop="name"
+          />
+          <el-table-column
+            :label="$t('Operation')"
             align="center"
             key="type"
             prop="type"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.type == '1'">{{$t("Chip-deposit")}}</span>
-              <span v-if="scope.row.type == '2'">{{$t("Chips-withdrawal")}}</span>
-              <span v-if="scope.row.type == '3'">{{$t("Winning-bets")}}</span>
-              <span v-if="scope.row.type == '4'">{{$t("Bet-Loss")}}</span>
-              <span v-if="scope.row.type == '5'">{{$t("Signing")}}</span>
-              <span v-if="scope.row.type == '6'">{{$t("Returns")}}</span>
-              <span v-if="scope.row.type == '7'">{{$t("Cash-Out")}}</span>
-              <span v-if="scope.row.type == '13'">{{$t("Buy-codes")}}</span>
-              <span v-if="scope.row.type == '8'">{{$t("Bet-slip-amendment")}}</span>
-              <span v-if="scope.row.type == '9'">{{$t("Bet-slip-supplementary")}}</span>
-              <span v-if="scope.row.type == '10'">{{$t("Settlement-of-rolling-fees-into-chip")}}</span>
-              <span v-if="scope.row.type == '11'">{{$t("Remittance-to-pick-up-chip")}}</span>
-              <span v-if="scope.row.type == '12'">{{$t("Remittance-of-chip")}}</span>
+              <span v-if="scope.row.type == '1'">{{ $t("Chip-deposit") }}</span>
+              <span v-if="scope.row.type == '2'">{{
+                $t("Chips-withdrawal")
+              }}</span>
+              <span v-if="scope.row.type == '3'">{{ $t("Winning-bets") }}</span>
+              <span v-if="scope.row.type == '4'">{{ $t("Bet-Loss") }}</span>
+              <span v-if="scope.row.type == '5'">{{ $t("Signing") }}</span>
+              <span v-if="scope.row.type == '6'">{{ $t("Returns") }}</span>
+              <span v-if="scope.row.type == '7'">{{ $t("Cash-Out") }}</span>
+              <span v-if="scope.row.type == '13'">{{ $t("Buy-codes") }}</span>
+              <span v-if="scope.row.type == '8'">{{
+                $t("Bet-slip-amendment")
+              }}</span>
+              <span v-if="scope.row.type == '9'">{{
+                $t("Bet-slip-supplementary")
+              }}</span>
+              <span v-if="scope.row.type == '10'">{{
+                $t("Settlement-of-rolling-fees-into-chip")
+              }}</span>
+              <span v-if="scope.row.type == '11'">{{
+                $t("Remittance-to-pick-up-chip")
+              }}</span>
+              <span v-if="scope.row.type == '12'">{{
+                $t("Remittance-of-chip")
+              }}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-             :label="'$'+$t('Chips-Movement-Records')"
+            :label="'$' + $t('Chips-Movement-Records')"
             align="center"
             key="before"
             prop="before"
+            :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.change != 0"
@@ -129,10 +169,11 @@
           </el-table-column>
 
           <el-table-column
-             :label="'฿'+$t('Chips-Movement-Records')"
+            :label="'฿' + $t('Chips-Movement-Records')"
             align="center"
             key="beforeTh"
             prop="beforeTh"
+            :width="currentLanguage == 'zh' ? '' : '250px'"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.changeTh != 0"
@@ -152,18 +193,18 @@
           />
 
           <el-table-column
-             :label="$t('Operator')"
+            :label="$t('Operator')"
             align="center"
             key="createBy"
             prop="createBy"
           />
 
           <el-table-column
-              :label="$t('Operation-Remarks')"
+            :label="$t('Operation-Remarks')"
             align="center"
             key="remark"
             prop="remark"
-            width="150"
+            :width="currentLanguage == 'zh' ? '' : '180px'"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -191,6 +232,7 @@
 import { listChipRecord } from "@/api/report/report";
 import { MoneyFormat } from "@/filter";
 import moment from "moment";
+import { mapState, mapMutations } from "vuex";
 export default {
   // 客户筹码明细表
   name: "CashInfo",
@@ -247,7 +289,7 @@ export default {
         label: "label"
       },
       queryParams: {
-        card: this.$route.query.card?this.$route.query.card:"",
+        card: this.$route.query.card ? this.$route.query.card : "",
         isAdmin: 0,
         type: null,
         // dateRange: [],
@@ -256,13 +298,14 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState("app", ["currentLanguage"])
+  },
   watch: {
     // 根据名称筛选部门树
   },
   created() {
     this.getList();
-
-
   },
 
   methods: {
@@ -279,13 +322,15 @@ export default {
       };
 
       this.loading = true;
-      listChipRecord(params).then(response => {
-        this.userList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).catch(err=>{
-        this.loading = false;
-      })
+      listChipRecord(params)
+        .then(response => {
+          this.userList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+        });
 
       this.$delete(params, "pageNum");
       this.$delete(params, "pageSize");
@@ -298,7 +343,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-           this.dateRange = [
+      this.dateRange = [
         moment(new Date())
           .startOf("day")
           .format("YYYY-MM-DD"),
@@ -370,7 +415,7 @@ export default {
                 result = "下注输";
                 break;
               case 5:
-                result =this.$t("Signing");
+                result = this.$t("Signing");
                 break;
               case 6:
                 result = this.$t("Returns");

@@ -42,6 +42,14 @@
               </el-option>
             </el-select>
           </el-form-item>
+                    <el-form-item :label="$t('Boot-number')" prop="bootNum"  :label-width="currentLanguage == 'zh' ? '68px' : '80px'">
+            <el-input
+              v-model="queryParams.bootNum"
+              placeholder=""
+              clearable
+              style="width: 100px; "
+            />
+          </el-form-item>
 
           <el-form-item :label="$t('Game-Type')" prop="userName">
             <el-select
@@ -295,6 +303,7 @@ export default {
       queryParams: {
         card: "",
         tableId: null, //台号
+        bootNum:"",//靴号
         gameId: "",
         isAdmin: 0,
         cardType: 0,
@@ -367,6 +376,7 @@ export default {
         gameId: this.queryParams.gameId, //游戏类型
         isAdmin: this.queryParams.isAdmin ? 1 : 0, //过滤内部卡号（0未勾选，1勾选）
         tableId: this.queryParams.tableId, //台号
+        bootNum: this.queryParams.bootNum, //靴号
         cardType: this.queryParams.cardType ? 1 : 0, //包含子卡号（0未勾选，1勾选）
         startTime: this.queryParams.startDate, //开始时间
         endTime: this.queryParams.endDate, //结束时间
@@ -447,6 +457,7 @@ export default {
         gameId: "",
         card: "",
         tableId: null,
+        bootNum: "",
         isAdmin: 0,
         cardType: 0,
         pageNum: 1,
@@ -636,85 +647,7 @@ export default {
       return sums;
     },
 
-    //总计规则
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = this.$t("Tot");
-          // const html1 = <div>小计</div>
-          // const html2 = <div>总计</div>
-          // sums[index] = [html1,html2];
-          return;
-        }
-        if (index == 2) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.betMoney)
-            : "";
-          return;
-        }
-        if (index == 3) {
-          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.water) : "";
-          return;
-        }
-        if (index == 4) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.waterAmount)
-            : "";
-          return;
-        }
-        if (index == 5) {
-          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.tie) : "";
-          return;
-        }
-        if (index == 6) {
-          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.pump) : "";
-          return;
-        }
-        if (index == 7) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.winLose)
-            : "";
-          return;
-        }
-        if (index == 8) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.betMoneyTh)
-            : "";
-          return;
-        }
-        if (index == 9) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.waterTh)
-            : "";
-          return;
-        }
-        if (index == 10) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.waterAmountTh)
-            : "";
-          return;
-        }
-        if (index == 11) {
-          sums[index] = this.userTotal ? MoneyFormat(this.userTotal.tieTh) : "";
-          return;
-        }
-        if (index == 12) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.pumpTh)
-            : "";
-          return;
-        }
-        if (index == 13) {
-          sums[index] = this.userTotal
-            ? MoneyFormat(this.userTotal.winLoseTh)
-            : "";
-          return;
-        }
-      });
-      return sums;
-    },
+
     // 排序改变时
     onSortChange({ column, prop, order }) {
       this.queryParams.isAsc = order;

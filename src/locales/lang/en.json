@@ -593,5 +593,16 @@
   "all-none": "All/None",
   "tipsTrans":"Current user cannot export",
   "less2":"Please select at least 2 members",
-  "unknown":"Unknown"
+  "unknown":"Unknown",
+  "game-num-range": "Game No. must greater than 0",
+  "no-dealer": "There is no account for this dealer",
+  "dealer": "Dealer",
+  "dealer-win-loss": "Dealer win/loss",
+  "baccarat-win-loss": "Baccarat win/loss",
+  "dt-win-loss": "DT win/loss",
+  "sg-win-loss": "San-Gong win/loss",
+  "niu-win-loss": "Niu Niu win/loss",
+  "tui-win-loss": "Tui Tong Zi win/loss",
+  "dealer-management": "Dealer management",
+  "dealer-work-number": "Dealer Work No."
 }
