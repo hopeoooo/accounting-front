@@ -1051,7 +1051,7 @@ export default {
       } else {
         return {
           card: [{ required: true, message: this.$t("Card-No-cannot-be-empty") }],
-          gameNum: [{ required: true, message: "Game-No-cannot-be-empty" }],
+          gameNum: [{ required: true, message: this.$t("Game-No-cannot-be-empty") }],
           type: [{ required: true, message: this.$t("Please-select-a-currency") }]
         };
       }

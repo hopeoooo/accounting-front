@@ -2,7 +2,7 @@
  * @Author:
  * @Date: 2022-04-30 10:22:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-12 16:04:16
+ * @LastEditTime: 2022-05-27 14:46:25
  * @Description: file content
  */
 import request from '@/utils/request'
@@ -224,6 +224,15 @@ export function totalTablePlumbing(query) {
 export function listInputError(query) {
   return request({
     url: '/sys/inputError/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询荷官上下水报表
+export function dealerWaterList(query) {
+  return request({
+    url: '/sys/dealer/selectDealerStatisticsList',
     method: 'get',
     params: query
   })
