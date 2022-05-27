@@ -345,7 +345,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="0">
+        <!-- <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item :label="$t('Password')" prop="password" v-if="isshow">
               <el-input
@@ -366,7 +366,7 @@
               />
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item :label="$t('Deposit')" prop="deposit">

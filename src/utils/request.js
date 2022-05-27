@@ -135,7 +135,7 @@ service.interceptors.response.use(res => {
       message = i18n.t('sys_tips_cnt5');
     }
     else if (message.includes("Request failed with status code")) {
-      message = i18n.t('sys_tips_cnt6') + message.substr(message.length - 3) + i18n.t('sys_tips_cnt7');
+      message = i18n.t('sys_tips_cnt6')+" " + message.substr(message.length - 3) +" " +  i18n.t('sys_tips_cnt7');
     }
     Message({
       message: message,

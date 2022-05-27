@@ -7,7 +7,7 @@
                  <el-table-column :label="$t('bet.face')+'$'" align="center" key="val" prop="val"  />
                 <el-table-column :label="$t('bet.vol')" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
-                        <el-input ref="input" id="input" @keyup.enter.native="handelTab(scope.row.id,$event)" v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
+                        <el-input maxlength="10" ref="input" id="input" @keyup.enter.native="handelTab(scope.row.id,$event)" v-model.number="scope.row.num" placeholder="" @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('bet.heji')" align="center"   prop="total">
@@ -29,35 +29,35 @@
                   <div class="list">
                     <div>${{$t('bet.T-money')}}</div>
                     <div>
-                      <el-input v-model.number="form.tie" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.tie" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                   <div class="list">
                     <div>${{$t('bet.chipIncrease')}}</div>
                     <div>
-                      <el-input v-model.number="form.chipAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.chipAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>${{$t('bet.chipReduce')}}</div>
                     <div>
-                      <el-input v-model.number="form.chipSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.chipSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>${{$t('bet.cashIncrease')}}</div>
                     <div>
-                      <el-input v-model.number="form.cashAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.cashAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>${{$t('bet.cashReduce')}}</div>
                     <div>
-                      <el-input v-model.number="form.cashSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.cashSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
@@ -94,21 +94,21 @@
                   <div class="list">
                     <div>${{$t('bet.insChip')}}</div>
                     <div>
-                      <el-input v-model.number="form.insurance" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.insurance" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>${{$t('bet.insChipAdd')}}</div>
                     <div>
-                      <el-input v-model.number="form.insuranceAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.insuranceAdd" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>${{$t('bet.insChipSub')}}</div>
                     <div>
-                      <el-input v-model.number="form.insuranceSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.insuranceSub" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
@@ -144,7 +144,7 @@
                  <el-table-column :label="$t('bet.face')+'฿'" align="center" key="val" prop="val"  />
                 <el-table-column :label="$t('bet.vol')" align="center" key="num" prop="num" >
                     <template slot-scope="scope">
-                         <el-input ref="input" id="input1" @keyup.enter.native="handelTab1(scope.row.id,$event)" v-model.number="scope.row.num" placeholder=""  @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
+                         <el-input maxlength="10" ref="input" id="input1" @keyup.enter.native="handelTab1(scope.row.id,$event)" v-model.number="scope.row.num" placeholder=""  @input="handleSelectionChange" oninput="value=value.replace(/[^\d]/g,'')" />
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('bet.heji')" align="center"   prop="total">
@@ -166,35 +166,35 @@
                    <div class="list">
                     <div>฿{{$t('bet.T-money')}}</div>
                     <div>
-                      <el-input v-model.number="form.tieTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.tieTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                   <div class="list">
                     <div>฿{{$t('bet.chipIncrease')}}</div>
                     <div>
-                      <el-input v-model.number="form.chipAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.chipAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>฿{{$t('bet.chipReduce')}}</div>
                     <div>
-                      <el-input v-model.number="form.chipSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.chipSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>฿{{$t('bet.cashIncrease')}}</div>
                     <div>
-                      <el-input v-model.number="form.cashAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.cashAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>฿{{$t('bet.cashReduce')}}</div>
                     <div>
-                      <el-input v-model.number="form.cashSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.cashSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
@@ -231,21 +231,21 @@
                   <div class="list">
                     <div>฿{{$t('bet.insChip')}}</div>
                     <div>
-                      <el-input v-model.number="form.insuranceTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.insuranceTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>฿{{$t('bet.insChipAdd')}}</div>
                     <div>
-                      <el-input v-model.number="form.insuranceAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.insuranceAddTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>
                    <div class="list">
                     <div>฿{{$t('bet.insChipSub')}}</div>
                     <div>
-                      <el-input v-model.number="form.insuranceSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
+                      <el-input maxlength="10" v-model.number="form.insuranceSubTh" placeholder="" oninput="value=value.replace(/[^\d]/g,'')" />
                     </div>
                     <div>-</div>
                   </div>

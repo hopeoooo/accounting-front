@@ -1,6 +1,7 @@
 {
   "persino-info":"Info",
   "bet":{
+    "dealer":"Dealer:",
     "next":"Next game",
     "user":"Operator",
     "changeAccount":"Switching account",
@@ -77,7 +78,9 @@
     "wan":"W",
     "T-money": "T money",
     "fullScreen": "Full screen",
-    "choose": "Please choose"
+    "choose": "Please choose",
+    "suc":"Successful operation",
+    "los":"Operation failed"
   },
   "Card-search": "C No.",
   "Name-search": "Name",
@@ -589,5 +592,6 @@
   "expand-collapse": "expand/collapse",
   "all-none": "All/None",
   "tipsTrans":"Current user cannot export",
-  "less2":"Please select at least 2 members"
+  "less2":"Please select at least 2 members",
+  "unknown":"Unknown"
 }

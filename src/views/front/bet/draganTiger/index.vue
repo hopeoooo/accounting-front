@@ -9,8 +9,14 @@
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-             <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
-              <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
+            <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <div style="display:flex;    justify-content: center;align-items: center;margin-left: 50px;">
+              <span >{{$t('bet.dealer')}}</span> 
+              <el-input  style="width:180px" v-model="dealer" :disabled="isSure" placeholder=""  /> 
+              <el-button v-if="!isSure" style="width:100px" class="loginout" type="success" plain @click="subDealer">{{$t('Confirm')}}</el-button>
+              <el-button v-else style="width:100px" class="loginout" type="success" plain @click="subDealer1">{{$t('Confirm')}}11</el-button>
+            </div>
           </el-card>
       </el-col>
        <!--桌台信息-->
@@ -133,7 +139,7 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" stripe class="betBox" height="500px" style="font-size: 20px;" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
+     <el-table v-loading="" stripe class="betBox" height="500px" style="font-size: 20px;" :data="lhList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="360px">
                <template slot-scope="scope">
@@ -179,6 +185,7 @@
 </template>
 
 <script>
+import {getDealerCheckUserName} from "@/api/account/dealer"
 import { dragantigerInfo,dragontigerNext,dragantigerList,dragantigerOpen,dragantigerUpdate,dragantigerInput,dragantigerSave} from "@/api/bet/draganTiger";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
@@ -191,6 +198,8 @@ export default {
       isSend:false,
       // 遮罩层
       loading: true,
+      isSure:false,
+      dealer:'',
       isVisibles:false,
       record:false,
       // 选中数组
@@ -300,7 +309,27 @@ export default {
       this. getSend()
       localStorage.setItem('LhType',this.isSend)
     },
-  
+    subDealer(){
+      getDealerCheckUserName({'userName':this.dealer}).then(res =>{
+        
+        if(res.code && res.code == 200){
+          this.isSure = true
+          localStorage.setItem('LhDealer',this.dealer)
+          localStorage.setItem('LhDealerType',this.isSure)
+        }else{
+           this.dealer =''
+           localStorage.setItem('LhDealer','')
+        }
+      }).catch(error => {
+           this.dealer =''
+           localStorage.setItem('LhDealer','')
+          
+        })
+    },
+    subDealer1(){
+      this.isSure = false
+      localStorage.setItem('LhDealerType',this.isSure)
+    },
     roadChange(){},
     betRecord(){
       this.record = true
@@ -330,6 +359,16 @@ export default {
         }
          if(localStorage.getItem("LhList") != null){
            this.setLhList(JSON.parse(localStorage.getItem('LhList')))
+        }
+         if(localStorage.getItem("LhDealer") != null){
+         this.dealer = localStorage.getItem('LhDealer')
+        }
+        if(localStorage.getItem("LhDealerType") != null){
+         if(localStorage.getItem('LhDealerType')=="true"){
+            this.isSure =true
+          }else{
+            this.isSure =false
+          }
         }
     },
     openData(data){
@@ -427,6 +466,7 @@ export default {
       let str =''
       str= this.radio1.toString()
       param['gameResult']=str
+   
       let arr=[]
       let arr1=[]
         this.betList = this.lhList
@@ -518,7 +558,7 @@ export default {
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
-        dragantigerInput({'json':this.subData}).then(res=>{
+        dragantigerInput({'json':this.subData,'dealer':this.dealer}).then(res=>{
           this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
           this.betList = this.betList.map(o=>{

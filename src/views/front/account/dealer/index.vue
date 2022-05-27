@@ -66,12 +66,12 @@
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column :label="$t('Work Number')" prop="userName" />
       <el-table-column  :label="$t('Name')"  prop="nickName" />
-      <el-table-column :label="$t('Position')" prop="post">
+      <!-- <el-table-column :label="$t('Position')" prop="post">
         <template slot-scope="scope">
           <span v-if="scope.row.post">{{ scope.row.post }}</span>
           <span v-else>--</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('Gender')" prop="sex">
         <template slot-scope="scope">
           {{ scope.row.sex == 0 ? $t('male') : scope.row.sex == 2 ? $t('unknown') : $t('female') }}
@@ -192,24 +192,7 @@
           </el-col>
         </el-row>
         <!-- 密码和确认密码，如果是修改员工，只有超级管理员可现 -->
-        <el-row
-          :gutter="0"
-          v-if="(openType == 'edit' && user.userId == 1) || openType == 'add'"
-        >
-          <el-col :span="12">
-            <el-form-item  :label="$t('Password')"  prop="password">
-              <el-input v-model="form.password" :placeholder="$t('enter-pwd')" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item  :label="$t('Confirm-Password')"  prop="rawPassword">
-              <el-input
-                v-model="form.rawPassword"
-                :placeholder="$t('confirm-pwd')"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+      
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item :label="$t('Origin')" prop="address">
@@ -223,19 +206,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="0">
-          <el-col :span="12">
-            <el-form-item :label="$t('Perm-Role')" prop="roleId">
-              <el-select v-model="form.roleId" :placeholder="$t('Please-select')">
-                <el-option
-                  v-for="item in roleList"
-                  :key="item.roleId"
-                  :label="item.roleName"
-                  :value="item.roleId"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+  
           <el-col :span="12">
             <el-form-item :label="$t('Ent-Tm')" prop="joinTime">
               <el-date-picker
@@ -248,8 +219,7 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="0">
+       
           <el-col :span="12">
             <el-form-item :label="$t('Y0B')" prop="brithday">
               <el-date-picker
@@ -276,24 +246,15 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import {
-  listRole,
-  getRole,
-  delRole,
-  addRole,
-  updateRole,
-  dataScope,
-  changeRoleStatus
-} from "@/api/system/role";
-import {
-  getEmployeeList,
-  addEmployee,
-  updateEmployee,
-  delEmployee
-} from "@/api/account/employee";
+  getDealerList,
+  addDealer,
+  updateDealer,
+  delDealer
+} from "@/api/account/dealer";
 import { getRoleList } from "@/api/account/role";
 
 export default {
-  name: "Employee",
+  name: "Dealer",
 
   data() {
     return {
@@ -460,7 +421,7 @@ export default {
       params["beginTime"] = beginTime;
       params["endTime"] = endTime;
       this.loading = true;
-      getEmployeeList(params).then(response => {
+      getDealerList(params).then(response => {
         this.employeeList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -550,13 +511,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.openType == "edit") {
-            updateEmployee(this.form).then(response => {
+            updateDealer(this.form).then(response => {
               this.$modal.msgSuccess(this.$t("Modified-successfully"));
               this.open = false;
               this.getList();
             });
           } else {
-            addEmployee(this.form).then(response => {
+            addDealer(this.form).then(response => {
               this.$modal.msgSuccess(this.$t("Add-success"));
               this.open = false;
               this.getList();
@@ -573,7 +534,7 @@ export default {
       this.$modal
         .confirm( this.$t("confirmed-delete-employee")+ userName + '？')
         .then(function() {
-          return delEmployee({ userId: userId });
+          return delDealer({ userId: userId });
         })
         .then(() => {
           this.getList();

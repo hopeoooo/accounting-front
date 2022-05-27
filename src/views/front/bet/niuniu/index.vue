@@ -1,16 +1,24 @@
 <template>
   <div class="app-container game_nn">
     <el-row :gutter="20">
-       <!--桌台信息-->
-      <el-col :span="16" :xs="24">
+          <!--切换账号-->
+      <el-col :span="24" :xs="24">
           <el-card class="box-card-box1" style="text-align:center">
             <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
-              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-             <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
-              <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
+            <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
+            <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <div style="display:flex;    justify-content: center;align-items: center;margin-left: 50px;">
+              <span >{{$t('bet.dealer')}}</span> 
+              <el-input  style="width:180px" v-model="dealer" placeholder=""  /> 
+              <el-button style="width:100px" class="loginout" type="success" plain @click="subDealer">{{$t('Confirm')}}</el-button>
+            </div>
           </el-card>
+      </el-col>
+       <!--桌台信息-->
+      <el-col :span="16" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
@@ -30,14 +38,7 @@
           </el-card>
          
       </el-col>
-       <!--按钮-->
-      <!-- <el-col :span="4" :xs="24">
-          <el-card class="box-card-box" style="text-align:center">
-              <el-button type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-              <el-button type="primary" plain @click="roadChange">路珠修改</el-button>
-              <el-button type="primary" plain @click="betRecord">下注记录</el-button>
-          </el-card>
-      </el-col> -->
+     
        <!--操作-->
       <el-col :span="8" :xs="24">
           <el-card class="box-card-box-list" style="text-align:center">
@@ -107,6 +108,7 @@
 </template>
 
 <script>
+import {getDealerCheckUserName} from "@/api/account/dealer"
 import { niuniuInput,niuniuNext,niuniuOpen,niuniuInfo,niuniuSave} from "@/api/bet/niuniu";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
@@ -118,8 +120,9 @@ export default {
     return {
       isSend:false,
       // 遮罩层
-      loading: true,
+      loading: false,
       isVisibles:true,
+      dealer:'',
       record:false,
       // 选中数组
       ids: [],
@@ -208,6 +211,18 @@ export default {
       localStorage.setItem('NnType',this.isSend)
     },
   
+     subDealer(){
+      getDealerCheckUserName({'userName':this.dealer}).then(res =>{
+        if(res.code && res.code == 200){
+          this.$modal.msgSuccess(this.$t('bet.suc'));
+          localStorage.setItem('NnDealer',this.dealer)
+        }else{
+          this.$modal.msgError(this.$t('bet.los'));
+           this.dealer =''
+           localStorage.setItem('NnDealer','')
+        }
+      })
+    },
     roadChange(){},
     betRecord(){
       this.record = true
@@ -220,7 +235,7 @@ export default {
          customClass:'dialog_tips'
       }).then(() => {
         niuniuNext().then(res => {
-          this.loading = false;
+          // this.loading = false;
            this.getTableInfo()
             this.getResult()
         })
@@ -238,7 +253,7 @@ export default {
     getTableInfo(){
        niuniuInfo().then(res => {
           this.tableInfo = res.data;
-          this.loading = false;
+          // this.loading = false;
         },
         this.setNnList(this.betList),
         this.setNnSum(this.sumdata),
@@ -255,6 +270,9 @@ export default {
         }
          if(localStorage.getItem("NnList") != null){
            this.setNnList(JSON.parse(localStorage.getItem('NnList')))
+        }
+           if(localStorage.getItem("NnDealer") != null){
+         this.dealer = localStorage.getItem('NnDealer')
         }
     },
     //处理路单class
@@ -301,12 +319,12 @@ export default {
     getSend(){
       if(this.isSend == true){
         niuniuSave({'json':this.nnList}).then(res => {
-          this.loading = false;
+          // this.loading = false;
         })
       }else{
          let arr2 = Array(30).fill().map((e,i)=>Object({id:i+1,type:0}))
          niuniuSave({'json':arr2}).then(res => {
-          this.loading = false;
+          // this.loading = false;
         })
       }
     },
@@ -386,7 +404,7 @@ export default {
           this.setNnList(arr2)
           this. getSend()
           this.iskaipai = false
-          this.loading = false;
+          // this.loading = false;
         })
     },
     //录入
@@ -397,8 +415,8 @@ export default {
         type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
-        niuniuInput({'json':this.subData}).then(res=>{
-          this.loading = false;
+        niuniuInput({'json':this.subData,'dealer':this.dealer}).then(res=>{
+          // this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1,type:0})),
           this.betList = this.betList.map(o=>{
             return {

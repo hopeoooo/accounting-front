@@ -2,6 +2,7 @@
 
   "persino-info": "个人信息",
   "bet":{
+    "dealer":"荷官:",
     "next":"下一局",
     "user":"当前操作员",
     "changeAccount":"切换账号",
@@ -78,7 +79,9 @@
     "wan":"万",
     "T-money": "和钱",
     "fullScreen": "全屏",
-    "choose": "请选择"
+    "choose": "请选择",
+    "suc":"操作成功",
+    "los":"操作失败"
   },
   "Card-search": "卡号查询",
   "Name-search": "姓名查询",
@@ -585,5 +588,6 @@
   "expand-collapse": "展开/折叠",
   "all-none": "全选/全不选",
   "tipsTrans":"当前用户不可汇出",
-  "less2":"请选择至少2个会员"
+  "less2":"请选择至少2个会员",
+  "unknown":"未知"
 }

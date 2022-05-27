@@ -1,16 +1,24 @@
 <template>
   <div class="app-container game_push">
     <el-row :gutter="20">
-       <!--桌台信息-->
-      <el-col :span="13" :xs="24">
-            <el-card class="box-card-box1" style="text-align:center">
+       <!--切换账号-->
+      <el-col :span="24" :xs="24">
+          <el-card class="box-card-box1" style="text-align:center">
             <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
-              <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-              <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
-              <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
+            <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
+            <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <div style="display:flex;    justify-content: center;align-items: center;margin-left: 50px;">
+              <span >{{$t('bet.dealer')}}</span> 
+              <el-input  style="width:180px" v-model="dealer" placeholder=""  /> 
+              <el-button style="width:100px" class="loginout" type="success" plain @click="subDealer">{{$t('Confirm')}}</el-button>
+            </div>
           </el-card>
+      </el-col>
+       <!--桌台信息-->
+      <el-col :span="13" :xs="24">
            <el-card class="box-card-box" style="text-align:center">
              <ul>
               <li>{{$t('bet.taiHao')}}：{{tableInfo.tableId || 0}}</li>
@@ -65,7 +73,7 @@
 
   
 
-     <el-table v-loading="loading" stripe class="betBox" height="600px" style="font-size: 20px;" :data="ttzList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
+     <el-table v-loading="" stripe class="betBox" height="600px" style="font-size: 20px;" :data="ttzList"  border :row-class-name="status_change"   @selection-change="handleSelectionChange" >
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column :label="$t('bet.chooseStyle')" align="center" key="type" prop="type" width="360px">
                <template slot-scope="scope">
@@ -108,6 +116,7 @@
 </template>
 
 <script>
+import {getDealerCheckUserName} from "@/api/account/dealer"
 import { pusherInput,pusherNext,pusherOpen,pusherInfo,pusherSave} from "@/api/bet/pusher";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
@@ -121,6 +130,7 @@ export default {
       // 遮罩层
       loading: true,
       isVisibles:true,
+      dealer:'',
       record:false,
       // 选中数组
       ids: [],
@@ -208,7 +218,19 @@ export default {
       this. getSend()
       localStorage.setItem('PusherType',this.isSend)
     },
-  
+   
+    subDealer(){
+      getDealerCheckUserName({'userName':this.dealer}).then(res =>{
+        if(res.code && res.code == 200){
+          this.$modal.msgSuccess(this.$t('bet.suc'));
+          localStorage.setItem('TtzDealer',this.dealer)
+        }else{
+          this.$modal.msgError(this.$t('bet.los'));
+           this.dealer =''
+           localStorage.setItem('TtzDealer','')
+        }
+      })
+    },
     roadChange(){},
      betRecord(){
       this.record = true
@@ -256,6 +278,9 @@ export default {
         }
          if(localStorage.getItem("PusherList") != null){
            this.setTtzList(JSON.parse(localStorage.getItem('PusherList')))
+        }
+            if(localStorage.getItem("TtzDealer") != null){
+         this.dealer = localStorage.getItem('TtzDealer')
         }
     },
     //处理路单class
@@ -398,7 +423,7 @@ export default {
          type: 'warning',
         customClass:'dialog_tips'
       }).then(() => {
-        pusherInput({'json':this.subData}).then(res=>{
+        pusherInput({'json':this.subData,'dealer':this.dealer}).then(res=>{
           this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1,type:0}))
           this.betList = this.betList.map(o=>{

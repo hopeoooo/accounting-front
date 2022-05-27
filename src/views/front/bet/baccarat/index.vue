@@ -8,9 +8,14 @@
             <div class="h1">{{$t('bet.user')}}</div>
             <div >{{userName}}</div>
             <el-button class="loginout" type="info" @click.native="logout">{{$t('bet.changeAccount')}}</el-button>
-             <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
-              <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
-              <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+            <el-button class="loginout" type="primary" plain @click="screencast">{{isSend?$t('bet.onScreen'):$t('bet.noScreen')}}</el-button>
+            <el-button class="loginout" type="danger" plain @click="betRecord">{{$t('bet.betRecord')}}</el-button>
+            <el-button class="loginout" type="success" plain @click="nextGame">{{$t('bet.next')}}</el-button>
+             <div style="display:flex;    justify-content: center;align-items: center;margin-left: 50px;">
+              <span >{{$t('bet.dealer')}}</span> 
+              <el-input  style="width:180px" v-model="dealer" placeholder=""  /> 
+              <el-button style="width:100px" class="loginout" type="success" plain @click="subDealer">{{$t('Confirm')}}</el-button>
+            </div>
           </el-card>
       </el-col>
        <!--桌台信息-->
@@ -183,7 +188,7 @@
       </div>
     </el-dialog>
 
-     <el-table v-loading="loading" class="betBox_bjl" height="650px" style="font-size: 20px;" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
+     <el-table v-loading="" class="betBox_bjl" height="650px" style="font-size: 20px;" stripe :data="baccaratList"  border :row-class-name="status_change"  @selection-change="handleSelectionChange" >
        <!-- <el-table v-loading="loading" class="betBox" height="500px" :data="baccaratList"  border :row-class-name="status_change" @current-change='DataChange'  @selection-change="handleSelectionChange" > -->
           <!-- <el-table-column fixed type="selection" key="id" prop="id" width="50" align="center" /> -->
           <el-table-column :label="$t('bet.chooseStyle')" align="center"  key="type" prop="type" width="360px">
@@ -273,6 +278,7 @@
 </template>
 
 <script>
+import {getDealerCheckUserName} from "@/api/account/dealer"
 import { baccaratInfo,baccaratNext,baccaratList,baccaratOpen,baccaratUpdate,baccaratInput,baccaratSave} from "@/api/bet/baccarat";
 import { mapState, mapMutations } from "vuex";
 import Dialog from "./dialog.vue"
@@ -287,6 +293,7 @@ export default {
       // 遮罩层
       loading: true,
       isVisibles:false,
+      dealer:'',
       record:false,
       // isRecord:false,
       // 选中数组
@@ -437,7 +444,18 @@ export default {
       this. getSend()
       localStorage.setItem('BjType',this.isSend)
     },
-  
+   subDealer(){
+      getDealerCheckUserName({'userName':this.dealer}).then(res =>{
+        if(res.code && res.code == 200){
+          this.$modal.msgSuccess(this.$t('bet.suc'));
+          localStorage.setItem('BjlDealer',this.dealer)
+        }else{
+          this.$modal.msgError(this.$t('bet.los'));
+          this.dealer =''
+           localStorage.setItem('BjlDealer','')
+        }
+      })
+    },
     roadChange(){},
     betRecord(){
       this.record = true
@@ -491,6 +509,9 @@ export default {
         }
          if(localStorage.getItem("BjList") != null){
            this.setBaccaratList(JSON.parse(localStorage.getItem('BjList')))
+        }
+          if(localStorage.getItem("BjlDealer") != null){
+         this.dealer = localStorage.getItem('BjlDealer')
         }
     },
     //赛果列表
@@ -715,7 +736,7 @@ export default {
         type: 'warning',
          customClass:'dialog_tips'
       }).then(() => {
-        baccaratInput({'json':this.subData}).then(res=>{
+        baccaratInput({'json':this.subData,'dealer':this.dealer}).then(res=>{
           this.loading = false;
           // this.betList = Array(30).fill().map((e,i)=>Object({id:i+1}))
           this.betList = this.betList.map(o=>{
